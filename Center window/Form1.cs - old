@@ -1,0 +1,380 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using System.Runtime.InteropServices; // Para poder acceder a la API
+using Microsoft.Win32;
+
+
+namespace Center_window
+{
+    public partial class frmMain : Form
+    {
+
+        #region Declaraciones API
+        // Declaración de la estructura de datos que se utilizará
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public POINT(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
+
+            public static implicit operator System.Drawing.Point(POINT p)
+            {
+                return new System.Drawing.Point(p.X, p.Y);
+            }
+
+            public static implicit operator POINT(System.Drawing.Point p)
+            {
+                return new POINT(p.X, p.Y);
+            }
+        }
+
+        [Serializable, StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        // Declaración de la función de la API a la que se quiere llamar
+        [DllImport("user32.dll")]
+        static extern IntPtr WindowFromPoint(POINT Point);
+
+        [DllImport("user32.dll")]
+        static extern bool GetCursorPos(out POINT lpPoint);
+
+        [DllImport("user32.dll")]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        [DllImport("user32.dll")]
+	    static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+        [DllImport("user32.dll")]
+        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetDesktopWindow();
+        #endregion
+        
+        #region Variables de la clase
+
+        //private MouseHook hook = new MouseHook();
+        
+        private bool _capturing;
+        private Image _finderHome;
+        private Image _finderGone;
+        private Cursor _cursorDefault;
+        private Cursor _cursorFinder;
+        private IntPtr _hPreviousWindow;
+        private IntPtr _hActualWindow;
+        private Win32.Rect _rcActual = new Win32.Rect();
+
+        #endregion Variables de la clase
+
+        /// <summary>
+        /// Summary description for frmMain.
+        /// </summary>
+        public frmMain()
+        {
+            InitializeComponent();
+
+            // Inicializar las variables
+            _cursorDefault = Cursor.Current;
+            _cursorFinder = EmbeddedResources.LoadCursor(EmbeddedResources.Finder);
+            _finderHome = EmbeddedResources.LoadImage(EmbeddedResources.FinderHome);
+            _finderGone = EmbeddedResources.LoadImage(EmbeddedResources.FinderGone);
+
+            _pictureBox.Image = _finderHome;
+            _pictureBox.MouseDown += new MouseEventHandler(OnFinderToolMouseDown);
+        }
+
+        /// <summary>
+        /// Processes window messages sent to the Spy Window
+        /// </summary>
+        /// <param name="m"></param>
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                /*
+                 * stop capturing events as soon as the user releases the left mouse button
+                 * */
+                case (int)Win32.WindowMessages.WM_LBUTTONUP:
+                    this.CaptureMouse(false);
+                    break;
+                /*
+                 * handle all the mouse movements
+                 * */
+                case (int)Win32.WindowMessages.WM_MOUSEMOVE:
+                    this.HandleMouseMovements();
+                    break;
+            };
+
+            base.WndProc(ref m);
+        }
+
+        /// <summary>
+        /// Processes the mouse down events for the finder tool 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnFinderToolMouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                this.CaptureMouse(true);
+        }
+
+        /// <summary>
+        /// Captures or releases the mouse
+        /// </summary>
+        /// <param name="captured"></param>
+        private void CaptureMouse(bool captured)
+        {
+            // if we're supposed to capture the window
+            if (captured)
+            {
+                // capture the mouse movements and send them to ourself
+                Win32.SetCapture(this.Handle);
+
+                // set the mouse cursor to our finder cursor
+                Cursor.Current = _cursorFinder;
+
+                // change the image to the finder gone image
+                _pictureBox.Image = _finderGone;
+            }
+            // otherwise we're supposed to release the mouse capture
+            else
+            {
+                // so release it
+                Win32.ReleaseCapture();
+
+                // put the default cursor back
+                Cursor.Current = _cursorDefault;
+
+                // change the image back to the finder at home image
+                _pictureBox.Image = _finderHome;
+
+                // and finally refresh any window that we were highlighting
+                if (_hPreviousWindow != IntPtr.Zero)
+                {
+                    WindowHighlighter.Refresh(_hPreviousWindow);
+                    _hPreviousWindow = IntPtr.Zero;
+                }
+            }
+
+            // save our capturing state
+            _capturing = captured;
+        }
+
+        /// <summary>
+        /// Handles all mouse move messages sent to the Spy Window
+        /// </summary>
+        private void HandleMouseMovements()
+        {
+            // if we're not capturing, then bail out
+            if (!_capturing)
+                return;
+
+            try
+            {
+                // capture the window under the cursor's position
+                IntPtr hWnd = Win32.WindowFromPoint(Cursor.Position);
+
+                // if the window we're over, is not the same as the one before, and we had one before, refresh it
+                if (_hPreviousWindow != IntPtr.Zero && _hPreviousWindow != hWnd)
+                    WindowHighlighter.Refresh(_hPreviousWindow);
+
+                // if we didn't find a window.. that's pretty hard to imagine. lol
+                if (hWnd == IntPtr.Zero)
+                {
+                    this.txtHandle.Text = null;
+                    this.txtCaption.Text = null;
+                    this.txtClass.Text = null;
+                    this.txtRectangle.Text = null;
+                }
+                else
+                {
+                    // save the window we're over
+                    _hPreviousWindow = hWnd;
+                    _hActualWindow = hWnd;
+
+                    // handle
+                    txtHandle.Text = string.Format("{0}", hWnd.ToInt32().ToString());
+
+                    // class
+                    txtClass.Text = this.GetClassName(hWnd);
+                    
+                    // caption
+                    txtCaption.Text = this.GetWindowText(hWnd);
+                    
+                    //Win32.Rect rc = new Win32.Rect();                
+                    Win32.GetWindowRect(hWnd, ref _rcActual);
+
+                    // rect
+                    //txtRectangle.Text = string.Format("[{0} x {1}], ({2},{3})-({4},{5})", rc.right - rc.left, rc.bottom - rc.top, rc.left, rc.top, rc.right, rc.bottom);
+                    txtRectangle.Text = string.Format("[{0} x {1}], ({2},{3})-({4},{5})", _rcActual.right - _rcActual.left, _rcActual.bottom - _rcActual.top, _rcActual.left, _rcActual.top, _rcActual.right, _rcActual.bottom);
+
+                    // highlight the window
+                    WindowHighlighter.Highlight(hWnd);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        #region Win32 class wrapper
+
+        /// <summary>
+        /// Returns the caption of a window Win32.GetWindowText
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <returns></returns>
+        private string GetWindowText(IntPtr hWnd)
+        {
+            StringBuilder sb = new StringBuilder(256);
+            Win32.GetWindowText(hWnd, sb, 256);
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Returns the name of a window's class Win32.GetClassName
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <returns></returns>
+        private string GetClassName(IntPtr hWnd)
+        {
+            StringBuilder sb = new StringBuilder(256);
+            Win32.GetClassName(hWnd, sb, 256);
+            return sb.ToString();
+        }
+
+        #endregion Win32 class wrapper
+
+        // Minimizar la ventana y establecer un Hook del ratón
+        private void btnAply_Click(object sender, EventArgs e)
+        {
+            // Activar el control de errores en la llamada a la API
+            try
+            {
+                if (chkCenter.Checked == true)
+                {
+                    Win32.Rect pantalla = new  Win32.Rect();
+                    Win32.GetWindowRect(Win32.GetDesktopWindow(), ref pantalla);
+
+                    Win32.MoveWindow(_hActualWindow, (pantalla.Width - _rcActual.Width) / 2,
+                        (pantalla.Height - _rcActual.Height) / 2,
+                        _rcActual.Width,
+                        _rcActual.Height,
+                        true);
+                }
+
+                if (chkTransparency.Checked == true)
+                {
+                    Win32.SetWindowLong(_hActualWindow,
+                        Win32.GWL_EXSTYLE,
+                        Win32.GetWindowLongPtr(_hActualWindow, Win32.GWL_EXSTYLE) | (int)Win32.WindowStyles.WS_EX_LAYERED);
+
+                    Win32.SetLayeredWindowAttributes(_hActualWindow,
+                        (uint)Color.Black.ToArgb(),
+                        (byte) (255-trkTransparency.Value),
+                        Win32.LWA_ALPHA);
+                }
+
+                //public static uint GetColor(Color C)
+                //{
+                //    return ((uint)C.B<<16) + ((uint)C.G<<8) + (uint)C.R;
+                //}
+
+                // Remove WS_EX_LAYERED from this window styles
+                //SetWindowLong(hwnd, GWL_EXSTYLE,
+                //GetWindowLong(hwnd, GWL_EXSTYLE) & ~WS_EX_LAYERED);
+
+                // Ask the window and its children to repaint
+                //RedrawWindow(hwnd, 
+                //    NULL, 
+                //    NULL, 
+                //    RDW_ERASE | RDW_INVALIDATE | RDW_FRAME | RDW_ALLCHILDREN);
+
+
+                // Minimizar la aplicación principal
+                //this.WindowState = FormWindowState.Minimized;
+ 
+                // Establecer un hook para el mensaje WM_CLICK                              
+                //this.hook.Install();
+                //this.hook.MouseDown += new MouseHookEventHandler( this.hook_MouseClick );
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message);
+            }
+        }
+
+        // Evento generado cuando se hace click con el ratón (hook)
+        private void hook_MouseClick(object sender, MouseHookEventArgs e)
+        {
+            // do some stuff with your exciting new mouse hook data
+            POINT defPnt = new POINT();
+            RECT rectangulo = new RECT();
+            RECT pantalla = new RECT();
+            IntPtr hWnd_Ventana = new IntPtr ();
+            
+            GetCursorPos(out defPnt);
+            hWnd_Ventana = WindowFromPoint(defPnt);
+            GetWindowRect(hWnd_Ventana, out rectangulo);
+            GetWindowRect(GetDesktopWindow(), out pantalla);
+
+            MoveWindow(hWnd_Ventana, (pantalla.Bottom - (rectangulo.Bottom - rectangulo.Top)) / 2,
+                (pantalla.Right - (rectangulo.Right - rectangulo.Left)) / 2,
+                rectangulo.Right - rectangulo.Left,
+                rectangulo.Bottom - rectangulo.Top,
+                true);
+                       
+            txtHandle.Text = defPnt.X.ToString();
+            txtCaption.Text = defPnt.Y.ToString();
+            txtClass.Text = hWnd_Ventana.ToString();
+            
+            // Eliminar el hook
+            //this.hook.Dispose();
+
+            // Maximizar la aplicación
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        #region Eventos
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void trkTransparency_Changed(object sender, EventArgs e)
+        {
+            int dPorcentaje;
+            dPorcentaje = 100 * trkTransparency.Value/trkTransparency.Maximum;      
+            lblTransparencyValue.Text = dPorcentaje.ToString ();
+        }
+
+        private void chkTransparency_Changed(object sender, EventArgs e)
+        {
+            trkTransparency.Enabled = chkTransparency.Checked;
+            lblTransparencyValue.Enabled = chkTransparency.Checked;
+        }
+
+        #endregion
+    }
+}

@@ -1,0 +1,265 @@
+﻿namespace Center_window
+{
+    partial class frmMain
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+
+                if (_capturing)
+                    this.CaptureMouse(false);
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.btnAply = new System.Windows.Forms.Button();
+            this.txtHandle = new System.Windows.Forms.TextBox();
+            this.txtCaption = new System.Windows.Forms.TextBox();
+            this.txtClass = new System.Windows.Forms.TextBox();
+            this._pictureBox = new System.Windows.Forms.PictureBox();
+            this.lblFinder = new System.Windows.Forms.Label();
+            this.lblInfo = new System.Windows.Forms.Label();
+            this.lblHandle = new System.Windows.Forms.Label();
+            this.lblCaption = new System.Windows.Forms.Label();
+            this.lblClass = new System.Windows.Forms.Label();
+            this.lblRectangle = new System.Windows.Forms.Label();
+            this.txtRectangle = new System.Windows.Forms.TextBox();
+            this.chkCenter = new System.Windows.Forms.CheckBox();
+            this.trkTransparency = new System.Windows.Forms.TrackBar();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.chkTransparency = new System.Windows.Forms.CheckBox();
+            this.lblTransparencyValue = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trkTransparency)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // btnAply
+            // 
+            this.btnAply.Location = new System.Drawing.Point(154, 362);
+            this.btnAply.Name = "btnAply";
+            this.btnAply.Size = new System.Drawing.Size(75, 23);
+            this.btnAply.TabIndex = 0;
+            this.btnAply.Text = "&Aply";
+            this.btnAply.UseVisualStyleBackColor = true;
+            this.btnAply.Click += new System.EventHandler(this.btnAply_Click);
+            // 
+            // txtHandle
+            // 
+            this.txtHandle.Location = new System.Drawing.Point(99, 110);
+            this.txtHandle.Name = "txtHandle";
+            this.txtHandle.Size = new System.Drawing.Size(211, 20);
+            this.txtHandle.TabIndex = 1;
+            // 
+            // txtCaption
+            // 
+            this.txtCaption.Location = new System.Drawing.Point(99, 142);
+            this.txtCaption.Name = "txtCaption";
+            this.txtCaption.Size = new System.Drawing.Size(211, 20);
+            this.txtCaption.TabIndex = 2;
+            // 
+            // txtClass
+            // 
+            this.txtClass.Location = new System.Drawing.Point(99, 174);
+            this.txtClass.Name = "txtClass";
+            this.txtClass.Size = new System.Drawing.Size(211, 20);
+            this.txtClass.TabIndex = 3;
+            // 
+            // _pictureBox
+            // 
+            this._pictureBox.Location = new System.Drawing.Point(74, 61);
+            this._pictureBox.Name = "_pictureBox";
+            this._pictureBox.Size = new System.Drawing.Size(32, 32);
+            this._pictureBox.TabIndex = 28;
+            this._pictureBox.TabStop = false;
+            // 
+            // lblFinder
+            // 
+            this.lblFinder.AutoSize = true;
+            this.lblFinder.Location = new System.Drawing.Point(12, 71);
+            this.lblFinder.Name = "lblFinder";
+            this.lblFinder.Size = new System.Drawing.Size(56, 13);
+            this.lblFinder.TabIndex = 29;
+            this.lblFinder.Text = "Finder tool";
+            // 
+            // lblInfo
+            // 
+            this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblInfo.Location = new System.Drawing.Point(12, 9);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(298, 40);
+            this.lblInfo.TabIndex = 30;
+            this.lblInfo.Text = "Drag the Finder Tool over a window to select it, then release the mouse button. O" +
+                "r enter a window handle (in hexadecimal).";
+            // 
+            // lblHandle
+            // 
+            this.lblHandle.AutoSize = true;
+            this.lblHandle.Location = new System.Drawing.Point(12, 113);
+            this.lblHandle.Name = "lblHandle";
+            this.lblHandle.Size = new System.Drawing.Size(81, 13);
+            this.lblHandle.TabIndex = 31;
+            this.lblHandle.Text = "Window handle";
+            // 
+            // lblCaption
+            // 
+            this.lblCaption.AutoSize = true;
+            this.lblCaption.Location = new System.Drawing.Point(12, 145);
+            this.lblCaption.Name = "lblCaption";
+            this.lblCaption.Size = new System.Drawing.Size(43, 13);
+            this.lblCaption.TabIndex = 32;
+            this.lblCaption.Text = "Caption";
+            // 
+            // lblClass
+            // 
+            this.lblClass.AutoSize = true;
+            this.lblClass.Location = new System.Drawing.Point(12, 177);
+            this.lblClass.Name = "lblClass";
+            this.lblClass.Size = new System.Drawing.Size(61, 13);
+            this.lblClass.TabIndex = 33;
+            this.lblClass.Text = "Class name";
+            // 
+            // lblRectangle
+            // 
+            this.lblRectangle.AutoSize = true;
+            this.lblRectangle.Location = new System.Drawing.Point(12, 209);
+            this.lblRectangle.Name = "lblRectangle";
+            this.lblRectangle.Size = new System.Drawing.Size(56, 13);
+            this.lblRectangle.TabIndex = 34;
+            this.lblRectangle.Text = "Rectangle";
+            // 
+            // txtRectangle
+            // 
+            this.txtRectangle.Location = new System.Drawing.Point(99, 206);
+            this.txtRectangle.Name = "txtRectangle";
+            this.txtRectangle.Size = new System.Drawing.Size(211, 20);
+            this.txtRectangle.TabIndex = 35;
+            // 
+            // chkCenter
+            // 
+            this.chkCenter.AutoSize = true;
+            this.chkCenter.Checked = true;
+            this.chkCenter.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCenter.Location = new System.Drawing.Point(12, 252);
+            this.chkCenter.Name = "chkCenter";
+            this.chkCenter.Size = new System.Drawing.Size(96, 17);
+            this.chkCenter.TabIndex = 36;
+            this.chkCenter.Text = "Center window";
+            this.chkCenter.UseVisualStyleBackColor = true;
+            // 
+            // trkTransparency
+            // 
+            this.trkTransparency.Enabled = false;
+            this.trkTransparency.Location = new System.Drawing.Point(12, 301);
+            this.trkTransparency.Maximum = 255;
+            this.trkTransparency.Name = "trkTransparency";
+            this.trkTransparency.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.trkTransparency.Size = new System.Drawing.Size(298, 45);
+            this.trkTransparency.TabIndex = 37;
+            this.trkTransparency.TickFrequency = 5;
+            this.trkTransparency.ValueChanged += new System.EventHandler(this.trkTransparency_Changed);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(235, 362);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 38;
+            this.btnClose.Text = "&Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // chkTransparency
+            // 
+            this.chkTransparency.AutoSize = true;
+            this.chkTransparency.Location = new System.Drawing.Point(12, 275);
+            this.chkTransparency.Name = "chkTransparency";
+            this.chkTransparency.Size = new System.Drawing.Size(91, 17);
+            this.chkTransparency.TabIndex = 39;
+            this.chkTransparency.Text = "Transparency";
+            this.chkTransparency.UseVisualStyleBackColor = true;
+            this.chkTransparency.CheckedChanged += new System.EventHandler(this.chkTransparency_Changed);
+            // 
+            // lblTransparencyValue
+            // 
+            this.lblTransparencyValue.AutoSize = true;
+            this.lblTransparencyValue.Enabled = false;
+            this.lblTransparencyValue.Location = new System.Drawing.Point(109, 276);
+            this.lblTransparencyValue.Name = "lblTransparencyValue";
+            this.lblTransparencyValue.Size = new System.Drawing.Size(13, 13);
+            this.lblTransparencyValue.TabIndex = 40;
+            this.lblTransparencyValue.Text = "0";
+            // 
+            // frmMain
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(322, 397);
+            this.Controls.Add(this.lblTransparencyValue);
+            this.Controls.Add(this.chkTransparency);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.trkTransparency);
+            this.Controls.Add(this.chkCenter);
+            this.Controls.Add(this.txtRectangle);
+            this.Controls.Add(this.lblRectangle);
+            this.Controls.Add(this.lblClass);
+            this.Controls.Add(this.lblCaption);
+            this.Controls.Add(this.lblHandle);
+            this.Controls.Add(this.lblInfo);
+            this.Controls.Add(this.lblFinder);
+            this.Controls.Add(this._pictureBox);
+            this.Controls.Add(this.txtClass);
+            this.Controls.Add(this.txtCaption);
+            this.Controls.Add(this.txtHandle);
+            this.Controls.Add(this.btnAply);
+            this.Name = "frmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Center window";
+            ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trkTransparency)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Button btnAply;
+        private System.Windows.Forms.TextBox txtHandle;
+        private System.Windows.Forms.TextBox txtCaption;
+        private System.Windows.Forms.TextBox txtClass;
+        private System.Windows.Forms.PictureBox _pictureBox;
+        private System.Windows.Forms.Label lblFinder;
+        private System.Windows.Forms.Label lblInfo;
+        private System.Windows.Forms.Label lblHandle;
+        private System.Windows.Forms.Label lblCaption;
+        private System.Windows.Forms.Label lblClass;
+        private System.Windows.Forms.Label lblRectangle;
+        private System.Windows.Forms.TextBox txtRectangle;
+        private System.Windows.Forms.CheckBox chkCenter;
+        private System.Windows.Forms.TrackBar trkTransparency;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.CheckBox chkTransparency;
+        private System.Windows.Forms.Label lblTransparencyValue;
+    }
+}
+
