@@ -260,6 +260,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstWindows.CheckBoxes = true;
             this.lstWindows.FullRowSelect = true;
+            this.lstWindows.HideSelection = false;
             this.lstWindows.Location = new System.Drawing.Point(20, 292);
             this.lstWindows.Margin = new System.Windows.Forms.Padding(4);
             this.lstWindows.Name = "lstWindows";
@@ -275,7 +276,7 @@
             this.btnApp.Name = "btnApp";
             this.btnApp.Size = new System.Drawing.Size(100, 28);
             this.btnApp.TabIndex = 10;
-            this.btnApp.Text = "Applications";
+            this.btnApp.Text = "Get apps";
             this.btnApp.UseVisualStyleBackColor = true;
             this.btnApp.Click += new System.EventHandler(this.btnApp_Click);
             // 
