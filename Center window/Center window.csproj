@@ -3,9 +3,11 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
     <OldToolsVersion>2.0</OldToolsVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PreserveCompilationContext>false</PreserveCompilationContext>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Center_window.Program</StartupObject>
@@ -38,7 +40,7 @@
     <Reference Include="OfficePickers, Version=1.0.2113.33174, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dlls\OfficePickers.dll</HintPath>
-      <Private>False</Private>
+      <Private>true</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

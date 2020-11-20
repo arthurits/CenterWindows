@@ -7,7 +7,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Linq;
-
+// https://stackoverflow.com/questions/56844233/additional-probing-paths-for-net-core-3-migration
+// https://www.google.es/search?ei=pba3X-OAINaDhbIPlOil2A0&q=.net+5+%22probing+privatePath%22&oq=.net+5+%22probing+privatePath%22&gs_lcp=CgZwc3ktYWIQAzIICCEQFhAdEB5QmyNYiypggy1oAHAAeACAAXaIAdMCkgEDMC4zmAEAoAEBqgEHZ3dzLXdpesABAQ&sclient=psy-ab&ved=0ahUKEwij59z1j5HtAhXWQUEAHRR0CdsQ4dUDCA0&uact=5
+// https://www.google.es/search?q=deps.json+relative+path&ie=UTF-8&oe=
 namespace Center_window
 {
     public partial class frmMain : Form
