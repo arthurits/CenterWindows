@@ -61,9 +61,12 @@ namespace Center_window
 
             // Inicializar las variables
             _cursorDefault = Cursor.Current;
-            _cursorFinder = EmbeddedResources.LoadCursor(EmbeddedResources.Finder);
-            _finderHome = EmbeddedResources.LoadImage(EmbeddedResources.FinderHome);
-            _finderGone = EmbeddedResources.LoadImage(EmbeddedResources.FinderGone);
+            _cursorFinder = EmbeddedResources.LoadGraphicsResource<Cursor>(path + @"\images\Finder.cur");
+            _finderHome = EmbeddedResources.LoadGraphicsResource<Image>(path + @"\images\FinderHome.bmp");
+            _finderGone = EmbeddedResources.LoadGraphicsResource<Image>(path + @"\images\FinderGone.bmp");
+            //_cursorFinder = EmbeddedResources.LoadCursor(EmbeddedResources.Finder);
+            //_finderHome = EmbeddedResources.LoadImage(EmbeddedResources.FinderHome);
+            //_finderGone = EmbeddedResources.LoadImage(EmbeddedResources.FinderGone);
             _pictureBox.Image = _finderHome;
 
             // Establecer los eventos
@@ -152,7 +155,7 @@ namespace Center_window
         /// <summary>
         /// Handles all mouse move messages sent to the Spy Window
         /// </summary>
-        private void HandleMouseMovements(IntPtr handle= default(IntPtr))
+        private void HandleMouseMovements(IntPtr handle = default(IntPtr))
         {
             // if we're not capturing, then bail out
             if (!_capturing)
@@ -191,8 +194,8 @@ namespace Center_window
                     _hActualWindow = hWnd;
 
                     // Get the rectangle
-                    Win32.Rect ventana = new Win32.Rect();
-                    Win32.GetWindowRect(hWnd, ref ventana);
+                    Win32.Rect RectWindow = new();
+                    Win32.GetWindowRect(hWnd, ref RectWindow);
 
                     // handle
                     txtHandle.Text = String.Format("{0}", hWnd.ToInt32().ToString());
@@ -203,8 +206,8 @@ namespace Center_window
                     // caption
                     txtCaption.Text = Win32.GetWindowText(hWnd);
                     
-                    // rect
-                    txtRectangle.Text = String.Format("[{0} x {1}], ({2},{3})-({4},{5})", ventana.right - ventana.left, ventana.bottom - ventana.top, ventana.left, ventana.top, ventana.right, ventana.bottom);
+                    // Show rectangle dimensions
+                    txtRectangle.Text = $"[{RectWindow.right - RectWindow.left} x {RectWindow.bottom - RectWindow.top}], ({RectWindow.left},{RectWindow.top})-({RectWindow.right},{RectWindow.bottom})";
 
                     // highlight the window
                     WindowHighlighter.Highlight(hWnd, _settings.cRectColor, _settings.nRectWidth);
@@ -520,9 +523,9 @@ namespace Center_window
 
         private void trkTransparency_Changed(object sender, EventArgs e)
         {
-            int dPorcentaje;
-            dPorcentaje = 100 * trkTransparency.Value/trkTransparency.Maximum;      
-            lblTransparencyValue.Text = dPorcentaje.ToString () + "%";
+            int Percentage;
+            Percentage = 100 * trkTransparency.Value/trkTransparency.Maximum;      
+            lblTransparencyValue.Text = Percentage.ToString () + "%";
         }
 
         private void chkTransparency_Changed(object sender, EventArgs e)

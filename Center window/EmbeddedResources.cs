@@ -1,61 +1,86 @@
-using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Reflection;
-using System.IO;
-using System.Windows.Forms;
 
-namespace Center_window
+namespace Center_window;
+
+/// <summary>
+/// Load graphics resources from disk
+/// </summary>
+public class EmbeddedResources
 {
+	public const string FinderHome = "Center_window.FinderHome.bmp";
+	public const string FinderGone = "Center_window.FinderGone.bmp";
+	public const string Finder = "Center_window.Finder.cur";
+
 	/// <summary>
-	/// Summary description for FinderToolUtils.
+	/// Loads an image from an embbedded resource
 	/// </summary>
-	public class EmbeddedResources
+	/// <param name="Name"></param>
+	/// <returns></returns>
+	public static Image LoadImage(string Name)
 	{
-		public const string FinderHome = "Center_window.FinderHome.bmp";
-		public const string FinderGone = "Center_window.FinderGone.bmp";
-		public const string Finder = "Center_window.Finder.cur";
-
-		/// <summary>
-		/// Loads an image from an embbedded resource
-		/// </summary>
-		/// <param name="resourceName"></param>
-		/// <returns></returns>
-		public static Image LoadImage(string resourceName)
+		try
 		{
-			try
-			{
-				using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-				{
-					return Image.FromStream(stream);
-				}
-			}
-			catch(Exception ex)
-			{
-				Debug.WriteLine(ex);
-			}
-			return null;
+			using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(Name);
+			return Image.FromStream(stream);
 		}
-
-		/// <summary>
-		/// Loads a cursor from an embedded resource
-		/// </summary>
-		/// <param name="resourceName"></param>
-		/// <returns></returns>
-		public static Cursor LoadCursor(string resourceName)
+		catch (Exception ex)
 		{
-			try
-			{
-				using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-				{
-					return new Cursor(stream);
-				}
-			}
-			catch(Exception ex)
-			{
-				Debug.WriteLine(ex);
-			}
-			return null;
+			MessageBox.Show(
+				$"Unexpected error while loading the {Name} image.{Environment.NewLine}{ex.Message}",
+				"Error loading image",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Error);
 		}
+		return null;
+	}
+
+	/// <summary>
+	/// Loads a cursor from an embedded resource
+	/// </summary>
+	/// <param name="Name"></param>
+	/// <returns></returns>
+	public static Cursor LoadCursor(string Name)
+	{
+		try
+		{
+            return new Cursor(Name);
+        }
+		catch(Exception ex)
+		{
+			MessageBox.Show(
+				$"Unexpected error while loading the {Name} cursor.{Environment.NewLine}{ex.Message}",
+				"Error loading cursor",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Error);
+		}
+		return null;
+	}
+
+	/// <summary>
+	/// Loads a graphics resource from a disk location
+	/// </summary>
+	/// <typeparam name="T">Type of resource to be loaded</typeparam>
+	/// <param name="fileName">File name (including path) to load resource from</param>
+	/// <returns>The graphics resource</returns>
+	public static T LoadGraphicsResource<T> (string fileName)
+    {
+		T resource = default;
+		try
+		{
+			if (typeof(T).Equals(typeof(System.Drawing.Image)))
+				resource = (T)(object)Image.FromFile(fileName);
+			else if (typeof(T).Equals(typeof(Cursor)))
+				resource = (T)(object)new Cursor(fileName);
+		}
+		catch (Exception ex)
+		{
+			MessageBox.Show(
+				$"Unexpected error while loading the {fileName} graphics resource.{Environment.NewLine}{ex.Message}",
+				"Loading error",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Error);
+		}
+		return resource;
 	}
 }
