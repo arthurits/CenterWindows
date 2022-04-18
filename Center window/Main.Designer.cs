@@ -1,6 +1,6 @@
 ﻿namespace Center_window
 {
-    partial class frmMain
+    partial class FrmMain
     {
         /// <summary>
         /// Required designer variable.
