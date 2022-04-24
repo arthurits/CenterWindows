@@ -8,9 +8,9 @@ namespace Center_window;
 /// </summary>
 public class EmbeddedResources
 {
-	public const string FinderHome = "Center_window.FinderHome.bmp";
-	public const string FinderGone = "Center_window.FinderGone.bmp";
-	public const string Finder = "Center_window.Finder.cur";
+	public const string FinderHome = "Center_window.images.FinderHome.bmp";
+	public const string FinderGone = "Center_window.images.FinderGone.bmp";
+	public const string Finder = "Center_window.images.Finder.cur";
 
 	/// <summary>
 	/// Loads an image from an embbedded resource
@@ -44,7 +44,8 @@ public class EmbeddedResources
 	{
 		try
 		{
-            return new Cursor(Name);
+			using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(Name);
+			return new Cursor(stream);
         }
 		catch(Exception ex)
 		{

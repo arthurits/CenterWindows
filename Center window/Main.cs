@@ -12,17 +12,17 @@ public partial class FrmMain : Form
     #region Variables de la clase
     
     private bool _capturing;        // Es TRUE cuando estamos capturando con el ratón
-    private Image _finderHome;
-    private Image _finderGone;
-    private Cursor _cursorDefault;
-    private Cursor _cursorFinder;
+    private readonly Image _finderHome;
+    private readonly Image _finderGone;
+    private readonly Cursor _cursorDefault;
+    private readonly Cursor _cursorFinder;
     //private IntPtr _hPreviousWindow;
     private IntPtr _hActualWindow;  // Puntero a la ventana que está bajo el ratón
     private IntPtr _hParentWindow;  // Ventana padre de la que está bajo el raón
 
     // For loading and saving program settings.
-    private Settings _settings = new Settings();
-    private ProgramSettings _programSettings;
+    private Settings _settings = new();
+    private readonly ProgramSettings _programSettings;
     private static readonly string _programSettingsFileName = "CenterWindow.xml";
 
     #endregion Variables de la clase
@@ -36,7 +36,7 @@ public partial class FrmMain : Form
 
         // Set form icon
         var path = System.IO.Path.GetDirectoryName(Environment.ProcessPath);
-        if (System.IO.File.Exists(path + @"\images\centerwindow.ico")) this.Icon = new Icon(path + @"\images\centerwindow.ico");
+        if (System.IO.File.Exists(@"images\centerwindow.ico")) this.Icon = new Icon(path + @"\images\centerwindow.ico");
 
         // Escribir el texto de la etiqueta lblInfo
         //this.lblInfo.Text = new String(
@@ -55,12 +55,12 @@ public partial class FrmMain : Form
 
         // Inicializar las variables
         _cursorDefault = Cursor.Current;
-        _cursorFinder = EmbeddedResources.LoadGraphicsResource<Cursor>(path + @"\images\Finder.cur");
-        _finderHome = EmbeddedResources.LoadGraphicsResource<Image>(path + @"\images\FinderHome.bmp");
-        _finderGone = EmbeddedResources.LoadGraphicsResource<Image>(path + @"\images\FinderGone.bmp");
-        //_cursorFinder = EmbeddedResources.LoadCursor(EmbeddedResources.Finder);
-        //_finderHome = EmbeddedResources.LoadImage(EmbeddedResources.FinderHome);
-        //_finderGone = EmbeddedResources.LoadImage(EmbeddedResources.FinderGone);
+        //_cursorFinder = EmbeddedResources.LoadGraphicsResource<Cursor>(@"images\Finder.cur");
+        //_finderHome = EmbeddedResources.LoadGraphicsResource<Image>(@"images\FinderHome.bmp");
+        //_finderGone = EmbeddedResources.LoadGraphicsResource<Image>(@"images\FinderGone.bmp");
+        _cursorFinder = EmbeddedResources.LoadCursor(EmbeddedResources.Finder);
+        _finderHome = EmbeddedResources.LoadImage(EmbeddedResources.FinderHome);
+        _finderGone = EmbeddedResources.LoadImage(EmbeddedResources.FinderGone);
         _pictureBox.Image = _finderHome;
 
         // Establecer los eventos
@@ -92,7 +92,7 @@ public partial class FrmMain : Form
 
             // Occurs when the user closes the form
             case (int) Win32.WindowMessages.WM_CLOSE:
-                this.frmMain_Close();
+                this.FrmMain_Close();
                 break;
         };
         
@@ -124,7 +124,7 @@ public partial class FrmMain : Form
         else
         {
             // so release it
-            Win32.ReleaseCapture();
+            _ = Win32.ReleaseCapture();
 
             // put the default cursor back
             Cursor.Current = _cursorDefault;
@@ -149,7 +149,7 @@ public partial class FrmMain : Form
     /// <summary>
     /// Handles all mouse move messages sent to the Spy Window
     /// </summary>
-    private void HandleMouseMovements(IntPtr handle = default(IntPtr))
+    private void HandleMouseMovements(IntPtr handle = default)
     {
         // if we're not capturing, then bail out
         if (!_capturing)
@@ -223,11 +223,11 @@ public partial class FrmMain : Form
         if (_settings.bCenterWindow == true)
         {
             // Obtener las dimensiones de la pantalla
-            Win32.Rect pantalla = new Win32.Rect();
+            Win32.Rect pantalla = new();
             Win32.GetWindowRect(Win32.GetDesktopWindow(), ref pantalla);
 
             // Obtener las dimensiones de la ventana
-            Win32.Rect ventana = new Win32.Rect();
+            Win32.Rect ventana = new();
             Win32.GetWindowRect(hWnd, ref ventana);
 
             // Centrar la ventana en la pantalla
@@ -249,11 +249,11 @@ public partial class FrmMain : Form
         // Si está activada la casilla de verificación
         if (_settings.bTransparency == true)
         {
-            Win32.SetWindowLong(hWnd,
+            _ = Win32.SetWindowLong(hWnd,
                 Win32.GWL_EXSTYLE,
                 Win32.GetWindowLongPtr(hWnd, Win32.GWL_EXSTYLE) | (int)Win32.WindowStyles.WS_EX_LAYERED);
 
-            Win32.SetLayeredWindowAttributes(hWnd,
+            _ = Win32.SetLayeredWindowAttributes(hWnd,
                 (uint)Color.Black.ToArgb(),
                 (byte)(255 - trkTransparency.Value),
                 Win32.LWA_ALPHA);
@@ -301,8 +301,7 @@ public partial class FrmMain : Form
             // Retrieves the name of the windows's executable
             String strWindowModule;
             IntPtr handle;
-            uint uHandle;
-            Win32.GetWindowThreadProcessId(hWnd, out uHandle);
+            _ = Win32.GetWindowThreadProcessId(hWnd, out uint uHandle);
             handle = Win32.OpenProcess((uint)(Win32.SECURITY_INFORMATION.PROCESS_QUERY_INFORMATION | Win32.SECURITY_INFORMATION.PROCESS_VM_READ), false, uHandle);
             strWindowModule = Win32.GetModuleBaseName(handle);
             //windowModule = Win32.GetModuleFileNameEx(handle); //Gets the full path
@@ -312,11 +311,11 @@ public partial class FrmMain : Form
                 */
 
             // Gets additional window info: we are interested in the border width
-            Win32.WindowInfo winInfo = new Win32.WindowInfo();
+            Win32.WindowInfo winInfo = new();
             Win32.GetWindowInfo(hWnd, ref winInfo);
 
             //if (windowText != "Microsoft Edge" && windowText != "Program Manager")
-            ListViewItem item = new ListViewItem();
+            ListViewItem item;
             if (winInfo.xWindowBorders > 0 && winInfo.xWindowBorders > 0)
             {
                 item = lstWindows.Items.Add(strWindowText);
@@ -337,7 +336,7 @@ public partial class FrmMain : Form
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void frmMain_Load(object sender, EventArgs e)
+    private void FrmMain_Load(object sender, EventArgs e)
     {
         // Set the controls in the main form
         chkCenter.Checked = _settings.bCenterWindow;
@@ -355,16 +354,20 @@ public partial class FrmMain : Form
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void frmMain_Shown(object sender, EventArgs e)
+    private void FrmMain_Shown(object sender, EventArgs e)
     {
+        // Close the splash screen
+        using var closeSplashEvent = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.ManualReset, "CloseSplashScreenEvent");
+        closeSplashEvent.Set();
+
         // Rellenar el control lstWindows
-        this.btnApp_Click(null, null);
+        BtnApp.PerformClick();  // Much better alternative than the old trick BtnApp_Click(null, null)
     }
 
     /// <summary>
     /// Occurs when the user closes the form
     /// </summary>
-    private void frmMain_Close()
+    private void FrmMain_Close()
     {
         // Pass the control values (same as load) to the _settings class
         // _settings.bTransparency = chkTransparency.Checked;
@@ -384,7 +387,7 @@ public partial class FrmMain : Form
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void frmMain_Resize(object sender, EventArgs e)
+    private void FrmMain_Resize(object sender, EventArgs e)
     {
         // Resize and reposition the textboxes and labels
         Int32 nAncho = (this.Size.Width - 15 - 20 - 32)/2;
@@ -420,7 +423,7 @@ public partial class FrmMain : Form
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void btnApp_Click(object sender, EventArgs e)
+    private void BtnApp_Click(object sender, EventArgs e)
     {
         // Clear any contents
         this.lstWindows.Items.Clear();
@@ -452,7 +455,7 @@ public partial class FrmMain : Form
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void btnAply_Click(object sender, EventArgs e)
+    private void BtnAply_Click(object sender, EventArgs e)
     {
         // Activar el control de errores en la llamada a la API
         try
@@ -499,9 +502,9 @@ public partial class FrmMain : Form
         }
     }
 
-    private void btnOptions_Click(object sender, EventArgs e)
+    private void BtnOptions_Click(object sender, EventArgs e)
     {
-        Options frm = new Options(_settings);
+        Options frm = new(_settings);
         frm.ShowDialog(this);
         if (frm.DialogResult == DialogResult.OK)
         {
@@ -510,52 +513,52 @@ public partial class FrmMain : Form
         }
     }
 
-    private void btnClose_Click(object sender, EventArgs e)
+    private void BtnClose_Click(object sender, EventArgs e)
     {
         this.Close();
     }
 
-    private void trkTransparency_Changed(object sender, EventArgs e)
+    private void Transparency_Changed(object sender, EventArgs e)
     {
         int Percentage;
         Percentage = 100 * trkTransparency.Value/trkTransparency.Maximum;      
         lblTransparencyValue.Text = Percentage.ToString () + "%";
     }
 
-    private void chkTransparency_Changed(object sender, EventArgs e)
+    private void CheckTransparency_Changed(object sender, EventArgs e)
     {
         trkTransparency.Enabled = chkTransparency.Checked;
         lblTransparencyValue.Enabled = chkTransparency.Checked;
         _settings.bTransparency = chkTransparency.Checked;
     }
 
-    private void chkCenter_CheckedChanged(object sender, EventArgs e)
+    private void Center_CheckedChanged(object sender, EventArgs e)
     {
         _settings.bCenterWindow = chkCenter.Checked;
     }
 
-    private void txtCaption_TextChanged(object sender, EventArgs e)
+    private void Caption_TextChanged(object sender, EventArgs e)
     {
         // Si se borra el texto, entonces borrar los otros controles y las variables hWnd
         if (((Control)sender).Text == String.Empty)
             ClearSelection();
     }
 
-    private void txtHandle_TextChanged(object sender, EventArgs e)
+    private void Handle_TextChanged(object sender, EventArgs e)
     {
         // Si se borra el texto, entonces borrar los otros controles y las variables hWnd
         if (((Control)sender).Text == String.Empty)
             ClearSelection();
     }
 
-    private void txtClass_TextChanged(object sender, EventArgs e)
+    private void Class_TextChanged(object sender, EventArgs e)
     {
         // Si se borra el texto, entonces borrar los otros controles y las variables hWnd
         if (((Control)sender).Text == String.Empty)
             ClearSelection();
     }
 
-    private void txtRectangle_TextChanged(object sender, EventArgs e)
+    private void Rectangle_TextChanged(object sender, EventArgs e)
     {
         // Si se borra el texto, entonces borrar los otros controles y las variables hWnd
         if (((Control)sender).Text == String.Empty)
@@ -593,7 +596,7 @@ public partial class FrmMain : Form
             _settings.cRectColor = Color.FromArgb(Int32.Parse(_programSettings.GetValue("Options", "Rectangle_color")));
             _settings.nRectWidth = Int32.Parse(_programSettings.GetValue("Options", "Rectangle_width"));
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
     }

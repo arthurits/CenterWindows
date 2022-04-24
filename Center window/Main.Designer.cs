@@ -31,7 +31,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnAply = new System.Windows.Forms.Button();
+            this.BtnAply = new System.Windows.Forms.Button();
             this.txtHandle = new System.Windows.Forms.TextBox();
             this.txtCaption = new System.Windows.Forms.TextBox();
             this.txtClass = new System.Windows.Forms.TextBox();
@@ -45,28 +45,28 @@
             this.txtRectangle = new System.Windows.Forms.TextBox();
             this.chkCenter = new System.Windows.Forms.CheckBox();
             this.trkTransparency = new System.Windows.Forms.TrackBar();
-            this.btnClose = new System.Windows.Forms.Button();
+            this.BtnClose = new System.Windows.Forms.Button();
             this.chkTransparency = new System.Windows.Forms.CheckBox();
             this.lblTransparencyValue = new System.Windows.Forms.Label();
-            this.btnOptions = new System.Windows.Forms.Button();
+            this.BtnOptions = new System.Windows.Forms.Button();
             this.lstWindows = new System.Windows.Forms.ListView();
-            this.btnApp = new System.Windows.Forms.Button();
+            this.BtnApp = new System.Windows.Forms.Button();
             this.lblApplications = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trkTransparency)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnAply
+            // BtnAply
             // 
-            this.btnAply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAply.Location = new System.Drawing.Point(583, 703);
-            this.btnAply.Margin = new System.Windows.Forms.Padding(4);
-            this.btnAply.Name = "btnAply";
-            this.btnAply.Size = new System.Drawing.Size(100, 28);
-            this.btnAply.TabIndex = 11;
-            this.btnAply.Text = "&Aply";
-            this.btnAply.UseVisualStyleBackColor = true;
-            this.btnAply.Click += new System.EventHandler(this.btnAply_Click);
+            this.BtnAply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnAply.Location = new System.Drawing.Point(583, 703);
+            this.BtnAply.Margin = new System.Windows.Forms.Padding(4);
+            this.BtnAply.Name = "BtnAply";
+            this.BtnAply.Size = new System.Drawing.Size(100, 28);
+            this.BtnAply.TabIndex = 11;
+            this.BtnAply.Text = "&Aply";
+            this.BtnAply.UseVisualStyleBackColor = true;
+            this.BtnAply.Click += new System.EventHandler(this.BtnAply_Click);
             // 
             // txtHandle
             // 
@@ -75,7 +75,7 @@
             this.txtHandle.Name = "txtHandle";
             this.txtHandle.Size = new System.Drawing.Size(371, 23);
             this.txtHandle.TabIndex = 3;
-            this.txtHandle.TextChanged += new System.EventHandler(this.txtHandle_TextChanged);
+            this.txtHandle.TextChanged += new System.EventHandler(this.Handle_TextChanged);
             // 
             // txtCaption
             // 
@@ -84,7 +84,7 @@
             this.txtCaption.Name = "txtCaption";
             this.txtCaption.Size = new System.Drawing.Size(371, 23);
             this.txtCaption.TabIndex = 1;
-            this.txtCaption.TextChanged += new System.EventHandler(this.txtCaption_TextChanged);
+            this.txtCaption.TextChanged += new System.EventHandler(this.Caption_TextChanged);
             // 
             // txtClass
             // 
@@ -93,7 +93,7 @@
             this.txtClass.Name = "txtClass";
             this.txtClass.Size = new System.Drawing.Size(371, 23);
             this.txtClass.TabIndex = 2;
-            this.txtClass.TextChanged += new System.EventHandler(this.txtClass_TextChanged);
+            this.txtClass.TextChanged += new System.EventHandler(this.Class_TextChanged);
             // 
             // _pictureBox
             // 
@@ -119,7 +119,7 @@
             // 
             this.lblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblInfo.Location = new System.Drawing.Point(16, 11);
             this.lblInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblInfo.Name = "lblInfo";
@@ -173,7 +173,7 @@
             this.txtRectangle.Name = "txtRectangle";
             this.txtRectangle.Size = new System.Drawing.Size(371, 23);
             this.txtRectangle.TabIndex = 4;
-            this.txtRectangle.TextChanged += new System.EventHandler(this.txtRectangle_TextChanged);
+            this.txtRectangle.TextChanged += new System.EventHandler(this.Rectangle_TextChanged);
             // 
             // chkCenter
             // 
@@ -188,7 +188,7 @@
             this.chkCenter.TabIndex = 8;
             this.chkCenter.Text = "Center window";
             this.chkCenter.UseVisualStyleBackColor = true;
-            this.chkCenter.CheckedChanged += new System.EventHandler(this.chkCenter_CheckedChanged);
+            this.chkCenter.CheckedChanged += new System.EventHandler(this.Center_CheckedChanged);
             // 
             // trkTransparency
             // 
@@ -202,20 +202,20 @@
             this.trkTransparency.Size = new System.Drawing.Size(601, 45);
             this.trkTransparency.TabIndex = 7;
             this.trkTransparency.TickFrequency = 5;
-            this.trkTransparency.ValueChanged += new System.EventHandler(this.trkTransparency_Changed);
+            this.trkTransparency.ValueChanged += new System.EventHandler(this.Transparency_Changed);
             // 
-            // btnClose
+            // BtnClose
             // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Abort;
-            this.btnClose.Location = new System.Drawing.Point(691, 703);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(4);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(100, 28);
-            this.btnClose.TabIndex = 12;
-            this.btnClose.Text = "&Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.BtnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnClose.DialogResult = System.Windows.Forms.DialogResult.Abort;
+            this.BtnClose.Location = new System.Drawing.Point(691, 703);
+            this.BtnClose.Margin = new System.Windows.Forms.Padding(4);
+            this.BtnClose.Name = "BtnClose";
+            this.BtnClose.Size = new System.Drawing.Size(100, 28);
+            this.BtnClose.TabIndex = 12;
+            this.BtnClose.Text = "&Close";
+            this.BtnClose.UseVisualStyleBackColor = true;
+            this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
             // chkTransparency
             // 
@@ -228,7 +228,7 @@
             this.chkTransparency.TabIndex = 6;
             this.chkTransparency.Text = "Transparency";
             this.chkTransparency.UseVisualStyleBackColor = true;
-            this.chkTransparency.CheckedChanged += new System.EventHandler(this.chkTransparency_Changed);
+            this.chkTransparency.CheckedChanged += new System.EventHandler(this.CheckTransparency_Changed);
             // 
             // lblTransparencyValue
             // 
@@ -241,17 +241,17 @@
             this.lblTransparencyValue.TabIndex = 40;
             this.lblTransparencyValue.Text = "0";
             // 
-            // btnOptions
+            // BtnOptions
             // 
-            this.btnOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOptions.Location = new System.Drawing.Point(16, 703);
-            this.btnOptions.Margin = new System.Windows.Forms.Padding(4);
-            this.btnOptions.Name = "btnOptions";
-            this.btnOptions.Size = new System.Drawing.Size(100, 28);
-            this.btnOptions.TabIndex = 9;
-            this.btnOptions.Text = "&Options...";
-            this.btnOptions.UseVisualStyleBackColor = true;
-            this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
+            this.BtnOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnOptions.Location = new System.Drawing.Point(16, 703);
+            this.BtnOptions.Margin = new System.Windows.Forms.Padding(4);
+            this.BtnOptions.Name = "BtnOptions";
+            this.BtnOptions.Size = new System.Drawing.Size(100, 28);
+            this.BtnOptions.TabIndex = 9;
+            this.BtnOptions.Text = "&Options...";
+            this.BtnOptions.UseVisualStyleBackColor = true;
+            this.BtnOptions.Click += new System.EventHandler(this.BtnOptions_Click);
             // 
             // lstWindows
             // 
@@ -260,7 +260,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstWindows.CheckBoxes = true;
             this.lstWindows.FullRowSelect = true;
-            this.lstWindows.HideSelection = false;
             this.lstWindows.Location = new System.Drawing.Point(20, 292);
             this.lstWindows.Margin = new System.Windows.Forms.Padding(4);
             this.lstWindows.Name = "lstWindows";
@@ -268,17 +267,17 @@
             this.lstWindows.TabIndex = 5;
             this.lstWindows.UseCompatibleStateImageBehavior = false;
             // 
-            // btnApp
+            // BtnApp
             // 
-            this.btnApp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnApp.Location = new System.Drawing.Point(445, 703);
-            this.btnApp.Margin = new System.Windows.Forms.Padding(4);
-            this.btnApp.Name = "btnApp";
-            this.btnApp.Size = new System.Drawing.Size(100, 28);
-            this.btnApp.TabIndex = 10;
-            this.btnApp.Text = "Get apps";
-            this.btnApp.UseVisualStyleBackColor = true;
-            this.btnApp.Click += new System.EventHandler(this.btnApp_Click);
+            this.BtnApp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnApp.Location = new System.Drawing.Point(445, 703);
+            this.BtnApp.Margin = new System.Windows.Forms.Padding(4);
+            this.BtnApp.Name = "BtnApp";
+            this.BtnApp.Size = new System.Drawing.Size(100, 28);
+            this.BtnApp.TabIndex = 10;
+            this.BtnApp.Text = "Get apps";
+            this.BtnApp.UseVisualStyleBackColor = true;
+            this.BtnApp.Click += new System.EventHandler(this.BtnApp_Click);
             // 
             // lblApplications
             // 
@@ -290,20 +289,20 @@
             this.lblApplications.TabIndex = 44;
             this.lblApplications.Text = "Applications running in the OS";
             // 
-            // frmMain
+            // FrmMain
             // 
-            this.AcceptButton = this.btnAply;
+            this.AcceptButton = this.BtnAply;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnClose;
+            this.CancelButton = this.BtnClose;
             this.ClientSize = new System.Drawing.Size(812, 747);
             this.Controls.Add(this.lblApplications);
-            this.Controls.Add(this.btnApp);
+            this.Controls.Add(this.BtnApp);
             this.Controls.Add(this.lstWindows);
-            this.Controls.Add(this.btnOptions);
+            this.Controls.Add(this.BtnOptions);
             this.Controls.Add(this.lblTransparencyValue);
             this.Controls.Add(this.chkTransparency);
-            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.BtnClose);
             this.Controls.Add(this.trkTransparency);
             this.Controls.Add(this.chkCenter);
             this.Controls.Add(this.txtRectangle);
@@ -317,16 +316,16 @@
             this.Controls.Add(this.txtClass);
             this.Controls.Add(this.txtCaption);
             this.Controls.Add(this.txtHandle);
-            this.Controls.Add(this.btnAply);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Controls.Add(this.BtnAply);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(828, 782);
-            this.Name = "frmMain";
+            this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Center window";
-            this.Load += new System.EventHandler(this.frmMain_Load);
-            this.Shown += new System.EventHandler(this.frmMain_Shown);
-            this.Resize += new System.EventHandler(this.frmMain_Resize);
+            this.Load += new System.EventHandler(this.FrmMain_Load);
+            this.Shown += new System.EventHandler(this.FrmMain_Shown);
+            this.Resize += new System.EventHandler(this.FrmMain_Resize);
             ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trkTransparency)).EndInit();
             this.ResumeLayout(false);
@@ -336,7 +335,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnAply;
+        private System.Windows.Forms.Button BtnAply;
         private System.Windows.Forms.TextBox txtHandle;
         private System.Windows.Forms.TextBox txtCaption;
         private System.Windows.Forms.TextBox txtClass;
@@ -350,12 +349,12 @@
         private System.Windows.Forms.TextBox txtRectangle;
         private System.Windows.Forms.CheckBox chkCenter;
         private System.Windows.Forms.TrackBar trkTransparency;
-        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button BtnClose;
         private System.Windows.Forms.CheckBox chkTransparency;
         private System.Windows.Forms.Label lblTransparencyValue;
-        private System.Windows.Forms.Button btnOptions;
+        private System.Windows.Forms.Button BtnOptions;
         private System.Windows.Forms.ListView lstWindows;
-        private System.Windows.Forms.Button btnApp;
+        private System.Windows.Forms.Button BtnApp;
         private System.Windows.Forms.Label lblApplications;
     }
 }
