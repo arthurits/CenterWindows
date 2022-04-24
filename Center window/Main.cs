@@ -20,10 +20,8 @@ public partial class FrmMain : Form
     private IntPtr _hActualWindow;  // Puntero a la ventana que está bajo el ratón
     private IntPtr _hParentWindow;  // Ventana padre de la que está bajo el raón
 
-    // For loading and saving program settings.
-    private Settings _settings = new();
-    private readonly ProgramSettings _programSettings;
-    private static readonly string _programSettingsFileName = "CenterWindow.xml";
+    private ClassSettings Settings = new();
+    private readonly System.Resources.ResourceManager StringsRM = new("Center_window.localization.strings", typeof(FrmMain).Assembly);
 
     #endregion Variables de la clase
 
@@ -66,10 +64,13 @@ public partial class FrmMain : Form
         // Establecer los eventos
         _pictureBox.MouseDown += new MouseEventHandler(OnFinderToolMouseDown);
 
-        // Load any saved program settings.
-        _programSettings = new ProgramSettings(_programSettingsFileName);
-        LoadProgramSettings();
-        //this.ClientSize;
+        // Load and apply the program settings
+        bool result = LoadProgramSettingsJSON();
+        if (result)
+            ApplySettingsJSON(Settings.WindowPosition);
+        else
+            ApplySettingsJSON();
+
     }
 
     /// <summary>
@@ -165,7 +166,7 @@ public partial class FrmMain : Form
             _hParentWindow = Win32.GetParent(hWnd);
 
             // Si es una ventana child y se ha seleccionado sólo Parents entonces salir
-            if (_hParentWindow != IntPtr.Zero && _settings.bOnlyParents == true)
+            if (_hParentWindow != IntPtr.Zero && Settings.OnlyParentWnd == true)
                 return;
 
             // if the window we're over, is not the same as the one before, and we had one before, refresh it
@@ -204,7 +205,7 @@ public partial class FrmMain : Form
                 txtRectangle.Text = $"[{RectWindow.right - RectWindow.left} x {RectWindow.bottom - RectWindow.top}], ({RectWindow.left},{RectWindow.top})-({RectWindow.right},{RectWindow.bottom})";
 
                 // highlight the window
-                WindowHighlighter.Highlight(hWnd, _settings.cRectColor, _settings.nRectWidth);
+                WindowHighlighter.Highlight(hWnd, Color.FromArgb(Settings.RectangleColor), Settings.RectangleWidth);
             }
         }
         catch (Exception ex)
@@ -220,7 +221,7 @@ public partial class FrmMain : Form
     private void MoveWindow(IntPtr hWnd)
     {
         // Si está activada la casilla de verificación
-        if (_settings.bCenterWindow == true)
+        if (Settings.CenterWindow == true)
         {
             // Obtener las dimensiones de la pantalla
             Win32.Rect pantalla = new();
@@ -247,7 +248,7 @@ public partial class FrmMain : Form
     private void TransparentWindow(IntPtr hWnd)
     {
         // Si está activada la casilla de verificación
-        if (_settings.bTransparency == true)
+        if (Settings.Transparency == true)
         {
             _ = Win32.SetWindowLong(hWnd,
                 Win32.GWL_EXSTYLE,
@@ -338,13 +339,6 @@ public partial class FrmMain : Form
     /// <param name="e"></param>
     private void FrmMain_Load(object sender, EventArgs e)
     {
-        // Set the controls in the main form
-        chkCenter.Checked = _settings.bCenterWindow;
-        trkTransparency.Value = _settings.nTransparencyValue;
-        lblTransparencyValue.Enabled = _settings.bTransparency;
-        trkTransparency.Enabled = _settings.bTransparency;
-        chkTransparency.Checked = _settings.bTransparency;
-
         // Creates the fade in animation of the form
         Win32.AnimateWindow(this.Handle, 500, Win32.AnimateWindowFlags.AW_BLEND);
     }
@@ -369,13 +363,8 @@ public partial class FrmMain : Form
     /// </summary>
     private void FrmMain_Close()
     {
-        // Pass the control values (same as load) to the _settings class
-        // _settings.bTransparency = chkTransparency.Checked;
-        // _settings.bCenterWindow = chkCenter.Checked;
-        _settings.nTransparencyValue = (byte) trkTransparency.Value;
-
-        // Save the current program settings.
-        this.SaveProgramSettings();
+        // Save settings data
+        SaveProgramSettingsJSON();
 
         // Creates the fade out animation of the form
         Win32.AnimateWindow(this.Handle, 500, Win32.AnimateWindowFlags.AW_BLEND | Win32.AnimateWindowFlags.AW_HIDE);
@@ -461,7 +450,7 @@ public partial class FrmMain : Form
         try
         {
             // Si sólo se pueden modificar las ventanas padre
-            if (_hParentWindow != IntPtr.Zero && _settings.bOnlyParents == true)
+            if (_hParentWindow != IntPtr.Zero && Settings.OnlyParentWnd == true)
                 return;
             else
             {
@@ -504,13 +493,10 @@ public partial class FrmMain : Form
 
     private void BtnOptions_Click(object sender, EventArgs e)
     {
-        Options frm = new(_settings);
+        Options frm = new(Settings);
         frm.ShowDialog(this);
         if (frm.DialogResult == DialogResult.OK)
-        {
-            _settings = frm.Settings;
-            return;
-        }
+            Settings = frm.Settings;
     }
 
     private void BtnClose_Click(object sender, EventArgs e)
@@ -529,12 +515,12 @@ public partial class FrmMain : Form
     {
         trkTransparency.Enabled = chkTransparency.Checked;
         lblTransparencyValue.Enabled = chkTransparency.Checked;
-        _settings.bTransparency = chkTransparency.Checked;
+        Settings.Transparency = chkTransparency.Checked;
     }
 
     private void Center_CheckedChanged(object sender, EventArgs e)
     {
-        _settings.bCenterWindow = chkCenter.Checked;
+        Settings.CenterWindow = chkCenter.Checked;
     }
 
     private void Caption_TextChanged(object sender, EventArgs e)
@@ -566,65 +552,4 @@ public partial class FrmMain : Form
     }
 
     #endregion Form controls events
-
-    #region Program settings
-
-    /// <summary>
-    /// Loads any saved program settings.
-    /// </summary>
-    private void LoadProgramSettings()
-    {
-        // Load the saved window settings and resize the window.
-        try
-        {
-            // Load the saved window settings.
-            Int32 left = System.Int32.Parse(_programSettings.GetValue("Window", "Left"));
-            Int32 top = System.Int32.Parse(_programSettings.GetValue("Window", "Top"));
-            Int32 width = System.Int32.Parse(_programSettings.GetValue("Window", "Width"));
-            Int32 height = System.Int32.Parse(_programSettings.GetValue("Window", "Height"));
-
-            // Reposition and resize the window.
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.DesktopLocation = new Point(left, top);
-            this.Size = new Size(width, height);
-
-            // Load saved options.
-            _settings.bCenterWindow = Boolean.Parse(_programSettings.GetValue("Options", "Center_window"));
-            _settings.bTransparency = Boolean.Parse(_programSettings.GetValue("Options", "Transparency"));
-            _settings.nTransparencyValue = Byte.Parse(_programSettings.GetValue("Options", "Transparency_value"));
-            _settings.bOnlyParents = Boolean.Parse(_programSettings.GetValue("Options", "Only_parent_windows"));
-            _settings.cRectColor = Color.FromArgb(Int32.Parse(_programSettings.GetValue("Options", "Rectangle_color")));
-            _settings.nRectWidth = Int32.Parse(_programSettings.GetValue("Options", "Rectangle_width"));
-        }
-        catch (Exception)
-        {
-        }
-    }
-
-    /// <summary>
-    /// Saves the current program settings.
-    /// </summary>
-    private void SaveProgramSettings()
-    {
-        // Save window settings.      
-        _programSettings.SetValue("Window", "Left", this.DesktopLocation.X.ToString());
-        _programSettings.SetValue("Window", "Top", this.DesktopLocation.Y.ToString());
-        _programSettings.SetValue("Window", "Width", this.Size.Width.ToString());
-        _programSettings.SetValue("Window", "Height", this.Size.Height.ToString());
-
-        // Save options.
-        _programSettings.SetValue("Options", "Center_window", _settings.bCenterWindow.ToString());
-        _programSettings.SetValue("Options", "Transparency", _settings.bTransparency.ToString());
-        _programSettings.SetValue("Options", "Transparency_value", _settings.nTransparencyValue.ToString());
-        _programSettings.SetValue("Options", "Only_parent_windows", _settings.bOnlyParents.ToString());
-        _programSettings.SetValue("Options", "Rectangle_color", _settings.cRectColor.ToArgb().ToString());
-        _programSettings.SetValue("Options", "Rectangle_width", _settings.nRectWidth.ToString());
-
-        // Save the program settings.
-        _programSettings.Save();
-    }
-
-
-    #endregion Program settings
-
 }

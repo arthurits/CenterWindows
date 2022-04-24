@@ -2,11 +2,7 @@ namespace Center_window;
 
 public partial class Options : Form
 {
-    // Definición de variables
-    private Settings _settings;
-
-    // Public property
-    public Settings Settings => _settings;
+    public ClassSettings Settings { get; private set; } = new();
 
     // Constructor por defecto
     public Options()
@@ -14,27 +10,42 @@ public partial class Options : Form
         InitializeComponent();
 
         // Set form icon
-        var path = System.IO.Path.GetDirectoryName(Environment.ProcessPath);
-        if (System.IO.File.Exists(path + @"\images\centerwindow.ico")) this.Icon = new Icon(path + @"\images\centerwindow.ico");
+        if (System.IO.File.Exists(@"images\centerwindow.ico")) this.Icon = new Icon(@"images\centerwindow.ico");
     }
 
     // Overloaded constructor
-    public Options(Settings settings):this()
+    public Options(ClassSettings settings)
+        :this()
     {
-        _settings = new Settings(settings);
+        //_settings = new(settings);
+        UpdateControls(settings);
     }
 
-    private void Options_Load(object sender, EventArgs e)
+    private void BtnOk_Click(object sender, EventArgs e)
     {
-        chkParent.Checked = _settings.bOnlyParents;
-        updWidth.Value = _settings.nRectWidth;
-        officeColorPicker.Color = _settings.cRectColor;
+        Settings.OnlyParentWnd = chkParent.Checked;
+        Settings.RectangleWidth = (Int32)updWidth.Value;
+        Settings.RectangleColor = officeColorPicker.Color.ToArgb();
     }
 
-    private void Options_FormClosing(object sender, FormClosingEventArgs e)
+    /// <summary>
+    /// Updates the form's controls with values from the settings class
+    /// </summary>
+    /// <param name="settings">Class containing the values to show on the form's controls</param>
+    private void UpdateControls(ClassSettings settings)
     {
-        _settings.bOnlyParents = chkParent.Checked;
-        _settings.nRectWidth = (Int32)updWidth.Value;
-        _settings.cRectColor = officeColorPicker.Color;
+        Settings = settings;
+
+        try
+        {
+            chkParent.Checked = Settings.OnlyParentWnd;
+            updWidth.Value = Settings.RectangleWidth;
+            officeColorPicker.Color = Color.FromArgb(Settings.RectangleColor);
+        }
+        catch (Exception)
+        {
+            using (new CenterWinDialog(this))
+                MessageBox.Show(this, "Unexpected error while applying settings.\nPlease report the error to the engineer.", "Settings error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

@@ -86,19 +86,19 @@ public class MouseHook : LocalWindowsHook, IDisposable
     #endregion
 
     #region Events
-    public event MouseHookEventHandler MouseDown;
+    public event MouseHookEventHandler? MouseDown;
 	protected void OnMouseDown(MouseHookEventArgs e) => MouseDown?.Invoke(this, e);
 
 
-	public event MouseHookEventHandler MouseUp;
+	public event MouseHookEventHandler? MouseUp;
 	protected void OnMouseUp(MouseHookEventArgs e) => MouseUp?.Invoke(this, e);
 
 
-	public event MouseHookEventHandler MouseMove;
+	public event MouseHookEventHandler? MouseMove;
 	protected void OnMouseMove(MouseHookEventArgs e) => MouseMove?.Invoke(this, e);
     
 
-	public event MouseHookEventHandler MouseDoubleClick;
+	public event MouseHookEventHandler? MouseDoubleClick;
 	protected void OnMouseDoubleClick(MouseHookEventArgs e) => MouseDoubleClick?.Invoke(this, e);
 	#endregion
 
@@ -117,8 +117,12 @@ public class MouseHook : LocalWindowsHook, IDisposable
 			return CallNextHookEx(m_hhook, code, wParam, lParam);
 
 		// we're gonna ignore peek messages
-		if ( code == Win32.HC_ACTION )
-			RaiseMouseHookEvent( wParam, CrackHookMsg( wParam, (Win32.MOUSEHOOKSTRUCT)Marshal.PtrToStructure( lParam, typeof( Win32.MOUSEHOOKSTRUCT ) ) ) );
+		if (code == Win32.HC_ACTION)
+		{
+			var obj = Marshal.PtrToStructure(lParam, typeof(Win32.MOUSEHOOKSTRUCT));
+			if (obj is not null)
+				RaiseMouseHookEvent(wParam, CrackHookMsg(wParam, (Win32.MOUSEHOOKSTRUCT)obj));
+		}
 
 		// Yield to the next hook in the chain
 		return CallNextHookEx(m_hhook, code, wParam, lParam);
@@ -201,58 +205,58 @@ public class MouseHook : LocalWindowsHook, IDisposable
 	/// <param name="wParam">The mouse message id</param>
 	/// <param name="Win32.MOUSEHOOKSTRUCT">Mouse message arguments</param>
 	/// <returns>A repacked set of MouseProc arguments</returns>
-	private MouseHookEventArgs CrackHookMsg( IntPtr wParam, Win32.MOUSEHOOKSTRUCT hookStruct )
+	private MouseHookEventArgs CrackHookMsg(IntPtr wParam, Win32.MOUSEHOOKSTRUCT hookStruct)
 	{
 		//default the mouse button
 		MouseButtons button = MouseButtons.None;
 
 		//figure out which button the message belongs to
-		switch ( wParam.ToInt32() )
+		switch (wParam.ToInt32())
 		{
 			//left button messages
 			case Win32.WM_LBUTTONDBLCLK:
-			case Win32.WM_LBUTTONDOWN:								  
-			case Win32.WM_LBUTTONUP:								  
+			case Win32.WM_LBUTTONDOWN:
+			case Win32.WM_LBUTTONUP:
 			case Win32.WM_NCLBUTTONDBLCLK:
-			case Win32.WM_NCLBUTTONDOWN:								  
-			case Win32.WM_NCLBUTTONUP:								  
-				button = MouseButtons.Left;		  
+			case Win32.WM_NCLBUTTONDOWN:
+			case Win32.WM_NCLBUTTONUP:
+				button = MouseButtons.Left;
 				break;
 
 			//right button messages
 			case Win32.WM_RBUTTONDBLCLK:
-			case Win32.WM_RBUTTONDOWN:								  
-			case Win32.WM_RBUTTONUP:								  
+			case Win32.WM_RBUTTONDOWN:
+			case Win32.WM_RBUTTONUP:
 			case Win32.WM_NCRBUTTONDBLCLK:
-			case Win32.WM_NCRBUTTONDOWN:								  
-			case Win32.WM_NCRBUTTONUP:								  
-				button = MouseButtons.Right;		  
+			case Win32.WM_NCRBUTTONDOWN:
+			case Win32.WM_NCRBUTTONUP:
+				button = MouseButtons.Right;
 				break;
 
 			//middle button messages
 			case Win32.WM_MBUTTONDBLCLK:
-			case Win32.WM_MBUTTONDOWN:								  
-			case Win32.WM_MBUTTONUP:								  
+			case Win32.WM_MBUTTONDOWN:
+			case Win32.WM_MBUTTONUP:
 			case Win32.WM_NCMBUTTONDBLCLK:
-			case Win32.WM_NCMBUTTONDOWN:								  
-			case Win32.WM_NCMBUTTONUP:								  
-				button = MouseButtons.Middle;		  
+			case Win32.WM_NCMBUTTONDOWN:
+			case Win32.WM_NCMBUTTONUP:
+				button = MouseButtons.Middle;
 				break;
 
 			//x button messages
 			case Win32.WM_XBUTTONDBLCLK:
-			case Win32.WM_XBUTTONDOWN:								  
-			case Win32.WM_XBUTTONUP:								  
+			case Win32.WM_XBUTTONDOWN:
+			case Win32.WM_XBUTTONUP:
 			case Win32.WM_NCXBUTTONDBLCLK:
-			case Win32.WM_NCXBUTTONDOWN:								  
-			case Win32.WM_NCXBUTTONUP:								  
-				button = GetXButton();		  
+			case Win32.WM_NCXBUTTONDOWN:
+			case Win32.WM_NCXBUTTONUP:
+				button = GetXButton();
 				break;
 		}
 
 		// create and return a MouseHookEventArgs
-		Control control = Control.FromChildHandle( hookStruct.hwnd );
-		return new MouseHookEventArgs( button, hookStruct.pt.x, hookStruct.pt.y, control, (HitTestCode)hookStruct.wHitTestCode );
+		Control control = Control.FromChildHandle(hookStruct.hwnd);
+		return new MouseHookEventArgs(button, hookStruct.pt.x, hookStruct.pt.y, control, (HitTestCode)hookStruct.wHitTestCode);
 	}
 
 
