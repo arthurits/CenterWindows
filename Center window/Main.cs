@@ -14,7 +14,7 @@ public partial class FrmMain : Form
     private bool _capturing;        // Es TRUE cuando estamos capturando con el ratón
     private readonly Image _finderHome;
     private readonly Image _finderGone;
-    private readonly Cursor _cursorDefault;
+    private readonly Cursor? _cursorDefault;
     private readonly Cursor _cursorFinder;
     //private IntPtr _hPreviousWindow;
     private IntPtr _hActualWindow;  // Puntero a la ventana que está bajo el ratón
@@ -36,7 +36,7 @@ public partial class FrmMain : Form
 
         // Set form icon
         var path = System.IO.Path.GetDirectoryName(Environment.ProcessPath);
-        if (System.IO.File.Exists(@"images\centerwindow.ico")) this.Icon = new Icon(path + @"\images\centerwindow.ico");
+        if (System.IO.File.Exists(@"images\centerwindow.ico")) this.Icon = new Icon(@"images\centerwindow.ico");
 
         // Escribir el texto de la etiqueta lblInfo
         //this.lblInfo.Text = new String(
@@ -412,7 +412,7 @@ public partial class FrmMain : Form
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void OnFinderToolMouseDown(object sender, MouseEventArgs e)
+    private void OnFinderToolMouseDown(object? sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Left)
             this.CaptureMouse(true);

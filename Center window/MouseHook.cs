@@ -81,41 +81,25 @@ public class MouseHook : LocalWindowsHook, IDisposable
 			GC.SuppressFinalize( this );
 	}
 
-	public void Dispose()
-	{
-		Dispose( true );
-	}
+    public void Dispose() => Dispose(true);
 
-	#endregion
+    #endregion
 
-	#region Events
-	public event MouseHookEventHandler MouseDown;
-	protected void OnMouseDown( MouseHookEventArgs e )
-	{
-		if ( MouseDown != null )
-			MouseDown( this, e );
-	}
+    #region Events
+    public event MouseHookEventHandler MouseDown;
+	protected void OnMouseDown(MouseHookEventArgs e) => MouseDown?.Invoke(this, e);
+
 
 	public event MouseHookEventHandler MouseUp;
-	protected void OnMouseUp( MouseHookEventArgs e )
-	{
-		if ( MouseUp != null )
-			MouseUp( this, e );
-	}
+	protected void OnMouseUp(MouseHookEventArgs e) => MouseUp?.Invoke(this, e);
+
 
 	public event MouseHookEventHandler MouseMove;
-	protected void OnMouseMove( MouseHookEventArgs e )
-	{
-		if ( MouseMove != null )
-			MouseMove( this, e );
-	}
+	protected void OnMouseMove(MouseHookEventArgs e) => MouseMove?.Invoke(this, e);
+    
 
 	public event MouseHookEventHandler MouseDoubleClick;
-	protected void OnMouseDoubleClick( MouseHookEventArgs e )
-	{
-		if ( MouseDoubleClick != null )
-			MouseDoubleClick( this, e );
-	}
+	protected void OnMouseDoubleClick(MouseHookEventArgs e) => MouseDoubleClick?.Invoke(this, e);
 	#endregion
 
 	#region Mouse Hook specific code

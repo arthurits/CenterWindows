@@ -10,10 +10,10 @@ namespace Center_window
 	public class ProgramSettings
 	{
 		// The file name used to save the program settings.
-		private string fileName;
+		private readonly string fileName;
 
 		// An Xml document used to store and save program settings.
-		private XmlDocument document;
+		private readonly XmlDocument document;
 
 		public ProgramSettings(string fileName)
 		{
@@ -30,7 +30,7 @@ namespace Center_window
 			{
 				document.Load(this.fileName);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				// Create a new XML document and set the root node.
 				document = new XmlDocument();
@@ -55,7 +55,7 @@ namespace Center_window
 			{
 				return this.document.DocumentElement.SelectSingleNode(section + "/" + name).InnerText;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return "";
 			}
