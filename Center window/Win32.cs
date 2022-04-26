@@ -200,11 +200,11 @@ public class Win32
 		PROCESS = 0x0400 | 0x0010
 	}
 
-        #endregion System - Kernel32.dll
+	#endregion System - Kernel32.dll
 
-        #region Windows - user32.dll
+	#region Windows - user32.dll
 
-        public const int GWL_HWNDPARENT = (-8);
+	public const int GWL_HWNDPARENT = (-8);
 	public const int GWL_EXSTYLE = (-20);
 	public const int GWL_STYLE = (-16);
 	public const int GCL_HICON = (-14);
@@ -520,10 +520,10 @@ public class Win32
 		WM_REFLECT                = WM_USER + 0x1c00
 	}
 
-        /// <summary>
-        /// Defines the style bits that a window can have
-        /// </summary>
-        public enum WindowStyles: uint
+	/// <summary>
+	/// Defines the style bits that a window can have
+	/// </summary>
+	public enum WindowStyles : uint
 	{
 		WS_BORDER = 0x800000,
 		WS_CAPTION = 0xC00000,  // 'WS_BORDER Or WS_DLGFRAME
@@ -540,9 +540,9 @@ public class Win32
 		WS_EX_TRANSPARENT = 0x20,
 		WS_EX_TOOLWINDOW = 0x80,
 		WS_EX_APPWINDOW = 0x40000,
-            //#if(_WIN32_WINNT >= 0x0500)
-                WS_EX_LAYERED = 0x00080000,
-            //#endif //* _WIN32_WINNT >= 0x0500 */
+		//#if(_WIN32_WINNT >= 0x0500)
+		WS_EX_LAYERED = 0x00080000,
+		//#endif //* _WIN32_WINNT >= 0x0500 */
 		WS_GROUP = 0x20000,
 		WS_HSCROLL = 0x100000,
 		WS_MAXIMIZE = 0x1000000,
@@ -560,7 +560,7 @@ public class Win32
 		WS_POPUPWINDOW = (WS_POPUP | WS_BORDER | WS_SYSMENU),
 		WS_SIZEBOX = WS_THICKFRAME,
 		WS_TILED = WS_OVERLAPPED,
-		WS_OVERLAPPEDWINDOW = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)	
+		WS_OVERLAPPEDWINDOW = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
 	}
 
 	public struct WindowInfo
@@ -594,46 +594,34 @@ public class Win32
 		public int right;
 		public int bottom;
 
-		public int Width
-		{
-			get
-			{
-				return right - left;
-			}
-		}
+        public int Width => right - left;
 
-		public int Height
-		{
-			get
-			{
-				return bottom - top;
-			}
-		}
+        public int Height => bottom - top;
+    }
+
+	[Flags]
+	public enum AnimateWindowFlags
+	{
+		AW_HOR_POSITIVE = 0x00000001,
+		AW_HOR_NEGATIVE = 0x00000002,
+		AW_VER_POSITIVE = 0x00000004,
+		AW_VER_NEGATIVE = 0x00000008,
+		AW_CENTER = 0x00000010,
+		AW_HIDE = 0x00010000,
+		AW_ACTIVATE = 0x00020000,
+		AW_SLIDE = 0x00040000,
+		AW_BLEND = 0x00080000
 	}
-
-        [Flags]
-        public enum AnimateWindowFlags
-        {
-            AW_HOR_POSITIVE = 0x00000001,
-            AW_HOR_NEGATIVE = 0x00000002,
-            AW_VER_POSITIVE = 0x00000004,
-            AW_VER_NEGATIVE = 0x00000008,
-            AW_CENTER = 0x00000010,
-            AW_HIDE = 0x00010000,
-            AW_ACTIVATE = 0x00020000,
-            AW_SLIDE = 0x00040000,
-            AW_BLEND = 0x00080000
-        }
 
         public delegate bool EnumWindowEventHandler(IntPtr hWnd, IntPtr lParam);
 
-        [DllImport("User32.dll")]
-        public static extern void EnumWindows(EnumWindowEventHandler callback, IntPtr lParam);
+	[DllImport("User32.dll")]
+	public static extern void EnumWindows(EnumWindowEventHandler callback, IntPtr lParam);
 
-        [DllImport("user32.dll")]
-        public static extern bool AnimateWindow(IntPtr hWnd, int time, AnimateWindowFlags flags);
+	[DllImport("user32.dll")]
+	public static extern bool AnimateWindow(IntPtr hWnd, int time, AnimateWindowFlags flags);
 
-        [DllImport("user32.dll")]
+	[DllImport("user32.dll")]
 	public static extern int SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
 	[DllImport("user32.dll")]
@@ -642,19 +630,19 @@ public class Win32
 	[DllImport("User32.dll")]
 	public static extern int RegisterWindowMessage(string message);
 
-        /// <summary>
-        /// Determines whether a window handle identifies an existing window or not
-        /// </summary>
-        /// <param name="hWnd">Pointer to the window handle to be tested</param>
-        /// <returns>True if the handle identifies and existing window and false if not</returns>
-        [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern bool IsWindow(IntPtr hWnd);
+	/// <summary>
+	/// Determines whether a window handle identifies an existing window or not
+	/// </summary>
+	/// <param name="hWnd">Pointer to the window handle to be tested</param>
+	/// <returns>True if the handle identifies and existing window and false if not</returns>
+	[DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+	public static extern bool IsWindow(IntPtr hWnd);
 
-        /// <summary>
-        /// Determines whether a window is visible or not
-        /// </summary>
-        /// <param name="hWnd">Pointer to the window handle</param>
-        /// <returns>True if the window is visible and false if not</returns>
+	/// <summary>
+	/// Determines whether a window is visible or not
+	/// </summary>
+	/// <param name="hWnd">Pointer to the window handle</param>
+	/// <returns>True if the window is visible and false if not</returns>
 	[DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
 	public static extern bool IsWindowVisible(IntPtr hWnd);
 
@@ -735,46 +723,44 @@ public class Win32
 
 	[DllImport("user32.dll")]
 	public static extern int RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, uint flags);
-        
-        [DllImport("user32.dll")]
-        public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
-        [DllImport("user32.dll")]
-        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+	[DllImport("user32.dll")]
+	public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
-        [DllImport("user32.dll")]
-        public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey,
-           byte bAlpha, uint dwFlags);
+	[DllImport("user32.dll")]
+	public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-        [DllImport("User32.dll")]
-        public static extern WindowStyles GetWindowLong(IntPtr hWnd, int index);
+	[DllImport("user32.dll")]
+	public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
-        [DllImport("User32.dll")]
-        public static extern int LockWindowUpdate(IntPtr windowHandle);
+	[DllImport("User32.dll")]
+	public static extern WindowStyles GetWindowLong(IntPtr hWnd, int index);
 
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern int GetWindowTextLength(IntPtr hWnd);
+	[DllImport("User32.dll")]
+	public static extern int LockWindowUpdate(IntPtr windowHandle);
 
-        [DllImport("user32.dll", SetLastError = true)] 
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
-        //public static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr lpdwProcessId);
+	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+	public static extern int GetWindowTextLength(IntPtr hWnd);
 
+	[DllImport("user32.dll", SetLastError = true)]
+	public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+	//public static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr lpdwProcessId);
 
-        // There is a public wrapper at the end of the region
-        [DllImport("User32.dll", CharSet = CharSet.Unicode)]
-            private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+	// There is a public wrapper at the end of the region
+	[DllImport("User32.dll", CharSet = CharSet.Unicode)]
+	private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
-            [DllImport("User32.dll", CharSet = CharSet.Unicode)]
-            private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+	[DllImport("User32.dll", CharSet = CharSet.Unicode)]
+	private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
-            [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
-            private static extern int GetWindowLong32(IntPtr hWnd, int nIndex);
+	[DllImport("user32.dll", EntryPoint = "GetWindowLong")]
+	private static extern int GetWindowLong32(IntPtr hWnd, int nIndex);
 
-            [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
-            private static extern int GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+	[DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
+	private static extern int GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
-            [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-            private static extern int GetWindowModuleFileName(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+	private static extern int GetWindowModuleFileName(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
 	#region Windows - user32.dll wrappers
 
@@ -799,8 +785,12 @@ public class Win32
 	/// <returns></returns>
 	public static string GetWindowText(IntPtr hWnd)
 	{
-		StringBuilder sb = new(256);
-		_ = GetWindowText(hWnd, sb, 256);
+		int length = GetWindowTextLength(hWnd);
+		if (length == 0) return String.Empty;
+
+		StringBuilder sb = new(length + 1);
+		_ = GetWindowText(hWnd, sb, sb.Capacity);
+
 		return sb.ToString();
 	}
 
