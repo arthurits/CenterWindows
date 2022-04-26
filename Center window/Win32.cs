@@ -30,9 +30,9 @@ public class Win32
 	/// </summary>
 	public class HookEventArgs: EventArgs
 	{
-		private int _code;
-		private IntPtr _wParam;
-		private IntPtr _lParam;
+		private readonly int _code;
+		private readonly IntPtr _wParam;
+		private readonly IntPtr _lParam;
 
 		/// <summary>
 		/// Initializes a new instance of the HookEventArgs class
@@ -50,36 +50,18 @@ public class Win32
 		/// <summary>
 		/// The hook code
 		/// </summary>
-		public int Code
-		{
-			get
-			{
-				return _code;
-			}
-		}
+		public int Code => _code;
 
-		/// <summary>
-		/// A pointer to data
-		/// </summary>
-		public IntPtr wParam
-		{
-			get
-			{
-				return _wParam;
-			}
-		}
+        /// <summary>
+        /// A pointer to data
+        /// </summary>
+        public IntPtr wParam => _wParam;
 
-		/// <summary>
-		/// A pointer to data
-		/// </summary>
-		public IntPtr lParam
-		{
-			get
-			{
-				return _lParam;
-			}
-		}
-	}
+        /// <summary>
+        /// A pointer to data
+        /// </summary>
+        public IntPtr lParam => _lParam;
+    }
 
 	/// <summary>
 	/// Event delegate for use with the HookEventArgs class
@@ -145,78 +127,78 @@ public class Win32
 	[DllImport("kernel32.dll", EntryPoint="GetLastError", SetLastError=true, ExactSpelling=true, CallingConvention=CallingConvention.StdCall)]
 	public static extern Int32 GetLastError();
 
-        [DllImport("Kernel32")]
-        public static extern int CopyFile(string source, string destination, int failIfExists);
+	[DllImport("Kernel32", CharSet = CharSet.Unicode)]
+	public static extern int CopyFile(string source, string destination, int failIfExists);
 
-        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
+	[DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+	public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        private static extern int QueryFullProcessImageName(IntPtr hProcess, int dwFlags, StringBuilder lpExeName, int lpdwSize);
+	[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+	private static extern int QueryFullProcessImageName(IntPtr hProcess, int dwFlags, StringBuilder lpExeName, int lpdwSize);
 
-        public static string QueryFullProcessImageName(IntPtr hProcess)
-        {
-            uint securityInfo = 0;
-            GetSecurityInfo(hProcess, SE_OBJECT_TYPE.SE_WINDOW_OBJECT, securityInfo, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
-            SetSecurityInfo(hProcess, SE_OBJECT_TYPE.SE_WINDOW_OBJECT, (uint)SECURITY_INFORMATION.PROCESS, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+	public static string QueryFullProcessImageName(IntPtr hProcess)
+	{
+		uint securityInfo = 0;
+        _ = GetSecurityInfo(hProcess, SE_OBJECT_TYPE.SE_WINDOW_OBJECT, securityInfo, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+        _ = SetSecurityInfo(hProcess, SE_OBJECT_TYPE.SE_WINDOW_OBJECT, (uint)SECURITY_INFORMATION.PROCESS, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 
-            StringBuilder sb = new StringBuilder(256);
-            QueryFullProcessImageName(hProcess, 0, sb, 256);
+		StringBuilder sb = new(256);
+        _ = QueryFullProcessImageName(hProcess, 0, sb, 256);
 
-            SetSecurityInfo(hProcess, SE_OBJECT_TYPE.SE_WINDOW_OBJECT, securityInfo, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+        _ = SetSecurityInfo(hProcess, SE_OBJECT_TYPE.SE_WINDOW_OBJECT, securityInfo, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 
-            return sb.ToString();
-        }
+		return sb.ToString();
+	}
 
-        public enum SE_OBJECT_TYPE
-        {
-            SE_UNKNOWN_OBJECT_TYPE = 0,
-            SE_FILE_OBJECT,
-            SE_SERVICE,
-            SE_PRINTER,
-            SE_REGISTRY_KEY,
-            SE_LMSHARE,
-            SE_KERNEL_OBJECT,
-            SE_WINDOW_OBJECT,
-            SE_DS_OBJECT,
-            SE_DS_OBJECT_ALL,
-            SE_PROVIDER_DEFINED_OBJECT,
-            SE_WMIGUID_OBJECT,
-            SE_REGISTRY_WOW64_32KEY
-        }
+	public enum SE_OBJECT_TYPE
+	{
+		SE_UNKNOWN_OBJECT_TYPE = 0,
+		SE_FILE_OBJECT,
+		SE_SERVICE,
+		SE_PRINTER,
+		SE_REGISTRY_KEY,
+		SE_LMSHARE,
+		SE_KERNEL_OBJECT,
+		SE_WINDOW_OBJECT,
+		SE_DS_OBJECT,
+		SE_DS_OBJECT_ALL,
+		SE_PROVIDER_DEFINED_OBJECT,
+		SE_WMIGUID_OBJECT,
+		SE_REGISTRY_WOW64_32KEY
+	}
 
-        // Sources: https://msdn.microsoft.com/es-es/library/windows/desktop/ms684880(v=vs.85).aspx
-        // and: https://msdn.microsoft.com/en-us/library/cc230369.aspx
-        public enum SECURITY_INFORMATION : uint
-        {
-            OWNER_SECURITY_INFORMATION = 0x00000001,
-            GROUP_SECURITY_INFORMATION = 0x00000002,
-            DACL_SECURITY_INFORMATION = 0x00000004,
-            SACL_SECURITY_INFORMATION = 0x00000008,
-            LABEL_SECURITY_INFORMATION = 0x00000010,
-            UNPROTECTED_SACL_SECURITY_INFORMATION = 0x10000000,
-            UNPROTECTED_DACL_SECURITY_INFORMATION = 0x20000000,
-            PROTECTED_SACL_SECURITY_INFORMATION = 0x40000000,
-            PROTECTED_DACL_SECURITY_INFORMATION = 0x80000000,
-            ATTRIBUTE_SECURITY_INFORMATION = 0x00000020,
-            SCOPE_SECURITY_INFORMATION = 0x00000040,
-            BACKUP_SECURITY_INFORMATION = 0x00010000,
+	// Sources: https://msdn.microsoft.com/es-es/library/windows/desktop/ms684880(v=vs.85).aspx
+	// and: https://msdn.microsoft.com/en-us/library/cc230369.aspx
+	public enum SECURITY_INFORMATION : uint
+	{
+		OWNER_SECURITY_INFORMATION = 0x00000001,
+		GROUP_SECURITY_INFORMATION = 0x00000002,
+		DACL_SECURITY_INFORMATION = 0x00000004,
+		SACL_SECURITY_INFORMATION = 0x00000008,
+		LABEL_SECURITY_INFORMATION = 0x00000010,
+		UNPROTECTED_SACL_SECURITY_INFORMATION = 0x10000000,
+		UNPROTECTED_DACL_SECURITY_INFORMATION = 0x20000000,
+		PROTECTED_SACL_SECURITY_INFORMATION = 0x40000000,
+		PROTECTED_DACL_SECURITY_INFORMATION = 0x80000000,
+		ATTRIBUTE_SECURITY_INFORMATION = 0x00000020,
+		SCOPE_SECURITY_INFORMATION = 0x00000040,
+		BACKUP_SECURITY_INFORMATION = 0x00010000,
 
-            PROCESS_CREATE_PROCESS = 0x0080,
-            PROCESS_CREATE_THREAD = 0x0002,
-            PROCESS_DUP_HANDLE = 0x0040,
-            PROCESS_QUERY_INFORMATION = 0x0400,
-            PROCESS_QUERY_LIMITED_INFORMATION = 0x1000,
-            PROCESS_SET_INFORMATION = 0x0200,
-            PROCESS_SET_QUOTA = 0x0100,
-            PROCESS_SUSPEND_RESUME = 0x0800,
-            PROCESS_TERMINATE = 0x0001,
-            PROCESS_VM_OPERATION = 0x0008,
-            PROCESS_VM_READ = 0x0010,
-            PROCESS_VM_WRITE = 0x0020,
+		PROCESS_CREATE_PROCESS = 0x0080,
+		PROCESS_CREATE_THREAD = 0x0002,
+		PROCESS_DUP_HANDLE = 0x0040,
+		PROCESS_QUERY_INFORMATION = 0x0400,
+		PROCESS_QUERY_LIMITED_INFORMATION = 0x1000,
+		PROCESS_SET_INFORMATION = 0x0200,
+		PROCESS_SET_QUOTA = 0x0100,
+		PROCESS_SUSPEND_RESUME = 0x0800,
+		PROCESS_TERMINATE = 0x0001,
+		PROCESS_VM_OPERATION = 0x0008,
+		PROCESS_VM_READ = 0x0010,
+		PROCESS_VM_WRITE = 0x0020,
 
-            PROCESS = 0x0400 | 0x0010
-        }
+		PROCESS = 0x0400 | 0x0010
+	}
 
         #endregion System - Kernel32.dll
 
@@ -794,65 +776,65 @@ public class Win32
             [DllImport("user32.dll", CharSet = CharSet.Unicode)]
             private static extern int GetWindowModuleFileName(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
-        #region Windows - user32.dll wrappers
+	#region Windows - user32.dll wrappers
 
-        /// <summary>
-        /// Styles wrapper for th 32 and 64 bits platform
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <param name="nIndex"></param>
-        /// <returns></returns>
-        public static int GetWindowLongPtr(IntPtr hWnd, int nIndex)
-        {
-            if (IntPtr.Size == 8)
-                return GetWindowLongPtr64(hWnd, nIndex);
-            else
-                return GetWindowLong32(hWnd, nIndex);
-        }
+	/// <summary>
+	/// Styles wrapper for th 32 and 64 bits platform
+	/// </summary>
+	/// <param name="hWnd"></param>
+	/// <param name="nIndex"></param>
+	/// <returns></returns>
+	public static int GetWindowLongPtr(IntPtr hWnd, int nIndex)
+	{
+		if (IntPtr.Size == 8)
+			return GetWindowLongPtr64(hWnd, nIndex);
+		else
+			return GetWindowLong32(hWnd, nIndex);
+	}
 
-        /// <summary>
-        /// Returns the caption of a window Win32.GetWindowText
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <returns></returns>
-        public static string GetWindowText(IntPtr hWnd)
-        {
-            StringBuilder sb = new StringBuilder(256);
-            GetWindowText(hWnd, sb, 256);
-            return sb.ToString();
-        }
+	/// <summary>
+	/// Returns the caption of a window Win32.GetWindowText
+	/// </summary>
+	/// <param name="hWnd"></param>
+	/// <returns></returns>
+	public static string GetWindowText(IntPtr hWnd)
+	{
+		StringBuilder sb = new(256);
+		_ = GetWindowText(hWnd, sb, 256);
+		return sb.ToString();
+	}
 
-        /// <summary>
-        /// Returns the name of the window's module
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <returns></returns>
-        public static string GetWindowModuleFileName(IntPtr hWnd)
-        {
-            StringBuilder sb = new StringBuilder(256);
-            GetWindowModuleFileName(hWnd, sb, 256);
-            return sb.ToString();
-        }
+	/// <summary>
+	/// Returns the name of the window's module
+	/// </summary>
+	/// <param name="hWnd"></param>
+	/// <returns></returns>
+	public static string GetWindowModuleFileName(IntPtr hWnd)
+	{
+		StringBuilder sb = new(256);
+		_ = GetWindowModuleFileName(hWnd, sb, 256);
+		return sb.ToString();
+	}
 
-        /// <summary>
-        /// Returns the name of a window's class Win32.GetClassName
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <returns></returns>
-        public static string GetClassName(IntPtr hWnd)
-        {
-            StringBuilder sb = new StringBuilder(256);
-            GetClassName(hWnd, sb, 256);
-            return sb.ToString();
-        }
+	/// <summary>
+	/// Returns the name of a window's class Win32.GetClassName
+	/// </summary>
+	/// <param name="hWnd"></param>
+	/// <returns></returns>
+	public static string GetClassName(IntPtr hWnd)
+	{
+		StringBuilder sb = new(256);
+		_ = GetClassName(hWnd, sb, 256);
+		return sb.ToString();
+	}
 
-        #endregion Windows - user32.dll wrappers
+	#endregion Windows - user32.dll wrappers
 
-        #endregion Windows - user32.dll
+	#endregion Windows - user32.dll
 
-        #region GDI - gdi32.dll
+	#region GDI - gdi32.dll
 
-        public enum BinaryRasterOperations
+	public enum BinaryRasterOperations
 	{
 		R2_BLACK            =1,   /*  0       */
 		R2_NOTMERGEPEN      =2,   /* DPon     */
@@ -931,8 +913,8 @@ public class Win32
 
 	public static string PathCompactPathEx(string source, uint maxChars)
 	{			
-		StringBuilder pszOut = new StringBuilder((int)Win32.MAX_PATH);
-		StringBuilder pszSrc = new StringBuilder(source);
+		StringBuilder pszOut = new((int)Win32.MAX_PATH);
+		StringBuilder pszSrc = new(source);
 
 		int result = Win32.PathCompactPathEx(pszOut, pszSrc, maxChars, (uint)0);
 		if (result == 1)
@@ -944,37 +926,35 @@ public class Win32
 		}
 	}
 
-        #endregion
+	#endregion
 
-        #region Psapi.dll
+	#region Psapi.dll
 
-        [DllImport("psapi.dll", CharSet = CharSet.Unicode)]
-        private static extern int GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, StringBuilder lpFilename, int nSize);
+	[DllImport("psapi.dll", CharSet = CharSet.Unicode)]
+	private static extern int GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, StringBuilder lpFilename, int nSize);
 
-        public static string GetModuleFileNameEx(IntPtr hProcess)
-        {
-            StringBuilder sb = new StringBuilder(256);
-            int size = 0;
-            size = GetModuleFileNameEx(hProcess, (IntPtr)null, sb, 256);
-            return sb.ToString();
-        }
+	public static string GetModuleFileNameEx(IntPtr hProcess)
+	{
+		StringBuilder sb = new(256);
+		int size = GetModuleFileNameEx(hProcess, (IntPtr)null, sb, 256);
+		return sb.ToString();
+	}
 
-        [DllImport("psapi.dll", CharSet = CharSet.Unicode)]
-        private static extern int GetModuleBaseName(IntPtr hProcess, IntPtr hModule, StringBuilder lpFilename, int nSize);
-        
-        public static string GetModuleBaseName(IntPtr hProcess)
-        {
-            StringBuilder sb = new StringBuilder(256);
-            int result;
-            result = GetModuleBaseName(hProcess, IntPtr.Zero, sb, 256);
-            return sb.ToString();
-        }
+	[DllImport("psapi.dll", CharSet = CharSet.Unicode)]
+	private static extern int GetModuleBaseName(IntPtr hProcess, IntPtr hModule, StringBuilder lpFilename, int nSize);
 
-        #endregion Psapi.dll
+	public static string GetModuleBaseName(IntPtr hProcess)
+	{
+		StringBuilder sb = new(256);
+		int result = GetModuleBaseName(hProcess, IntPtr.Zero, sb, 256);
+		return sb.ToString();
+	}
 
-        #region Advapi32.dll
+	#endregion Psapi.dll
 
-        [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
+	#region Advapi32.dll
+
+	[DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         private static extern int GetSecurityInfo(IntPtr handle, SE_OBJECT_TYPE ObjectType, uint SecurityInfo, IntPtr ppsidOwner, IntPtr ppsidGroup, IntPtr ppDacl, IntPtr ppSacl, IntPtr ppSecurityDescriptor);
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]

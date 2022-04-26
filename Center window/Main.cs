@@ -14,7 +14,7 @@ public partial class FrmMain : Form
     private bool _capturing;        // Es TRUE cuando estamos capturando con el ratón
     private readonly Image _finderHome;
     private readonly Image _finderGone;
-    private readonly Cursor? _cursorDefault;
+    private readonly Cursor _cursorDefault;
     private readonly Cursor _cursorFinder;
     //private IntPtr _hPreviousWindow;
     private IntPtr _hActualWindow;  // Puntero a la ventana que está bajo el ratón
@@ -52,7 +52,7 @@ public partial class FrmMain : Form
         lstWindows.Columns[2].Width = 190;
 
         // Inicializar las variables
-        _cursorDefault = Cursor.Current;
+        _cursorDefault = Cursor.Current ?? Cursors.Default;
         //_cursorFinder = EmbeddedResources.LoadGraphicsResource<Cursor>(@"images\Finder.cur");
         //_finderHome = EmbeddedResources.LoadGraphicsResource<Image>(@"images\FinderHome.bmp");
         //_finderGone = EmbeddedResources.LoadGraphicsResource<Image>(@"images\FinderGone.bmp");
