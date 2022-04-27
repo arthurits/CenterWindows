@@ -252,7 +252,7 @@ public partial class FrmMain : Form
         {
             _ = Win32.SetWindowLong(hWnd,
                 Win32.GWL_EXSTYLE,
-                Win32.GetWindowLongPtr(hWnd, Win32.GWL_EXSTYLE) | (int)Win32.WindowStyles.WS_EX_LAYERED);
+                Win32.GetWindowLongPtr(hWnd, Win32.GWL_EXSTYLE) | (int)Win32.WindowStylesEx.WS_EX_LAYERED);
 
             _ = Win32.SetLayeredWindowAttributes(hWnd,
                 (uint)Color.Black.ToArgb(),
@@ -303,7 +303,7 @@ public partial class FrmMain : Form
             String strWindowModule;
             IntPtr handle;
             _ = Win32.GetWindowThreadProcessId(hWnd, out uint uHandle);
-            handle = Win32.OpenProcess((uint)(Win32.SECURITY_INFORMATION.PROCESS_QUERY_INFORMATION | Win32.SECURITY_INFORMATION.PROCESS_VM_READ), false, uHandle);
+            handle = Win32.OpenProcess((uint)(Win32.PROCESS_ACCESS_TYPES.PROCESS_QUERY_INFORMATION | Win32.PROCESS_ACCESS_TYPES.PROCESS_VM_READ), false, uHandle);
             strWindowModule = Win32.GetModuleBaseName(handle);
             //windowModule = Win32.GetModuleFileNameEx(handle); //Gets the full path
                 /* Gets the same results but using the .NET framework
