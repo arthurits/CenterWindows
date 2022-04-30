@@ -266,6 +266,7 @@
             this.lstWindows.Size = new System.Drawing.Size(769, 293);
             this.lstWindows.TabIndex = 5;
             this.lstWindows.UseCompatibleStateImageBehavior = false;
+            this.lstWindows.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.AppChecked);
             // 
             // BtnApp
             // 

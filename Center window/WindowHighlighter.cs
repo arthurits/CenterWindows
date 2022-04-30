@@ -45,7 +45,7 @@ public class WindowHighlighter
     /// <param name="hWnd"></param>
     public static void Highlight(IntPtr hWnd, Color cColor, Int32 nWidth)
     {
-        Win32.Rect rc = new Win32.Rect();
+        Win32.Rect rc = new();
         Win32.GetWindowRect(hWnd, ref rc);
 
         //System.Windows.Forms.ControlPaint.DrawReversibleFrame(new System.Drawing.Rectangle(rc.left, rc.top, rc.Width, rc.Height),
@@ -77,7 +77,7 @@ public class WindowHighlighter
                 unsafe
                 {
                     void* puntero = &valor;
-                    DwmSetWindowAttribute(hWnd, atribute, (IntPtr)puntero, sizeof(Int32));
+                    _ = DwmSetWindowAttribute(hWnd, atribute, (IntPtr)puntero, sizeof(Int32));
                 }
             }
 
@@ -92,7 +92,7 @@ public class WindowHighlighter
 
         }
 
-        Win32.ReleaseDC(hWnd, hDC);
+        _ = Win32.ReleaseDC(hWnd, hDC);
 
     }
 
@@ -116,9 +116,9 @@ public class WindowHighlighter
             }
         }
 
-        Win32.InvalidateRect(hWnd, IntPtr.Zero, 1 /* TRUE */);
-        Win32.UpdateWindow(hWnd);
-        Win32.RedrawWindow(hWnd, IntPtr.Zero, IntPtr.Zero, Win32.RDW_FRAME | Win32.RDW_INVALIDATE | Win32.RDW_UPDATENOW | Win32.RDW_ALLCHILDREN);
+        _ = Win32.InvalidateRect(hWnd, IntPtr.Zero, 1 /* TRUE */);
+        _ = Win32.UpdateWindow(hWnd);
+        _ = Win32.RedrawWindow(hWnd, IntPtr.Zero, IntPtr.Zero, Win32.RDW_FRAME | Win32.RDW_INVALIDATE | Win32.RDW_UPDATENOW | Win32.RDW_ALLCHILDREN);
         //Win32.SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, Win32.SWP_DRAWFRAME | Win32.SWP_NOSIZE | Win32.SWP_NOZORDER | Win32.SWP_NOMOVE | Win32.SWP_NOACTIVATE);
 
     }

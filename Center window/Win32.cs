@@ -905,6 +905,14 @@ public class Win32
 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
 	private static extern int GetWindowModuleFileName(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
+	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+	private static extern IntPtr FindWindow(string? lpClassName, string lpWindowName);
+
+	public static IntPtr GetHandleWindow(string title)
+	{
+		return FindWindow(null, title);
+	}
+
 	#region Windows - user32.dll wrappers
 
 	/// <summary>

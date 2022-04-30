@@ -551,5 +551,19 @@ public partial class FrmMain : Form
             ClearSelection();
     }
 
+    private void AppChecked(object sender, ItemCheckedEventArgs e)
+    {
+        // if it is checked, then show the border around
+        if (e.Item.Checked)
+        {
+            // Highlight the window
+            var hWnd = Win32.GetHandleWindow(e.Item.Text);
+            if (hWnd != IntPtr.Zero)
+                WindowHighlighter.Highlight(hWnd, Color.FromArgb(Settings.RectangleColor), Settings.RectangleWidth);
+        }
+    }
+
     #endregion Form controls events
+
+
 }
