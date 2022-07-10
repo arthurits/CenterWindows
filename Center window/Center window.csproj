@@ -80,7 +80,7 @@
     <None Update="CenterWindow launcher.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="images\CenterWindow splash.png">
+    <None Update="images\splash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Properties\Settings.settings">
