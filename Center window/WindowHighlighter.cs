@@ -6,16 +6,16 @@ namespace Microsoft.Win32;
 /// Summary description for WindowHighlighter.
 /// </summary>
 public class WindowHighlighter
-	{
+{
 
     [DllImport("dwmapi.dll", PreserveSig = false)]
-    private static extern int DwmSetWindowAttribute(IntPtr hWnd, int dwAttribute, IntPtr pvAttribute, int cbAttribute);
+    private static extern int DwmSetWindowAttribute(IntPtr hWnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
 
     [DllImport("dwmapi.dll", PreserveSig = false)]
-    private static extern int DwmGetWindowAttribute(IntPtr hWnd, int dwAttribute, IntPtr pvAttribute, int cbAttribute);
+    private static extern int DwmGetWindowAttribute(IntPtr hWnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
 
     [DllImport("dwmapi.dll", PreserveSig = false)]
-    public static extern bool DwmIsCompositionEnabled();
+    private static extern bool DwmIsCompositionEnabled();
 
     private enum DWMWINDOWATTRIBUTE
     {
@@ -29,7 +29,7 @@ public class WindowHighlighter
         DWMWA_FLIP3D_POLICY,
         DWMWA_EXTENDED_FRAME_BOUNDS,
         DWMWA_LAST,
-    }        
+    }
 
     private enum DWMNCRENDERINGPOLICY
     {
@@ -70,22 +70,17 @@ public class WindowHighlighter
             {
                 //Int32 atribute = (Int32)DWMWINDOWATTRIBUTE.DWMWA_ALLOW_NCPAINT;
                 //Boolean valor = true;
-                Int32 atribute = (Int32)DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_POLICY;
-                Int32 valor = (Int32)DWMNCRENDERINGPOLICY.DWMNCRP_DISABLED;
+                int atribute = (int)DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_POLICY;
+                int policy = (int)DWMNCRENDERINGPOLICY.DWMNCRP_DISABLED;
 
-                // Unnecessary but just for the fun of it
-                unsafe
-                {
-                    void* puntero = &valor;
-                    _ = DwmSetWindowAttribute(hWnd, atribute, (IntPtr)puntero, sizeof(Int32));
-                }
+                _ = DwmSetWindowAttribute(hWnd, atribute, ref policy, Marshal.SizeOf(policy));
             }
 
-            using Pen pen = new Pen(cColor, nWidth);
+            using Pen pen = new(cColor, nWidth);
             using Graphics g = Graphics.FromHdc(hDC);
 
             System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
-            path.AddRectangle(new Rectangle(0, 0, rc.right - rc.left - (int)nWidth, rc.bottom - rc.top - (int)nWidth));
+            path.AddRectangle(new Rectangle(0, 0, rc.right - rc.left - nWidth, rc.bottom - rc.top - nWidth));
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             g.DrawPath(pen, path);
 
@@ -106,14 +101,10 @@ public class WindowHighlighter
         IntPtr hParent = Win32.GetParent(hWnd);
         if (hParent == IntPtr.Zero && Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
         {
-            Int32 atribute = (Int32)DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_POLICY;
-            Int32 valor = (Int32)DWMNCRENDERINGPOLICY.DWMNCRP_USEWINDOWSTYLE;
+            int atribute = (int)DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_POLICY;
+            int policy = (int)DWMNCRENDERINGPOLICY.DWMNCRP_USEWINDOWSTYLE;
 
-            unsafe
-            {
-                void* puntero = &valor;
-                DwmSetWindowAttribute(hWnd, atribute, (IntPtr)puntero, sizeof(Int32));
-            }
+            _ = DwmSetWindowAttribute(hWnd, atribute, ref policy, Marshal.SizeOf(policy));
         }
 
         _ = Win32.InvalidateRect(hWnd, IntPtr.Zero, 1 /* TRUE */);
