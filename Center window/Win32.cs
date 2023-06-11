@@ -759,7 +759,8 @@ public class Win32
 	public delegate bool EnumWindowEventHandler(IntPtr hWnd, IntPtr lParam);
 
 	[DllImport("User32.dll")]
-	public static extern void EnumWindows(EnumWindowEventHandler callback, IntPtr lParam);
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool EnumWindows(EnumWindowEventHandler callback, IntPtr lParam);
 
 	[DllImport("user32.dll")]
 	public static extern bool AnimateWindow(IntPtr hWnd, int time, AnimateWindowFlags flags);
