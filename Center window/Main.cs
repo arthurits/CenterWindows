@@ -31,10 +31,9 @@ public partial class FrmMain : Form
     public FrmMain()
     {
         InitializeComponent();
-
+        
         // Set form icon
-        var path = System.IO.Path.GetDirectoryName(Environment.ProcessPath);
-        if (System.IO.File.Exists(@"images\centerwindow.ico")) this.Icon = new Icon(@"images\centerwindow.ico");
+        this.Icon = EmbeddedResources.Load<Icon>(EmbeddedResources.AppLogo);
 
         // Escribir el texto de la etiqueta lblInfo
         //this.lblInfo.Text = new String(
