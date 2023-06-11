@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.Win32;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 // https://stackoverflow.com/questions/56844233/additional-probing-paths-for-net-core-3-migration
 // https://www.google.es/search?ei=pba3X-OAINaDhbIPlOil2A0&q=.net+5+%22probing+privatePath%22&oq=.net+5+%22probing+privatePath%22&gs_lcp=CgZwc3ktYWIQAzIICCEQFhAdEB5QmyNYiypggy1oAHAAeACAAXaIAdMCkgEDMC4zmAEAoAEBqgEHZ3dzLXdpesABAQ&sclient=psy-ab&ved=0ahUKEwij59z1j5HtAhXWQUEAHRR0CdsQ4dUDCA0&uact=5
 // https://www.google.es/search?q=deps.json+relative+path&ie=UTF-8&oe=
@@ -289,15 +290,13 @@ public partial class FrmMain : Form
     /// <returns></returns>
     private bool EnumerateWindows(IntPtr hWnd, IntPtr lParam)
     {
-        int size = Win32.GetWindowTextLength(hWnd);
-        if (size++ > 0 && Win32.IsWindowVisible(hWnd))
-        {
-            // Retrieves the window's text
-            String strWindowText;
-            strWindowText = Win32.GetWindowText(hWnd);
-            //strWindowModule = Win32.GetClassName(hWnd);
-            //strWindowModule = Win32.GetWindowModuleFileName(hWnd);
+        bool WindowVisible = Win32.IsWindowVisible(hWnd);
+        string WindowText = Win32.GetWindowText(hWnd);
+        string WindowClassName = Win32.GetClassName(hWnd);
+        if (WindowClassName == "Program" || WindowClassName == "Button") WindowClassName = string.Empty;
 
+        if (!string.IsNullOrEmpty(WindowText) && WindowVisible && !string.IsNullOrEmpty(WindowClassName))
+        {
             // Retrieves the name of the windows's executable
             String strWindowModule;
             IntPtr handle;
@@ -316,9 +315,9 @@ public partial class FrmMain : Form
 
             //if (windowText != "Microsoft Edge" && windowText != "Program Manager")
             ListViewItem item;
-            if (winInfo.xWindowBorders > 0 && winInfo.xWindowBorders > 0)
+            if (winInfo.xWindowBorders > 0 && winInfo.xWindowBorders > 0 && winInfo.window.Width > 0 && winInfo.window.Height > 0)
             {
-                item = lstWindows.Items.Add(strWindowText);
+                item = lstWindows.Items.Add(WindowText);
                 item.SubItems.Add(hWnd.ToString());
                 item.SubItems.Add(strWindowModule);
             }
