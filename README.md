@@ -3,7 +3,7 @@ A small application for centering windows in desktop. Written in .NET C# WinForm
 
 <img src="Center window/images/splash.png?raw=true" alt="Software logo" height="240">
 
-Copyright © 2022 by Arthurits Ltd. No commercial nor profit use allowed. This software is provided only for personal and not-for-profit use.
+Copyright © 2020-2023 by Arthurits Ltd. No commercial nor profit use allowed. This software is provided only for personal and not-for-profit use.
 Download latest release: [![GitHub release (latest by date)](https://img.shields.io/github/v/release/arthurits/CenterWindows?include_prereleases)](https://github.com/arthurits/CenterWindows/releases)
 
 Sponsor this project!
