@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "Center windows winui (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "Center windows winui (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
