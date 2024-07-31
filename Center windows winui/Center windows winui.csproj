@@ -47,4 +47,32 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+
+	<Target Name="RemoveFoldersWithMuiFiles" AfterTargets="Build">
+
+		<ItemGroup>
+			<!-- Create a list of the languages your need to keep.-->
+			<KeepingLanguages Include="en-US;es-ES" />
+
+			<!-- Create a list of keeping files. -->
+			<KeepingFiles Include="@(KeepingLanguages->'$(OutDir)%(Identity)\*.mui')"/>
+
+			<!-- Create a list of removing files. -->
+			<RemovingFiles Include="$(OutDir)*\*.mui" Exclude="@(KeepingFiles)" />
+
+			<!-- Create a list of removing folders. -->
+			<RemovingFolders Include="@(RemovingFiles->'%(RootDir)%(Directory)')" />
+		</ItemGroup>
+
+		<!-- Uncomment these messages if you need to check each list.
+    <Message Text="Keeping languages: @(KeepingLanguages)" Importance="High" />
+    <Message Text="Keeping files:     @(KeepingFiles)" Importance="High" />
+    <Message Text="Removing files:    @(RemovingFiles)" Importance="High" />
+    -->
+
+		<!-- Execute RemoveDir command and remove all folders in "RemovingFolders".-->
+		<RemoveDir Directories="@(RemovingFolders)" />
+
+	</Target>
+	
 </Project>
