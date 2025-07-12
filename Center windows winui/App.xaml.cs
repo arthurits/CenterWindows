@@ -1,10 +1,10 @@
 ﻿using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
-using CenterWindow.Services;
 using CenterWindow.Models;
+using CenterWindow.Services;
+using CenterWindow.Settings;
 using CenterWindow.ViewModels;
 using CenterWindow.Views;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -54,7 +54,7 @@ public partial class App : Application
             // Other Activation Handlers
 
             // Services
-            services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+            services.AddSingleton<ILocalSettingsService<AppSettings>, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
 
