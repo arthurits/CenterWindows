@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:CenterWindow.Helpers"
-    xmlns:behaviors="using:Center_windows_winui.Behaviors"
+    xmlns:behaviors="using:CenterWindow.Behaviors"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     Loaded="OnLoaded">
 
