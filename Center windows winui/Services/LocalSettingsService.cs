@@ -36,7 +36,7 @@ public class LocalSettingsService : ILocalSettingsService<AppSettings>
 
     public event EventHandler<SettingChangedEventArgs>? SettingChanged;
 
-    private IDictionary<string, object> _settings;
+    private Dictionary<string, object> _settings;
 
     private bool _isInitialized;
 
