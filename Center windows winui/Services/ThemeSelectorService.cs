@@ -1,9 +1,9 @@
-﻿using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Helpers;
+﻿using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
 
 using Microsoft.UI.Xaml;
 
-namespace Center_windows_winui.Services;
+namespace CenterWindow.Services;
 
 public class ThemeSelectorService : IThemeSelectorService
 {

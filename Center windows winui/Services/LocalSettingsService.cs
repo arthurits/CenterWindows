@@ -1,15 +1,13 @@
-﻿using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Core.Contracts.Services;
-using Center_windows_winui.Core.Helpers;
-using Center_windows_winui.Helpers;
-using Center_windows_winui.Models;
+﻿using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
+using CenterWindow.Models;
 
 using Microsoft.Extensions.Options;
 
 using Windows.ApplicationModel;
 using Windows.Storage;
 
-namespace Center_windows_winui.Services;
+namespace CenterWindow.Services;
 
 public class LocalSettingsService : ILocalSettingsService
 {

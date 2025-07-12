@@ -1,12 +1,12 @@
-﻿using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.ViewModels;
-using Center_windows_winui.Views;
+﻿using CenterWindow.Contracts.Services;
+using CenterWindow.ViewModels;
+using CenterWindow.Views;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace Center_windows_winui.Services;
+namespace CenterWindow.Services;
 
 public class PageService : IPageService
 {

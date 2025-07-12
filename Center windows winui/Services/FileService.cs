@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-using CenterWindows.Contracts.Services;
+using CenterWindow.Contracts.Services;
 using Newtonsoft.Json;
 
 namespace CenterWindow.Services;

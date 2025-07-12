@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Contracts.ViewModels;
-using Center_windows_winui.Helpers;
+using CenterWindow.Contracts.Services;
+using CenterWindow.Contracts.ViewModels;
+using CenterWindow.Helpers;
 
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
-namespace Center_windows_winui.Services;
+namespace CenterWindow.Services;
 
 // For more information on navigation between pages see
 // https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/navigation.md

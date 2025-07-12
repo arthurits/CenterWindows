@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Center_windows_winui.ViewModels;
+namespace CenterWindow.ViewModels;
 
 public partial class MainViewModel : ObservableRecipient
 {

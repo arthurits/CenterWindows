@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using System.Windows.Input;
 
-using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Helpers;
+using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,7 +11,7 @@ using Microsoft.UI.Xaml;
 
 using Windows.ApplicationModel;
 
-namespace Center_windows_winui.ViewModels;
+namespace CenterWindow.ViewModels;
 
 public partial class SettingsViewModel : ObservableRecipient
 {

@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Helpers;
-using Center_windows_winui.ViewModels;
+using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
+using CenterWindow.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace Center_windows_winui.Services;
+namespace CenterWindow.Services;
 
 public class NavigationViewService : INavigationViewService
 {
