@@ -1,4 +1,4 @@
-﻿namespace Center_windows_winui.Behaviors;
+﻿namespace CenterWindow.Behaviors;
 
 public enum NavigationViewHeaderMode
 {

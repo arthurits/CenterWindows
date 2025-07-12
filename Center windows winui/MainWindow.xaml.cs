@@ -1,8 +1,8 @@
-﻿using Center_windows_winui.Helpers;
+﻿using CenterWindow.Helpers;
 
 using Windows.UI.ViewManagement;
 
-namespace Center_windows_winui;
+namespace CenterWindow;
 
 public sealed partial class MainWindow : WindowEx
 {

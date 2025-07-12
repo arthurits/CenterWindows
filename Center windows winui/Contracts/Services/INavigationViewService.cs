@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 
-namespace Center_windows_winui.Contracts.Services;
+namespace CenterWindow.Contracts.Services;
 
 public interface INavigationViewService
 {

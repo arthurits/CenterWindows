@@ -1,18 +1,15 @@
-﻿using Center_windows_winui.Activation;
-using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Core.Contracts.Services;
-using Center_windows_winui.Core.Services;
-using Center_windows_winui.Helpers;
-using Center_windows_winui.Models;
-using Center_windows_winui.Services;
-using Center_windows_winui.ViewModels;
-using Center_windows_winui.Views;
+﻿using CenterWindow.Activation;
+using CenterWindow.Contracts.Services;
+using CenterWindow.Services;
+using CenterWindow.Models;
+using CenterWindow.ViewModels;
+using CenterWindow.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
-namespace Center_windows_winui;
+namespace CenterWindow;
 
 // To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
 public partial class App : Application

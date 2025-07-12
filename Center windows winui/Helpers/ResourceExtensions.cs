@@ -1,6 +1,6 @@
 ﻿using Microsoft.Windows.ApplicationModel.Resources;
 
-namespace Center_windows_winui.Helpers;
+namespace CenterWindow.Helpers;
 
 public static class ResourceExtensions
 {

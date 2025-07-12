@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 
-namespace Center_windows_winui.Contracts.Services;
+namespace CenterWindow.Contracts.Services;
 
 public interface IThemeSelectorService
 {

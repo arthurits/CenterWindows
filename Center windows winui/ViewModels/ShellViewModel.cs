@@ -1,11 +1,11 @@
-﻿using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Views;
+﻿using CenterWindow.Contracts.Services;
+using CenterWindow.Views;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
 using Microsoft.UI.Xaml.Navigation;
 
-namespace Center_windows_winui.ViewModels;
+namespace CenterWindow.ViewModels;
 
 public partial class ShellViewModel : ObservableRecipient
 {
