@@ -9,17 +9,31 @@ using Windows.Storage;
 
 namespace CenterWindow.Services;
 
-public class LocalSettingsService : ILocalSettingsService
+/// <summary>
+/// Class that reads and stores application settings.
+/// 
+/// Properties that cannot be modified using Reflection:
+/// - `readonly` → Immutable after initialization.
+/// - `init` → Can only be set in the constructor (C# 9+).
+/// - `private set` → The value can only be modified within the class.
+/// </summary>
+public class LocalSettingsService : ILocalSettingsService<AppSettings>
 {
-    private const string _defaultApplicationDataFolder = "Center windows winui/ApplicationData";
-    private const string _defaultLocalSettingsFile = "LocalSettings.json";
+    //private const string _defaultApplicationDataFolder = "Center windows winui/ApplicationData";
+    //private const string _defaultLocalSettingsFile = "LocalSettings.json";
 
-    private readonly IFileService _fileService;
-    private readonly LocalSettingsOptions _options;
+    //private readonly IFileService _fileService;
+    //private readonly LocalSettingsOptions _options;
 
-    private readonly string _localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-    private readonly string _applicationDataFolder;
-    private readonly string _localsettingsFile;
+    //private readonly string _localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+    //private readonly string _applicationDataFolder;
+    //private readonly string _localsettingsFile;
+
+    private readonly AppSettings _options;
+
+    public AppSettings GetValues => _options;
+
+    public event EventHandler<SettingChangedEventArgs>? SettingChanged;
 
     private IDictionary<string, object> _settings;
 
