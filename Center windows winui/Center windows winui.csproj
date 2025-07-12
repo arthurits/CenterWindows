@@ -31,10 +31,6 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
     <PackageReference Include="WinUIEx" Version="2.6.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Center windows winui.Core\Center windows winui.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
