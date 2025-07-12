@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 
-namespace Center_windows_winui.Helpers;
+namespace CenterWindow.Helpers;
 
 public static class FrameExtensions
 {

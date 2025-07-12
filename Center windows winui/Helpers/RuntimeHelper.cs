@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Center_windows_winui.Helpers;
+namespace CenterWindow.Helpers;
 
 public class RuntimeHelper
 {
