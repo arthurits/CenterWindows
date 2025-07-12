@@ -17,6 +17,10 @@
 	  <WindowsPackageType>None</WindowsPackageType>
 	  <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 	  <PlatformTarget>AnyCPU</PlatformTarget>
+	  <Authors>Arthurits</Authors>
+	  <Copyright>© 2025</Copyright>
+	  <Company>Arthurits Ltd.</Company>
+	  <Version>0.1.0</Version>
 
   </PropertyGroup>
 
