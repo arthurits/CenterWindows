@@ -1,6 +1,6 @@
-﻿using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Helpers;
-using Center_windows_winui.ViewModels;
+﻿using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
+using CenterWindow.ViewModels;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -9,7 +9,7 @@ using Microsoft.UI.Xaml.Media;
 
 using Windows.System;
 
-namespace Center_windows_winui.Views;
+namespace CenterWindow.Views;
 
 // TODO: Update NavigationViewItem titles and icons in ShellPage.xaml.
 public sealed partial class ShellPage : Page

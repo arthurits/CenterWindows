@@ -2,7 +2,6 @@
 using CenterWindow.Contracts.Services;
 using CenterWindow.Services;
 using CenterWindow.Models;
-using CenterWindow.Services;
 using CenterWindow.ViewModels;
 using CenterWindow.Views;
 
@@ -10,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
-namespace Center_windows_winui;
+namespace CenterWindow;
 
 // To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
 public partial class App : Application

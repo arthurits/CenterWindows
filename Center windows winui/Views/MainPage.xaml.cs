@@ -1,8 +1,8 @@
-﻿using Center_windows_winui.ViewModels;
+﻿using CenterWindow.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace Center_windows_winui.Views;
+namespace CenterWindow.Views;
 
 public sealed partial class MainPage : Page
 {
