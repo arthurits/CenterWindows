@@ -1,6 +1,6 @@
 ﻿using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
-
+using CenterWindow.Settings;
 using Microsoft.UI.Xaml;
 
 namespace CenterWindow.Services;
@@ -11,9 +11,9 @@ public class ThemeSelectorService : IThemeSelectorService
 
     public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
-    private readonly ILocalSettingsService _localSettingsService;
+    private readonly ILocalSettingsService<AppSettings> _localSettingsService;
 
-    public ThemeSelectorService(ILocalSettingsService localSettingsService)
+    public ThemeSelectorService(ILocalSettingsService<AppSettings> localSettingsService)
     {
         _localSettingsService = localSettingsService;
     }
@@ -22,6 +22,20 @@ public class ThemeSelectorService : IThemeSelectorService
     {
         Theme = await LoadThemeFromSettingsAsync();
         await Task.CompletedTask;
+    }
+
+    public ElementTheme GetTheme()
+    {
+        if (App.MainWindow.Content is FrameworkElement frameworkElement)
+        {
+            return frameworkElement.ActualTheme;
+        }
+        return ElementTheme.Default;
+    }
+
+    public string GetThemeName()
+    {
+        return GetTheme().ToString();
     }
 
     public async Task SetThemeAsync(ElementTheme theme)
@@ -46,7 +60,7 @@ public class ThemeSelectorService : IThemeSelectorService
 
     private async Task<ElementTheme> LoadThemeFromSettingsAsync()
     {
-        var themeName = await _localSettingsService.ReadSettingAsync<string>(SettingsKey);
+        var themeName = await _localSettingsService.ReadSettingKeyAsync<string>(SettingsKey);
 
         if (Enum.TryParse(themeName, out ElementTheme cacheTheme))
         {
@@ -58,6 +72,6 @@ public class ThemeSelectorService : IThemeSelectorService
 
     private async Task SaveThemeInSettingsAsync(ElementTheme theme)
     {
-        await _localSettingsService.SaveSettingAsync(SettingsKey, theme.ToString());
+        await _localSettingsService.SaveSettingKeyAsync(SettingsKey, theme.ToString());
     }
 }
