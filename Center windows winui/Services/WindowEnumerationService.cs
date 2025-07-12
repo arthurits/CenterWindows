@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using CenterWindow.Contracts.Services;
+using CenterWindow.Models;
 
 namespace CenterWindow.Services;
 public class WindowEnumerationService : IWindowEnumerationService
