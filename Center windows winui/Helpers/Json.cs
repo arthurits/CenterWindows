@@ -12,16 +12,26 @@ public static class Json
 
     public static async Task<T?> DeserializeAsync<T>(string value, JsonSerializerOptions? options = default)
     {
-        return await Task.Run<T?>(() =>
+        return await Task.Run(() =>
         {
             return JsonSerializer.Deserialize<T>(value, options); //JsonConvert.DeserializeObject<T>(value);
         });
         //return await JsonSerializer.DeserializeAsync<T>(value);
     }
 
+    public static async Task<string> SerializeAsync<T>(T value, JsonSerializerOptions? options = default)
+    {
+        return await Task.Run(() =>
+        {
+            return JsonSerializer.Serialize(value, options); //JsonConvert.SerializeObject(value);
+        });
+
+        //return await JsonSerializer.Serialize(value);
+    }
+
     public static async Task<string> SerializeAsync(object? value, JsonSerializerOptions? options = default)
     {
-        return await Task.Run<string>(() =>
+        return await Task.Run(() =>
         {
             return JsonSerializer.Serialize(value, options); //JsonConvert.SerializeObject(value);
         });
