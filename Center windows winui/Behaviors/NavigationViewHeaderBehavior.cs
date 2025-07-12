@@ -1,11 +1,11 @@
-﻿using Center_windows_winui.Contracts.Services;
+﻿using CenterWindow.Contracts.Services;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Xaml.Interactivity;
 
-namespace Center_windows_winui.Behaviors;
+namespace CenterWindow.Behaviors;
 
 public class NavigationViewHeaderBehavior : Behavior<NavigationView>
 {
