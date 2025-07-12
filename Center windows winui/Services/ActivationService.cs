@@ -1,11 +1,11 @@
-﻿using Center_windows_winui.Activation;
-using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Views;
+﻿using CenterWindow.Activation;
+using CenterWindow.Contracts.Services;
+using CenterWindow.Views;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace Center_windows_winui.Services;
+namespace CenterWindow.Services;
 
 public class ActivationService : IActivationService
 {

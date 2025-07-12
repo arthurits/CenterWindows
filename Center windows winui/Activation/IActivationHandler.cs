@@ -1,4 +1,4 @@
-﻿namespace Center_windows_winui.Activation;
+﻿namespace CenterWindow.Activation;
 
 public interface IActivationHandler
 {

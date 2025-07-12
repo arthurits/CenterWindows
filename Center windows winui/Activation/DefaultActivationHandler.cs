@@ -1,9 +1,9 @@
-﻿using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.ViewModels;
+﻿using CenterWindow.Contracts.Services;
+using CenterWindow.ViewModels;
 
 using Microsoft.UI.Xaml;
 
-namespace Center_windows_winui.Activation;
+namespace CenterWindow.Activation;
 
 public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventArgs>
 {

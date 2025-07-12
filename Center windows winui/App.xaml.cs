@@ -1,10 +1,10 @@
-﻿using Center_windows_winui.Activation;
+﻿using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Services;
-using Center_windows_winui.Models;
-using Center_windows_winui.Services;
-using Center_windows_winui.ViewModels;
-using Center_windows_winui.Views;
+using CenterWindow.Models;
+using CenterWindow.Services;
+using CenterWindow.ViewModels;
+using CenterWindow.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
