@@ -1,7 +1,7 @@
 ﻿namespace CenterWindow.Contracts.Services;
 
 // Interface for managing local settings in the application
-public interface ILocalSettingsService
+public interface ILocalSettingsService<T>
 {
     // Get the settings file name
     T GetValues
