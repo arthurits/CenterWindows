@@ -1,4 +1,4 @@
-﻿namespace Center_windows_winui.Models;
+﻿namespace CenterWindow.Models;
 
 public class LocalSettingsOptions
 {
