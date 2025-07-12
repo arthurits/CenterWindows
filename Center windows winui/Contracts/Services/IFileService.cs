@@ -1,4 +1,4 @@
-﻿namespace CenterWindows.Contracts.Services;
+﻿namespace CenterWindow.Contracts.Services;
 
 public interface IFileService
 {

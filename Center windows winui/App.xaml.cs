@@ -1,8 +1,6 @@
 ﻿using Center_windows_winui.Activation;
-using Center_windows_winui.Contracts.Services;
-using Center_windows_winui.Core.Contracts.Services;
-using Center_windows_winui.Core.Services;
-using Center_windows_winui.Helpers;
+using CenterWindow.Contracts.Services;
+using CenterWindow.Services;
 using Center_windows_winui.Models;
 using Center_windows_winui.Services;
 using Center_windows_winui.ViewModels;
