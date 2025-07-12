@@ -1,14 +1,13 @@
 ﻿using System.Text;
 
-using Center_windows_winui.Core.Contracts.Services;
-
+using CenterWindows.Contracts.Services;
 using Newtonsoft.Json;
 
-namespace Center_windows_winui.Core.Services;
+namespace CenterWindow.Services;
 
 public class FileService : IFileService
 {
-    public T Read<T>(string folderPath, string fileName)
+    public T? Read<T>(string folderPath, string fileName)
     {
         var path = Path.Combine(folderPath, fileName);
         if (File.Exists(path))

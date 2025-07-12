@@ -1,4 +1,4 @@
-﻿namespace Center_windows_winui.Core.Contracts.Services;
+﻿namespace CenterWindows.Contracts.Services;
 
 public interface IFileService
 {
