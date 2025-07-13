@@ -75,7 +75,7 @@ public partial class App : Application
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();
-            services.AddTransient<ShellViewModel>();
+            services.AddSingleton<ShellViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
@@ -89,6 +89,12 @@ public partial class App : Application
     {
         // TODO: Log and handle exceptions as appropriate.
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
+
+        //// Muestra el detalle de la excepción
+        //System.Diagnostics.Debug.WriteLine($"ERROR UI: {e.Exception}");
+
+        //// Impide que vuelva a romper en el XAML-generated hook
+        //e.Handled = true;
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

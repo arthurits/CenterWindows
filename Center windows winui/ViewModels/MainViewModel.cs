@@ -31,7 +31,7 @@ public partial class MainViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    private void LoadWindows()
+    public void LoadWindows()
     {
         var list = new ObservableCollection<WindowModel>();
         foreach (var window in _enumerationService.GetDesktopWindows())
@@ -43,7 +43,7 @@ public partial class MainViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    private void CenterSelectedWindow()
+    public void CenterSelectedWindow()
     {
         if (SelectedWindow is not null)
         {
@@ -52,7 +52,7 @@ public partial class MainViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    private void RefreshWindows()
+    public void RefreshWindows()
     {
         LoadWindows();
     }
