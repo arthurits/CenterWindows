@@ -60,10 +60,10 @@ public class WindowEnumerationService : IWindowEnumerationService
                 _windows.Add(new WindowModel (
                     hWnd,
                     WindowText,
-                    new WindowRect(winInfo.window.Left + (int)winInfo.xWindowBorders,
-                                    winInfo.window.Top + (int)winInfo.yWindowBorders,
-                                    winInfo.window.Width - (int)(winInfo.xWindowBorders * 2),
-                                    winInfo.window.Height - (int)(winInfo.yWindowBorders * 2))
+                    winInfo.window.Left + (int)winInfo.xWindowBorders,
+                    winInfo.window.Top + (int)winInfo.yWindowBorders,
+                    winInfo.window.Width - (int)(winInfo.xWindowBorders * 2),
+                    winInfo.window.Height - (int)(winInfo.yWindowBorders * 2)
                     )
                 );
             }
