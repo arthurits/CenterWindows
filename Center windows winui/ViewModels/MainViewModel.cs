@@ -47,7 +47,7 @@ public partial class MainViewModel : ObservableRecipient
     {
         if (SelectedWindow is not null)
         {
-            _centerService.CenterWindow(SelectedWindow.Handle, Transparency);
+            _centerService.CenterWindow(SelectedWindow.Hwnd, Transparency);
         }
     }
 

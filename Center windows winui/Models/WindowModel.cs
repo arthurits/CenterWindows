@@ -1,14 +1,25 @@
 ﻿namespace CenterWindow.Models;
 public class WindowModel
 {
-    public IntPtr Handle { get; }
+    public IntPtr Hwnd { get; }
     public string Title { get; }
-    public WindowRect Bounds { get; }
+    
+    public int X { get; }
+    public int Y { get; }
+    public int Width { get; }
+    public int Height { get; }
 
-    public WindowModel(IntPtr handle, string title, WindowRect bounds)
+    // These properties will be used for binding in the UI
+    public string Handle => Hwnd.ToString("X");
+    public string Rect => $"{X},{Y}  {Width}×{Height}";
+
+    public WindowModel(IntPtr handle, string title, int x, int y, int width, int height)
     {
-        Handle = handle;
+        Hwnd = handle;
         Title = title;
-        Bounds = bounds;
+        X = x;
+        Y = y;
+        Width = width;
+        Height = height;
     }
 }
