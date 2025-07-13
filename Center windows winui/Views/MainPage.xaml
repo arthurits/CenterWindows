@@ -4,9 +4,39 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:CenterWindow.Models"
+    xmlns:vm="using:CenterWindow.ViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:MainViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        
+        <StackPanel Margin="20" Spacing="12">
+
+            <ListView
+                  ItemsSource="{Binding Windows}"
+                  SelectedItem="{Binding SelectedWindow}"
+                  Height="300">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:WindowModel">
+                        <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <TextBlock Text="Transparencia:" VerticalAlignment="Center"/>
+                <Slider
+                    Minimum="0" Maximum="255"
+                    Value="{Binding Transparency}"
+                    Width="200"/>
+                <TextBlock Text="{Binding Transparency}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <Button
+                  Content="Centrar con Alfa"
+                  Command="{Binding CenterSelectedWindow}"
+                  IsEnabled="{Binding SelectedWindow, Converter={StaticResource NullToBool}}" />
+
+        </StackPanel>
     </Grid>
 </Page>

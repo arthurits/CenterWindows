@@ -19,6 +19,9 @@ public partial class MainViewModel : ObservableRecipient
     [ObservableProperty]
     public partial WindowModel SelectedWindow { get; set; }
 
+    [ObservableProperty]
+    public partial byte Transparency { get; set; } = 255;
+
     public MainViewModel(IWindowEnumerationService enumerationService, IWindowCenterService centerService)
     {
         _enumerationService = enumerationService;
@@ -37,5 +40,20 @@ public partial class MainViewModel : ObservableRecipient
         }
 
         Windows = list;
+    }
+
+    [RelayCommand]
+    private void CenterSelectedWindow()
+    {
+        if (SelectedWindow is not null)
+        {
+            _centerService.CenterWindow(SelectedWindow.Handle, Transparency);
+        }
+    }
+
+    [RelayCommand]
+    private void RefreshWindows()
+    {
+        LoadWindows();
     }
 }
