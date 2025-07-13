@@ -65,6 +65,10 @@ public partial class App : Application
             // Core Services
             services.AddSingleton<IFileService, FileService>();
 
+            // CenterWindow services
+            services.AddSingleton<IWindowCenterService, WindowCenterService>();
+            services.AddSingleton<IWindowEnumerationService, WindowEnumerationService>();
+
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
