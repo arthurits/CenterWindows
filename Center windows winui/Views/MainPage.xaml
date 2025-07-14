@@ -17,8 +17,8 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Encabezados -->
@@ -35,9 +35,9 @@
 
         <!-- ListView con ItemTemplate en columnas -->
         <ListView
-      Grid.Row="2"
-      ItemsSource="{Binding Windows}"
-      SelectedItem="{Binding SelectedWindow}">
+          Grid.Row="1"
+          ItemsSource="{Binding Windows}"
+          SelectedItem="{Binding SelectedWindow}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="4">
@@ -55,7 +55,7 @@
         </ListView>
 
         <!-- Transparencia y botón -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,12,0,0">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,12,0,0">
             <TextBlock Text="Transparencia:" VerticalAlignment="Center"/>
             <Slider Minimum="0" Maximum="255" Value="{Binding Transparency}" Width="200"/>
             <TextBlock Text="{Binding Transparency}" VerticalAlignment="Center"/>
