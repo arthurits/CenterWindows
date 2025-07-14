@@ -57,11 +57,14 @@
         <!-- Transparencia y botón -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,12,0,0">
             <TextBlock Text="Transparencia:" VerticalAlignment="Center"/>
-            <Slider Minimum="0" Maximum="255" Value="{Binding Transparency}" Width="200"/>
-            <TextBlock Text="{Binding Transparency}" VerticalAlignment="Center"/>
+            <Slider Minimum="0"
+                    Maximum="255"
+                    Value="{Binding Transparency, Mode=TwoWay}"
+                    Width="200"/>
+            <TextBlock Text="{Binding Transparency, Mode=OneWay}" VerticalAlignment="Center"/>
             <Button Content="Centrar con Alfa"
               Command="{Binding CenterSelectedWindowCommand}"
-              IsEnabled="{Binding SelectedWindow, Converter={StaticResource NullToBool}, Mode=TwoWay}"/>
+              IsEnabled="{Binding SelectedWindow, Converter={StaticResource NullToBool}, Mode=OneWay}"/>
         </StackPanel>
     </Grid>
 </Page>
