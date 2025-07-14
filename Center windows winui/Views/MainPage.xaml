@@ -37,7 +37,7 @@
         <ListView
           Grid.Row="1"
           ItemsSource="{Binding Windows}"
-          SelectedItem="{Binding SelectedWindow}">
+          SelectedItem="{Binding SelectedWindow, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="4">
@@ -61,7 +61,7 @@
             <TextBlock Text="{Binding Transparency}" VerticalAlignment="Center"/>
             <Button Content="Centrar con Alfa"
               Command="{Binding CenterSelectedWindowCommand}"
-              IsEnabled="{Binding SelectedWindow, Converter={StaticResource NullToBool}}"/>
+              IsEnabled="{Binding SelectedWindow, Converter={StaticResource NullToBool}, Mode=TwoWay}"/>
         </StackPanel>
     </Grid>
 </Page>
