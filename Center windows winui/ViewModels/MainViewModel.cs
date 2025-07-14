@@ -20,7 +20,7 @@ public partial class MainViewModel : ObservableRecipient
     public partial WindowModel SelectedWindow { get; set; }
 
     [ObservableProperty]
-    public partial byte Transparency { get; set; } = 255;
+    public partial int Transparency { get; set; } = 255;
 
     public MainViewModel(IWindowEnumerationService enumerationService, IWindowCenterService centerService)
     {
@@ -47,7 +47,8 @@ public partial class MainViewModel : ObservableRecipient
     {
         if (SelectedWindow is not null)
         {
-            _centerService.CenterWindow(SelectedWindow.Hwnd, Transparency);
+            var alpha = (byte)Math.Clamp(Transparency, 0, 255);
+            _centerService.CenterWindow(SelectedWindow.Hwnd, alpha);
         }
     }
 
