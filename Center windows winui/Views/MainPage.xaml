@@ -74,6 +74,16 @@
                       Command="{Binding CenterSelectedWindowCommand}"
                       IsEnabled="{Binding SelectedWindow, Converter={StaticResource NullToBool}, Mode=OneWay}"/>
             </StackPanel>
+
+            <!-- Crosshair button -->
+            <Button
+                  Command="{Binding SelectWindowCommand}"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Width="36" Height="36"
+                  ToolTipService.ToolTip="Select window with mouse">
+                <FontIcon Glyph="&#xEC78;" /> <!-- Segoe MDL2 crosshair -->
+            </Button>
         </StackPanel>
     </ScrollViewer>
 </Page>
