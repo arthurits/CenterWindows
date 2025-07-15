@@ -9,8 +9,9 @@ namespace CenterWindow.ViewModels;
 public partial class MainViewModel : ObservableRecipient
 {
     // Services
-    readonly IWindowEnumerationService _enumerationService;
-    readonly IWindowCenterService _centerService;
+    private readonly IWindowEnumerationService _enumerationService;
+    private readonly IWindowCenterService _centerService;
+    private readonly IMouseHookService _mouseHook;
 
     // Properties
     [ObservableProperty]
@@ -22,10 +23,11 @@ public partial class MainViewModel : ObservableRecipient
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
 
-    public MainViewModel(IWindowEnumerationService enumerationService, IWindowCenterService centerService)
+    public MainViewModel(IWindowEnumerationService enumerationService, IWindowCenterService centerService, IMouseHookService mouseHook)
     {
         _enumerationService = enumerationService;
         _centerService = centerService;
+        _mouseHook = mouseHook;
 
         LoadWindows();
     }
