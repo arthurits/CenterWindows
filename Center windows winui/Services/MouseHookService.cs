@@ -1,16 +1,21 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
+using Microsoft.Win32;
 
 namespace CenterWindow.Services;
 
-public class MouseHookService : IMouseHookService
+public partial class MouseHookService : IMouseHookService, IDisposable
 {
     private readonly NativeMethods.LowLevelMouseProc _proc;
-    private static IntPtr _hookId = IntPtr.Zero;
+    private IntPtr _hookId = IntPtr.Zero;
     private IntPtr _originalCursor = IntPtr.Zero;
-    private static TaskCompletionSource<IntPtr> _taskCS;
-    private static CancellationToken _token;
+    private IntPtr _hCrossCopy = IntPtr.Zero;
+    private TaskCompletionSource<IntPtr>? _taskCS;
+    private CancellationTokenRegistration? _ctr;
+    private CancellationToken _token;
 
     public MouseHookService()
     {
@@ -29,23 +34,30 @@ public class MouseHookService : IMouseHookService
         _token = cancellationToken;
 
         // Get the original cursor to restore later
-        _originalCursor = NativeMethods.CopyIcon(NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW));
+        //_originalCursor = NativeMethods.CopyIcon(NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW));
+        _originalCursor = CursorLoader.LoadArrowCursorFromFile();
 
         // Switch cursor to crosshair
-        var hCross = NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_CROSS);
+        using var curProcess = System.Diagnostics.Process.GetCurrentProcess();
+        var hCross = NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_CROSS); // Or LoadImage your custom .cur
 
         // Copy the cursor to avoid destroying the shared resource
-        var hCrossCopy = NativeMethods.CopyIcon(hCross);
-        NativeMethods.SetSystemCursor(hCrossCopy, NativeMethods.OCR_NORMAL);
+        _hCrossCopy = NativeMethods.CopyIcon(hCross);
+        NativeMethods.SetSystemCursor(_hCrossCopy, NativeMethods.OCR_NORMAL);
 
         // Set global mouse hook
         _hookId = SetHook(_proc);
 
+        if (_hookId == IntPtr.Zero)
+        {
+            throw new Win32Exception(Marshal.GetLastWin32Error(), "Error when installing mouse hook");
+        }
+
         // Cancellation: unhook and restore
-        cancellationToken.Register(() =>
+        _ctr = cancellationToken.Register(() =>
         {
             Cleanup();
-            _taskCS.TrySetCanceled();
+            _taskCS?.TrySetCanceled();
         });
 
         return _taskCS.Task;
@@ -60,31 +72,112 @@ public class MouseHookService : IMouseHookService
 
     private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
     {
-        if (nCode >= 0 && wParam == NativeMethods.WM_LBUTTONDOWN)
+        try
         {
-            // Read the mouse position from the lParam
-            var hookStruct = Marshal.PtrToStructure<NativeMethods.MSLLHOOKSTRUCT>(lParam)!;
-            var pt = hookStruct.pt;
+            if (nCode >= 0 && wParam == NativeMethods.WM_LBUTTONDOWN)
+            {
+                // Read the mouse position from the lParam
+                var hookStruct = Marshal.PtrToStructure<NativeMethods.MSLLHOOKSTRUCT>(lParam)!;
 
-            // Retrieve the window handle at the mouse position
-            var hWnd = NativeMethods.WindowFromPoint(pt);
-            Cleanup();
-            _taskCS.TrySetResult(hWnd);
+                // Retrieve the window handle at the mouse position
+                var hWnd = NativeMethods.WindowFromPoint(hookStruct.pt);
+
+                Cleanup();
+                _taskCS?.TrySetResult(hWnd);
+            }
         }
+        catch (Exception ex)
+        {
+            // Handle any exceptions that occur during the hook callback
+            Cleanup();
+            _taskCS?.TrySetException(ex);
+        }
+
         return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
     }
 
     private void Cleanup()
     {
-        if (_hookId != IntPtr.Zero)
+        if (_hookId == IntPtr.Zero)
         {
-            NativeMethods.UnhookWindowsHookEx(_hookId);
-            _hookId = IntPtr.Zero;
-
-            // Restore the default arrow cursor
-            //var hArrow = NativeMethods.CopyIcon(NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW));
-            //NativeMethods.SetSystemCursor(hArrow, NativeMethods.OCR_NORMAL);
-            NativeMethods.SetSystemCursor(_originalCursor, NativeMethods.OCR_NORMAL);
+            return;
         }
+
+        if (!NativeMethods.UnhookWindowsHookEx(_hookId))
+        {
+            var err = Marshal.GetLastWin32Error();
+            Debug.WriteLine($"Failed to unhook mouse: {err}");
+        }
+        _hookId = IntPtr.Zero;
+
+        // Restore the default arrow cursor
+        RestoreSystemCursor(_originalCursor);
+
+        // Destroy the copied cursor to free resources
+        if (_originalCursor != IntPtr.Zero)
+        {
+            NativeMethods.DestroyIcon(_originalCursor);
+            _originalCursor = IntPtr.Zero;
+        }
+        if (_hCrossCopy != IntPtr.Zero)
+        {
+            NativeMethods.DestroyIcon(_hCrossCopy);
+            _hCrossCopy = IntPtr.Zero;
+        }
+
+        // Free cancellation token
+        _ctr?.Dispose();
+        _ctr = null;
+    }
+
+    private void RestoreSystemCursor(IntPtr hCursor)
+    {
+        NativeMethods.SetSystemCursor(hCursor, NativeMethods.OCR_NORMAL);
+        NativeMethods.SystemParametersInfo(NativeMethods.SPI_SETCURSORS, 0, IntPtr.Zero, NativeMethods.SPIF_SENDCHANGE);
+    }
+
+    public void Dispose()
+    {
+        Cleanup();
+        GC.SuppressFinalize(this);
+    }
+
+    ~MouseHookService() => Cleanup();
+}
+
+public static class CursorLoader
+{
+    /// <summary>
+    /// Devuelve la ruta real del cursor Arrow que el usuario tenga configurado.
+    /// </summary>
+    public static string GetArrowCursorPath()
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Cursors", false);
+        var value = key?.GetValue("Arrow") as string;
+        if (string.IsNullOrEmpty(value))
+        {
+            // Fallback al cursor por defecto en System32\Cursors
+            return Path.Combine(Environment.SystemDirectory, "Cursors", "arrow.cur");
+        }
+        return Environment.ExpandEnvironmentVariables(value);
+    }
+
+    /// <summary>
+    /// Carga el HCURSOR desde fichero .cur sin duplicar el global.
+    /// </summary>
+    public static IntPtr LoadArrowCursorFromFile()
+    {
+        var path = GetArrowCursorPath();
+        var hCur = NativeMethods.LoadImage(
+            IntPtr.Zero,
+            path,
+            NativeMethods.IMAGE_CURSOR,
+            0, 0,
+            NativeMethods.LR_LOADFROMFILE);
+
+        return hCur == IntPtr.Zero
+            ? throw new Win32Exception(Marshal.GetLastWin32Error(),
+                $"The cursor couldn't be loaded from '{path}'")
+            : hCur;
     }
 }
