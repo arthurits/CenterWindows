@@ -69,6 +69,9 @@ public partial class App : Application
             services.AddSingleton<IWindowCenterService, WindowCenterService>();
             services.AddSingleton<IWindowEnumerationService, WindowEnumerationService>();
 
+            // Mouse Hook Service
+            services.AddSingleton<IMouseHookService, MouseHookService>();
+
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
