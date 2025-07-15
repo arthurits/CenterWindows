@@ -1,5 +1,7 @@
-﻿using CenterWindow.Activation;
+﻿using System.Runtime.InteropServices;
+using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
+using CenterWindow.Interop;
 using CenterWindow.Models;
 using CenterWindow.Services;
 using CenterWindow.Settings;
@@ -69,6 +71,9 @@ public partial class App : Application
             services.AddSingleton<IWindowCenterService, WindowCenterService>();
             services.AddSingleton<IWindowEnumerationService, WindowEnumerationService>();
 
+            // Mouse Hook Service
+            services.AddSingleton<IMouseHookService, MouseHookService>();
+
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
@@ -102,5 +107,17 @@ public partial class App : Application
         base.OnLaunched(args);
 
         await App.GetService<IActivationService>().ActivateAsync(args);
+
+        // Just in case we mess the system cursors, reset them
+        //uint SPI_SETCURSORS = 0x0057;
+        //uint SPIF_SENDCHANGE = 0x02;
+        //SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
+
+        //[DllImport("user32.dll", SetLastError = true)]
+        //static extern bool SystemParametersInfo(
+        //uint uiAction,
+        //uint uiParam,
+        //IntPtr pvParam,
+        //uint fWinIni);
     }
 }

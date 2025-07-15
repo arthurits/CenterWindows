@@ -9,23 +9,25 @@ namespace CenterWindow.ViewModels;
 public partial class MainViewModel : ObservableRecipient
 {
     // Services
-    readonly IWindowEnumerationService _enumerationService;
-    readonly IWindowCenterService _centerService;
+    private readonly IWindowEnumerationService _enumerationService;
+    private readonly IWindowCenterService _centerService;
+    private readonly IMouseHookService _mouseHook;
 
     // Properties
     [ObservableProperty]
-    public partial ObservableCollection<WindowModel> Windows { get; set; }
+    public partial ObservableCollection<WindowModel> WindowsList { get; set; } = [];
 
     [ObservableProperty]
-    public partial WindowModel SelectedWindow { get; set; }
+    public partial WindowModel? SelectedWindow { get; set; } = null;
 
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
 
-    public MainViewModel(IWindowEnumerationService enumerationService, IWindowCenterService centerService)
+    public MainViewModel(IWindowEnumerationService enumerationService, IWindowCenterService centerService, IMouseHookService mouseHook)
     {
         _enumerationService = enumerationService;
         _centerService = centerService;
+        _mouseHook = mouseHook;
 
         LoadWindows();
     }
@@ -39,7 +41,7 @@ public partial class MainViewModel : ObservableRecipient
             list.Add(window);
         }
 
-        Windows = list;
+        WindowsList = list;
     }
 
     [RelayCommand]
@@ -56,5 +58,31 @@ public partial class MainViewModel : ObservableRecipient
     public void RefreshWindows()
     {
         LoadWindows();
+    }
+
+    [RelayCommand]
+    private async Task SelectWindowAsync()
+    {
+        try
+        {
+            // Set the mouse hook to capture the window under the cursor
+            var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
+            if (hWnd != IntPtr.Zero)
+            {
+                // If the window is already in the list, select it; otherwise, center it
+                var win = WindowsList.FirstOrDefault(w => w.Hwnd == hWnd);
+                if (win is not null)
+                {
+                    SelectedWindow = win;
+                }
+                else
+                {
+                    _centerService.CenterWindow(hWnd, 255);
+                }
+            }
+        }
+        catch (TaskCanceledException)
+        {
+        }
     }
 }
