@@ -31,7 +31,7 @@
 
             <!-- Window list -->
             <ListView
-                ItemsSource="{Binding Windows, Mode=OneWay}"
+                ItemsSource="{Binding WindowsList, Mode=OneWay}"
                 SelectedItem="{Binding SelectedWindow, Mode=TwoWay}"
                 Height="300">
                 <ListView.ItemTemplate>
