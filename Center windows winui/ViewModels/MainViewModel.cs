@@ -15,10 +15,10 @@ public partial class MainViewModel : ObservableRecipient
 
     // Properties
     [ObservableProperty]
-    public partial ObservableCollection<WindowModel> Windows { get; set; }
+    public partial ObservableCollection<WindowModel> WindowsList { get; set; } = [];
 
     [ObservableProperty]
-    public partial WindowModel SelectedWindow { get; set; }
+    public partial WindowModel? SelectedWindow { get; set; } = null;
 
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
@@ -41,7 +41,7 @@ public partial class MainViewModel : ObservableRecipient
             list.Add(window);
         }
 
-        Windows = list;
+        WindowsList = list;
     }
 
     [RelayCommand]
@@ -58,5 +58,31 @@ public partial class MainViewModel : ObservableRecipient
     public void RefreshWindows()
     {
         LoadWindows();
+    }
+
+    [RelayCommand]
+    private async Task SelectWindowAsync()
+    {
+        try
+        {
+            // Set the mouse hook to capture the window under the cursor
+            var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
+            if (hWnd != IntPtr.Zero)
+            {
+                // If the window is already in the list, select it; otherwise, center it
+                var win = WindowsList.FirstOrDefault(w => w.Hwnd == hWnd);
+                if (win is not null)
+                {
+                    SelectedWindow = win;
+                }
+                else
+                {
+                    _centerService.CenterWindow(hWnd, 255);
+                }
+            }
+        }
+        catch (TaskCanceledException)
+        {
+        }
     }
 }
