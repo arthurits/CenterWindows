@@ -6,11 +6,17 @@ namespace CenterWindow.Services;
 
 public class MouseHookService : IMouseHookService
 {
-    private static readonly NativeMethods.LowLevelMouseProc _proc = HookCallback;
+    private readonly NativeMethods.LowLevelMouseProc _proc;
     private static IntPtr _hookId = IntPtr.Zero;
-
+    private IntPtr _originalCursor = IntPtr.Zero;
     private static TaskCompletionSource<IntPtr> _taskCS;
     private static CancellationToken _token;
+
+    public MouseHookService()
+    {
+        // Create the hook callback delegate
+        _proc = HookCallback;
+    }
 
     public Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default)
     {
@@ -21,6 +27,9 @@ public class MouseHookService : IMouseHookService
 
         _taskCS = new TaskCompletionSource<IntPtr>();
         _token = cancellationToken;
+
+        // Get the original cursor to restore later
+        _originalCursor = NativeMethods.CopyIcon(NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW));
 
         // Switch cursor to crosshair
         var hCross = NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_CROSS);
@@ -42,14 +51,14 @@ public class MouseHookService : IMouseHookService
         return _taskCS.Task;
     }
 
-    private static IntPtr SetHook(NativeMethods.LowLevelMouseProc proc)
+    private IntPtr SetHook(NativeMethods.LowLevelMouseProc proc)
     {
         using var curProcess = System.Diagnostics.Process.GetCurrentProcess();
         using var curModule = curProcess.MainModule!;
         return NativeMethods.SetWindowsHookEx(NativeMethods.WH_MOUSE_LL, proc, NativeMethods.GetModuleHandle(curModule.ModuleName), 0);
     }
 
-    private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+    private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
     {
         if (nCode >= 0 && wParam == NativeMethods.WM_LBUTTONDOWN)
         {
@@ -65,7 +74,7 @@ public class MouseHookService : IMouseHookService
         return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
     }
 
-    private static void Cleanup()
+    private void Cleanup()
     {
         if (_hookId != IntPtr.Zero)
         {
@@ -73,8 +82,9 @@ public class MouseHookService : IMouseHookService
             _hookId = IntPtr.Zero;
 
             // Restore the default arrow cursor
-            var hArrow = NativeMethods.CopyIcon(NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW));
-            NativeMethods.SetSystemCursor(hArrow, NativeMethods.OCR_NORMAL);
+            //var hArrow = NativeMethods.CopyIcon(NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW));
+            //NativeMethods.SetSystemCursor(hArrow, NativeMethods.OCR_NORMAL);
+            NativeMethods.SetSystemCursor(_originalCursor, NativeMethods.OCR_NORMAL);
         }
     }
 }
