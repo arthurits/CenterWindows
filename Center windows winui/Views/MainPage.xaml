@@ -78,7 +78,7 @@
             <!-- Crosshair button -->
             <Button
                   Command="{Binding SelectWindowCommand}"
-                  HorizontalAlignment="Right"
+                  HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Width="36" Height="36"
                   ToolTipService.ToolTip="Select window with mouse">
