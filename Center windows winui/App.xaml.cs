@@ -63,8 +63,7 @@ public partial class App : Application
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
-
-            // Core Services
+            services.AddSingleton<ILocalizationService, LocalizationService>();
             services.AddSingleton<IFileService, FileService>();
 
             // CenterWindow services
