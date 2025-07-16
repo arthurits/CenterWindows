@@ -24,7 +24,6 @@ public partial class AboutViewModel : ObservableRecipient
     {
         // Subscribe to localization service events
         _localizationService = localizationService;
-        _localizationService.LanguageChanged -= OnLanguageChanged;
         _localizationService.LanguageChanged += OnLanguageChanged;
 
         OnLanguageChanged(null, EventArgs.Empty);
