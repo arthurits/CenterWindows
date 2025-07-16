@@ -1,8 +1,8 @@
-﻿using HeatStress.ViewModels;
+﻿using CenterWindow.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace HeatStress.Views;
+namespace CenterWindow.Views;
 
 public sealed partial class AboutPage : Page
 {
