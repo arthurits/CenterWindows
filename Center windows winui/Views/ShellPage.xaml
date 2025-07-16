@@ -55,6 +55,25 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItemSeparator />
+                <!--<NavigationViewItem
+                    Content="{Binding SettingsItem}"
+                    helpers:NavigationHelper.NavigateTo="HeatStress.ViewModels.SettingsViewModel"
+                    ToolTipService.ToolTip="{Binding SettingsToolTip}">
+                    <NavigationViewItem.Icon>
+                        <ImageIcon Source="/Assets/Settings_windows.svg"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>-->
+                <NavigationViewItem
+                    Content="{Binding AboutItem}"
+                    helpers:NavigationHelper.NavigateTo="CenterWindows.ViewModels.AboutViewModel"
+                    ToolTipService.ToolTip="{Binding AboutToolTip}">
+                    <NavigationViewItem.Icon>
+                        <BitmapIcon UriSource="/Assets/about.ico" ShowAsMonochrome="False" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
