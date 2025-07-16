@@ -75,7 +75,7 @@
                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.AboutViewModel"
                     ToolTipService.ToolTip="{Binding AboutToolTip}">
                     <NavigationViewItem.Icon>
-                        <BitmapIcon UriSource="/Assets/about.ico" ShowAsMonochrome="False" />
+                        <BitmapIcon UriSource="/Assets/Settings_about.ico" ShowAsMonochrome="False" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
