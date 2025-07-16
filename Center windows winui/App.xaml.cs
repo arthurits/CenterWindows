@@ -74,6 +74,8 @@ public partial class App : Application
             services.AddSingleton<IMouseHookService, MouseHookService>();
 
             // Views and ViewModels
+            services.AddSingleton<AboutViewModel>();
+            services.AddTransient<AboutPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
             services.AddTransient<MainViewModel>();
