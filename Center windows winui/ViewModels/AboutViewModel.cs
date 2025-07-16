@@ -36,9 +36,9 @@ public partial class AboutViewModel : ObservableRecipient
 
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
-        ProductName = $"{"StrProductName".GetLocalized("About")} {AboutProperties.GetProductName()}";
-        VersionDescription = $"{"StrVersionDescription".GetLocalized("About")} {AboutProperties.GetVersionDescription()}";
-        Copyright = $"{"StrCopyright".GetLocalized("About")} {AboutProperties.GetCopyright()}";
-        CompanyName = $"{"StrCompanyName".GetLocalized("About")} {AboutProperties.GetCompanyName()}";
+        //ProductName = $"{"StrProductName".GetLocalized("About")} {AboutProperties.GetProductName()}";
+        //VersionDescription = $"{"StrVersionDescription".GetLocalized("About")} {AboutProperties.GetVersionDescription()}";
+        //Copyright = $"{"StrCopyright".GetLocalized("About")} {AboutProperties.GetCopyright()}";
+        //CompanyName = $"{"StrCompanyName".GetLocalized("About")} {AboutProperties.GetCompanyName()}";
     }
 }

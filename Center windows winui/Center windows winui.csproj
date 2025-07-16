@@ -21,8 +21,12 @@
 	  <Copyright>© 2025</Copyright>
 	  <Company>Arthurits Ltd.</Company>
 	  <Version>0.1.0</Version>
-	  <LangVersion>preview</LangVersion>
 
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>

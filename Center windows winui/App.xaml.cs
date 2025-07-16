@@ -9,6 +9,7 @@ using CenterWindow.ViewModels;
 using CenterWindow.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 
 namespace CenterWindow;
@@ -37,9 +38,12 @@ public partial class App : Application
         return service;
     }
 
-    public static WindowEx MainWindow { get; } = new MainWindow();
+    public static WindowEx MainWindow { get; } = new WindowEx();
 
-    public static UIElement? AppTitlebar { get; set; }
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
 
     public App()
     {
@@ -56,14 +60,13 @@ public partial class App : Application
             // Other Activation Handlers
 
             // Services
-            services.AddSingleton<ILocalSettingsService<AppSettings>, LocalSettingsService>();
-            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
-
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ILocalizationService, LocalizationService>();
+            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+            services.AddSingleton<ILocalSettingsService<AppSettings>, LocalSettingsService>();
             services.AddSingleton<IFileService, FileService>();
 
             // CenterWindow services
@@ -109,6 +112,40 @@ public partial class App : Application
 
         await App.GetService<IActivationService>().ActivateAsync(args);
 
+        // Handle closing event
+        MainWindow.AppWindow.Closing += OnClosing;
+
+        // Read settings and set initial window position
+        // https://github.com/arthurits/OpenXML-editor/blob/master/OpenXML%20WinUI/App.xaml.cs
+        var settings = App.GetService<ILocalSettingsService<AppSettings>>();
+        await settings.ReadSettingFileAsync<AppSettings>();
+
+        if (settings.GetValues.WindowPosition)
+        {
+            MainWindow.MoveAndResize(settings.GetValues.WindowLeft, settings.GetValues.WindowTop, settings.GetValues.WindowWidth, settings.GetValues.WindowHeight);
+        }
+        else
+        {
+            // https://stackoverflow.com/questions/74890047/how-can-i-set-my-winui3-program-to-be-started-in-the-center-of-the-screen
+            //IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(m_window);
+            //WindowPosition.SetWindowSize(MainWindow, width: 1000, height: 900);
+            //WindowPosition.CenterWindow(MainWindow);
+        }
+
+        // Apply theme stored in settings
+        var themeService = App.GetService<IThemeSelectorService>();
+        if (themeService is not null)
+        {
+            if (Enum.TryParse(settings.GetValues.ThemeName, out ElementTheme theme) is true)
+            {
+                //themeService.SetTheme(theme);
+            }
+        }
+
+        // Apply language stored in settings
+        var _localizationService = App.GetService<ILocalizationService>();
+        _localizationService.SetAppLanguage(settings.GetValues.AppCultureName);
+
         // Just in case we mess the system cursors, reset them
         //uint SPI_SETCURSORS = 0x0057;
         //uint SPIF_SENDCHANGE = 0x02;
@@ -120,5 +157,39 @@ public partial class App : Application
         //uint uiParam,
         //IntPtr pvParam,
         //uint fWinIni);
+    }
+
+    private async void OnClosing(AppWindow sender, AppWindowClosingEventArgs args)
+    {
+        //args.Cancel = true; // https://github.com/microsoft/WindowsAppSDK/issues/3209
+
+        //var result = await MessageBox.Show(
+        //    "MsgBoxExitContent".GetLocalized("MessageBox"),
+        //    "MsgBoxExitTitle".GetLocalized("MessageBox"),
+        //    primaryButtonText: "MsgBoxExitPrimary".GetLocalized("MessageBox"),
+        //    closeButtonText: "MsgBoxExitCancel".GetLocalized("MessageBox"),
+        //    defaultButton: MessageBox.MessageBoxButtonDefault.CloseButton,
+        //    icon: MessageBox.MessageBoxImage.Question);
+
+        //if (result == Microsoft.UI.Xaml.Controls.ContentDialogResult.Primary)
+        //{
+        //    var settings = App.GetService<ILocalSettingsService<AppSettings>>();
+        //    //await settings.SaveSettingKeyAsync<string>("isTrue","yes");
+        //    if (settings.GetValues.WindowPosition)
+        //    {
+        //        settings.GetValues.WindowLeft = MainWindow.AppWindow.Position.X;
+        //        settings.GetValues.WindowTop = MainWindow.AppWindow.Position.Y;
+        //        settings.GetValues.WindowWidth = MainWindow.AppWindow.Size.Width;
+        //        settings.GetValues.WindowHeight = MainWindow.AppWindow.Size.Height;
+        //    }
+
+        //    settings.GetValues.AppCultureName = App.GetService<ILocalizationService>().CurrentLanguage;
+        //    //var themeService = App.GetService<IThemeSelectorService>();
+        //    //settings.GetValues.ThemeName = themeService.GetThemeName();
+
+        //    await settings.SaveSettingFileAsync();
+
+        //    MainWindow.Close();
+        //}
     }
 }
