@@ -1,4 +1,4 @@
-﻿namespace HeatStress.Models;
+﻿namespace CenterWindow.Models;
 
 public class CultureOption
 {
