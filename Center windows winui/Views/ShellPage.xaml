@@ -7,7 +7,10 @@
     xmlns:helpers="using:CenterWindow.Helpers"
     xmlns:behaviors="using:CenterWindow.Behaviors"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    Loaded="OnLoaded">
+    xmlns:viewmodel="using:CenterWindow.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodel:ShellViewModel, IsDesignTimeCreatable=False}"
+    Loaded="OnLoaded"
+    mc:Ignorable="d">
 
     <Grid>
         <Grid x:Name="AppTitleBar"
@@ -49,12 +52,33 @@
                 TODO: Update item icons by updating FontIcon.Glyph properties.
                 https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
                 -->
-                <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.MainViewModel">
+                <NavigationViewItem Content="{Binding MainItem}"
+                                    helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.MainViewModel"
+                                    ToolTipService.ToolTip="{Binding MainItem}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItemSeparator />
+                <!--<NavigationViewItem
+                    Content="{Binding SettingsItem}"
+                    helpers:NavigationHelper.NavigateTo="HeatStress.ViewModels.SettingsViewModel"
+                    ToolTipService.ToolTip="{Binding SettingsToolTip}">
+                    <NavigationViewItem.Icon>
+                        <ImageIcon Source="/Assets/Settings_windows.svg"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>-->
+                <NavigationViewItem
+                    Content="{Binding AboutItem}"
+                    helpers:NavigationHelper.NavigateTo="CenterWindows.ViewModels.AboutViewModel"
+                    ToolTipService.ToolTip="{Binding AboutToolTip}">
+                    <NavigationViewItem.Icon>
+                        <BitmapIcon UriSource="/Assets/about.ico" ShowAsMonochrome="False" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
