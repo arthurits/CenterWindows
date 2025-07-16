@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using HeatStress.Contracts.Services;
-using HeatStress.Helpers;
+using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
 
-namespace HeatStress.ViewModels;
+namespace CenterWindow.ViewModels;
 
 public partial class AboutViewModel : ObservableRecipient
 {
