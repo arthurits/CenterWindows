@@ -72,7 +72,7 @@
                 </NavigationViewItem>-->
                 <NavigationViewItem
                     Content="{Binding AboutItem}"
-                    helpers:NavigationHelper.NavigateTo="CenterWindows.ViewModels.AboutViewModel"
+                    helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.AboutViewModel"
                     ToolTipService.ToolTip="{Binding AboutToolTip}">
                     <NavigationViewItem.Icon>
                         <BitmapIcon UriSource="/Assets/about.ico" ShowAsMonochrome="False" />
