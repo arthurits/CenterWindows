@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
-using HeatStress.Models;
+using CenterWindow.Models;
 
-namespace HeatStress.Contracts.Services;
+namespace CenterWindow.Contracts.Services;
 
 public interface ILocalizationService
 {
-    public string CurrentLanguage { get; }
+    string CurrentLanguage { get; }
     event EventHandler LanguageChanged;
     string GetString(string key);
     string GetString(string key, string resourceMap);
