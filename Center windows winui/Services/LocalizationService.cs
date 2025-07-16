@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using Microsoft.Windows.ApplicationModel.Resources;
 
-using HeatStress.Contracts.Services;
-using HeatStress.Models;
+using CenterWindow.Contracts.Services;
+using CenterWindow.Models;
 
-namespace HeatStress.Services;
+namespace CenterWindow.Services;
 
 public class LocalizationService : ILocalizationService
 {
