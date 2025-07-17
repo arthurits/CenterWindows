@@ -74,6 +74,11 @@ public partial class AppSettings
     [JsonPropertyName("User open path")]
     public string UserOpenPath { get; set; } = $"{System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\examples";
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the application should display an icon in the system tray.
+    /// </summary>
+    [JsonPropertyName("Show icon in tray")]
+    public bool ShowTrayIcon { get; set; } = true;
 
     [JsonIgnore]
     public string? AppPath { get; set; } = Path.GetDirectoryName(Environment.ProcessPath);

@@ -151,7 +151,7 @@ public partial class App : Application
 
         // Initialize the tray icon service
         var _trayIconService = App.GetService<ITrayIconService>();
-        if (settings.GetValues.ShowInTray)
+        if (settings.GetValues.ShowTrayIcon)
         {
             _trayIconService.Initialize();
         }
