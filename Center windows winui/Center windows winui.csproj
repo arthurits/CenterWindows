@@ -29,6 +29,7 @@
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <AssemblyName>CenterWindows</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
