@@ -109,7 +109,6 @@ internal class TrayIconService : ITrayIconService, IDisposable
     {
         if (msg == NativeMethods.WM_TRAYICON)
         {
-            Debug.WriteLine($"WM_TRAYICON: {wParam} {lParam}");
             switch ((uint)lParam)
             {
                 case NativeMethods.WM_RBUTTONDOWN:  // WM_RBUTTONDOWN
