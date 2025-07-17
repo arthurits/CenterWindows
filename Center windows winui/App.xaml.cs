@@ -76,6 +76,9 @@ public partial class App : Application
             // Mouse Hook Service
             services.AddSingleton<IMouseHookService, MouseHookService>();
 
+            // Tray Icon Service
+            services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow));
+
             // Views and ViewModels
             services.AddSingleton<AboutViewModel>();
             services.AddTransient<AboutPage>();
@@ -145,6 +148,13 @@ public partial class App : Application
         // Apply language stored in settings
         var _localizationService = App.GetService<ILocalizationService>();
         _localizationService.SetAppLanguage(settings.GetValues.AppCultureName);
+
+        // Initialize the tray icon service
+        var _trayIconService = App.GetService<ITrayIconService>();
+        if (settings.GetValues.ShowInTray)
+        {
+            _trayIconService.Initialize();
+        }
 
         // Just in case we mess the system cursors, reset them
         //uint SPI_SETCURSORS = 0x0057;
