@@ -5,7 +5,14 @@ internal static partial class NativeMethods
     // Constants Win32 for hooks and cursors
     public const int WH_MOUSE_LL = 14;
     public const int WM_LBUTTONDOWN = 0x0201;
+    public const int WM_LBUTTONUP = 0x0202;
+    public const int WM_LBUTTONDBLCLK = 0x0203;
     public const int WM_RBUTTONDOWN = 0x0204;
+    public const int WM_RBUTTONUP = 0x0205;
+    public const int WM_RBUTTONDBLCLK = 0x0206;
+    public const int WM_MBUTTONDOWN = 0x0207;
+    public const int WM_MBUTTONUP = 0x0208;
+    public const int WM_MBUTTONDBLCLK = 0x0209;
     public const uint OCR_NORMAL = 32512;
     public const IntPtr IDC_ARROW = 32512;
     public const IntPtr IDC_CROSS = 32515;
