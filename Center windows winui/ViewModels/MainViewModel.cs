@@ -12,6 +12,7 @@ public partial class MainViewModel : ObservableRecipient
     private readonly IWindowEnumerationService _enumerationService;
     private readonly IWindowCenterService _centerService;
     private readonly IMouseHookService _mouseHook;
+    private readonly ITrayIconService _trayIconService;
 
     // Properties
     [ObservableProperty]
@@ -23,13 +24,35 @@ public partial class MainViewModel : ObservableRecipient
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
 
-    public MainViewModel(IWindowEnumerationService enumerationService, IWindowCenterService centerService, IMouseHookService mouseHook)
+    public MainViewModel(
+        IWindowEnumerationService enumerationService,
+        IWindowCenterService centerService,
+        IMouseHookService mouseHook,
+        ITrayIconService trayIcon)
     {
         _enumerationService = enumerationService;
         _centerService = centerService;
         _mouseHook = mouseHook;
+        _trayIconService = trayIcon;
+        _trayIconService.TrayMenuItemClicked += OnTrayMenuItem;
 
         LoadWindows();
+    }
+
+    private void OnTrayMenuItem(object? s, TrayMenuItemEventArgs e)
+    {
+        switch (e.ItemId)
+        {
+            //case TrayMenuItems.Open:
+            //    OpenWindowCommand.Execute(null);
+            //    break;
+            //case TrayMenuItems.Settings:
+            //    NavigateToSettingsCommand.Execute(null);
+            //    break;
+            //case TrayMenuItems.Exit:
+            //    ExitCommand.Execute(null);
+            //    break;
+        }
     }
 
     [RelayCommand]
