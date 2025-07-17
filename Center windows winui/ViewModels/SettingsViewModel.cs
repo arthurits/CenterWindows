@@ -16,6 +16,7 @@ namespace CenterWindow.ViewModels;
 public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly ITrayIconService _trayIconService;
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
@@ -23,12 +24,13 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     private string _versionDescription;
 
-    public ICommand SwitchThemeCommand
-    {
-        get;
-    }
+    
+    [ObservableProperty]
+    public partial bool ShowInTray { get; set; }
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService)
+    public ICommand SwitchThemeCommand { get; }
+
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, ITrayIconService trayIconService)
     {
         _themeSelectorService = themeSelectorService;
         _elementTheme = _themeSelectorService.Theme;
@@ -43,6 +45,8 @@ public partial class SettingsViewModel : ObservableRecipient
                     await _themeSelectorService.SetThemeAsync(param);
                 }
             });
+
+        _trayIconService = trayIconService;
     }
 
     private static string GetVersionDescription()
@@ -61,5 +65,19 @@ public partial class SettingsViewModel : ObservableRecipient
         }
 
         return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+    }
+
+    partial void OnShowInTrayChanged(bool value)
+    {
+        if (value)
+        {
+            _trayIconService.Initialize();
+        }
+        else
+        {
+            _trayIconService.Dispose();
+        }
+
+        //settingsService.ShowInTray = value;
     }
 }
