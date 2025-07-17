@@ -5,9 +5,30 @@ namespace CenterWindow.Helpers;
 
 public static class ResourceExtensions
 {
-    private static readonly ResourceLoader _resourceLoader = new();
-    public static readonly ILocalizationService _localizationService = App.GetService<ILocalizationService>();
+    private static Lazy<ResourceLoader> _resourceLoader = new(() => new ResourceLoader());
+    private static Lazy<ILocalizationService> _localizationService = new(App.GetService<ILocalizationService>);
 
-    public static string GetLocalized(this string resourceKey) => _resourceLoader.GetString(resourceKey);
-    public static string GetLocalized(this string resourceKey, string resourceMap) => _localizationService.GetString(resourceKey, resourceMap);
+    public static string GetLocalized(this string resourceKey, string? resourceMap = null)
+    {
+        string stringValue;
+        if (resourceMap is null)
+        {
+            stringValue = _resourceLoader.Value.GetString(resourceKey);
+        }
+        else
+        {
+            stringValue = _localizationService.Value.GetString(resourceKey, resourceMap);
+        }
+        return stringValue;
+    }
+
+    public static void Refresh()
+    {
+        // Reset WinRT resource context
+        Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
+
+        // Substituting the Lazy instances to force a new instance
+        _resourceLoader = new(() => new ResourceLoader());
+        _localizationService = new(App.GetService<ILocalizationService>);
+    }
 }
