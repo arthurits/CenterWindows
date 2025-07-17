@@ -19,5 +19,21 @@ public interface ITrayIconService
     /// Shows the context menu for the icon.
     /// </summary>
     void ShowContextMenu();
+
+    /// <summary>
+    /// Occurs when a menu item in the tray menu is clicked.
+    /// </summary>
+    /// <remarks>This event is triggered whenever a user selects a menu item from the tray menu. Use the <see
+    /// cref="TrayMenuItemEventArgs"/> parameter to access details about the clicked menu item, such as its identifier
+    /// or associated data.</remarks>
+    event EventHandler<TrayMenuItemEventArgs> TrayMenuItemClicked;
 }
 
+public class TrayMenuItemEventArgs : EventArgs
+{
+    public int ItemId { get; }
+    public TrayMenuItemEventArgs(int id)
+    {
+        ItemId = id;
+    }
+}
