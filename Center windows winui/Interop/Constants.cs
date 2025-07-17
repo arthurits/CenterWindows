@@ -5,6 +5,7 @@ internal static partial class NativeMethods
     // Constants Win32 for hooks and cursors
     public const int WH_MOUSE_LL = 14;
     public const int WM_LBUTTONDOWN = 0x0201;
+    public const int WM_RBUTTONDOWN = 0x0204;
     public const uint OCR_NORMAL = 32512;
     public const IntPtr IDC_ARROW = 32512;
     public const IntPtr IDC_CROSS = 32515;
@@ -28,4 +29,16 @@ internal static partial class NativeMethods
     public const uint WM_USER = 0x0400;
     public const uint WM_TRAYICON = WM_USER + 1;
     public const int GWL_WNDPROC = -4;
+
+    // Constans for AppendMenu
+    public const uint MF_STRING = 0x00000000;
+    public const uint MF_SEPARATOR = 0x00000800;
+
+    // Flags for TrackPopupMenu
+    public const uint TPM_LEFTALIGN = 0x0000;
+    public const uint TPM_RETURNCMD = 0x0100;
+    public const uint TPM_RIGHTBUTTON = 0x0002;
+
+    // Win32 messages
+    public const uint WM_COMMAND = 0x0111;
 }

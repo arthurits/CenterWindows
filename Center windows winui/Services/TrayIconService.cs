@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 using WinRT.Interop;
@@ -11,6 +12,9 @@ internal class TrayIconService : ITrayIconService, IDisposable
     private IntPtr _prevWndProc;
     private NativeMethods.NOTIFYICONDATA _nid;
     private readonly NativeMethods.WndProc _wndProcDelegate;
+
+    public event EventHandler<TrayMenuItemEventArgs>? TrayMenuItemClicked;
+    protected virtual void OnMenuItemClicked(int id) => TrayMenuItemClicked?.Invoke(this, new TrayMenuItemEventArgs(id));
 
     public TrayIconService(WindowEx mainWindow)
     {
@@ -56,8 +60,38 @@ internal class TrayIconService : ITrayIconService, IDisposable
 
     public void ShowContextMenu()
     {
-        // Aquí crea y despliega tu menú Win32 (CreatePopupMenu, AppendMenu, TrackPopupMenu…)
-        // usando P/Invoke o marshalling según Windows API.
+        // Crea el menú nativo
+        var hMenu = NativeMethods.CreatePopupMenu();
+        if (hMenu == IntPtr.Zero)
+        {
+            return;
+        }
+
+        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 1, "&Abrir");
+        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 2, "&Preferencias");
+        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_SEPARATOR, 0, string.Empty);
+        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 3, "S&alir");
+
+        // 3. Posicionar el menú en el cursor
+        NativeMethods.GetCursorPos(out var pt);
+        NativeMethods.SetForegroundWindow(_hwnd);
+
+        // 4. Mostrar y obtener el comando seleccionado
+        uint cmd = NativeMethods.TrackPopupMenu(
+            hMenu,
+            NativeMethods.TPM_RETURNCMD | NativeMethods.TPM_LEFTALIGN | NativeMethods.TPM_RIGHTBUTTON,
+            pt.x, pt.y, 0,
+            _hwnd,
+            IntPtr.Zero);
+
+        // 5. Si el usuario pulsó algo, lanza el evento
+        if (cmd != 0)
+        {
+            OnMenuItemClicked((int)cmd);
+        }
+
+        // 6. Limpia el menú
+        NativeMethods.DestroyMenu(hMenu);
     }
 
     public void Dispose()
@@ -75,9 +109,10 @@ internal class TrayIconService : ITrayIconService, IDisposable
     {
         if (msg == NativeMethods.WM_TRAYICON)
         {
+            Debug.WriteLine($"WM_TRAYICON: {wParam} {lParam}");
             switch ((uint)lParam)
             {
-                case 0x0201:  // WM_LBUTTONDOWN
+                case NativeMethods.WM_RBUTTONDOWN:  // WM_RBUTTONDOWN
                               // tu lógica al click izquierdo
                     ShowContextMenu();
                     break;
@@ -85,6 +120,12 @@ internal class TrayIconService : ITrayIconService, IDisposable
                               // doble click
                     break;
             }
+        }
+
+        if (msg == NativeMethods.WM_COMMAND)
+        {
+            var id = (int)wParam;
+            TrayMenuItemClicked?.Invoke(this, new TrayMenuItemEventArgs(id));
         }
 
         // Forward al original
