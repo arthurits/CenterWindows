@@ -32,8 +32,7 @@
             <!-- Window list -->
             <ListView
                 ItemsSource="{Binding WindowsList, Mode=OneWay}"
-                SelectedItem="{Binding SelectedWindow, Mode=TwoWay}"
-                Height="300">
+                SelectedItem="{Binding SelectedWindow, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:WindowModel">
                         <Grid Padding="4">
