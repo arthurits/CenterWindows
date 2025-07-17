@@ -27,4 +27,5 @@ internal static partial class NativeMethods
     public const uint NIM_DELETE = 0x00000002;
     public const uint WM_USER = 0x0400;
     public const uint WM_TRAYICON = WM_USER + 1;
+    public const int GWL_WNDPROC = -4;
 }
