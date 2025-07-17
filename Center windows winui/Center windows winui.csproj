@@ -59,7 +59,7 @@
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
 
-	<Target Name="RemoveFoldersWithMuiFiles" AfterTargets="Build">
+	<Target Name="RemoveFoldersWithMuiFiles" AfterTargets="CopyFilesToOutputDirectory">
 
 		<ItemGroup>
 			<!-- Create a list of the languages your need to keep.-->
