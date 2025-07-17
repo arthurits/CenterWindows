@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 using WinRT.Interop;
 
 namespace CenterWindow.Services;
-internal class TrayIconService : ITrayIconService, IDisposable
+internal partial class TrayIconService : ITrayIconService, IDisposable
 {
     private readonly IntPtr _hwnd;
     private readonly IntPtr _hIcon;
