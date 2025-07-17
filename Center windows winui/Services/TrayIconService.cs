@@ -52,10 +52,8 @@ internal class TrayIconService : ITrayIconService, IDisposable
         NativeMethods.Shell_NotifyIcon(NativeMethods.NIM_ADD, ref _nid);
 
         // Subclasificar la ventana para escuchar WM_TRAYICON
-        var newProcPtr =
-            Marshal.GetFunctionPointerForDelegate(_wndProcDelegate);
-        _prevWndProc = NativeMethods.SetWindowLongPtr(
-            _hwnd, NativeMethods.GWL_WNDPROC, newProcPtr);
+        var newProcPtr = Marshal.GetFunctionPointerForDelegate(_wndProcDelegate);
+        _prevWndProc = NativeMethods.SetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC, newProcPtr);
     }
 
     public void ShowContextMenu()
@@ -124,7 +122,7 @@ internal class TrayIconService : ITrayIconService, IDisposable
         if (msg == NativeMethods.WM_COMMAND)
         {
             var id = (int)wParam;
-            TrayMenuItemClicked?.Invoke(this, new TrayMenuItemEventArgs(id));
+            OnMenuItemClicked(id);
         }
 
         // Forward al original
