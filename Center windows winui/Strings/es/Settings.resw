@@ -147,4 +147,10 @@
   <data name="StrWindowSize" xml:space="preserve">
     <value>Tamaño de la ventana: {0} px de ancho y {1} px de alto</value>
   </data>
+  <data name="StrShowTrayIconHeader" xml:space="preserve">
+    <value>Mostrar icono</value>
+  </data>
+  <data name="StrShowTrayIconDescription" xml:space="preserve">
+    <value>Muestra el icono de la aplicación en el </value>
+  </data>
 </root>

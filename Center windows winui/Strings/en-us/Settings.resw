@@ -150,4 +150,10 @@
   <data name="StrResetButton" xml:space="preserve">
     <value></value>
   </data>
+  <data name="StrShowTrayIconHeader" xml:space="preserve">
+    <value>Show tray icon</value>
+  </data>
+  <data name="StrShowTrayIconDescription" xml:space="preserve">
+    <value>Shows an icon in the system task bar</value>
+  </data>
 </root>
