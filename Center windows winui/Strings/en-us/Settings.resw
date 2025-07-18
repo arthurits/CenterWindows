@@ -154,6 +154,6 @@
     <value>Show tray icon</value>
   </data>
   <data name="StrShowTrayIconDescription" xml:space="preserve">
-    <value>Shows an icon in the system task bar</value>
+    <value>Display the app's icon in the Windows taskbar tray for quick access</value>
   </data>
 </root>

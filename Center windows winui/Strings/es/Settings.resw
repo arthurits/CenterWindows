@@ -148,10 +148,10 @@
     <value>Tamaño de la ventana: {0} px de ancho y {1} px de alto</value>
   </data>
   <data name="StrShowTrayIconHeader" xml:space="preserve">
-    <value>Mostrar icono</value>
+    <value>Mostrar icono en bandeja</value>
   </data>
   <data name="StrShowTrayIconDescription" xml:space="preserve">
-    <value>Muestra el icono de la aplicación en el </value>
+    <value>Muestra el icono de la aplicación en la bandeja de sistema de Windows para un acceso rápido</value>
   </data>
   <data name="StrResetButton" xml:space="preserve">
     <value>Restablecer valores</value>
