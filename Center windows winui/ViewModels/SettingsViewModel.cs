@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows.Input;
 
 using CenterWindow.Contracts.Services;
@@ -23,6 +24,15 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly ILocalizationService _localizationService;
     private readonly ITrayIconService _trayIconService;
     private AppSettings _appSettings;
+
+    public ObservableCollection<CultureOption> AvailableLanguages { get; set; } = [];
+
+    [ObservableProperty]
+    public partial int SelectedLanguageIndex { get; set; } = -1;
+
+    [ObservableProperty]
+    public partial int Theme { get; set; } = 0;
+    public ObservableCollection<ComboBoxData> ColorModes { get; set; } = [];
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
