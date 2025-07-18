@@ -148,7 +148,7 @@
     <value>App window size: {0} px width and {1} px height</value>
   </data>
   <data name="StrResetButton" xml:space="preserve">
-    <value></value>
+    <value>Reset settings</value>
   </data>
   <data name="StrShowTrayIconHeader" xml:space="preserve">
     <value>Show tray icon</value>

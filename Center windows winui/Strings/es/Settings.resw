@@ -153,4 +153,7 @@
   <data name="StrShowTrayIconDescription" xml:space="preserve">
     <value>Muestra el icono de la aplicación en el </value>
   </data>
+  <data name="StrResetButton" xml:space="preserve">
+    <value>Restablecer valores</value>
+  </data>
 </root>
