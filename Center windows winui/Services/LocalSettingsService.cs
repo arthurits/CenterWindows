@@ -3,7 +3,6 @@ using System.Text.Json;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
 using CenterWindow.Models;
-using CenterWindow.Settings;
 
 using Microsoft.Extensions.Options;
 using Windows.Storage;
