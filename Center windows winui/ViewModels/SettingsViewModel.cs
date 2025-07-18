@@ -169,7 +169,26 @@ public partial class SettingsViewModel : ObservableRecipient
     {
         if (Enum.TryParse(themeName, out ElementTheme theme) is true)
         {
-            _themeSelectorService.SetTheme(theme);
+            _themeSelectorService.SetThemeAsync(theme);
+        }
+    }
+
+    private void AppSettings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(_appSettings.WindowLeft) || e.PropertyName == nameof(_appSettings.WindowTop))
+        {
+            OnPropertyChanged(nameof(WindowPositionDescription));
+        }
+        else if (e.PropertyName == nameof(_appSettings.WindowWidth) || e.PropertyName == nameof(_appSettings.WindowHeight))
+        {
+            OnPropertyChanged(nameof(WindowSizeDescription));
+        }
+        else
+        {
+            if (IsResetVisible == false)
+            {
+                IsResetVisible = true;
+            }
         }
     }
 
