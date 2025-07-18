@@ -12,17 +12,20 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 
 using Windows.ApplicationModel;
+using Windows.System.UserProfile;
 
 namespace CenterWindow.ViewModels;
 
 public partial class SettingsViewModel : ObservableRecipient
 {
+    // Settings synchronization dictionary
     private readonly Dictionary<string, Action> _syncActions = [];
 
     // Services
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly ILocalizationService _localizationService;
     private readonly ITrayIconService _trayIconService;
+    private readonly ILocalSettingsService<AppSettings> _settingsService;
     private AppSettings _appSettings;
 
     public ObservableCollection<CultureOption> AvailableLanguages { get; set; } = [];
@@ -34,35 +37,90 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial int Theme { get; set; } = 0;
     public ObservableCollection<ComboBoxData> ColorModes { get; set; } = [];
 
-    [ObservableProperty]
-    private ElementTheme _elementTheme;
+    //[ObservableProperty]
+    //private ElementTheme _elementTheme;
+
+    //[ObservableProperty]
+    //private string _versionDescription;
 
     [ObservableProperty]
-    private string _versionDescription;
-
+    public partial bool WindowPosition { get; set; }
+    [ObservableProperty]
+    public partial int WindowTop { get; set; }
     
+    [ObservableProperty]
+    public partial int WindowLeft { get; set; }
+    [ObservableProperty]
+    public partial int WindowWidth { get; set; }
+    [ObservableProperty]
+    public partial int WindowHeight { get; set; }
+
+
     [ObservableProperty]
     public partial bool ShowInTray { get; set; }
 
+    //public string WindowSizeDescription => string.Format(StrWindowSize, WindowWidth, WindowHeight);
+
+    //public string WindowPositionDescription => string.Format(StrWindowPosition, WindowTop, WindowLeft);
+
+
     public ICommand SwitchThemeCommand { get; }
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, ITrayIconService trayIconService)
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, ILocalSettingsService<AppSettings> settings, ILocalizationService localizationService, ITrayIconService trayIconService)
     {
-        _themeSelectorService = themeSelectorService;
-        _elementTheme = _themeSelectorService.Theme;
-        _versionDescription = GetVersionDescription();
-
-        SwitchThemeCommand = new RelayCommand<ElementTheme>(
-            async (param) =>
-            {
-                if (ElementTheme != param)
-                {
-                    ElementTheme = param;
-                    await _themeSelectorService.SetThemeAsync(param);
-                }
-            });
-
+        // Tray icon service
         _trayIconService = trayIconService;
+
+        // Settings service
+        _settingsService = settings;
+        _appSettings = settings.GetValues;
+
+        // Get settings and update the observable properties
+        WindowPosition = _appSettings.WindowPosition;
+
+        // Theme service
+        _themeSelectorService = themeSelectorService;
+        Theme = (int)Enum.Parse<ElementTheme>(_appSettings.ThemeName);
+        //_elementTheme = _themeSelectorService.Theme;
+        //_versionDescription = GetVersionDescription();
+
+        // Subscribe to localization service events
+        _localizationService = localizationService;
+        _localizationService.LanguageChanged += OnLanguageChanged;
+
+        // Populate the available languages
+        var cultures = _localizationService.GetAvailableLanguages();
+        var cultureList = cultures.ToList();
+        AvailableLanguages = new ObservableCollection<CultureOption>(cultureList);
+
+        var language = Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride;
+        var currentLang = !string.IsNullOrEmpty(language) ? language : GlobalizationPreferences.Languages[0];
+
+        // Look for an exact match first, then check for prefixes.
+        var selectedCultureIndex = cultureList.FindIndex(lang =>
+                 lang.LanguageTag == currentLang ||
+                 currentLang.StartsWith(lang.LanguageTag + "-") ||
+                 lang.LanguageTag.StartsWith(currentLang + "-"));
+
+        SelectedLanguageIndex = selectedCultureIndex;
+
+        //SwitchThemeCommand = new RelayCommand<ElementTheme>(
+        //    async (param) =>
+        //    {
+        //        if (ElementTheme != param)
+        //        {
+        //            ElementTheme = param;
+        //            await _themeSelectorService.SetThemeAsync(param);
+        //        }
+        //    });
+
+        // Populate the settings dictionary for synchronization
+        _syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
+        _syncActions[nameof(WindowTop)] = () => _appSettings.WindowTop = WindowTop;
+        _syncActions[nameof(WindowLeft)] = () => _appSettings.WindowLeft = WindowLeft;
+        _syncActions[nameof(WindowWidth)] = () => _appSettings.WindowWidth = WindowWidth;
+        _syncActions[nameof(WindowHeight)] = () => _appSettings.WindowHeight = WindowHeight;
+
     }
 
     private static string GetVersionDescription()
