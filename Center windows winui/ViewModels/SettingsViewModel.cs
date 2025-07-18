@@ -58,7 +58,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
 
     [ObservableProperty]
-    public partial bool ShowInTray { get; set; }
+    public partial bool ShowTrayIcon { get; set; }
 
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
