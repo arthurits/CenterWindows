@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Input;
 
@@ -10,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Microsoft.UI.Xaml;
-
+using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel;
 using Windows.System.UserProfile;
 
@@ -62,9 +63,9 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
 
-    //public string WindowSizeDescription => string.Format(StrWindowSize, WindowWidth, WindowHeight);
+    public string WindowSizeDescription => string.Format(StrWindowSize, WindowWidth, WindowHeight);
 
-    //public string WindowPositionDescription => string.Format(StrWindowPosition, WindowTop, WindowLeft);
+    public string WindowPositionDescription => string.Format(StrWindowPosition, WindowTop, WindowLeft);
 
 
     public ICommand SwitchThemeCommand { get; }
@@ -195,23 +196,76 @@ public partial class SettingsViewModel : ObservableRecipient
         }
     }
 
-    private static string GetVersionDescription()
+    partial void OnStrWindowSizeChanged(string oldValue, string newValue)
     {
-        Version version;
-
-        if (RuntimeHelper.IsMSIX)
-        {
-            var packageVersion = Package.Current.Id.Version;
-
-            version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
-        }
-        else
-        {
-            version = Assembly.GetExecutingAssembly().GetName().Version!;
-        }
-
-        return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+        OnPropertyChanged(nameof(WindowSizeDescription));
     }
+
+    partial void OnStrWindowPositionChanged(string oldValue, string newValue)
+    {
+        OnPropertyChanged(nameof(WindowPositionDescription));
+    }
+
+    /// <summary>
+    /// Override OnPropertyChanged to handle custom behaviour
+    /// </summary>
+    /// <param name="e"></param>
+    /// <see href="https://stackoverflow.com/questions/71857854/how-to-call-a-method-after-a-property-update"/>
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        // Call the base function
+        base.OnPropertyChanged(e);
+
+        // If the property name starts with "Str" then it's a localization variable and we are not concerned with them
+        if (!_syncActions.ContainsKey(e.PropertyName ?? string.Empty))
+        {
+            return;
+        }
+
+        // Update POCO: the AppSettings properties based on the ViewModel properties
+        if (_syncActions.TryGetValue(e.PropertyName!, out var action))
+        {
+            action();
+        }
+
+        // Set the reset button visibility
+        if (e.PropertyName != nameof(WindowLeft) &&
+            e.PropertyName != nameof(WindowTop) &&
+            e.PropertyName != nameof(WindowWidth) &&
+            e.PropertyName != nameof(WindowHeight))
+        {
+            if (IsResetVisible == false)
+            {
+                IsResetVisible = true;
+            }
+        }
+
+    }
+
+    partial void OnThemeChanged(int value)
+    {
+        // Update the theme in the settings
+        ThemeSelectorChanged(((ElementTheme)Theme).ToString());
+        _appSettings.ThemeName = ((ElementTheme)Theme).ToString();
+    }
+
+    //private static string GetVersionDescription()
+    //{
+    //    Version version;
+
+    //    if (RuntimeHelper.IsMSIX)
+    //    {
+    //        var packageVersion = Package.Current.Id.Version;
+
+    //        version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+    //    }
+    //    else
+    //    {
+    //        version = Assembly.GetExecutingAssembly().GetName().Version!;
+    //    }
+
+    //    return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+    //}
 
     partial void OnShowInTrayChanged(bool value)
     {
@@ -225,5 +279,26 @@ public partial class SettingsViewModel : ObservableRecipient
         }
 
         //settingsService.ShowInTray = value;
+    }
+
+    [RelayCommand]
+    private async Task ResetSettings()
+    {
+        var result = await MessageBox.Show(
+            messageBoxText: "MsgBoxResetSettingsContent".GetLocalized("MessageBox"),
+            caption: "MsgBoxResetSettingsTitle".GetLocalized("MessageBox"),
+            primaryButtonText: "MsgBoxResetSettingsPrimary".GetLocalized("MessageBox"),
+            closeButtonText: "MsgBoxResetSettingsClose".GetLocalized("MessageBox"),
+            defaultButton: MessageBox.MessageBoxButtonDefault.CloseButton,
+            icon: MessageBox.MessageBoxImage.Question);
+
+        if (result == ContentDialogResult.Primary)
+        {
+            _appSettings = new AppSettings();
+            Theme = (int)Enum.Parse<ElementTheme>(_appSettings.ThemeName);
+
+            // Hide reset button until a setting has changed
+            IsResetVisible = false;
+        }
     }
 }
