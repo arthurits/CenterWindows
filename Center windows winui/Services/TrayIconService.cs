@@ -61,7 +61,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         // Subclass the window to listen the WM_TRAYICON messages
         var newProcPtr = Marshal.GetFunctionPointerForDelegate(_wndProcDelegate);
         _prevWndProc = NativeMethods.GetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC);
-        NativeMethods.SetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC, newProcPtr);
+        _ = NativeMethods.SetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC, newProcPtr);
     }
 
     /// <summary>
