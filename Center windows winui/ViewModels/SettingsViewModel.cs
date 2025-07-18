@@ -67,9 +67,6 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public string WindowPositionDescription => string.Format(StrWindowPosition, WindowTop, WindowLeft);
 
-
-    public ICommand SwitchThemeCommand { get; }
-
     public SettingsViewModel(IThemeSelectorService themeSelectorService, ILocalSettingsService<AppSettings> settings, ILocalizationService localizationService, ITrayIconService trayIconService)
     {
         // Tray icon service
@@ -108,23 +105,12 @@ public partial class SettingsViewModel : ObservableRecipient
 
         SelectedLanguageIndex = selectedCultureIndex;
 
-        //SwitchThemeCommand = new RelayCommand<ElementTheme>(
-        //    async (param) =>
-        //    {
-        //        if (ElementTheme != param)
-        //        {
-        //            ElementTheme = param;
-        //            await _themeSelectorService.SetThemeAsync(param);
-        //        }
-        //    });
-
         // Populate the settings dictionary for synchronization
         _syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
         _syncActions[nameof(WindowTop)] = () => _appSettings.WindowTop = WindowTop;
         _syncActions[nameof(WindowLeft)] = () => _appSettings.WindowLeft = WindowLeft;
         _syncActions[nameof(WindowWidth)] = () => _appSettings.WindowWidth = WindowWidth;
         _syncActions[nameof(WindowHeight)] = () => _appSettings.WindowHeight = WindowHeight;
-
     }
 
     public void Dispose()
