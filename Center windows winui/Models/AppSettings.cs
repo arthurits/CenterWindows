@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.UI.Xaml;
 
-namespace CenterWindow.Settings;
+namespace CenterWindow.Models;
 public partial class AppSettings
 {
     /// <summary>

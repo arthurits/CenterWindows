@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
+using CenterWindow.Models;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,8 +16,13 @@ namespace CenterWindow.ViewModels;
 
 public partial class SettingsViewModel : ObservableRecipient
 {
+    private readonly Dictionary<string, Action> _syncActions = [];
+
+    // Services
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly ILocalizationService _localizationService;
     private readonly ITrayIconService _trayIconService;
+    private AppSettings _appSettings;
 
     [ObservableProperty]
     private ElementTheme _elementTheme;

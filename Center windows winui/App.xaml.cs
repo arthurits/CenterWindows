@@ -1,10 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using CenterWindow.Activation;
+﻿using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
-using CenterWindow.Interop;
 using CenterWindow.Models;
 using CenterWindow.Services;
-using CenterWindow.Settings;
 using CenterWindow.ViewModels;
 using CenterWindow.Views;
 using Microsoft.Extensions.DependencyInjection;
