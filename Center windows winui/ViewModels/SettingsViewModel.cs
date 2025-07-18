@@ -148,6 +148,23 @@ public partial class SettingsViewModel : ObservableRecipient
         }
     }
 
+    partial void OnWindowLeftChanged(int oldValue, int newValue)
+    {
+        OnPropertyChanged(nameof(WindowPositionDescription));
+    }
+    partial void OnWindowTopChanged(int oldValue, int newValue)
+    {
+        OnPropertyChanged(nameof(WindowPositionDescription));
+    }
+    partial void OnWindowWidthChanged(int oldValue, int newValue)
+    {
+        OnPropertyChanged(WindowSizeDescription);
+    }
+    partial void OnWindowHeightChanged(int oldValue, int newValue)
+    {
+        OnPropertyChanged(WindowSizeDescription);
+    }
+
     private static string GetVersionDescription()
     {
         Version version;
