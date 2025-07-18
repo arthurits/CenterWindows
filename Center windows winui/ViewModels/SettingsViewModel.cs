@@ -128,7 +128,25 @@ public partial class SettingsViewModel : ObservableRecipient
         _localizationService.LanguageChanged -= OnLanguageChanged;
     }
 
-    
+    partial void OnSelectedLanguageIndexChanged(int oldValue, int newValue)
+    {
+        if (newValue >= 0 && newValue < AvailableLanguages.Count)
+        {
+            var selected = AvailableLanguages[newValue];
+            _localizationService.SetAppLanguage(selected.LanguageTag);
+
+            // Refresh list and maintain selection
+            var updated = _localizationService.GetAvailableLanguages();
+            AvailableLanguages?.Clear();
+            foreach (var language in updated)
+            {
+                AvailableLanguages?.Add(language);
+            }
+            //AvailableLanguages = new ObservableCollection<CultureOption>(updated.ToList());
+            //SelectedLanguageIndex = updated.ToList().FindIndex(c => c.LanguageTag == selected.LanguageTag);
+            //SelectedLanguageIndex = newValue; // Re-assign to trigger property change
+        }
+    }
 
     private static string GetVersionDescription()
     {
