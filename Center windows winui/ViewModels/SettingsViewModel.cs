@@ -59,6 +59,9 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial bool ShowInTray { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsResetVisible { get; set; } = false;
+
     //public string WindowSizeDescription => string.Format(StrWindowSize, WindowWidth, WindowHeight);
 
     //public string WindowPositionDescription => string.Format(StrWindowPosition, WindowTop, WindowLeft);
