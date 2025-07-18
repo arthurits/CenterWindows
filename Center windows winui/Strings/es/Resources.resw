@@ -42,4 +42,7 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>Center windows</value>
   </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Center windows</value>
+  </data>
 </root>
