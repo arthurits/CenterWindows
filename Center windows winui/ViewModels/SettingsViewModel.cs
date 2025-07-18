@@ -165,6 +165,14 @@ public partial class SettingsViewModel : ObservableRecipient
         OnPropertyChanged(WindowSizeDescription);
     }
 
+    private void ThemeSelectorChanged(string? themeName)
+    {
+        if (Enum.TryParse(themeName, out ElementTheme theme) is true)
+        {
+            _themeSelectorService.SetTheme(theme);
+        }
+    }
+
     private static string GetVersionDescription()
     {
         Version version;
