@@ -1,13 +1,13 @@
 ﻿using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
-using CenterWindow.Settings;
+using CenterWindow.Models;
 using Microsoft.UI.Xaml;
 
 namespace CenterWindow.Services;
 
 public class ThemeSelectorService : IThemeSelectorService
 {
-    private const string SettingsKey = "AppBackgroundRequestedTheme";
+    private const string _settingsKey = nameof(AppSettings.ThemeName);
 
     public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
@@ -60,7 +60,7 @@ public class ThemeSelectorService : IThemeSelectorService
 
     private async Task<ElementTheme> LoadThemeFromSettingsAsync()
     {
-        var themeName = await _localSettingsService.ReadSettingKeyAsync<string>(SettingsKey);
+        var themeName = await _localSettingsService.ReadSettingKeyAsync<string>(_settingsKey);
 
         if (Enum.TryParse(themeName, out ElementTheme cacheTheme))
         {
@@ -72,6 +72,6 @@ public class ThemeSelectorService : IThemeSelectorService
 
     private async Task SaveThemeInSettingsAsync(ElementTheme theme)
     {
-        await _localSettingsService.SaveSettingKeyAsync(SettingsKey, theme.ToString());
+        await _localSettingsService.SaveSettingKeyAsync(_settingsKey, theme.ToString());
     }
 }

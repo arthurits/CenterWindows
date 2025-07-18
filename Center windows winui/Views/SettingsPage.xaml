@@ -6,62 +6,79 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:CenterWindow.Helpers"
     xmlns:xaml="using:Microsoft.UI.Xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:sys="using:System"
+    xmlns:viewmodel="using:CenterWindow.ViewModels"
+    NavigationCacheMode="Enabled"
+    d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d">
-    <Page.Resources>
-        <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-    </Page.Resources>
-    <Grid>
-        <StackPanel
-            x:Name="ContentArea">
-            <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                <TextBlock x:Uid="Settings_Theme" />
 
-                <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton
-                        x:Uid="Settings_Theme_Light"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Light</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_Theme_Dark"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_Theme_Default"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
-                        FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Default</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                </StackPanel>
+    <Grid x:Name="Settings" ColumnDefinitions="*" RowDefinitions ="*">
+        <ScrollView x:Name="ScrollSettingsPage" ContentOrientation="Vertical"
+                    HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                    ZoomMode="Disabled" IsTabStop="True"
+                    VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                    HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
+                    VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+
+            <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
+                
+                <!--App settings-->
+                <TextBlock Text="{Binding StrAppSettings}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0, 12, 0, 0"/>
+
+                <controls:SettingsCard x:Name="cardTheme"
+                               Description="{Binding StrThemeDescription}"
+                               Header="{Binding StrThemeHeader}"
+                               HeaderIcon="{ui:FontIcon Glyph=&#xE790;}">
+                    <!--<controls:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE790;" Foreground="Red">
+                        </FontIcon>
+                    </controls:SettingsCard.HeaderIcon>-->
+                    <ComboBox
+                        ItemsSource="{Binding ColorModes}"
+                        SelectedIndex="{Binding Theme, Mode=TwoWay}"
+                        SelectedValuePath="Value"
+                        DisplayMemberPath="DisplayName">
+                    </ComboBox>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard x:Name="cardWinPos"
+                       Header="{Binding StrWindowPositionHeader}"
+                       HeaderIcon="{ui:FontIcon Glyph=&#xF7ED;}">
+                    <controls:SettingsCard.Description>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding StrWindowPositionDescription}"/>
+                            <TextBlock Text="{Binding WindowSizeDescription}"/>
+                            <TextBlock Text="{Binding WindowPositionDescription}"/>
+                            <!--<TextBlock Text="{x:Bind sys:String.Format(x:Null, SettingsViewModel.StrWindowSize, SettingsViewModel.AppSettings.WindowWidth, SettingsViewModel.AppSettings.WindowHeight), Mode=OneWay}"/>
+                            <TextBlock Text="{x:Bind sys:String.Format(x:Null, SettingsViewModel.StrWindowPosition, SettingsViewModel.AppSettings.WindowLeft, SettingsViewModel.AppSettings.WindowTop), Mode=OneWay}"/>-->
+                        </StackPanel>
+                    </controls:SettingsCard.Description>
+                    <ToggleSwitch IsOn="{Binding WindowPosition, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard x:Name="showTrayIcon"
+                        Description="{Binding StrShowTrayIconDescription}"
+                        Header="{Binding StrShowTrayIconHeader}"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}">
+                    <ToggleSwitch IsOn="{Binding ShowTrayIcon, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
+                </controls:SettingsCard>
+                
+                <!--Reset settings button-->
+                <Button x:Name="BtnReset"
+                        Margin="{StaticResource SmallTopMargin}"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Center"
+                        Command="{Binding ResetSettingsCommand}"
+                        IsEnabled="{Binding IsResetVisible}">
+                    <StackPanel Padding="{StaticResource XXSmallLeftTopRightBottomMargin}" Orientation="Horizontal">
+                        <FontIcon Glyph="&#xe8ee;" Margin="{StaticResource XSmallRightMargin}" />
+                        <TextBlock Text="{Binding StrResetButton}"/>
+                    </StackPanel>
+                </Button>
+                
             </StackPanel>
-
-            <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />
-
-            <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                <TextBlock Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" />
-
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="{StaticResource XSmallTopMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
-                <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />
-            </StackPanel>
-        </StackPanel>
+        </ScrollView>
     </Grid>
 </Page>

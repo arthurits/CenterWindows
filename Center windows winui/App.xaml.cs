@@ -1,10 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using CenterWindow.Activation;
+﻿using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
-using CenterWindow.Interop;
+using CenterWindow.Helpers;
 using CenterWindow.Models;
 using CenterWindow.Services;
-using CenterWindow.Settings;
 using CenterWindow.ViewModels;
 using CenterWindow.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -132,7 +130,7 @@ public partial class App : Application
             // https://stackoverflow.com/questions/74890047/how-can-i-set-my-winui3-program-to-be-started-in-the-center-of-the-screen
             //IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(m_window);
             //WindowPosition.SetWindowSize(MainWindow, width: 1000, height: 900);
-            //WindowPosition.CenterWindow(MainWindow);
+            WindowPosition.CenterWindow(MainWindow);
         }
 
         // Apply theme stored in settings
@@ -141,7 +139,7 @@ public partial class App : Application
         {
             if (Enum.TryParse(settings.GetValues.ThemeName, out ElementTheme theme) is true)
             {
-                //themeService.SetTheme(theme);
+                await themeService.SetThemeAsync(theme);
             }
         }
 

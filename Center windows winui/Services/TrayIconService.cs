@@ -11,6 +11,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     private IntPtr _prevWndProc;
     private NativeMethods.NOTIFYICONDATA _nid;
     private readonly NativeMethods.WndProc _wndProcDelegate;
+    private bool _isInitialized;
 
     public event EventHandler<TrayMenuItemEventArgs>? TrayMenuItemClicked;
     protected virtual void OnMenuItemClicked(int id) => TrayMenuItemClicked?.Invoke(this, new TrayMenuItemEventArgs(id));
@@ -47,12 +48,20 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
     public void Initialize()
     {
+        if (_isInitialized)
+        {
+            return;
+        }
+
+        _isInitialized = true;
+
         // Add the icon to the system tray
         NativeMethods.Shell_NotifyIcon(NativeMethods.NIM_ADD, ref _nid);
 
         // Subclass the window to listen the WM_TRAYICON messages
         var newProcPtr = Marshal.GetFunctionPointerForDelegate(_wndProcDelegate);
-        _prevWndProc = NativeMethods.SetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC, newProcPtr);
+        _prevWndProc = NativeMethods.GetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC);
+        _ = NativeMethods.SetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC, newProcPtr);
     }
 
     /// <summary>
@@ -100,6 +109,13 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
     public void Dispose()
     {
+        if (!_isInitialized)
+        {
+            return;
+        }
+
+        _isInitialized = false;
+
         // Remove the icon from the system tray
         NativeMethods.Shell_NotifyIcon(NativeMethods.NIM_DELETE, ref _nid);
 
