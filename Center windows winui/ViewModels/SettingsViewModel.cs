@@ -78,6 +78,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
         // Get settings and update the observable properties
         WindowPosition = _appSettings.WindowPosition;
+        ShowTrayIcon = _appSettings.ShowTrayIcon;
 
         // Theme service
         _themeSelectorService = themeSelectorService;
@@ -103,7 +104,8 @@ public partial class SettingsViewModel : ObservableRecipient
                  currentLang.StartsWith(lang.LanguageTag + "-") ||
                  lang.LanguageTag.StartsWith(currentLang + "-"));
 
-        SelectedLanguageIndex = selectedCultureIndex;
+        SelectedLanguageIndex = cultureList.Count > 0 ? Math.Max(0, selectedCultureIndex) : -1;
+        //SelectedLanguageIndex = selectedCultureIndex;
 
         // Populate the settings dictionary for synchronization
         _syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
@@ -111,6 +113,7 @@ public partial class SettingsViewModel : ObservableRecipient
         _syncActions[nameof(WindowLeft)] = () => _appSettings.WindowLeft = WindowLeft;
         _syncActions[nameof(WindowWidth)] = () => _appSettings.WindowWidth = WindowWidth;
         _syncActions[nameof(WindowHeight)] = () => _appSettings.WindowHeight = WindowHeight;
+        _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
     }
 
     public void Dispose()
