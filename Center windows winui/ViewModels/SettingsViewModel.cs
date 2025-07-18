@@ -123,6 +123,13 @@ public partial class SettingsViewModel : ObservableRecipient
 
     }
 
+    public void Dispose()
+    {
+        _localizationService.LanguageChanged -= OnLanguageChanged;
+    }
+
+    
+
     private static string GetVersionDescription()
     {
         Version version;
