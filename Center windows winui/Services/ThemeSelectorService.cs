@@ -7,7 +7,7 @@ namespace CenterWindow.Services;
 
 public class ThemeSelectorService : IThemeSelectorService
 {
-    private const string _settingsKey = "ThemeName";
+    private const string _settingsKey = nameof(AppSettings.ThemeName);
 
     public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
