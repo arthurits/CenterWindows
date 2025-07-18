@@ -1,6 +1,6 @@
 ﻿using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
-using CenterWindow.Settings;
+using CenterWindow.Models;
 using Microsoft.UI.Xaml;
 
 namespace CenterWindow.Services;
