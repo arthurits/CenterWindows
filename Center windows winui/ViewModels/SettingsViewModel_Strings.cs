@@ -22,6 +22,10 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial string StrWindowPositionHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrWindowPositionDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrShowTrayIconHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrShowTrayIconDescription { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial string StrResetButton { get; set; } = string.Empty;
@@ -60,6 +64,10 @@ public partial class SettingsViewModel : ObservableRecipient
         StrWindowPositionHeader = "StrWindowPositionHeader".GetLocalized("Settings");
         StrWindowPositionDescription = "StrWindowPositionDescription".GetLocalized("Settings");
         StrWindowSize = "StrWindowSize".GetLocalized("Settings");
+
+        // Tray icon
+        StrShowTrayIconHeader = "StrShowTrayIconHeader".GetLocalized("Settings");
+        StrShowTrayIconDescription = "StrShowTrayIconDescription".GetLocalized("Settings");
 
         // Reset button
         StrResetButton = "StrResetButton".GetLocalized("Settings");

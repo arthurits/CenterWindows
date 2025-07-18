@@ -267,7 +267,7 @@ public partial class SettingsViewModel : ObservableRecipient
     //    return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     //}
 
-    partial void OnShowInTrayChanged(bool value)
+    partial void OnShowTrayIconChanged(bool value)
     {
         if (value)
         {
