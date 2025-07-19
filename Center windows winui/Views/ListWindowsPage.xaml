@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="CenterWindow.Views.MainPage"
+    x:Class="CenterWindow.Views.ListWindowsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
     xmlns:models="using:CenterWindow.Models"
     xmlns:conv="using:CenterWindow.Converters"
     xmlns:vm="using:CenterWindow.ViewModels"
-    d:DataContext="{d:DesignInstance Type=vm:MainViewModel, IsDesignTimeCreatable=False}"
+    d:DataContext="{d:DesignInstance Type=vm:ListWindowsViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d">
 
     <Page.Resources>
