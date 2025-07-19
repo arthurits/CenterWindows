@@ -120,11 +120,38 @@
   <data name="StrActivate" xml:space="preserve">
     <value>Activado</value>
   </data>
+  <data name="StrAppSettings" xml:space="preserve">
+    <value>General</value>
+  </data>
   <data name="StrDeactivate" xml:space="preserve">
     <value>Desactivado</value>
   </data>
-  <data name="StrAppSettings" xml:space="preserve">
-    <value>General</value>
+  <data name="StrFilePathDescription" xml:space="preserve">
+    <value>Activa esta opción para recordar la última ruta utilizada al abrir o guardar archivos</value>
+  </data>
+  <data name="StrFilePathHeader" xml:space="preserve">
+    <value>Recordar ruta previa</value>
+  </data>
+  <data name="StrLanguageDescription" xml:space="preserve">
+    <value>Selecciona el idioma y la configuración que se utilizarán en toda la aplicación</value>
+  </data>
+  <data name="StrLanguageHeader" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="StrMinimizeToTrayDescription" xml:space="preserve">
+    <value>Minimizar la ventana a la bandeja de sistema</value>
+  </data>
+  <data name="StrMinimizeToTrayHeader" xml:space="preserve">
+    <value>Minimizar en bandeja</value>
+  </data>
+  <data name="StrResetButton" xml:space="preserve">
+    <value>Restablecer valores</value>
+  </data>
+  <data name="StrShowTrayIconDescription" xml:space="preserve">
+    <value>Muestra el icono de la aplicación en la bandeja de sistema de Windows para un acceso rápido</value>
+  </data>
+  <data name="StrShowTrayIconHeader" xml:space="preserve">
+    <value>Mostrar icono en bandeja</value>
   </data>
   <data name="StrThemeDescription" xml:space="preserve">
     <value>Elige el estilo visual de la aplicación</value>
@@ -146,14 +173,5 @@
   </data>
   <data name="StrWindowSize" xml:space="preserve">
     <value>Tamaño de la ventana: {0} px de ancho y {1} px de alto</value>
-  </data>
-  <data name="StrShowTrayIconHeader" xml:space="preserve">
-    <value>Mostrar icono en bandeja</value>
-  </data>
-  <data name="StrShowTrayIconDescription" xml:space="preserve">
-    <value>Muestra el icono de la aplicación en la bandeja de sistema de Windows para un acceso rápido</value>
-  </data>
-  <data name="StrResetButton" xml:space="preserve">
-    <value>Restablecer valores</value>
   </data>
 </root>

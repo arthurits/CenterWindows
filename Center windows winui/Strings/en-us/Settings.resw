@@ -120,11 +120,38 @@
   <data name="StrActivate" xml:space="preserve">
     <value>Activate</value>
   </data>
+  <data name="StrAppSettings" xml:space="preserve">
+    <value>App settings</value>
+  </data>
   <data name="StrDeactivate" xml:space="preserve">
     <value>Deactivate</value>
   </data>
-  <data name="StrAppSettings" xml:space="preserve">
-    <value>App settings</value>
+  <data name="StrFilePathDescription" xml:space="preserve">
+    <value>Activate this option to remember the previous path in all open/save-file dialogs</value>
+  </data>
+  <data name="StrFilePathHeader" xml:space="preserve">
+    <value>Remember previous file path</value>
+  </data>
+  <data name="StrLanguageDescription" xml:space="preserve">
+    <value>Select the language/culture to use throughout the app</value>
+  </data>
+  <data name="StrLanguageHeader" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="StrMinimizeToTrayDescription" xml:space="preserve">
+    <value>Minimize the app's window to the taskbar tray</value>
+  </data>
+  <data name="StrMinimizeToTrayHeader" xml:space="preserve">
+    <value>Minimize to tray</value>
+  </data>
+  <data name="StrResetButton" xml:space="preserve">
+    <value>Reset settings</value>
+  </data>
+  <data name="StrShowTrayIconDescription" xml:space="preserve">
+    <value>Display the app's icon in the Windows taskbar tray for quick access</value>
+  </data>
+  <data name="StrShowTrayIconHeader" xml:space="preserve">
+    <value>Show tray icon</value>
   </data>
   <data name="StrThemeDescription" xml:space="preserve">
     <value>Select the app's color theme</value>
@@ -146,14 +173,5 @@
   </data>
   <data name="StrWindowSize" xml:space="preserve">
     <value>App window size: {0} px width and {1} px height</value>
-  </data>
-  <data name="StrResetButton" xml:space="preserve">
-    <value>Reset settings</value>
-  </data>
-  <data name="StrShowTrayIconHeader" xml:space="preserve">
-    <value>Show tray icon</value>
-  </data>
-  <data name="StrShowTrayIconDescription" xml:space="preserve">
-    <value>Display the app's icon in the Windows taskbar tray for quick access</value>
   </data>
 </root>
