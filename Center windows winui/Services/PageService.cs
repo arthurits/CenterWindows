@@ -17,6 +17,7 @@ public class PageService : IPageService
         Configure<ListWindowsViewModel, ListWindowsPage>();
         Configure<SettingsViewModel, SettingsPage>();
         Configure<AboutViewModel, AboutPage>();
+        Configure<SelectWindowViewModel, SelectWindowPage>();
     }
 
     public Type GetPageType(string key)

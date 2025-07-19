@@ -5,6 +5,7 @@ using CenterWindow.Models;
 using CenterWindow.Services;
 using CenterWindow.ViewModels;
 using CenterWindow.Views;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Windowing;
@@ -78,6 +79,8 @@ public partial class App : Application
             services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow));
 
             // Views and ViewModels
+            services.AddTransient<SelectWindowViewModel>();
+            services.AddTransient<SelectWindowPage>();
             services.AddSingleton<AboutViewModel>();
             services.AddTransient<AboutPage>();
             services.AddSingleton<SettingsViewModel>();
