@@ -1,4 +1,5 @@
 ﻿using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
 using CenterWindow.Views;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -48,9 +49,14 @@ public partial class ShellViewModel : ObservableRecipient
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, ILocalizationService localizationService)
     {
+        // Retrieve the navigation service and navigation view service
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
+
+        // Set the title union character
+        StrTitleUnion = "StrTitleUnion".GetLocalized("Shell");
+
 
         // Subscribe to localization service events
         _localizationService = localizationService;
@@ -65,18 +71,18 @@ public partial class ShellViewModel : ObservableRecipient
 
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
-        //    // Update the display name and tooltips based on the current language
-        //    // StrAppDisplayName = "StrAppDisplayName".GetLocalized("Shell");
-        //    StrAppDisplayName_Base = "StrAppDisplayName".GetLocalized("Shell");
-        //    //StrAppDisplayName = WindowTitle.SetWindowTitle(StrAppDisplayName_Base, StrAppDisplayName_File, StrTitleUnion);
-        //    AboutItem = "AboutItem".GetLocalized("Shell");
-        //    AboutToolTip = "AboutToolTip".GetLocalized("Shell");
-        //    ComfortItem = "ComfortItem".GetLocalized("Shell");
-        //    ComfortToolTip = "ComfortToolTip".GetLocalized("Shell");
-        //    SettingsItem = "SettingsItem".GetLocalized("Shell");
-        //    SettingsToolTip = "SettingsToolTip".GetLocalized("Shell");
-        //    StrainItem = "StrainItem".GetLocalized("Shell");
-        //    StrainToolTip = "StrainToolTip".GetLocalized("Shell");
+        // Update the display name and tooltips based on the current language
+        StrAppDisplayName = "StrAppDisplayName".GetLocalized("Shell");
+        //StrAppDisplayName_Base = "StrAppDisplayName".GetLocalized("Shell");
+        StrAboutItem = "AboutItem".GetLocalized("Shell");
+        StrAboutToolTip = "AboutToolTip".GetLocalized("Shell");
+        StrListWindowsItem = "ListWindowsItem".GetLocalized("Shell");
+        StrListWindowsToolTip = "ListWindowsToolTip".GetLocalized("Shell");
+        StrSelectWindowItem = "SelectWindowItem".GetLocalized("Shell");
+        StrSelectWindowToolTip = "SelectWindowToolTip".GetLocalized("Shell");
+        StrSettingsItem = "SettingsItem".GetLocalized("Shell");
+        StrSettingsToolTip = "SettingsToolTip".GetLocalized("Shell");
+
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e)
@@ -94,5 +100,17 @@ public partial class ShellViewModel : ObservableRecipient
         {
             Selected = selectedItem;
         }
+    }
+
+    partial void OnStrAppDisplayName_FileChanged(string oldValue, string newValue)
+    {
+        // Update the display name when StrAppDisplayName_File changes
+        //StrAppDisplayName = WindowTitle.SetWindowTitle(StrAppDisplayName_Base, newValue, StrTitleUnion);
+    }
+
+    partial void OnStrAppDisplayName_BaseChanged(string oldValue, string newValue)
+    {
+        // Update the display name when StrAppDisplayName_Base changes
+        //StrAppDisplayName = WindowTitle.SetWindowTitle(newValue, StrAppDisplayName_File, StrTitleUnion);
     }
 }
