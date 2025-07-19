@@ -130,4 +130,17 @@ the application?</value>
   <data name="MsgBoxExitTitle" xml:space="preserve">
     <value>Exit?</value>
   </data>
+  <data name="MsgBoxResetSettingsClose" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="MsgBoxResetSettingsContent" xml:space="preserve">
+    <value>Are you sure you want to reset these
+settings to their default value?</value>
+  </data>
+  <data name="MsgBoxResetSettingsPrimary" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="MsgBoxResetSettingsTitle" xml:space="preserve">
+    <value>Reset settings</value>
+  </data>
 </root>

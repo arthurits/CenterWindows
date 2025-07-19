@@ -129,4 +129,17 @@
   <data name="MsgBoxExitTitle" xml:space="preserve">
     <value>¿Salir?</value>
   </data>
+  <data name="MsgBoxResetSettingsClose" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="MsgBoxResetSettingsContent" xml:space="preserve">
+    <value>Esta acción restablecerá la configuración a sus valores
+por defecto. ¿Seguro que quiere continuar?</value>
+  </data>
+  <data name="MsgBoxResetSettingsPrimary" xml:space="preserve">
+    <value>Sí</value>
+  </data>
+  <data name="MsgBoxResetSettingsTitle" xml:space="preserve">
+    <value>Restablecer configuración</value>
+  </data>
 </root>
