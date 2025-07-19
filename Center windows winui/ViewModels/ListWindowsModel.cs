@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace CenterWindow.ViewModels;
 
-public partial class MainViewModel : ObservableRecipient
+public partial class ListWindowsViewModel : ObservableRecipient
 {
     // Services
     private readonly IWindowEnumerationService _enumerationService;
@@ -24,7 +24,7 @@ public partial class MainViewModel : ObservableRecipient
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
 
-    public MainViewModel(
+    public ListWindowsViewModel(
         IWindowEnumerationService enumerationService,
         IWindowCenterService centerService,
         IMouseHookService mouseHook,

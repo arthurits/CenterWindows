@@ -4,13 +4,13 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace CenterWindow.Views;
 
-public sealed partial class MainPage : Page
+public sealed partial class ListWindowsPage : Page
 {
-    public MainViewModel ViewModel { get; }
+    public ListWindowsViewModel ViewModel { get; }
 
-    public MainPage()
+    public ListWindowsPage()
     {
-        ViewModel = App.GetService<MainViewModel>();
+        ViewModel = App.GetService<ListWindowsViewModel>();
         DataContext = ViewModel;
         InitializeComponent();
 

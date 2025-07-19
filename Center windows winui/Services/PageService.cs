@@ -14,7 +14,7 @@ public class PageService : IPageService
 
     public PageService()
     {
-        Configure<MainViewModel, MainPage>();
+        Configure<ListWindowsViewModel, ListWindowsPage>();
         Configure<SettingsViewModel, SettingsPage>();
         Configure<AboutViewModel, AboutPage>();
     }

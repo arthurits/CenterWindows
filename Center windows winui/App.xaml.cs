@@ -82,8 +82,8 @@ public partial class App : Application
             services.AddTransient<AboutPage>();
             services.AddSingleton<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
-            services.AddSingleton<MainViewModel>();
-            services.AddTransient<MainPage>();
+            services.AddSingleton<ListWindowsViewModel>();
+            services.AddTransient<ListWindowsPage>();
             services.AddTransient<ShellPage>();
             services.AddSingleton<ShellViewModel>();
 
