@@ -1,7 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Reflection;
-using System.Windows.Input;
 
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
@@ -12,7 +10,6 @@ using CommunityToolkit.Mvvm.Input;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.ApplicationModel;
 using Windows.System.UserProfile;
 
 namespace CenterWindow.ViewModels;
