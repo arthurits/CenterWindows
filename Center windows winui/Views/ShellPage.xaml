@@ -71,7 +71,7 @@
                 <NavigationViewItemSeparator />
                 <NavigationViewItem
                     Content="{Binding StrSettingsItem}"
-                    helpers:NavigationHelper.NavigateTo="HeatStress.ViewModels.SettingsViewModel"
+                    helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SettingsViewModel"
                     ToolTipService.ToolTip="{Binding StrSettingsToolTip}">
                     <NavigationViewItem.Icon>
                         <ImageIcon Source="/Assets/Settings_windows.svg"/>
