@@ -31,17 +31,17 @@ public partial class ShellViewModel : ObservableRecipient
     public readonly string StrTitleUnion;
 
     [ObservableProperty]
-    public partial string StrAboutItem { get; set; } = "Acerca de";
+    public partial string StrAboutItem { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrAboutToolTip { get; set; } = string.Empty;
     [ObservableProperty]
-    public partial string StrListWindowsItem { get; set; } = "Ventanas";
+    public partial string StrListWindowsItem { get; set; } = string.Empty;
     [ObservableProperty]
-    public partial string StrListWindowsToolTip { get; set; } = "Ventanas";
+    public partial string StrListWindowsToolTip { get; set; } = string.Empty;
     [ObservableProperty]
-    public partial string StrSelectWindowItem { get; set; } = "Ventanas";
+    public partial string StrSelectWindowItem { get; set; } = string.Empty;
     [ObservableProperty]
-    public partial string StrSelectWindowToolTip { get; set; } = "Ventanas";
+    public partial string StrSelectWindowToolTip { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrSettingsItem { get; set; } = string.Empty;
     [ObservableProperty]
@@ -74,14 +74,14 @@ public partial class ShellViewModel : ObservableRecipient
         // Update the display name and tooltips based on the current language
         StrAppDisplayName = "StrAppDisplayName".GetLocalized("Shell");
         //StrAppDisplayName_Base = "StrAppDisplayName".GetLocalized("Shell");
-        StrAboutItem = "AboutItem".GetLocalized("Shell");
-        StrAboutToolTip = "AboutToolTip".GetLocalized("Shell");
-        StrListWindowsItem = "ListWindowsItem".GetLocalized("Shell");
-        StrListWindowsToolTip = "ListWindowsToolTip".GetLocalized("Shell");
-        StrSelectWindowItem = "SelectWindowItem".GetLocalized("Shell");
-        StrSelectWindowToolTip = "SelectWindowToolTip".GetLocalized("Shell");
-        StrSettingsItem = "SettingsItem".GetLocalized("Shell");
-        StrSettingsToolTip = "SettingsToolTip".GetLocalized("Shell");
+        StrAboutItem = "StrAboutItem".GetLocalized("Shell");
+        StrAboutToolTip = "StrAboutToolTip".GetLocalized("Shell");
+        StrListWindowsItem = "StrListWindowsItem".GetLocalized("Shell");
+        StrListWindowsToolTip = "StrListWindowsToolTip".GetLocalized("Shell");
+        StrSelectWindowItem = "StrSelectWindowItem".GetLocalized("Shell");
+        StrSelectWindowToolTip = "StrSelectWindowToolTip".GetLocalized("Shell");
+        StrSettingsItem = "StrSettingsItem".GetLocalized("Shell");
+        StrSettingsToolTip = "StrSettingsToolTip".GetLocalized("Shell");
 
     }
 
