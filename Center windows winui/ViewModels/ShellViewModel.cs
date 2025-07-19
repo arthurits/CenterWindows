@@ -30,9 +30,21 @@ public partial class ShellViewModel : ObservableRecipient
     public readonly string StrTitleUnion;
 
     [ObservableProperty]
-    public partial string AboutItem { get; set; } = "Acerca de";
+    public partial string StrAboutItem { get; set; } = "Acerca de";
     [ObservableProperty]
-    public partial string MainItem { get; set; } = "Ventanas";
+    public partial string StrAboutToolTip { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrListWindowsItem { get; set; } = "Ventanas";
+    [ObservableProperty]
+    public partial string StrListWindowsToolTip { get; set; } = "Ventanas";
+    [ObservableProperty]
+    public partial string StrSelectWindowItem { get; set; } = "Ventanas";
+    [ObservableProperty]
+    public partial string StrSelectWindowToolTip { get; set; } = "Ventanas";
+    [ObservableProperty]
+    public partial string StrSettingsItem { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrSettingsToolTip { get; set; } = string.Empty;
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, ILocalizationService localizationService)
     {
