@@ -23,9 +23,21 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial string StrWindowPositionDescription { get; set; } = string.Empty;
     [ObservableProperty]
+    public partial string StrFilepathHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrFilepathDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrLanguageHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrLanguageDescription { get; set; } = string.Empty;
+    [ObservableProperty]
     public partial string StrShowTrayIconHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrShowTrayIconDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrMinimizeToTrayHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrMinimizeToTrayDescription { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial string StrResetButton { get; set; } = string.Empty;
