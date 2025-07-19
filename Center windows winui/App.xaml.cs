@@ -79,7 +79,7 @@ public partial class App : Application
             services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow));
 
             // Views and ViewModels
-            services.AddTransient<SelectWindowViewModel>();
+            services.AddSingleton<SelectWindowViewModel>();
             services.AddTransient<SelectWindowPage>();
             services.AddSingleton<AboutViewModel>();
             services.AddTransient<AboutPage>();
@@ -172,35 +172,37 @@ public partial class App : Application
 
     private async void OnClosing(AppWindow sender, AppWindowClosingEventArgs args)
     {
-        //args.Cancel = true; // https://github.com/microsoft/WindowsAppSDK/issues/3209
+        args.Cancel = true; // https://github.com/microsoft/WindowsAppSDK/issues/3209
 
-        //var result = await MessageBox.Show(
-        //    "MsgBoxExitContent".GetLocalized("MessageBox"),
-        //    "MsgBoxExitTitle".GetLocalized("MessageBox"),
-        //    primaryButtonText: "MsgBoxExitPrimary".GetLocalized("MessageBox"),
-        //    closeButtonText: "MsgBoxExitCancel".GetLocalized("MessageBox"),
-        //    defaultButton: MessageBox.MessageBoxButtonDefault.CloseButton,
-        //    icon: MessageBox.MessageBoxImage.Question);
+        var result = await MessageBox.Show(
+            "MsgBoxExitContent".GetLocalized("MessageBox"),
+            "MsgBoxExitTitle".GetLocalized("MessageBox"),
+            primaryButtonText: "MsgBoxExitPrimary".GetLocalized("MessageBox"),
+            closeButtonText: "MsgBoxExitCancel".GetLocalized("MessageBox"),
+            defaultButton: MessageBox.MessageBoxButtonDefault.CloseButton,
+            icon: MessageBox.MessageBoxImage.Question);
 
-        //if (result == Microsoft.UI.Xaml.Controls.ContentDialogResult.Primary)
-        //{
-        //    var settings = App.GetService<ILocalSettingsService<AppSettings>>();
-        //    //await settings.SaveSettingKeyAsync<string>("isTrue","yes");
-        //    if (settings.GetValues.WindowPosition)
-        //    {
-        //        settings.GetValues.WindowLeft = MainWindow.AppWindow.Position.X;
-        //        settings.GetValues.WindowTop = MainWindow.AppWindow.Position.Y;
-        //        settings.GetValues.WindowWidth = MainWindow.AppWindow.Size.Width;
-        //        settings.GetValues.WindowHeight = MainWindow.AppWindow.Size.Height;
-        //    }
+        if (result == Microsoft.UI.Xaml.Controls.ContentDialogResult.Primary)
+        {
+            var settings = App.GetService<ILocalSettingsService<AppSettings>>();
+            //await settings.SaveSettingKeyAsync<string>("isTrue","yes");
+            if (settings.GetValues.WindowPosition)
+            {
+                settings.GetValues.WindowLeft = MainWindow.AppWindow.Position.X;
+                settings.GetValues.WindowTop = MainWindow.AppWindow.Position.Y;
+                settings.GetValues.WindowWidth = MainWindow.AppWindow.Size.Width;
+                settings.GetValues.WindowHeight = MainWindow.AppWindow.Size.Height;
+            }
 
-        //    settings.GetValues.AppCultureName = App.GetService<ILocalizationService>().CurrentLanguage;
-        //    //var themeService = App.GetService<IThemeSelectorService>();
-        //    //settings.GetValues.ThemeName = themeService.GetThemeName();
+            settings.GetValues.AppCultureName = App.GetService<ILocalizationService>().CurrentLanguage;
 
-        //    await settings.SaveSettingFileAsync();
+            // No need to save the theme here, as it is already set in SettingsViewModel OnThemeChanged
+            //var themeService = App.GetService<IThemeSelectorService>();
+            //settings.GetValues.ThemeName = themeService.GetThemeName();
 
-        //    MainWindow.Close();
-        //}
+            await settings.SaveSettingFileAsync();
+
+            MainWindow.Close();
+        }
     }
 }
