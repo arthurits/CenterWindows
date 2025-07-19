@@ -35,7 +35,7 @@
             IsBackButtonVisible="Visible"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
-            IsSettingsVisible="True"
+            IsSettingsVisible="False"
             ExpandedModeThresholdWidth="880"
             OpenPaneLength ="200"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
@@ -69,14 +69,14 @@
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItemSeparator />
-                <!--<NavigationViewItem
-                    Content="{Binding SettingsItem}"
+                <NavigationViewItem
+                    Content="{Binding StrSettingsItem}"
                     helpers:NavigationHelper.NavigateTo="HeatStress.ViewModels.SettingsViewModel"
-                    ToolTipService.ToolTip="{Binding SettingsToolTip}">
+                    ToolTipService.ToolTip="{Binding StrSettingsToolTip}">
                     <NavigationViewItem.Icon>
                         <ImageIcon Source="/Assets/Settings_windows.svg"/>
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>-->
+                </NavigationViewItem>
                 <NavigationViewItem
                     Content="{Binding StrAboutItem}"
                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.AboutViewModel"
