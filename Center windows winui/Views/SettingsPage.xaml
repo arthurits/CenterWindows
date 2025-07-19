@@ -57,14 +57,42 @@
                     </controls:SettingsCard.Description>
                     <ToggleSwitch IsOn="{Binding WindowPosition, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
+                
+                <controls:SettingsCard x:Name="cardPath"
+                        Description="{Binding StrFilepathDescription}"
+                        Header="{Binding StrFilepathHeader}"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}">
+                    <ToggleSwitch IsOn="{Binding RememberFileDialogPath, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
+                </controls:SettingsCard>
 
+                <controls:SettingsCard x:Name="cardCulture"
+                                Description="{Binding StrLanguageDescription}"
+                                Header="{Binding StrLanguageHeader}"
+                                HeaderIcon="{ui:FontIcon Glyph=&#xE774;}"
+                               IsEnabled="True">
+                    <ComboBox x:Name="LanguageComboBox"
+                              ItemsSource="{Binding AvailableLanguages}"
+                              SelectedIndex="{Binding SelectedLanguageIndex, Mode=TwoWay}"
+                              SelectedValuePath="LanguageTag"
+                              DisplayMemberPath="DisplayName">
+                    </ComboBox>
+                </controls:SettingsCard>
+                
                 <controls:SettingsCard x:Name="showTrayIcon"
                         Description="{Binding StrShowTrayIconDescription}"
                         Header="{Binding StrShowTrayIconHeader}"
                         HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}">
                     <ToggleSwitch IsOn="{Binding ShowTrayIcon, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
-                
+
+                <controls:SettingsCard x:Name="minimizeToTray"
+                        Description="{Binding StrMinimizeToTrayDescription}"
+                        Header="{Binding StrMinimizeToTrayHeader}"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}"
+                        IsEnabled="{Binding IsMinimizeToTrayEnabled}">
+                    <ToggleSwitch IsOn="{Binding MinimizeToTray, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
+                </controls:SettingsCard>
+
                 <!--Reset settings button-->
                 <Button x:Name="BtnReset"
                         Margin="{StaticResource SmallTopMargin}"
