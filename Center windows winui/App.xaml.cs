@@ -195,6 +195,8 @@ public partial class App : Application
             }
 
             settings.GetValues.AppCultureName = App.GetService<ILocalizationService>().CurrentLanguage;
+
+            // No need to save the theme here, as it is already set in SettingsViewModel OnThemeChanged
             //var themeService = App.GetService<IThemeSelectorService>();
             //settings.GetValues.ThemeName = themeService.GetThemeName();
 
