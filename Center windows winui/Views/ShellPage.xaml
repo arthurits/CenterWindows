@@ -35,7 +35,7 @@
             IsBackButtonVisible="Visible"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
-            IsSettingsVisible="True"
+            IsSettingsVisible="False"
             ExpandedModeThresholdWidth="880"
             OpenPaneLength ="200"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
@@ -52,14 +52,16 @@
                 TODO: Update item icons by updating FontIcon.Glyph properties.
                 https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
                 -->
-                <NavigationViewItem Content="{Binding MainItem}"
+                <NavigationViewItem Content="{Binding StrListWindowsItem}"
                                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.ListWindowsViewModel"
-                                    ToolTipService.ToolTip="{Binding MainItem}">
+                                    ToolTipService.ToolTip="{Binding StrListWindowsToolTip}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_SelectWindow" helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SelectWindowViewModel">
+                <NavigationViewItem Content="{Binding StrSelectWindowItem}"
+                                    helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SelectWindowViewModel"
+                                    ToolTipService.ToolTip="{Binding StrSelectWindowToolTip}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
@@ -67,18 +69,18 @@
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItemSeparator />
-                <!--<NavigationViewItem
-                    Content="{Binding SettingsItem}"
-                    helpers:NavigationHelper.NavigateTo="HeatStress.ViewModels.SettingsViewModel"
-                    ToolTipService.ToolTip="{Binding SettingsToolTip}">
+                <NavigationViewItem
+                    Content="{Binding StrSettingsItem}"
+                    helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SettingsViewModel"
+                    ToolTipService.ToolTip="{Binding StrSettingsToolTip}">
                     <NavigationViewItem.Icon>
                         <ImageIcon Source="/Assets/Settings_windows.svg"/>
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>-->
+                </NavigationViewItem>
                 <NavigationViewItem
-                    Content="{Binding AboutItem}"
+                    Content="{Binding StrAboutItem}"
                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.AboutViewModel"
-                    ToolTipService.ToolTip="{Binding AboutToolTip}">
+                    ToolTipService.ToolTip="{Binding StrAboutToolTip}">
                     <NavigationViewItem.Icon>
                         <BitmapIcon UriSource="/Assets/Settings_about.ico" ShowAsMonochrome="False" />
                     </NavigationViewItem.Icon>

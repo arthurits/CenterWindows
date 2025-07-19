@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CenterWindow.Contracts.Services;
-using CenterWindow.Helpers;
 
 namespace CenterWindow.ViewModels;
 

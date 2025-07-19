@@ -1,4 +1,5 @@
 ﻿using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
 using CenterWindow.Views;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -30,15 +31,32 @@ public partial class ShellViewModel : ObservableRecipient
     public readonly string StrTitleUnion;
 
     [ObservableProperty]
-    public partial string AboutItem { get; set; } = "Acerca de";
+    public partial string StrAboutItem { get; set; } = string.Empty;
     [ObservableProperty]
-    public partial string MainItem { get; set; } = "Ventanas";
+    public partial string StrAboutToolTip { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrListWindowsItem { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrListWindowsToolTip { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrSelectWindowItem { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrSelectWindowToolTip { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrSettingsItem { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrSettingsToolTip { get; set; } = string.Empty;
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, ILocalizationService localizationService)
     {
+        // Retrieve the navigation service and navigation view service
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
+
+        // Set the title union character
+        StrTitleUnion = "StrTitleUnion".GetLocalized("Shell");
+
 
         // Subscribe to localization service events
         _localizationService = localizationService;
@@ -53,18 +71,18 @@ public partial class ShellViewModel : ObservableRecipient
 
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
-        //    // Update the display name and tooltips based on the current language
-        //    // StrAppDisplayName = "StrAppDisplayName".GetLocalized("Shell");
-        //    StrAppDisplayName_Base = "StrAppDisplayName".GetLocalized("Shell");
-        //    //StrAppDisplayName = WindowTitle.SetWindowTitle(StrAppDisplayName_Base, StrAppDisplayName_File, StrTitleUnion);
-        //    AboutItem = "AboutItem".GetLocalized("Shell");
-        //    AboutToolTip = "AboutToolTip".GetLocalized("Shell");
-        //    ComfortItem = "ComfortItem".GetLocalized("Shell");
-        //    ComfortToolTip = "ComfortToolTip".GetLocalized("Shell");
-        //    SettingsItem = "SettingsItem".GetLocalized("Shell");
-        //    SettingsToolTip = "SettingsToolTip".GetLocalized("Shell");
-        //    StrainItem = "StrainItem".GetLocalized("Shell");
-        //    StrainToolTip = "StrainToolTip".GetLocalized("Shell");
+        // Update the display name and tooltips based on the current language
+        StrAppDisplayName = "StrAppDisplayName".GetLocalized("Shell");
+        //StrAppDisplayName_Base = "StrAppDisplayName".GetLocalized("Shell");
+        StrAboutItem = "StrAboutItem".GetLocalized("Shell");
+        StrAboutToolTip = "StrAboutToolTip".GetLocalized("Shell");
+        StrListWindowsItem = "StrListWindowsItem".GetLocalized("Shell");
+        StrListWindowsToolTip = "StrListWindowsToolTip".GetLocalized("Shell");
+        StrSelectWindowItem = "StrSelectWindowItem".GetLocalized("Shell");
+        StrSelectWindowToolTip = "StrSelectWindowToolTip".GetLocalized("Shell");
+        StrSettingsItem = "StrSettingsItem".GetLocalized("Shell");
+        StrSettingsToolTip = "StrSettingsToolTip".GetLocalized("Shell");
+
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e)
@@ -82,5 +100,17 @@ public partial class ShellViewModel : ObservableRecipient
         {
             Selected = selectedItem;
         }
+    }
+
+    partial void OnStrAppDisplayName_FileChanged(string oldValue, string newValue)
+    {
+        // Update the display name when StrAppDisplayName_File changes
+        //StrAppDisplayName = WindowTitle.SetWindowTitle(StrAppDisplayName_Base, newValue, StrTitleUnion);
+    }
+
+    partial void OnStrAppDisplayName_BaseChanged(string oldValue, string newValue)
+    {
+        // Update the display name when StrAppDisplayName_Base changes
+        //StrAppDisplayName = WindowTitle.SetWindowTitle(newValue, StrAppDisplayName_File, StrTitleUnion);
     }
 }
