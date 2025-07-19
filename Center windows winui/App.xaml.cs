@@ -79,7 +79,7 @@ public partial class App : Application
             services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow));
 
             // Views and ViewModels
-            services.AddTransient<SelectWindowViewModel>();
+            services.AddSingleton<SelectWindowViewModel>();
             services.AddTransient<SelectWindowPage>();
             services.AddSingleton<AboutViewModel>();
             services.AddTransient<AboutPage>();
