@@ -38,27 +38,26 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial int Theme { get; set; } = 0;
     public ObservableCollection<ComboBoxData> ColorModes { get; set; } = [];
 
-    //[ObservableProperty]
-    //private ElementTheme _elementTheme;
-
-    //[ObservableProperty]
-    //private string _versionDescription;
-
     [ObservableProperty]
     public partial bool WindowPosition { get; set; }
     [ObservableProperty]
     public partial int WindowTop { get; set; }
-    
     [ObservableProperty]
     public partial int WindowLeft { get; set; }
     [ObservableProperty]
     public partial int WindowWidth { get; set; }
     [ObservableProperty]
     public partial int WindowHeight { get; set; }
-
+    [ObservableProperty]
+    public partial bool RememberFileDialogPath { get; set; }
 
     [ObservableProperty]
     public partial bool ShowTrayIcon { get; set; }
+    [ObservableProperty]
+    public partial bool MinimizeToTray { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsMinimizeToTrayEnabled { get; set; }
 
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
@@ -78,7 +77,9 @@ public partial class SettingsViewModel : ObservableRecipient
 
         // Get settings and update the observable properties
         WindowPosition = _appSettings.WindowPosition;
+        RememberFileDialogPath = _appSettings.RememberFileDialogPath;
         ShowTrayIcon = _appSettings.ShowTrayIcon;
+        MinimizeToTray = _appSettings.MinimizeToTray;
 
         // Theme service
         _themeSelectorService = themeSelectorService;
@@ -113,7 +114,9 @@ public partial class SettingsViewModel : ObservableRecipient
         _syncActions[nameof(WindowLeft)] = () => _appSettings.WindowLeft = WindowLeft;
         _syncActions[nameof(WindowWidth)] = () => _appSettings.WindowWidth = WindowWidth;
         _syncActions[nameof(WindowHeight)] = () => _appSettings.WindowHeight = WindowHeight;
+        _syncActions[nameof(RememberFileDialogPath)] = () => _appSettings.RememberFileDialogPath = RememberFileDialogPath;
         _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
+        _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
     }
 
     public void Dispose()
@@ -238,36 +241,18 @@ public partial class SettingsViewModel : ObservableRecipient
         _appSettings.ThemeName = ((ElementTheme)Theme).ToString();
     }
 
-    //private static string GetVersionDescription()
-    //{
-    //    Version version;
-
-    //    if (RuntimeHelper.IsMSIX)
-    //    {
-    //        var packageVersion = Package.Current.Id.Version;
-
-    //        version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
-    //    }
-    //    else
-    //    {
-    //        version = Assembly.GetExecutingAssembly().GetName().Version!;
-    //    }
-
-    //    return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
-    //}
-
     partial void OnShowTrayIconChanged(bool value)
     {
         if (value)
         {
             _trayIconService.Initialize();
+            IsMinimizeToTrayEnabled = true;
         }
         else
         {
             _trayIconService.Dispose();
+            IsMinimizeToTrayEnabled = false;
         }
-
-        //settingsService.ShowInTray = value;
     }
 
     [RelayCommand]

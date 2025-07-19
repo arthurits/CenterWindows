@@ -23,9 +23,21 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial string StrWindowPositionDescription { get; set; } = string.Empty;
     [ObservableProperty]
+    public partial string StrFilepathHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrFilepathDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrLanguageHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrLanguageDescription { get; set; } = string.Empty;
+    [ObservableProperty]
     public partial string StrShowTrayIconHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrShowTrayIconDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrMinimizeToTrayHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrMinimizeToTrayDescription { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial string StrResetButton { get; set; } = string.Empty;
@@ -65,9 +77,21 @@ public partial class SettingsViewModel : ObservableRecipient
         StrWindowPositionDescription = "StrWindowPositionDescription".GetLocalized("Settings");
         StrWindowSize = "StrWindowSize".GetLocalized("Settings");
 
+        // Filepath settings card
+        StrFilepathHeader = "StrFilepathHeader".GetLocalized("Settings");
+        StrFilepathDescription = "StrFilepathDescription".GetLocalized("Settings");
+
+        // Language settings card
+        StrLanguageHeader = "StrLanguageHeader".GetLocalized("Settings");
+        StrLanguageDescription = "StrLanguageDescription".GetLocalized("Settings");
+
         // Tray icon
         StrShowTrayIconHeader = "StrShowTrayIconHeader".GetLocalized("Settings");
         StrShowTrayIconDescription = "StrShowTrayIconDescription".GetLocalized("Settings");
+
+        // Minimize to tray
+        StrMinimizeToTrayHeader = "StrMinimizeToTrayHeader".GetLocalized("Settings");
+        StrMinimizeToTrayDescription = "StrMinimizeToTrayDescription".GetLocalized("Settings");
 
         // Reset button
         StrResetButton = "StrResetButton".GetLocalized("Settings");

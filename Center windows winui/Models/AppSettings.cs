@@ -80,6 +80,12 @@ public partial class AppSettings
     [JsonPropertyName("Show icon in tray")]
     public bool ShowTrayIcon { get; set; } = true;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the application minimizes to the system tray instead of the system taskbar.
+    /// </summary>
+    [JsonPropertyName("Minimize to tray")]
+    public bool MinimizeToTray { get; set; } = true;
+
     [JsonIgnore]
     public string? AppPath { get; set; } = Path.GetDirectoryName(Environment.ProcessPath);
     [JsonIgnore]
