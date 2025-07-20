@@ -119,7 +119,8 @@ public partial class ListWindowsViewModel : ObservableRecipient
         e.Items.Add(new TrayMenuItemDefinition
         {
             Id   = id++,
-            Text = "Abrir"
+            Text = "Abrir",
+            IsEnabled = false
         });
 
         // Windows list submenu
