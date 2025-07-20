@@ -130,28 +130,39 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                 continue;
             }
 
-            // Determina el tipo de ítem
-            var flags = menuItemDefinition.Children.Any() ? NativeMethods.MF_POPUP : NativeMethods.MF_STRING;
+            // Set the flag for the menu item based on whether it has children or not
+            var flags = NativeMethods.MF_STRING;
             if (!menuItemDefinition.IsEnabled)
             {
                 flags |= NativeMethods.MF_GRAYED;
             }
 
+            var idOrSub = (UIntPtr)menuItemDefinition.Id;
             if (menuItemDefinition.Children.Count !=0 )
             {
-                var sub = NativeMethods.CreatePopupMenu();
-                AppendItems(sub, menuItemDefinition.Children);
-                NativeMethods.AppendMenu(parent,
-                                          flags,
-                                          (uint)sub.ToInt64(),
-                                          menuItemDefinition.Text);
+                var menuHandle = NativeMethods.CreatePopupMenu();
+                AppendItems(menuHandle, menuItemDefinition.Children);
+                idOrSub = (UIntPtr)menuHandle.ToInt64();
+                flags = NativeMethods.MF_POPUP;
             }
-            else
+
+            NativeMethods.AppendMenu(parent, flags, (uint)idOrSub, menuItemDefinition.Text);
+
+            // If there is an icon and no children, set the bitmap for the menu item
+            if (!string.IsNullOrEmpty(menuItemDefinition.IconPath) && menuItemDefinition.Children.Count == 0)
             {
-                NativeMethods.AppendMenu(parent,
-                                          flags,
-                                          (uint)menuItemDefinition.Id,
-                                          menuItemDefinition.Text);
+                // Assume the icon size is 16x16 pixels,otherwise adjust as needed
+                var hBmp = CreateBitmapFromIcon(menuItemDefinition.IconPath, 16, 16);
+
+                var itemInfo = new NativeMethods.MENUITEMINFO
+                {
+                    cbSize  = (uint)Marshal.SizeOf<NativeMethods.MENUITEMINFO>(),
+                    fMask   = NativeMethods.MIIM_BITMAP,
+                    hbmpItem = hBmp
+                };
+
+                // Set the menu item info for the icon. Use false for command and true for position
+                NativeMethods.SetMenuItemInfo(parent, (uint)menuItemDefinition.Id, false, ref itemInfo);
             }
         }
     }
@@ -206,5 +217,33 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
         // Forward all other messages to the original window procedure
         return NativeMethods.CallWindowProc(_prevWndProc, hWnd, msg, wParam, lParam);
+    }
+
+    private IntPtr CreateBitmapFromIcon(string iconPath, int width, int height)
+    {
+        // Carga el icono
+        IntPtr hIcon = NativeMethods.LoadImage(
+            IntPtr.Zero,
+            iconPath,
+            NativeMethods.IMAGE_ICON,
+            width,
+            height,
+            NativeMethods.LR_LOADFROMFILE);
+
+        // Prepara DC compatible
+        IntPtr screenDC = NativeMethods.GetDC(IntPtr.Zero);
+        IntPtr memDC = NativeMethods.CreateCompatibleDC(screenDC);
+        IntPtr hBitmap = NativeMethods.CreateCompatibleBitmap(screenDC, width, height);
+        IntPtr oldBmp = NativeMethods.SelectObject(memDC, hBitmap);
+
+        // Dibuja el icono en el bitmap
+        NativeMethods.DrawIconEx(memDC, 0, 0, hIcon, width, height, 0, IntPtr.Zero, NativeMethods.DI_NORMAL);
+
+        // Limpieza
+        NativeMethods.SelectObject(memDC, oldBmp);
+        NativeMethods.DeleteDC(memDC);
+        NativeMethods.ReleaseDC(IntPtr.Zero, screenDC);
+
+        return hBitmap;
     }
 }
