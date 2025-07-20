@@ -46,7 +46,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                    | NativeMethods.NIF_TIP,
             uCallbackMessage = NativeMethods.WM_TRAYICON,
             hIcon = _hIcon,
-            szTip = "Mi App WinUI"
+            szTip = "Center windows"
         };
 
         // Create the delegate for the new window procedure
