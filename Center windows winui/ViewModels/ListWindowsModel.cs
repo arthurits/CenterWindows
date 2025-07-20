@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Models;
+using CenterWindow.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -35,6 +36,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
         _mouseHook = mouseHook;
         _trayIconService = trayIcon;
         _trayIconService.TrayMenuItemClicked += OnTrayMenuItem;
+        _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
 
         LoadWindows();
     }
@@ -107,5 +109,47 @@ public partial class ListWindowsViewModel : ObservableRecipient
         catch (TaskCanceledException)
         {
         }
+    }
+
+    private void OnTrayMenuOpening(object? sender, TrayMenuOpeningEventArgs e)
+    {
+        int id = 1;
+
+        // "Abrir"
+        e.Items.Add(new TrayMenuItemDefinition
+        {
+            Id   = id++,
+            Text = "Abrir"
+        });
+
+        // Submenú "Ventanas"
+        var ventanas = new TrayMenuItemDefinition
+        {
+            Id   = id++,
+            Text = "Ventanas"
+        };
+        foreach (var win in WindowsList)
+        {
+            ventanas.Children.Add(new TrayMenuItemDefinition
+            {
+                Id   = id++,
+                Text = win.Title
+            });
+        }
+        e.Items.Add(ventanas);
+
+        // Separador (ID = 0 se omite en Win32)
+        e.Items.Add(new TrayMenuItemDefinition
+        {
+            Id   = 0,
+            Text = ""
+        });
+
+        // "Salir"
+        e.Items.Add(new TrayMenuItemDefinition
+        {
+            Id   = id++,
+            Text = "Salir"
+        });
     }
 }
