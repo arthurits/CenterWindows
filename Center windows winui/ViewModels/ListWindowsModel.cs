@@ -105,7 +105,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
             Id   = id++,
             Text = "Abrir",
             IsEnabled = false,
-            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "open.ico")
+            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico")
         });
 
         // Windows list submenu
@@ -113,7 +113,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
         {
             Id   = id++,
             Text = "Ventanas",
-            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "windows.ico")
+            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Settings_windows.svg")
         };
         foreach (var window in WindowsList)
         {
