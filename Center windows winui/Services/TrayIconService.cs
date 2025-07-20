@@ -16,6 +16,9 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     public event EventHandler<TrayMenuItemEventArgs>? TrayMenuItemClicked;
     protected virtual void OnMenuItemClicked(int id) => TrayMenuItemClicked?.Invoke(this, new TrayMenuItemEventArgs(id));
 
+    public event EventHandler<TrayMenuOpeningEventArgs>? TrayMenuOpening;
+    protected virtual void OnTrayMenuOpening(TrayMenuOpeningEventArgs e) => TrayMenuOpening?.Invoke(this, e);
+
     public TrayIconService(WindowEx mainWindow)
     {
         // Get the window handle of the WinUI window
@@ -72,6 +75,10 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     /// identifier. If no selection is made, the method exits without  performing any action.</remarks>
     public void ShowContextMenu()
     {
+        // Ask subscribers if they want to customize the menu before showing it
+        var openingArgs = new TrayMenuOpeningEventArgs();
+        OnTrayMenuOpening(openingArgs);
+
         // Create the context menu
         var hMenu = NativeMethods.CreatePopupMenu();
         if (hMenu == IntPtr.Zero)
