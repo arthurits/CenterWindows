@@ -120,7 +120,15 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     {
         foreach (var menuItemDefinition in trayMenuItems)
         {
-            if (menuItemDefinition.Children.Count !=0 )
+            if (menuItemDefinition.IsSeparator)
+            {
+                NativeMethods.AppendMenu(
+                    parent,
+                    NativeMethods.MF_SEPARATOR,
+                    (uint)UIntPtr.Zero,
+                    string.Empty);
+            }
+            else if(menuItemDefinition.Children.Count !=0 )
             {
                 var sub = NativeMethods.CreatePopupMenu();
                 AppendItems(sub, menuItemDefinition.Children);
