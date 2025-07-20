@@ -39,11 +39,12 @@
                 <TextBlock Text="{Binding VersionDescription}" FontSize="18" FontWeight="Normal" />
                 <TextBlock Text="{Binding Copyright}" FontSize="18" FontWeight="Normal" />
                 <TextBlock Text="{Binding CompanyName}" FontSize="18" FontWeight="Normal" />
-                <TextBlock
+                <TextBlock Margin="{StaticResource XSmallTopMargin}"/>
+                <!--<TextBlock
 					x:Uid="Settings_AboutDescription"
 					Margin="{StaticResource XSmallTopMargin}"
 					Style="{ThemeResource BodyTextBlockStyle}" />
-                <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />
+                <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />-->
             </StackPanel>
         </Border>
 
