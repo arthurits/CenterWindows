@@ -20,6 +20,9 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     public event EventHandler<TrayMenuOpeningEventArgs>? TrayMenuOpening;
     protected virtual void OnTrayMenuOpening(TrayMenuOpeningEventArgs e) => TrayMenuOpening?.Invoke(this, e);
 
+    // This keeps track of the bitmaps used in the menu items, so that they can be released later
+    private readonly List<IntPtr> _menuBitmaps = [];
+
     public TrayIconService(WindowEx mainWindow)
     {
         // Get the window handle of the WinUI window
@@ -76,6 +79,13 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     /// identifier. If no selection is made, the method exits without  performing any action.</remarks>
     public void ShowContextMenu()
     {
+        // Make sure the bitmaps list is empty before creating a new menu
+        foreach (var oldBmp in _menuBitmaps)
+        {
+            NativeMethods.DeleteObject(oldBmp);
+        }
+        _menuBitmaps.Clear();
+
         // Ask subscribers if they want to customize the menu before showing it
         var openingArgs = new TrayMenuOpeningEventArgs();
         OnTrayMenuOpening(openingArgs);
@@ -98,15 +108,15 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         NativeMethods.GetCursorPos(out var pt);
         NativeMethods.SetForegroundWindow(_hwnd);
 
-        // Retrieve the command selected by the user
-        uint cmd = NativeMethods.TrackPopupMenu(
+        // Retrieve the command selected by the user: the TPM_RETURNCMD returns the command ID and doesn't post it to the WndProc method.
+        var cmd = NativeMethods.TrackPopupMenu(
             hMenu,
             NativeMethods.TPM_RETURNCMD | NativeMethods.TPM_LEFTALIGN | NativeMethods.TPM_RIGHTBUTTON,
             pt.x, pt.y, 0,
             _hwnd,
             IntPtr.Zero);
 
-        // Fire the event for the selected command
+        // If a command was selected, invoke the event handler
         if (cmd != 0)
         {
             OnMenuItemClicked((int)cmd);
@@ -153,6 +163,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
             {
                 // Assume the icon size is 16x16 pixels,otherwise adjust as needed
                 var hBmp = CreateBitmapFromIcon(menuItemDefinition.IconPath, 16, 16);
+                _menuBitmaps.Add(hBmp); // Keep track of the bitmap to release it later
 
                 var itemInfo = new NativeMethods.MENUITEMINFO
                 {
@@ -207,12 +218,6 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                 case NativeMethods.WM_LBUTTONDBLCLK:
                     break;
             }
-        }
-
-        if (msg == NativeMethods.WM_COMMAND)
-        {
-            var id = checked((int)wParam);
-            OnMenuItemClicked(id);
         }
 
         // Forward all other messages to the original window procedure

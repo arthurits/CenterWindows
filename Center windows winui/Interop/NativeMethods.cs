@@ -295,6 +295,9 @@ internal static partial class NativeMethods
     [DllImport("user32.dll", SetLastError = true)]
     public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
+    [DllImport("gdi32.dll", SetLastError = true)]
+    public static extern bool DeleteObject(IntPtr hObject);
+
     public enum PROCESS_ACCESS_TYPES
     {
         PROCESS_TERMINATE = 0x00000001,
