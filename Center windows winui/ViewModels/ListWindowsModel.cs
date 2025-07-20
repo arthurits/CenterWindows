@@ -115,14 +115,14 @@ public partial class ListWindowsViewModel : ObservableRecipient
     {
         int id = 1;
 
-        // "Abrir"
+        // Open
         e.Items.Add(new TrayMenuItemDefinition
         {
             Id   = id++,
             Text = "Abrir"
         });
 
-        // Submenú "Ventanas"
+        // Windows list submenu
         var ventanas = new TrayMenuItemDefinition
         {
             Id   = id++,
@@ -138,14 +138,13 @@ public partial class ListWindowsViewModel : ObservableRecipient
         }
         e.Items.Add(ventanas);
 
-        // Separador (ID = 0 se omite en Win32)
+        // Horizontal separator
         e.Items.Add(new TrayMenuItemDefinition
         {
-            Id   = 0,
-            Text = ""
+            IsSeparator = true
         });
 
-        // "Salir"
+        // Add "Exit" option
         e.Items.Add(new TrayMenuItemDefinition
         {
             Id   = id++,
