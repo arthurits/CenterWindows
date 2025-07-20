@@ -127,20 +127,29 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                     NativeMethods.MF_SEPARATOR,
                     (uint)UIntPtr.Zero,
                     string.Empty);
+                continue;
             }
-            else if(menuItemDefinition.Children.Count !=0 )
+
+            // Determina el tipo de ítem
+            var flags = menuItemDefinition.Children.Any() ? NativeMethods.MF_POPUP : NativeMethods.MF_STRING;
+            if (!menuItemDefinition.IsEnabled)
+            {
+                flags |= NativeMethods.MF_GRAYED;
+            }
+
+            if (menuItemDefinition.Children.Count !=0 )
             {
                 var sub = NativeMethods.CreatePopupMenu();
                 AppendItems(sub, menuItemDefinition.Children);
                 NativeMethods.AppendMenu(parent,
-                                          NativeMethods.MF_POPUP,
+                                          flags,
                                           (uint)sub.ToInt64(),
                                           menuItemDefinition.Text);
             }
             else
             {
                 NativeMethods.AppendMenu(parent,
-                                          NativeMethods.MF_STRING,
+                                          flags,
                                           (uint)menuItemDefinition.Id,
                                           menuItemDefinition.Text);
             }
