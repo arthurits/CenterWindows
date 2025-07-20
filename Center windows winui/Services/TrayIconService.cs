@@ -221,8 +221,8 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
     private IntPtr CreateBitmapFromIcon(string iconPath, int width, int height)
     {
-        // Carga el icono
-        IntPtr hIcon = NativeMethods.LoadImage(
+        // Load the icon from the specified path
+        var hIcon = NativeMethods.LoadImage(
             IntPtr.Zero,
             iconPath,
             NativeMethods.IMAGE_ICON,
@@ -230,19 +230,19 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
             height,
             NativeMethods.LR_LOADFROMFILE);
 
-        // Prepara DC compatible
-        IntPtr screenDC = NativeMethods.GetDC(IntPtr.Zero);
-        IntPtr memDC = NativeMethods.CreateCompatibleDC(screenDC);
-        IntPtr hBitmap = NativeMethods.CreateCompatibleBitmap(screenDC, width, height);
-        IntPtr oldBmp = NativeMethods.SelectObject(memDC, hBitmap);
+        // Get the device context for the screen and create a compatible DC and bitmap
+        var screenDC = NativeMethods.GetDC(IntPtr.Zero);
+        var memDC = NativeMethods.CreateCompatibleDC(screenDC);
+        var hBitmap = NativeMethods.CreateCompatibleBitmap(screenDC, width, height);
+        var oldBmp = NativeMethods.SelectObject(memDC, hBitmap);
 
-        // Dibuja el icono en el bitmap
+        // Draw the icon onto the bitmap
         NativeMethods.DrawIconEx(memDC, 0, 0, hIcon, width, height, 0, IntPtr.Zero, NativeMethods.DI_NORMAL);
 
-        // Limpieza
+        // Clean up resources
         NativeMethods.SelectObject(memDC, oldBmp);
         NativeMethods.DeleteDC(memDC);
-        NativeMethods.ReleaseDC(IntPtr.Zero, screenDC);
+        _ = NativeMethods.ReleaseDC(IntPtr.Zero, screenDC);
 
         return hBitmap;
     }

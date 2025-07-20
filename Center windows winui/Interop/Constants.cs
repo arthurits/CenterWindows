@@ -47,6 +47,11 @@ internal static partial class NativeMethods
     public const uint MF_ENABLED = 0x00000000;
     public const uint MF_GRAYED = 0x00000001;
 
+    // Flags for MENUITEMINFO.fMask
+    public const uint MIIM_BITMAP = 0x00000080;
+
+    // Flags for DrawIconEx
+    public const uint DI_NORMAL = 0x0003;
 
     // Flags for TrackPopupMenu
     public const uint TPM_LEFTALIGN = 0x0000;

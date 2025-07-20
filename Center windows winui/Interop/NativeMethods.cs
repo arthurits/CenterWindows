@@ -62,6 +62,24 @@ internal static partial class NativeMethods
         // campos posteriores ignorados para no recargar la estructura
     }
 
+    // Structure for menu-item information
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct MENUITEMINFO
+    {
+        public uint cbSize;
+        public uint fMask;
+        public uint fType;
+        public uint fState;
+        public uint wID;
+        public IntPtr hSubMenu;
+        public IntPtr hbmpChecked;
+        public IntPtr hbmpUnchecked;
+        public IntPtr dwItemData;
+        public IntPtr dwTypeData;
+        public uint cch;
+        public IntPtr hbmpItem;
+    }
+
     public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
     public delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
     public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
@@ -238,9 +256,44 @@ internal static partial class NativeMethods
     public static string GetModuleBaseName(IntPtr hProcess)
     {
         StringBuilder sb = new(MAX_CAPACITY);
-        int result = GetModuleBaseName(hProcess, IntPtr.Zero, sb, sb.Capacity);
+        _ = GetModuleBaseName(hProcess, IntPtr.Zero, sb, sb.Capacity);
         return sb.ToString();
     }
+
+    // Associates an HBITMAP with a menu item
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    public static extern bool SetMenuItemInfo(IntPtr hMenu, uint uItem, bool fByPos, ref MENUITEMINFO lpmii);
+
+    // GDI / user32 functions to create bitmaps and draw icons
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr GetDC(IntPtr hWnd);
+
+    [DllImport("gdi32.dll", SetLastError = true)]
+    public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+
+    [DllImport("gdi32.dll", SetLastError = true)]
+    public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
+
+    [DllImport("gdi32.dll", SetLastError = true)]
+    public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool DrawIconEx(
+        IntPtr hdc,
+        int xLeft,
+        int yTop,
+        IntPtr hIcon,
+        int cxWidth,
+        int cyWidth,
+        uint istepIfAniCur,
+        IntPtr hbrFlickerFreeDraw,
+        uint diFlags);
+
+    [DllImport("gdi32.dll", SetLastError = true)]
+    public static extern bool DeleteDC(IntPtr hdc);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
     public enum PROCESS_ACCESS_TYPES
     {
