@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
+using CenterWindow.Models;
 using WinRT.Interop;
 
 namespace CenterWindow.Services;
@@ -15,6 +16,12 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
     public event EventHandler<TrayMenuItemEventArgs>? TrayMenuItemClicked;
     protected virtual void OnMenuItemClicked(int id) => TrayMenuItemClicked?.Invoke(this, new TrayMenuItemEventArgs(id));
+
+    public event EventHandler<TrayMenuOpeningEventArgs>? TrayMenuOpening;
+    protected virtual void OnTrayMenuOpening(TrayMenuOpeningEventArgs e) => TrayMenuOpening?.Invoke(this, e);
+
+    // This keeps track of the bitmaps used in the menu items, so that they can be released later
+    private readonly List<IntPtr> _menuBitmaps = [];
 
     public TrayIconService(WindowEx mainWindow)
     {
@@ -39,7 +46,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                    | NativeMethods.NIF_TIP,
             uCallbackMessage = NativeMethods.WM_TRAYICON,
             hIcon = _hIcon,
-            szTip = "Mi App WinUI"
+            szTip = "Center windows"
         };
 
         // Create the delegate for the new window procedure
@@ -72,6 +79,17 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     /// identifier. If no selection is made, the method exits without  performing any action.</remarks>
     public void ShowContextMenu()
     {
+        // Make sure the bitmaps list is empty before creating a new menu
+        foreach (var oldBmp in _menuBitmaps)
+        {
+            NativeMethods.DeleteObject(oldBmp);
+        }
+        _menuBitmaps.Clear();
+
+        // Ask subscribers if they want to customize the menu before showing it
+        var openingArgs = new TrayMenuOpeningEventArgs();
+        OnTrayMenuOpening(openingArgs);
+
         // Create the context menu
         var hMenu = NativeMethods.CreatePopupMenu();
         if (hMenu == IntPtr.Zero)
@@ -80,24 +98,25 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         }
 
         // Populate the menu with items
-        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 1, "&Abrir");
-        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 2, "&Preferencias");
-        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_SEPARATOR, 0, string.Empty);
-        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 3, "S&alir");
+        //NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 1, "&Abrir");
+        //NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 2, "&Preferencias");
+        //NativeMethods.AppendMenu(hMenu, NativeMethods.MF_SEPARATOR, 0, string.Empty);
+        //NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 3, "S&alir");
+        AppendItems(hMenu, openingArgs.Items);
 
         // Set the menu at the cursor position
         NativeMethods.GetCursorPos(out var pt);
         NativeMethods.SetForegroundWindow(_hwnd);
 
-        // Retrieve the command selected by the user
-        uint cmd = NativeMethods.TrackPopupMenu(
+        // Retrieve the command selected by the user: the TPM_RETURNCMD returns the command ID and doesn't post it to the WndProc method.
+        var cmd = NativeMethods.TrackPopupMenu(
             hMenu,
             NativeMethods.TPM_RETURNCMD | NativeMethods.TPM_LEFTALIGN | NativeMethods.TPM_RIGHTBUTTON,
             pt.x, pt.y, 0,
             _hwnd,
             IntPtr.Zero);
 
-        // Fire the event for the selected command
+        // If a command was selected, invoke the event handler
         if (cmd != 0)
         {
             OnMenuItemClicked((int)cmd);
@@ -105,6 +124,54 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
         // Clean up the menu
         NativeMethods.DestroyMenu(hMenu);
+    }
+
+    private void AppendItems(IntPtr parent, IEnumerable<TrayMenuItemDefinition> trayMenuItems)
+    {
+        foreach (var menuItemDefinition in trayMenuItems)
+        {
+            if (menuItemDefinition.IsSeparator)
+            {
+                NativeMethods.AppendMenu(
+                    parent,
+                    NativeMethods.MF_SEPARATOR,
+                    (uint)UIntPtr.Zero,
+                    string.Empty);
+                continue;
+            }
+
+            // Set the flag for the menu item based on whether it has children or not
+            var flags = NativeMethods.MF_STRING | (menuItemDefinition.IsEnabled ? 0u: NativeMethods.MF_GRAYED);
+
+            var idOrSub = (UIntPtr)menuItemDefinition.Id;
+            if (menuItemDefinition.Children.Count !=0 )
+            {
+                var menuHandle = NativeMethods.CreatePopupMenu();
+                AppendItems(menuHandle, menuItemDefinition.Children);
+                idOrSub = (UIntPtr)menuHandle.ToInt64();
+                flags = NativeMethods.MF_POPUP;
+            }
+
+
+            NativeMethods.AppendMenu(parent, flags, (uint)idOrSub, menuItemDefinition.Text);
+            // If there is an icon and no children, set the bitmap for the menu item
+            if (!string.IsNullOrEmpty(menuItemDefinition.IconPath) && menuItemDefinition.Children.Count == 0)
+            {
+                // Assume the icon size is 16x16 pixels,otherwise adjust as needed
+                var hBmp = CreateBitmapFromIcon(menuItemDefinition.IconPath, 16, 16);
+                _menuBitmaps.Add(hBmp); // Keep track of the bitmap to release it later
+
+                var itemInfo = new NativeMethods.MENUITEMINFO
+                {
+                    cbSize  = (uint)Marshal.SizeOf<NativeMethods.MENUITEMINFO>(),
+                    fMask   = NativeMethods.MIIM_BITMAP,
+                    hbmpItem = hBmp
+                };
+
+                // Set the menu item info for the icon. Use false for command and true for position
+                NativeMethods.SetMenuItemInfo(parent, (uint)menuItemDefinition.Id, false, ref itemInfo);
+            }
+        }
     }
 
     public void Dispose()
@@ -149,13 +216,35 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
             }
         }
 
-        if (msg == NativeMethods.WM_COMMAND)
-        {
-            var id = checked((int)wParam);
-            OnMenuItemClicked(id);
-        }
-
         // Forward all other messages to the original window procedure
         return NativeMethods.CallWindowProc(_prevWndProc, hWnd, msg, wParam, lParam);
+    }
+
+    private IntPtr CreateBitmapFromIcon(string iconPath, int width, int height)
+    {
+        // Load the icon from the specified path
+        var hIcon = NativeMethods.LoadImage(
+            IntPtr.Zero,
+            iconPath,
+            NativeMethods.IMAGE_ICON,
+            width,
+            height,
+            NativeMethods.LR_LOADFROMFILE);
+
+        // Get the device context for the screen and create a compatible DC and bitmap
+        var screenDC = NativeMethods.GetDC(IntPtr.Zero);
+        var memDC = NativeMethods.CreateCompatibleDC(screenDC);
+        var hBitmap = NativeMethods.CreateCompatibleBitmap(screenDC, width, height);
+        var oldBmp = NativeMethods.SelectObject(memDC, hBitmap);
+
+        // Draw the icon onto the bitmap
+        NativeMethods.DrawIconEx(memDC, 0, 0, hIcon, width, height, 0, IntPtr.Zero, NativeMethods.DI_NORMAL);
+
+        // Clean up resources
+        NativeMethods.SelectObject(memDC, oldBmp);
+        NativeMethods.DeleteDC(memDC);
+        _ = NativeMethods.ReleaseDC(IntPtr.Zero, screenDC);
+
+        return hBitmap;
     }
 }

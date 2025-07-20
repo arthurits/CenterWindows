@@ -39,7 +39,19 @@ internal static partial class NativeMethods
 
     // Constans for AppendMenu
     public const uint MF_STRING = 0x00000000;
+    public const uint MF_POPUP = 0x00000010;
     public const uint MF_SEPARATOR = 0x00000800;
+    public const uint MF_UNCHECKED = 0x00000000;
+    public const uint MF_CHECKED = 0x00000008;
+    public const uint MF_DISABLED = 0x00000002;
+    public const uint MF_ENABLED = 0x00000000;
+    public const uint MF_GRAYED = 0x00000001;
+
+    // Flags for MENUITEMINFO.fMask
+    public const uint MIIM_BITMAP = 0x00000080;
+
+    // Flags for DrawIconEx
+    public const uint DI_NORMAL = 0x0003;
 
     // Flags for TrackPopupMenu
     public const uint TPM_LEFTALIGN = 0x0000;

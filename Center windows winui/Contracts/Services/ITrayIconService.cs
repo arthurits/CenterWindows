@@ -1,4 +1,6 @@
-﻿namespace CenterWindow.Contracts.Services;
+﻿using CenterWindow.Services;
+
+namespace CenterWindow.Contracts.Services;
 
 /// <summary>
 /// Service for managing the system tray icon.
@@ -27,6 +29,13 @@ public interface ITrayIconService
     /// cref="TrayMenuItemEventArgs"/> parameter to access details about the clicked menu item, such as its identifier
     /// or associated data.</remarks>
     event EventHandler<TrayMenuItemEventArgs> TrayMenuItemClicked;
+    
+    /// <summary>
+    /// Occurs when the tray menu is about to open, allowing customization or preparation of the menu.
+    /// </summary>
+    /// <remarks>This event is triggered before the tray menu is displayed to the user.  Subscribers can use
+    /// this event to modify the menu items or perform any necessary setup.</remarks>
+    event EventHandler<TrayMenuOpeningEventArgs>? TrayMenuOpening;
 }
 
 public class TrayMenuItemEventArgs : EventArgs

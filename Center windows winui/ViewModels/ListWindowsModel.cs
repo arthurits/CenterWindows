@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Models;
+using CenterWindow.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -35,24 +36,9 @@ public partial class ListWindowsViewModel : ObservableRecipient
         _mouseHook = mouseHook;
         _trayIconService = trayIcon;
         _trayIconService.TrayMenuItemClicked += OnTrayMenuItem;
+        _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
 
         LoadWindows();
-    }
-
-    private void OnTrayMenuItem(object? s, TrayMenuItemEventArgs e)
-    {
-        switch (e.ItemId)
-        {
-            //case TrayMenuItems.Open:
-            //    OpenWindowCommand.Execute(null);
-            //    break;
-            //case TrayMenuItems.Settings:
-            //    NavigateToSettingsCommand.Execute(null);
-            //    break;
-            //case TrayMenuItems.Exit:
-            //    ExitCommand.Execute(null);
-            //    break;
-        }
     }
 
     [RelayCommand]
@@ -106,6 +92,66 @@ public partial class ListWindowsViewModel : ObservableRecipient
         }
         catch (TaskCanceledException)
         {
+        }
+    }
+
+    private void OnTrayMenuOpening(object? sender, TrayMenuOpeningEventArgs e)
+    {
+        int id = 1;
+
+        // Open
+        e.Items.Add(new TrayMenuItemDefinition
+        {
+            Id   = id++,
+            Text = "Abrir",
+            IsEnabled = false,
+            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico")
+        });
+
+        // Windows list submenu
+        var windows = new TrayMenuItemDefinition
+        {
+            Id   = id++,
+            Text = "Ventanas",
+            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Settings_windows.svg")
+        };
+        foreach (var window in WindowsList)
+        {
+            windows.Children.Add(new TrayMenuItemDefinition
+            {
+                Id   = id++,
+                Text = window.Title
+            });
+        }
+        e.Items.Add(windows);
+
+        // Horizontal separator
+        e.Items.Add(new TrayMenuItemDefinition
+        {
+            IsSeparator = true
+        });
+
+        // Add "Exit" option
+        e.Items.Add(new TrayMenuItemDefinition
+        {
+            Id   = id++,
+            Text = "Salir"
+        });
+    }
+
+    private void OnTrayMenuItem(object? s, TrayMenuItemEventArgs e)
+    {
+        switch (e.ItemId)
+        {
+            //case TrayMenuItems.Open:
+            //    OpenWindowCommand.Execute(null);
+            //    break;
+            //case TrayMenuItems.Settings:
+            //    NavigateToSettingsCommand.Execute(null);
+            //    break;
+            //case TrayMenuItems.Exit:
+            //    ExitCommand.Execute(null);
+            //    break;
         }
     }
 }
