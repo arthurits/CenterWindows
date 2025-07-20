@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
+using CenterWindow.Models;
 using WinRT.Interop;
 
 namespace CenterWindow.Services;
@@ -87,10 +88,11 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         }
 
         // Populate the menu with items
-        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 1, "&Abrir");
-        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 2, "&Preferencias");
-        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_SEPARATOR, 0, string.Empty);
-        NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 3, "S&alir");
+        //NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 1, "&Abrir");
+        //NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 2, "&Preferencias");
+        //NativeMethods.AppendMenu(hMenu, NativeMethods.MF_SEPARATOR, 0, string.Empty);
+        //NativeMethods.AppendMenu(hMenu, NativeMethods.MF_STRING, 3, "S&alir");
+        AppendItems(hMenu, openingArgs.Items);
 
         // Set the menu at the cursor position
         NativeMethods.GetCursorPos(out var pt);
@@ -112,6 +114,29 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
         // Clean up the menu
         NativeMethods.DestroyMenu(hMenu);
+    }
+
+    private void AppendItems(IntPtr parent, IEnumerable<TrayMenuItemDefinition> trayMenuItems)
+    {
+        foreach (var menuItemDefinition in trayMenuItems)
+        {
+            if (menuItemDefinition.Children.Count !=0 )
+            {
+                var sub = NativeMethods.CreatePopupMenu();
+                AppendItems(sub, menuItemDefinition.Children);
+                NativeMethods.AppendMenu(parent,
+                                          NativeMethods.MF_POPUP,
+                                          (uint)sub.ToInt64(),
+                                          menuItemDefinition.Text);
+            }
+            else
+            {
+                NativeMethods.AppendMenu(parent,
+                                          NativeMethods.MF_STRING,
+                                          (uint)menuItemDefinition.Id,
+                                          menuItemDefinition.Text);
+            }
+        }
     }
 
     public void Dispose()
