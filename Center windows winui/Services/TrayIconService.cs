@@ -141,11 +141,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
             }
 
             // Set the flag for the menu item based on whether it has children or not
-            var flags = NativeMethods.MF_STRING;
-            if (!menuItemDefinition.IsEnabled)
-            {
-                flags |= NativeMethods.MF_GRAYED;
-            }
+            var flags = NativeMethods.MF_STRING | (menuItemDefinition.IsEnabled ? 0u: NativeMethods.MF_GRAYED);
 
             var idOrSub = (UIntPtr)menuItemDefinition.Id;
             if (menuItemDefinition.Children.Count !=0 )
@@ -156,8 +152,8 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                 flags = NativeMethods.MF_POPUP;
             }
 
-            NativeMethods.AppendMenu(parent, flags, (uint)idOrSub, menuItemDefinition.Text);
 
+            NativeMethods.AppendMenu(parent, flags, (uint)idOrSub, menuItemDefinition.Text);
             // If there is an icon and no children, set the bitmap for the menu item
             if (!string.IsNullOrEmpty(menuItemDefinition.IconPath) && menuItemDefinition.Children.Count == 0)
             {
