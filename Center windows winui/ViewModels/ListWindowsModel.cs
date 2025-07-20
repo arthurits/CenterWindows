@@ -41,22 +41,6 @@ public partial class ListWindowsViewModel : ObservableRecipient
         LoadWindows();
     }
 
-    private void OnTrayMenuItem(object? s, TrayMenuItemEventArgs e)
-    {
-        switch (e.ItemId)
-        {
-            //case TrayMenuItems.Open:
-            //    OpenWindowCommand.Execute(null);
-            //    break;
-            //case TrayMenuItems.Settings:
-            //    NavigateToSettingsCommand.Execute(null);
-            //    break;
-            //case TrayMenuItems.Exit:
-            //    ExitCommand.Execute(null);
-            //    break;
-        }
-    }
-
     [RelayCommand]
     public void LoadWindows()
     {
@@ -124,20 +108,20 @@ public partial class ListWindowsViewModel : ObservableRecipient
         });
 
         // Windows list submenu
-        var ventanas = new TrayMenuItemDefinition
+        var windows = new TrayMenuItemDefinition
         {
             Id   = id++,
             Text = "Ventanas"
         };
-        foreach (var win in WindowsList)
+        foreach (var window in WindowsList)
         {
-            ventanas.Children.Add(new TrayMenuItemDefinition
+            windows.Children.Add(new TrayMenuItemDefinition
             {
                 Id   = id++,
-                Text = win.Title
+                Text = window.Title
             });
         }
-        e.Items.Add(ventanas);
+        e.Items.Add(windows);
 
         // Horizontal separator
         e.Items.Add(new TrayMenuItemDefinition
@@ -151,5 +135,21 @@ public partial class ListWindowsViewModel : ObservableRecipient
             Id   = id++,
             Text = "Salir"
         });
+    }
+
+    private void OnTrayMenuItem(object? s, TrayMenuItemEventArgs e)
+    {
+        switch (e.ItemId)
+        {
+            //case TrayMenuItems.Open:
+            //    OpenWindowCommand.Execute(null);
+            //    break;
+            //case TrayMenuItems.Settings:
+            //    NavigateToSettingsCommand.Execute(null);
+            //    break;
+            //case TrayMenuItems.Exit:
+            //    ExitCommand.Execute(null);
+            //    break;
+        }
     }
 }

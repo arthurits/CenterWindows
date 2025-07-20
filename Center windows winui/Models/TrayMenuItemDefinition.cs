@@ -6,5 +6,6 @@ public class TrayMenuItemDefinition
     public string Text { get; set; } = string.Empty;
     public bool IsSeparator { get; set; } = false;
     public bool IsEnabled { get; set; } = true;
+    public string? IconPath { get; set; }
     public List<TrayMenuItemDefinition> Children { get; } = [];
 }
