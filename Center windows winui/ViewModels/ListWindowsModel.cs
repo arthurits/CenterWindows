@@ -104,14 +104,16 @@ public partial class ListWindowsViewModel : ObservableRecipient
         {
             Id   = id++,
             Text = "Abrir",
-            IsEnabled = false
+            IsEnabled = false,
+            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "open.ico")
         });
 
         // Windows list submenu
         var windows = new TrayMenuItemDefinition
         {
             Id   = id++,
-            Text = "Ventanas"
+            Text = "Ventanas",
+            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "windows.ico")
         };
         foreach (var window in WindowsList)
         {
