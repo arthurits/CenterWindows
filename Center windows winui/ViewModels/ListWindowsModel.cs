@@ -13,6 +13,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     private readonly IWindowEnumerationService _enumerationService;
     private readonly IWindowCenterService _centerService;
     private readonly IMouseHookService _mouseHook;
+    private readonly ILocalizationService _localizationService;
     private readonly ITrayIconService _trayIconService;
 
     // Properties
@@ -33,11 +34,14 @@ public partial class ListWindowsViewModel : ObservableRecipient
         IWindowEnumerationService enumerationService,
         IWindowCenterService centerService,
         IMouseHookService mouseHook,
+        ILocalizationService localizationService,
         ITrayIconService trayIcon)
     {
         _enumerationService = enumerationService;
         _centerService = centerService;
         _mouseHook = mouseHook;
+        _localizationService = localizationService;
+        _localizationService.LanguageChanged += OnLanguageChanged;
         _trayIconService = trayIcon;
         _trayIconService.TrayMenuItemClicked += OnTrayMenuItem;
         _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
