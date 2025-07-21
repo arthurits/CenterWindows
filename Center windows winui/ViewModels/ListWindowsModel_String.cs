@@ -1,11 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CenterWindow.ViewModels;
-internal class ListWindowsModel_String
+public partial class ListWindowsViewModel : ObservableRecipient
 {
+    [ObservableProperty]
+    private partial string StrCenterMenuText { get; set; } = "Centrar";
 
+    [ObservableProperty]
+    private partial string StrCenterWithAlphaMenuText { get; set; } = "Centrar con alpha";
+
+    [ObservableProperty]
+    private partial string StrTransparencyMenuText { get; set; } = "Transparencia";
+
+    [ObservableProperty]
+    private partial string StrDeselectMenuText { get; set; } = "Deseleccionar";
+
+    [ObservableProperty]
+    private partial string StrCenterAllMenuText { get; set; } = "Centrar todo";
 }
