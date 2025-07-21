@@ -22,7 +22,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial WindowModel? SelectedWindow { get; set; } = null;
 
-    private bool CanDeselectListItem() => SelectedWindow is not null;
+    private bool IsListItemSelected => SelectedWindow is not null;
 
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
@@ -116,7 +116,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
         // Code to just change the transparency of the window
     }
 
-    [RelayCommand(CanExecute = nameof(CanDeselectListItem))]
+    [RelayCommand]
     private void DeselectWindowMenu()
     {
         SelectedWindow = null;
@@ -130,6 +130,11 @@ public partial class ListWindowsViewModel : ObservableRecipient
         {
             _centerService.CenterWindow(w.Hwnd, 255);
         }
+    }
+
+    partial void OnSelectedWindowChanged(WindowModel? value)
+    {
+        OnPropertyChanged(nameof(IsListItemSelected));
     }
 
     private void OnTrayMenuOpening(object? sender, TrayMenuOpeningEventArgs e)
