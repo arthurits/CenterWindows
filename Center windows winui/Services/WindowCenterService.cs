@@ -50,7 +50,7 @@ public class WindowCenterService : IWindowCenterService
     /// <param name="hWnd">A handle to the window whose transparency level is to be set.</param>
     /// <param name="alpha">The alpha value to apply to the window. Valid values range from 0 (completely transparent)  to 255 (completely
     /// opaque).</param>
-    public void SetAlpha(IntPtr hWnd, byte alpha)
+    public void SetWindowTransparency(IntPtr hWnd, byte alpha)
     {
         // Enable layered style if not already set
         var exStyle = NativeMethods.GetWindowLongPtr(hWnd, GWL_EXSTYLE).ToInt32();
