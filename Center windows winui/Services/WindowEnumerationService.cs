@@ -1,14 +1,12 @@
-﻿using System.Text;
-using CenterWindow.Contracts.Services;
+﻿using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 using CenterWindow.Models;
-using Microsoft.UI.Xaml.Controls;
 using static CenterWindow.Interop.NativeMethods;
 
 namespace CenterWindow.Services;
-public class WindowEnumerationService : IWindowEnumerationService
+internal class WindowEnumerationService : IWindowEnumerationService
 {
-    private List<WindowModel> _windows;
+    private readonly List<WindowModel> _windows = [];
     private readonly EnumWindowsProc _enumProc;
 
     public WindowEnumerationService()
@@ -18,7 +16,7 @@ public class WindowEnumerationService : IWindowEnumerationService
 
     public IEnumerable<WindowModel> GetDesktopWindows()
     {
-        _windows = [];
+        _windows.Clear();
 
         NativeMethods.EnumWindows(_enumProc, IntPtr.Zero);
 

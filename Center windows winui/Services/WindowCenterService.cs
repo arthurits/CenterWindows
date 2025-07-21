@@ -10,6 +10,14 @@ public class WindowCenterService : IWindowCenterService
     private const int SM_CXSCREEN = 0;
     private const int SM_CYSCREEN = 1;
 
+    /// <summary>
+    /// Centers the specified window on the screen and optionally applies alpha transparency.
+    /// </summary>
+    /// <remarks>This method calculates the dimensions of the specified window and positions it at the center
+    /// of the screen. The method does not perform any action if the window's dimensions cannot be retrieved.</remarks>
+    /// <param name="hWnd">A handle to the window to be centered. This must be a valid window handle.</param>
+    /// <param name="alpha">The alpha transparency value to apply to the window. Valid values range from 0 (completely transparent)  to 255
+    /// (completely opaque). This parameter is currently unused in the method implementation.</param>
     public void CenterWindow(IntPtr hWnd, byte alpha)
     {
         if (!NativeMethods.GetWindowRect(hWnd, out var rect))
@@ -29,7 +37,28 @@ public class WindowCenterService : IWindowCenterService
         NativeMethods.MoveWindow(hWnd, x, y, width, height, true);
 
         // Enable layered style and apply alpha blending
-        NativeMethods.SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(WS_EX_LAYERED));
+        //NativeMethods.SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(WS_EX_LAYERED));
+        //NativeMethods.SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
+    }
+
+    /// <summary>
+    /// Sets the transparency level of a specified window.
+    /// </summary>
+    /// <remarks>This method enables the layered window style for the specified window if it is not already
+    /// set. The transparency level is controlled by the <paramref name="alpha"/> parameter, which determines  the
+    /// opacity of the window.</remarks>
+    /// <param name="hWnd">A handle to the window whose transparency level is to be set.</param>
+    /// <param name="alpha">The alpha value to apply to the window. Valid values range from 0 (completely transparent)  to 255 (completely
+    /// opaque).</param>
+    public void SetWindowTransparency(IntPtr hWnd, byte alpha)
+    {
+        // Enable layered style if not already set
+        var exStyle = NativeMethods.GetWindowLongPtr(hWnd, GWL_EXSTYLE).ToInt32();
+        if ((exStyle & WS_EX_LAYERED) == 0)
+        {
+            NativeMethods.SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(exStyle | WS_EX_LAYERED));
+        }
+        // Set the alpha value for the window
         NativeMethods.SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
     }
 }
