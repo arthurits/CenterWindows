@@ -31,11 +31,42 @@
 
             <!-- Window list -->
             <ListView
+                x:Name="WindowsListView"
                 ItemsSource="{Binding WindowsList, Mode=OneWay}"
                 SelectedItem="{Binding SelectedWindow, Mode=TwoWay}">
+                
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:WindowModel">
-                        <Grid Padding="4">
+                        <Grid Padding="4"
+                              Background="Transparent"
+                              Tapped="ItemGrid_Tapped">
+                            <!-- Flyout menu -->
+                            <Grid.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem
+                                          Text="{Binding DataContext.StrCenterMenu, ElementName=WindowsListView}"
+                                          Command="{Binding DataContext.CenterMenuCommand, ElementName=WindowsListView}"
+                                          CommandParameter="{Binding}" />
+                                    <MenuFlyoutItem
+                                          Text="{Binding DataContext.StrCenterWithAlphaMenu, ElementName=WindowsListView}"
+                                          Command="{Binding DataContext.CenterWithAlphaMenuCommand, ElementName=WindowsListView}"
+                                          CommandParameter="{Binding}" />
+                                    <MenuFlyoutItem
+                                          Text="{Binding DataContext.StrTransparencyMenu, ElementName=WindowsListView}"
+                                          Command="{Binding DataContext.TransparencyMenuCommand, ElementName=WindowsListView}"
+                                          CommandParameter="{Binding}" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                          Text="{Binding DataContext.StrDeselectMenu, ElementName=WindowsListView}"
+                                          Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=WindowsListView}"
+                                          IsEnabled="{Binding DataContext.IsWindowSelected, ElementName=WindowsListView}" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                          Text="{Binding DataContext.StrCenterAllMenu, ElementName=WindowsListView}"
+                                          Command="{Binding DataContext.CenterAllMenuCommand, ElementName=WindowsListView}" />
+                                </MenuFlyout>
+                            </Grid.ContextFlyout>
+                            
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="1*"/>

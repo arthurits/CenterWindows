@@ -22,7 +22,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial WindowModel? SelectedWindow { get; set; } = null;
 
-    private bool IsListItemSelected => SelectedWindow is not null;
+    public bool IsListItemSelected => SelectedWindow is not null;
 
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
