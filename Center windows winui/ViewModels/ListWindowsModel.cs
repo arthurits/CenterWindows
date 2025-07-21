@@ -43,6 +43,9 @@ public partial class ListWindowsViewModel : ObservableRecipient
         _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
 
         LoadWindows();
+
+        // Load string resources into binding variables for the UI
+        OnLanguageChanged(null, EventArgs.Empty);
     }
 
     [RelayCommand]
