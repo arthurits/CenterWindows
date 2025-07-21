@@ -22,8 +22,12 @@ public partial class ListWindowsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial WindowModel? SelectedWindow { get; set; } = null;
 
+    private bool CanDeselectListItem() => SelectedWindow is not null;
+
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
+
+    private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
 
     public ListWindowsViewModel(
         IWindowEnumerationService enumerationService,
@@ -58,8 +62,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     {
         if (SelectedWindow is not null)
         {
-            var alpha = (byte)Math.Clamp(Transparency, 0, 255);
-            _centerService.CenterWindow(SelectedWindow.Hwnd, alpha);
+            _centerService.CenterWindow(SelectedWindow.Hwnd, _alpha);
         }
     }
 
@@ -92,6 +95,40 @@ public partial class ListWindowsViewModel : ObservableRecipient
         }
         catch (TaskCanceledException)
         {
+        }
+    }
+
+    [RelayCommand]
+    private void CenterMenu(WindowModel window)
+    {
+        _centerService.CenterWindow(window.Hwnd, 255);
+    }
+
+    [RelayCommand]
+    private void CenterWithAlphaMenu(WindowModel window)
+    {
+        _centerService.CenterWindow(window.Hwnd, _alpha);
+    }
+
+    [RelayCommand]
+    private void TransparencyMenu(WindowModel window)
+    {
+        // Code to just change the transparency of the window
+    }
+
+    [RelayCommand(CanExecute = nameof(CanDeselectListItem))]
+    private void DeselectWindowMenu()
+    {
+        SelectedWindow = null;
+    }
+    
+    // 5) Centrar todas las ventanas de la lista
+    [RelayCommand]
+    private void CenterAllMenu()
+    {
+        foreach (var w in WindowsList)
+        {
+            _centerService.CenterWindow(w.Hwnd, 255);
         }
     }
 
