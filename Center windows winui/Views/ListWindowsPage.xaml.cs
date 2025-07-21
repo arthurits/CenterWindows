@@ -47,6 +47,35 @@ public sealed partial class ListWindowsPage : Page
             });
         }
 
+        // Indicate that the event has been handled so that it doesn't get to the ListView control
+        e.Handled = true;
+    }
+
+    private void ItemGrid_RightTapped(object sender, RightTappedRoutedEventArgs e)
+    {
+        var grid = (FrameworkElement)sender;
+
+        // Select the corresponding ListView item in the ViewModel
+        if (grid.DataContext is WindowModel win)
+        {
+            ViewModel.SelectedWindow = win;
+        }
+
+        // Show the context menu
+        if (grid.ContextFlyout is FlyoutBase flyout)
+        {
+            flyout.ShowAt(grid);
+        }
+
+        //// Show the flyout menu only if the item was already selected
+        //if (grid.DataContext is WindowModel win
+        //    && ViewModel.SelectedWindow == win
+        //    && grid.ContextFlyout is FlyoutBase flyout)
+        //{
+        //    flyout.ShowAt(grid);
+        //}
+
+        // Indicate that the event has been handled so that it doesn't get to the ListView control
         e.Handled = true;
     }
 }

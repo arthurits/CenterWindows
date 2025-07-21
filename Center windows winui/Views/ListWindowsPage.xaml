@@ -39,7 +39,8 @@
                     <DataTemplate x:DataType="models:WindowModel">
                         <Grid Padding="4"
                               Background="Transparent"
-                              Tapped="ItemGrid_Tapped">
+                              Tapped="ItemGrid_Tapped"
+                              RightTapped="ItemGrid_RightTapped">
                             <!-- Flyout menu -->
                             <Grid.ContextFlyout>
                                 <MenuFlyout>
