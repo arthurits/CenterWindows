@@ -115,12 +115,13 @@ public partial class ListWindowsViewModel : ObservableRecipient
     private void CenterWithAlphaMenu(WindowModel window)
     {
         _centerService.CenterWindow(window.Hwnd, _alpha);
+        _centerService.SetWindowTransparency(window.Hwnd, _alpha);
     }
 
     [RelayCommand]
     private void TransparencyMenu(WindowModel window)
     {
-        // Code to just change the transparency of the window
+        _centerService.SetWindowTransparency(window.Hwnd, _alpha);
     }
 
     [RelayCommand]
