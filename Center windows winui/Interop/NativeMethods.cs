@@ -298,6 +298,37 @@ internal static partial class NativeMethods
     [DllImport("gdi32.dll", SetLastError = true)]
     public static extern bool DeleteObject(IntPtr hObject);
 
+    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    public static extern int GdiplusStartup(
+        out IntPtr token,
+        ref GdiplusStartupInput input,
+        IntPtr output);
+
+    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    public static extern void GdiplusShutdown(IntPtr token);
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct GdiplusStartupInput
+    {
+        public uint GdiplusVersion;
+        public IntPtr DebugEventCallback;
+        public bool SuppressBackgroundThread;
+        public bool SuppressExternalCodecs;
+    }
+
+    [DllImport("gdiplus.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+    public static extern int GdipCreateBitmapFromFile(
+        string filename,
+        out IntPtr bitmap);
+
+    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    public static extern int GdipCreateHICONFromBitmap(
+        IntPtr bitmap,
+        out IntPtr hicon);
+
+    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    public static extern int GdipDisposeImage(IntPtr image);
+
     public enum PROCESS_ACCESS_TYPES
     {
         PROCESS_TERMINATE = 0x00000001,
