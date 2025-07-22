@@ -3,12 +3,10 @@ using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 using Microsoft.UI;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.Foundation;
 
 namespace CenterWindow.Services;
-public class Win2DIconLoader : IIconLoader, IDisposable
+public partial class Win2DIconLoader : IIconLoader, IDisposable
 {
     private readonly CanvasDevice _device;
     private bool _disposed;
@@ -18,7 +16,17 @@ public class Win2DIconLoader : IIconLoader, IDisposable
         _device = CanvasDevice.GetSharedDevice();
     }
 
-    public async Task<IntPtr> LoadIconAsync(string path)
+    /// <summary>
+    /// Asynchronously loads an icon from the specified file path and returns a handle to the icon (HICON).
+    /// </summary>
+    /// <remarks>This method uses Win2D to create a bitmap from the specified file and converts it to an HICON.
+    /// Ensure that the file path points to a valid image file supported by GDI+. The returned HICON must be destroyed
+    /// using <see cref="NativeMethods.DestroyIcon"/> or equivalent system calls to avoid resource leaks.</remarks>
+    /// <param name="path">The file path of the icon to load. The path must point to a valid image file.</param>
+    /// <param name="dim">The size of the icon to load, in pixels. Default is 16 pixels.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a handle to the loaded icon (HICON).
+    /// The caller is responsible for releasing the HICON using appropriate system calls when it is no longer needed.</returns>
+    public async Task<IntPtr> LoadIconAsync(string path, uint dim = 16)
     {
         ObjectDisposedException.ThrowIf(_disposed, nameof(Win2DIconLoader));
 
@@ -26,7 +34,7 @@ public class Win2DIconLoader : IIconLoader, IDisposable
         using var bitmap = await CanvasBitmap.LoadAsync(_device, path);
 
         // Sets the CanvasRenderTarget to the desired size
-        var size = new Size(16, 16);
+        var size = new Size(dim, dim);
         using var rt = new CanvasRenderTarget(
             _device,
             (float)size.Width,

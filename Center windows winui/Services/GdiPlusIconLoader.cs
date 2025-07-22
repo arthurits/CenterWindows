@@ -33,9 +33,10 @@ public partial class GdiPlusIconLoader : IIconLoader, IDisposable
     /// Ensure that the file path points to a valid image file supported by GDI+. The returned HICON must be destroyed
     /// using <see cref="NativeMethods.DestroyIcon"/> or equivalent system calls to avoid resource leaks.</remarks>
     /// <param name="path">The file path of the icon to load. The path must point to a valid image file.</param>
+    /// <param name="size">The size of the icon to load, in pixels. Default is 16 pixels.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a handle to the loaded icon (HICON).
     /// The caller is responsible for releasing the HICON using appropriate system calls when it is no longer needed.</returns>
-    public Task<IntPtr> LoadIconAsync(string path)
+    public Task<IntPtr> LoadIconAsync(string path, uint size = 16)
     {
         // Check if the object has been disposed
         ObjectDisposedException.ThrowIf(_disposed, nameof(GdiPlusIconLoader));
