@@ -7,6 +7,8 @@ using WinRT.Interop;
 namespace CenterWindow.Services;
 internal partial class TrayIconService : ITrayIconService, IDisposable
 {
+    private readonly IIconLoaderFactory _iconFactory;
+
     private readonly IntPtr _hwnd;
     private readonly IntPtr _hIcon;
     private IntPtr _prevWndProc;
@@ -23,17 +25,25 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     // This keeps track of the bitmaps used in the menu items, so that they can be released later
     private readonly List<IntPtr> _menuBitmaps = [];
 
-    public TrayIconService(WindowEx mainWindow)
+    public TrayIconService(WindowEx mainWindow, IIconLoaderFactory iconFactory)
     {
+        // Get the icon factory from the dependency injection container
+        _iconFactory = iconFactory;
+
         // Get the window handle of the WinUI window
         _hwnd = WindowNative.GetWindowHandle(mainWindow);
 
         // Load the icon from the Assets folder
-        var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico");
-        _hIcon = NativeMethods.LoadImage(
-            IntPtr.Zero, iconPath,
-            NativeMethods.IMAGE_ICON, 0, 0,
-            NativeMethods.LR_LOADFROMFILE);
+        //var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico");
+        //_hIcon = NativeMethods.LoadImage(
+        //    IntPtr.Zero, iconPath,
+        //    NativeMethods.IMAGE_ICON, 0, 0,
+        //    NativeMethods.LR_LOADFROMFILE);
+        _hIcon = _iconFactory
+                     .GetLoader(IconLoaderType.GdiPlus)
+                     .LoadIconAsync("Assets\\Tray icon - 16x16.png", 16)
+                     .GetAwaiter()
+                     .GetResult();
 
         // Configure the NOTIFYICONDATA structure
         _nid = new NativeMethods.NOTIFYICONDATA

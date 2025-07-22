@@ -76,7 +76,10 @@ public partial class App : Application
             services.AddSingleton<IMouseHookService, MouseHookService>();
 
             // Tray Icon Service
-            services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow));
+            services.AddSingleton<GdiPlusIconLoader>();
+            services.AddSingleton<Win2DIconLoader>();
+            services.AddSingleton<IconLoaderFactory>();
+            services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow, sp.GetRequiredService<IconLoaderFactory>()));
 
             // Views and ViewModels
             services.AddSingleton<SelectWindowViewModel>();
