@@ -6,14 +6,12 @@ namespace CenterWindow.Views;
 
 public sealed partial class SelectWindowPage : Page
 {
-    public SelectWindowViewModel ViewModel
-    {
-        get;
-    }
+    public SelectWindowViewModel ViewModel {get;}
 
     public SelectWindowPage()
     {
         ViewModel = App.GetService<SelectWindowViewModel>();
         InitializeComponent();
+        DataContext = ViewModel;
     }
 }
