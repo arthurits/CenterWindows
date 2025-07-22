@@ -298,6 +298,37 @@ internal static partial class NativeMethods
     [DllImport("gdi32.dll", SetLastError = true)]
     public static extern bool DeleteObject(IntPtr hObject);
 
+    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    public static extern int GdiplusStartup(
+        out IntPtr token,
+        ref GdiplusStartupInput input,
+        IntPtr output);
+
+    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    public static extern void GdiplusShutdown(IntPtr token);
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct GdiplusStartupInput
+    {
+        public uint GdiplusVersion;
+        public IntPtr DebugEventCallback;
+        public bool SuppressBackgroundThread;
+        public bool SuppressExternalCodecs;
+    }
+
+    [DllImport("gdiplus.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+    public static extern int GdipCreateBitmapFromFile(
+        string filename,
+        out IntPtr bitmap);
+
+    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    public static extern int GdipCreateHICONFromBitmap(
+        IntPtr bitmap,
+        out IntPtr hicon);
+
+    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    public static extern int GdipDisposeImage(IntPtr image);
+
     public enum PROCESS_ACCESS_TYPES
     {
         PROCESS_TERMINATE = 0x00000001,
@@ -317,5 +348,55 @@ internal static partial class NativeMethods
             PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_DUP_HANDLE | PROCESS_CREATE_PROCESS | PROCESS_SET_QUOTA |
             PROCESS_SET_INFORMATION | PROCESS_QUERY_INFORMATION | STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE
     }
-    
+
+
+    // gdi32.dll
+    [DllImport("gdi32.dll", SetLastError = true)]
+    public static extern IntPtr CreateDIBSection(
+        IntPtr hdc,
+        ref BITMAPINFO pbmi,
+        uint usage,
+        out IntPtr ppvBits,
+        IntPtr hSection,
+        uint offset);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr CreateIconIndirect(ref ICONINFO iconInfo);
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct BITMAPINFOHEADER
+    {
+        public uint biSize;
+        public int biWidth;
+        public int biHeight;
+        public ushort biPlanes;
+        public ushort biBitCount;
+        public uint biCompression;
+        public uint biSizeImage;
+        public int biXPelsPerMeter;
+        public int biYPelsPerMeter;
+        public uint biClrUsed;
+        public uint biClrImportant;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct BITMAPINFO
+    {
+        public BITMAPINFOHEADER bmiHeader;
+        public uint bmiColors;  // espacio mínimo para el color table
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ICONINFO
+    {
+        public bool fIcon;
+        public uint xHotspot;
+        public uint yHotspot;
+        public IntPtr hbmMask;
+        public IntPtr hbmColor;
+    }
+
+    // Constants
+    public const uint BI_RGB = 0u;
+    public const uint DIB_RGB_COLORS = 0u;
 }
