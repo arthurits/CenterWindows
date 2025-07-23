@@ -8,19 +8,45 @@
     d:DataContext="{d:DesignInstance Type=viewmodel:SelectWindowViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        <!-- Botón transparente para capturar el clic -->
-        <Button
-            x:Name="SelectWindow"
-            Background="Transparent"
-            BorderThickness="0"
-            Padding="0">
-            <!-- Imagen que cambia según la propiedad CurrentImage -->
-            <Image
-                Source="{Binding CurrentImage}"
-                Width="200"
-                Height="200"
-                Stretch="Uniform" />
-        </Button>
+    <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*">
+        <ScrollView x:Name="ScrollViewPage" ContentOrientation="Vertical"
+                    HorizontalContentAlignment="Stretch"  VerticalContentAlignment="Stretch"
+                    ZoomMode="Disabled" IsTabStop="True"
+                    VerticalAlignment="Top" HorizontalAlignment="Left"
+                    HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+
+            <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
+
+                <Grid ColumnDefinitions="*">
+
+                    <StackPanel x:Name="PanelSelect"
+                    Orientation="Vertical"
+                    Style="{StaticResource ContentStackPanel}">
+                        <TextBlock
+                            Text="Drag the crosshair to select any window"/>
+                        <!-- Transparent button to capture the click event -->
+                        <Button
+                            x:Name="SelectWindow"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="0">
+                            <!-- Change image according to CurrentImage -->
+                            <Image
+                                Source="{Binding CurrentImage}"
+                                Width="48"
+                                Height="48"
+                                Stretch="Uniform" />
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel x:Name="PanelData"
+                        Orientation="Vertical"
+                        Margin="0, 12, 0, 0"
+                        Spacing="4">
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollView>
     </Grid>
 </Page>
