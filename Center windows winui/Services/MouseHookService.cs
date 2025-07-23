@@ -23,6 +23,19 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         _proc = HookCallback;
     }
 
+    public Task<IntPtr> CaptureMouse(bool capture, CancellationToken cancellationToken = default)
+    {
+        if (capture)
+        {
+            return CaptureWindowUnderCursorAsync(cancellationToken);
+        }
+        else
+        {
+            Cleanup();
+            return Task.FromResult(IntPtr.Zero);
+        }
+    }
+
     public Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default)
     {
         if (_hookId != IntPtr.Zero)
