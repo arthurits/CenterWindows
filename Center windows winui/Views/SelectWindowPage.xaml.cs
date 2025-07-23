@@ -20,6 +20,12 @@ public sealed partial class SelectWindowPage : Page
             UIElement.PointerPressedEvent,
             new PointerEventHandler(OnSelectWindow_PointerPressed),
             handledEventsToo: true);
+
+        // Escucha el PointerReleased aunque el control ya lo haya manejado
+        SelectWindow.AddHandler(
+          UIElement.PointerReleasedEvent,
+          new PointerEventHandler(OnSelectWindow_PointerReleased),
+          handledEventsToo: true);
     }
 
     private void OnSelectWindow_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
@@ -31,9 +37,26 @@ public sealed partial class SelectWindowPage : Page
             return;
         }
         // Execute the command and handle the left click
-        if (ViewModel.LeftClickCommand.CanExecute(e))
+        if (ViewModel.LeftButtonDownCommand.CanExecute(e))
         {
-            ViewModel.LeftClickCommand.Execute(e);
+            ViewModel.LeftButtonDownCommand.Execute(e);
+        }
+    }
+
+    private void OnSelectWindow_PointerReleased(object sender, PointerRoutedEventArgs e)
+    {
+        var props = e.GetCurrentPoint(null).Properties;
+
+        // Filter out non-left button releases
+        if (props.IsLeftButtonPressed)
+        {
+            return;
+        }
+
+        // Execute the command and handle the left click
+        if (ViewModel.LeftButtonUpCommand.CanExecute(e))
+        {
+            ViewModel.LeftButtonUpCommand.Execute(e);
         }
     }
 }

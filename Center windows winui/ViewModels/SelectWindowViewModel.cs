@@ -1,4 +1,5 @@
-﻿using CenterWindow.Contracts.Services;
+﻿using System.Diagnostics;
+using CenterWindow.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Input;
@@ -13,8 +14,14 @@ public partial class SelectWindowViewModel : ObservableRecipient
     private readonly IMouseHookService _mouseHook;
 
     [ObservableProperty]
-    public partial ImageSource CurrentImage { get; set; }
-    
+    public partial bool IsLeftButtonDown { get; set; } = false;
+
+    private readonly string _defaultImagePath;
+    private readonly string _clickedImagePath;
+
+    [ObservableProperty]
+    public partial ImageSource CurrentImage { get; set; } = null!;
+
 
     public SelectWindowViewModel(
         IWindowCenterService centerService,
@@ -24,32 +31,43 @@ public partial class SelectWindowViewModel : ObservableRecipient
         _centerService = centerService;
         _mouseHook = mouseHook;
 
-        CurrentImage = CreateImageSource("ms-appx:///Assets/Select window - 24x24 - Finder home.svg");
+        // Initialize the image sources. This could be read from a settings file.
+        _defaultImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder home.svg";
+        _clickedImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder gone.svg";
+
+        // Set the initial image
+        ToggleImage();
     }
 
-    [RelayCommand]
     private void ToggleImage()
     {
-        // Alterna rutas
-            const string defaultPath = "ms-appx:///Assets/Default.svg";
-            const string clickedPath = "ms-appx:///Assets/Clicked.svg";
-            const string png1 = "ms-appx:///Assets/Default.png";
-            const string png2 = "ms-appx:///Assets/Clicked.png";
+        //// Alterna rutas
+        //    const string defaultPath = "ms-appx:///Assets/Default.svg";
+        //    const string clickedPath = "ms-appx:///Assets/Clicked.svg";
+        //    const string png1 = "ms-appx:///Assets/Default.png";
+        //    const string png2 = "ms-appx:///Assets/Clicked.png";
 
-            var currentUri = CurrentImage is SvgImageSource
-                ? ((SvgImageSource)CurrentImage).UriSource.ToString()
-                : ((BitmapImage)CurrentImage).UriSource.ToString();
+        //    var currentUri = CurrentImage is SvgImageSource
+        //        ? ((SvgImageSource)CurrentImage).UriSource.ToString()
+        //        : ((BitmapImage)CurrentImage).UriSource.ToString();
 
-            // Decide siguiente ruta (puedes ajustar la lógica a tus nombres)
-            var nextPath = currentUri.EndsWith(".svg")
-                ? (currentUri.Contains("Default") ? clickedPath : defaultPath)
-                : (currentUri.Contains("Default") ? png2 : png1);
+        //    // Decide siguiente ruta (puedes ajustar la lógica a tus nombres)
+        //    var nextPath = currentUri.EndsWith(".svg")
+        //        ? (currentUri.Contains("Default") ? clickedPath : defaultPath)
+        //        : (currentUri.Contains("Default") ? png2 : png1);
 
-            CurrentImage = CreateImageSource(nextPath);
+        if (IsLeftButtonDown)
+        {
+            CurrentImage = CreateImageSource(_clickedImagePath);
+        }
+        else
+        {
+            CurrentImage = CreateImageSource(_defaultImagePath);
+        }
     }
 
     [RelayCommand]
-    private async Task OnLeftClickAsync(PointerRoutedEventArgs args)
+    private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
     {
         //// Alterna rutas
         //const string defaultPath = "ms-appx:///Assets/Default.svg";
@@ -67,19 +85,41 @@ public partial class SelectWindowViewModel : ObservableRecipient
         //    : (currentUri.Contains("Default") ? png2 : png1);
 
         //CurrentImage = CreateImageSource(nextPath);
-
+        
         try
         {
-            // Set the mouse hook to capture the window under the cursor
-            var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
-            if (hWnd != IntPtr.Zero)
-            {
-                _centerService.CenterWindow(hWnd, 255);
-            }
+            IsLeftButtonDown = true;
+            //// Set the mouse hook to capture the window under the cursor
+            //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
+            //if (hWnd != IntPtr.Zero)
+            //{
+            //    _centerService.CenterWindow(hWnd, 255);
+            //}
         }
         catch (TaskCanceledException)
         {
         }
+    }
+
+    [RelayCommand]
+    private async Task OnLeftButtonUpAsync(PointerRoutedEventArgs args)
+    {
+        try
+        {
+            IsLeftButtonDown = false;
+        }
+        catch (TaskCanceledException)
+        {
+        }
+
+    }
+
+    /// <summary>
+    /// Change the image when the left button state changes.
+    /// </summary>
+    partial void OnIsLeftButtonDownChanged(bool oldValue, bool newValue)
+    {
+        ToggleImage();
     }
 
     private ImageSource CreateImageSource(string uri)
