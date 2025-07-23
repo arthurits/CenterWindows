@@ -14,8 +14,7 @@
             x:Name="SelectWindow"
             Background="Transparent"
             BorderThickness="0"
-            Padding="0"
-            PointerPressed="SelectWindow_PointerPressed">
+            Padding="0">
             <!-- Imagen que cambia según la propiedad CurrentImage -->
             <Image
                 Source="{Binding CurrentImage}"
