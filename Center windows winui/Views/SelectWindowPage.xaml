@@ -11,18 +11,17 @@
     <Grid x:Name="ContentArea">
         <!-- Botón transparente para capturar el clic -->
         <Button
-      Command="{Binding ToggleImageCommand}"
-      Background="Transparent"
-      BorderThickness="0"
-      Padding="0">
-
+            x:Name="SelectWindow"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            PointerPressed="SelectWindow_PointerPressed">
             <!-- Imagen que cambia según la propiedad CurrentImage -->
             <Image
-        Source="{Binding CurrentImage}"
-        Width="200"
-        Height="200"
-        Stretch="Uniform" />
-
+                Source="{Binding CurrentImage}"
+                Width="200"
+                Height="200"
+                Stretch="Uniform" />
         </Button>
     </Grid>
 </Page>
