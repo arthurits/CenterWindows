@@ -8,6 +8,8 @@
 /// is required.</remarks>
 public interface IMouseHookService
 {
+    Task<IntPtr> CaptureMouse(bool capture, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Captures the handle of the window currently located under the cursor.
     /// </summary>
