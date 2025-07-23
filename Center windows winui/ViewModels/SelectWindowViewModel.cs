@@ -88,7 +88,9 @@ public partial class SelectWindowViewModel : ObservableRecipient
         
         try
         {
+            Debug.WriteLine("Left button down event triggered.");
             IsLeftButtonDown = true;
+            await _mouseHook.CaptureMouse(true);
             //// Set the mouse hook to capture the window under the cursor
             //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
             //if (hWnd != IntPtr.Zero)
@@ -106,7 +108,13 @@ public partial class SelectWindowViewModel : ObservableRecipient
     {
         try
         {
+            Debug.WriteLine("Left button up event triggered.");
             IsLeftButtonDown = false;
+            await _mouseHook.CaptureMouse(false);
+            //if (hWnd != IntPtr.Zero)
+            //{
+            //    _centerService.CenterWindow(hWnd, 255);
+            //}
         }
         catch (TaskCanceledException)
         {
@@ -119,6 +127,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
     /// </summary>
     partial void OnIsLeftButtonDownChanged(bool oldValue, bool newValue)
     {
+        Debug.WriteLine($"IsLeftButtonDown changed from {oldValue} to {newValue}");
         ToggleImage();
     }
 
