@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 using Microsoft.Win32;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CenterWindow.Services;
 
@@ -16,6 +17,9 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     private TaskCompletionSource<IntPtr>? _taskCS;
     private CancellationTokenRegistration? _ctr;
     private CancellationToken _token;
+
+    public event EventHandler<MouseMoveEventArgs>? MouseMoved;
+    protected virtual void OnMouseMoved(MouseMoveEventArgs e) => MouseMoved?.Invoke(this, e);
 
     public MouseHookService()
     {
@@ -87,17 +91,31 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     {
         try
         {
-            if (nCode >= 0 && wParam == NativeMethods.WM_LBUTTONDOWN)
+            if (nCode >= 0)
             {
-                // Read the mouse position from the lParam
+                // Read the mouse position from lParam
                 var hookStruct = Marshal.PtrToStructure<NativeMethods.MSLLHOOKSTRUCT>(lParam)!;
-
+                
                 // Retrieve the window handle at the mouse position
                 var hWnd = NativeMethods.WindowFromPoint(hookStruct.pt);
 
-                Cleanup();
-                _taskCS?.TrySetResult(hWnd);
+                // Retrieve the message type from wParam
+                var msg = (uint)wParam;
+
+                switch (msg)
+                {
+                    case NativeMethods.WM_MOUSEMOVE:
+                        // Rise the MouseMoved event with the current mouse position
+                        OnMouseMoved(new MouseMoveEventArgs(hWnd, hookStruct.pt.x, hookStruct.pt.y));
+                        break;
+
+                    case NativeMethods.WM_LBUTTONDOWN:
+                        Cleanup();
+                        _taskCS?.TrySetResult(hWnd);
+                        break;
+                }
             }
+            
         }
         catch (Exception ex)
         {

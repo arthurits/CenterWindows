@@ -8,6 +8,8 @@
 /// is required.</remarks>
 public interface IMouseHookService
 {
+    event EventHandler<MouseMoveEventArgs>? MouseMoved;
+
     Task<IntPtr> CaptureMouse(bool capture, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -20,4 +22,11 @@ public interface IMouseHookService
     /// <returns>A task that represents the asynchronous operation. The task result contains the handle of the window under the
     /// cursor. If no window is found, the result may be <see cref="IntPtr.Zero"/>.</returns>
     Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default);
-} //
+}
+
+public class MouseMoveEventArgs(IntPtr hWnd, int x, int y) : EventArgs
+{
+    public IntPtr HWnd { get; } = hWnd;
+    public int X { get; } = x;
+    public int Y { get; } = y;
+}

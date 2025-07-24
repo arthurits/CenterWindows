@@ -2,6 +2,7 @@
 using CenterWindow.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -30,6 +31,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         // Services
         _centerService = centerService;
         _mouseHook = mouseHook;
+        _mouseHook.MouseMoved += OnMouseMoved;
 
         // Initialize the image sources. This could be read from a settings file.
         _defaultImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder home.svg";
@@ -39,34 +41,34 @@ public partial class SelectWindowViewModel : ObservableRecipient
         ToggleImage();
     }
 
-    private void ToggleImage()
+    private void Dispose(bool disposing)
     {
-        //// Alterna rutas
-        //    const string defaultPath = "ms-appx:///Assets/Default.svg";
-        //    const string clickedPath = "ms-appx:///Assets/Clicked.svg";
-        //    const string png1 = "ms-appx:///Assets/Default.png";
-        //    const string png2 = "ms-appx:///Assets/Clicked.png";
-
-        //    var currentUri = CurrentImage is SvgImageSource
-        //        ? ((SvgImageSource)CurrentImage).UriSource.ToString()
-        //        : ((BitmapImage)CurrentImage).UriSource.ToString();
-
-        //    // Decide siguiente ruta (puedes ajustar la lógica a tus nombres)
-        //    var nextPath = currentUri.EndsWith(".svg")
-        //        ? (currentUri.Contains("Default") ? clickedPath : defaultPath)
-        //        : (currentUri.Contains("Default") ? png2 : png1);
-
-        if (IsLeftButtonDown)
+        if (disposing)
         {
-            CurrentImage = CreateImageSource(_clickedImagePath);
-        }
-        else
-        {
-            CurrentImage = CreateImageSource(_defaultImagePath);
+            // Unsubscribe from events
+            _mouseHook.MouseMoved -= OnMouseMoved;
         }
     }
 
-    [RelayCommand]
+    private void ToggleImage()
+    {
+        CurrentImage = CreateImageSource(IsLeftButtonDown ? _clickedImagePath : _defaultImagePath);
+    }
+
+    private void OnMouseMoved(object? sender, MouseMoveEventArgs e)
+    {
+        // Si necesitas actualizar propiedades enlazadas a UI, despacha al hilo principal:
+        _ = DispatcherQueue
+            .GetForCurrentThread()
+            .TryEnqueue(() =>
+            {
+                // Ejemplo: guardas la posición para mostrar en un TextBlock
+                Debug.WriteLine($"Window handle: {e.HWnd} & Mouse moved to: {e.X}, {e.Y}");
+                //CurrentMousePosition = $"{e.Point.X}, {e.Point.Y}";
+            });
+    }
+
+        [RelayCommand]
     private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
     {
         //// Alterna rutas
@@ -90,7 +92,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         {
             Debug.WriteLine("Left button down event triggered.");
             IsLeftButtonDown = true;
-            await _mouseHook.CaptureMouse(true);
+            _mouseHook.CaptureMouse(true);
             //// Set the mouse hook to capture the window under the cursor
             //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
             //if (hWnd != IntPtr.Zero)
