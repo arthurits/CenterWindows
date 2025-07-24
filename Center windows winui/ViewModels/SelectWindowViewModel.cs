@@ -86,24 +86,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
         [RelayCommand]
     private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
-    {
-        //// Alterna rutas
-        //const string defaultPath = "ms-appx:///Assets/Default.svg";
-        //const string clickedPath = "ms-appx:///Assets/Clicked.svg";
-        //const string png1 = "ms-appx:///Assets/Default.png";
-        //const string png2 = "ms-appx:///Assets/Clicked.png";
-
-        //var currentUri = CurrentImage is SvgImageSource
-        //    ? ((SvgImageSource)CurrentImage).UriSource.ToString()
-        //    : ((BitmapImage)CurrentImage).UriSource.ToString();
-
-        //// Decide siguiente ruta (puedes ajustar la lógica a tus nombres)
-        //var nextPath = currentUri.EndsWith(".svg")
-        //    ? (currentUri.Contains("Default") ? clickedPath : defaultPath)
-        //    : (currentUri.Contains("Default") ? png2 : png1);
-
-        //CurrentImage = CreateImageSource(nextPath);
-        
+    {        
         try
         {
             Debug.WriteLine("Left button down event triggered.");
