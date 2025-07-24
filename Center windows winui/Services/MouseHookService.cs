@@ -21,6 +21,8 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     public event EventHandler<MouseMoveEventArgs>? MouseMoved;
     protected virtual void OnMouseMoved(MouseMoveEventArgs e) => MouseMoved?.Invoke(this, e);
 
+    // https://copilot.microsoft.com/chats/mwNKaWGzPGLZfDMweE8UD
+
     public MouseHookService()
     {
         // Create the hook callback delegate
