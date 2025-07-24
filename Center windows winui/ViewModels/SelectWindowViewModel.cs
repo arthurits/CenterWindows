@@ -49,7 +49,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         // Initialize the image sources. This could be read from a settings file.
         _defaultImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder home.svg";
         _clickedImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder gone.svg";
-        _cursorPath = "ms-appx:///Assets/Finder - 32x32.cur";
+        _cursorPath = "Assets/Finder - 32x32.cur";
         // Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
 
         // Set the initial image
@@ -93,7 +93,8 @@ public partial class SelectWindowViewModel : ObservableRecipient
         {
             Debug.WriteLine("Left button down event triggered.");
             IsLeftButtonDown = true;
-            _mouseHook.CaptureMouse("", true, true);
+            //var fullPath = Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
+            _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), true, true);
             //// Set the mouse hook to capture the window under the cursor
             //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
             //if (hWnd != IntPtr.Zero)
