@@ -1,8 +1,6 @@
-﻿using System.Diagnostics;
-using CenterWindow.Contracts.Services;
+﻿using CenterWindow.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
