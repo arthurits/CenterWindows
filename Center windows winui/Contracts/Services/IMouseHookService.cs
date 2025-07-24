@@ -26,9 +26,13 @@ public interface IMouseHookService
     Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default);
 }
 
-public class MouseMoveEventArgs(IntPtr hWnd, int x, int y) : EventArgs
+public class MouseMoveEventArgs(IntPtr hWnd, string className, string windowText, int x, int y, int width, int height) : EventArgs
 {
     public IntPtr HWnd { get; } = hWnd;
+    public string ClassName { get; } = className;
+    public string WindowText { get; } = windowText;
     public int X { get; } = x;
     public int Y { get; } = y;
+    public int Width { get; } = width;
+    public int Height { get; } = height;
 }
