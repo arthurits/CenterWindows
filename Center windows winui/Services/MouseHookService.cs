@@ -18,6 +18,8 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     private CancellationTokenRegistration? _ctr;
     private CancellationToken _token;
 
+    private bool _onlyParentWnd;
+
     public event EventHandler<MouseMoveEventArgs>? MouseMoved;
     protected virtual void OnMouseMoved(MouseMoveEventArgs e) => MouseMoved?.Invoke(this, e);
 
@@ -29,17 +31,15 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         _proc = HookCallback;
     }
 
-    public Task<IntPtr> CaptureMouse(bool capture, CancellationToken cancellationToken = default)
+    public void CaptureMouse(bool onlyParentWnd, CancellationToken cancellationToken = default)
     {
-        if (capture)
-        {
-            return CaptureWindowUnderCursorAsync(cancellationToken);
-        }
-        else
-        {
-            Cleanup();
-            return Task.FromResult(IntPtr.Zero);
-        }
+        _onlyParentWnd = onlyParentWnd;
+        CaptureWindowUnderCursorAsync(cancellationToken);
+    }
+
+    public void ReleaseMouse()
+    {
+        Cleanup();
     }
 
     public Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default)

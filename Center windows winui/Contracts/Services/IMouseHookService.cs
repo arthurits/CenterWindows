@@ -10,7 +10,7 @@ public interface IMouseHookService
 {
     event EventHandler<MouseMoveEventArgs>? MouseMoved;
 
-    void CaptureMouse(bool onParentWnd = false);
+    void CaptureMouse(bool onlyParentWnd = false);
 
     void ReleaseMouse();
 
