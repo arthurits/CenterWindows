@@ -77,7 +77,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
             .GetForCurrentThread()
             .TryEnqueue(() =>
             {
-                // Ejemplo: guardas la posición para mostrar en un TextBlock
+                // Get the window information from the mouse hook event
                 WindowHandle = e.HWnd.ToString();
                 WindowTitle = e.WindowText;
                 WindowClassName = e.ClassName;
@@ -87,40 +87,20 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
         [RelayCommand]
     private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
-    {        
-        try
-        {
-            IsLeftButtonDown = true;
-            //var fullPath = Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
-            _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), true, true);
-            //// Set the mouse hook to capture the window under the cursor
-            //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
-            //if (hWnd != IntPtr.Zero)
-            //{
-            //    _centerService.CenterWindow(hWnd, 255);
-            //}
-        }
-        catch (TaskCanceledException)
-        {
-        }
+    {
+        IsLeftButtonDown = true;
+        _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), true, true);
     }
 
     [RelayCommand]
     private async Task OnLeftButtonUpAsync(PointerRoutedEventArgs args)
     {
-        try
+        IsLeftButtonDown = false;
+        _mouseHook.ReleaseMouse();
+        if (int.TryParse(WindowHandle, out var handle) && handle != 0)
         {
-            IsLeftButtonDown = false;
-            _mouseHook.ReleaseMouse();
-            if (int.TryParse(WindowHandle, out var handle) && handle != 0)
-            {
-                _centerService.CenterWindow((IntPtr)handle, 255);
-            }
+            _centerService.CenterWindow((IntPtr)handle, 255);
         }
-        catch (TaskCanceledException)
-        {
-        }
-
     }
 
     /// <summary>
