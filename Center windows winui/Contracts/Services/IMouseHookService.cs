@@ -10,7 +10,7 @@ public interface IMouseHookService
 {
     event EventHandler<MouseMoveEventArgs>? MouseMoved;
 
-    void CaptureMouse(bool onlyParentWnd = false);
+    bool CaptureMouse(string cursorPath, bool changeCursor = false, bool onlyParentWnd = false, CancellationToken cancellationToken = default);
 
     void ReleaseMouse();
 
@@ -23,7 +23,7 @@ public interface IMouseHookService
     /// canceled state.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the handle of the window under the
     /// cursor. If no window is found, the result may be <see cref="IntPtr.Zero"/>.</returns>
-    Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default);
+    //Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default);
 }
 
 public class MouseMoveEventArgs(IntPtr hWnd, string className, string windowText, int x, int y, int width, int height) : EventArgs

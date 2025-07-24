@@ -22,6 +22,7 @@ internal static partial class NativeMethods
     public const uint IMAGE_ICON = 1;
     public const uint IMAGE_CURSOR = 2;
     public const uint LR_LOADFROMFILE = 0x00000010;
+    public const uint LR_DEFAULTSIZE = 0x00000040;
 
     // Constants for window and path limits
     public const int MAX_PATH = 260;
