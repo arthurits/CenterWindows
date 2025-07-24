@@ -96,14 +96,14 @@ public partial class MouseHookService : IMouseHookService, IDisposable
                 var hookStruct = Marshal.PtrToStructure<NativeMethods.MSLLHOOKSTRUCT>(lParam)!;
 
                 // Retrieve the message type from wParam
-                uint msg = (uint)wParam;
+                var msg = (uint)wParam;
 
                 switch (msg)
                 {
                     case NativeMethods.WM_MOUSEMOVE:
-                        // Levanta el evento (ojo: esto corre en hilo de hook, muy ligero)
                         // Rise the MouseMoved event with the current mouse position
-                        OnMouseMoved(new MouseMoveEventArgs(hookStruct.pt));
+                        var dto = new MousePoint { X = hookStruct.pt.x, Y = hookStruct.pt.y };
+                        OnMouseMoved(new MouseMoveEventArgs(dto));
                         break;
 
                     case NativeMethods.WM_LBUTTONDOWN:

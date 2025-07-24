@@ -85,6 +85,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
             .TryEnqueue(() =>
             {
                 // Ejemplo: guardas la posición para mostrar en un TextBlock
+                Debug.WriteLine($"Mouse moved to: {e.Point.X}, {e.Point.Y}");
                 //CurrentMousePosition = $"{e.Point.X}, {e.Point.Y}";
             });
     }

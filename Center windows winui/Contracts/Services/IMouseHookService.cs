@@ -26,13 +26,13 @@ public interface IMouseHookService
 
 public class MouseMoveEventArgs : EventArgs
 {
-    public POINT Point { get; }
+    public MousePoint Point { get; }
 
-    public MouseMoveEventArgs(POINT pt) => Point = pt;
+    public MouseMoveEventArgs(MousePoint pt) => Point = pt;
 }
 
-public struct POINT
+public struct MousePoint
 {
-    public int x;
-    public int y;
+    public int X { get; set;}
+    public int Y { get; set;}
 }
