@@ -90,7 +90,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         {
             Debug.WriteLine("Left button down event triggered.");
             IsLeftButtonDown = true;
-            await _mouseHook.CaptureMouse(true);
+            _mouseHook.CaptureMouse(true);
             //// Set the mouse hook to capture the window under the cursor
             //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
             //if (hWnd != IntPtr.Zero)
