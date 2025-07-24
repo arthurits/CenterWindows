@@ -115,10 +115,10 @@ public partial class SelectWindowViewModel : ObservableRecipient
             Debug.WriteLine("Left button up event triggered.");
             IsLeftButtonDown = false;
             _mouseHook.ReleaseMouse();
-            //if (hWnd != IntPtr.Zero)
-            //{
-            //    _centerService.CenterWindow(hWnd, 255);
-            //}
+            if (int.TryParse(WindowHandle, out var handle) && handle != 0)
+            {
+                _centerService.CenterWindow((IntPtr)handle, 255);
+            }
         }
         catch (TaskCanceledException)
         {
