@@ -10,7 +10,7 @@ public partial class AppSettings
     [JsonIgnore]
     public string FileName { get; set; } = "appsettings.json";
     [JsonIgnore]
-    public string AppDataFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Manual Handling", "ApplicationData");
+    public string AppDataFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CenterWindows", "ApplicationData");
 
 
     /// <summary>
