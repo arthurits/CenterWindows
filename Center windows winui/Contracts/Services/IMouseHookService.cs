@@ -8,7 +8,7 @@
 /// is required.</remarks>
 public interface IMouseHookService
 {
-    public event EventHandler<MouseMoveEventArgs>? MouseMoved;
+    event EventHandler<MouseMoveEventArgs>? MouseMoved;
 
     Task<IntPtr> CaptureMouse(bool capture, CancellationToken cancellationToken = default);
 
@@ -24,15 +24,9 @@ public interface IMouseHookService
     Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default);
 }
 
-public class MouseMoveEventArgs : EventArgs
+public class MouseMoveEventArgs(IntPtr hWnd, int x, int y) : EventArgs
 {
-    public MousePoint Point { get; }
-
-    public MouseMoveEventArgs(MousePoint pt) => Point = pt;
-}
-
-public struct MousePoint
-{
-    public int X { get; set;}
-    public int Y { get; set;}
+    public IntPtr HWnd { get; } = hWnd;
+    public int X { get; } = x;
+    public int Y { get; } = y;
 }
