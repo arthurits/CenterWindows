@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using CenterWindow.Contracts.Services;
+﻿using CenterWindow.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
@@ -19,10 +18,22 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
     private readonly string _defaultImagePath;
     private readonly string _clickedImagePath;
+    private readonly string _cursorPath;
 
     [ObservableProperty]
     public partial ImageSource CurrentImage { get; set; } = null!;
 
+    [ObservableProperty]
+    public partial string WindowTitle { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string WindowHandle { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string WindowClassName { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string WindowDimensions { get; set; } = string.Empty;
 
     public SelectWindowViewModel(
         IWindowCenterService centerService,
@@ -36,6 +47,8 @@ public partial class SelectWindowViewModel : ObservableRecipient
         // Initialize the image sources. This could be read from a settings file.
         _defaultImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder home.svg";
         _clickedImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder gone.svg";
+        _cursorPath = "Assets/Finder - 32x32.cur";
+        // Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
 
         // Set the initial image
         ToggleImage();
@@ -57,71 +70,35 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
     private void OnMouseMoved(object? sender, MouseMoveEventArgs e)
     {
-        // Si necesitas actualizar propiedades enlazadas a UI, despacha al hilo principal:
+        // Dispatch to the UI thread to avoid cross-thread operation exceptions
         _ = DispatcherQueue
             .GetForCurrentThread()
             .TryEnqueue(() =>
             {
-                // Ejemplo: guardas la posición para mostrar en un TextBlock
-                Debug.WriteLine($"Window handle: {e.HWnd} & Mouse moved to: {e.X}, {e.Y}");
-                //CurrentMousePosition = $"{e.Point.X}, {e.Point.Y}";
+                // Get the window information from the mouse hook event
+                WindowHandle = e.HWnd.ToString();
+                WindowTitle = e.WindowText;
+                WindowClassName = e.ClassName;
+                WindowDimensions = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
             });
     }
 
         [RelayCommand]
     private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
     {
-        //// Alterna rutas
-        //const string defaultPath = "ms-appx:///Assets/Default.svg";
-        //const string clickedPath = "ms-appx:///Assets/Clicked.svg";
-        //const string png1 = "ms-appx:///Assets/Default.png";
-        //const string png2 = "ms-appx:///Assets/Clicked.png";
-
-        //var currentUri = CurrentImage is SvgImageSource
-        //    ? ((SvgImageSource)CurrentImage).UriSource.ToString()
-        //    : ((BitmapImage)CurrentImage).UriSource.ToString();
-
-        //// Decide siguiente ruta (puedes ajustar la lógica a tus nombres)
-        //var nextPath = currentUri.EndsWith(".svg")
-        //    ? (currentUri.Contains("Default") ? clickedPath : defaultPath)
-        //    : (currentUri.Contains("Default") ? png2 : png1);
-
-        //CurrentImage = CreateImageSource(nextPath);
-        
-        try
-        {
-            Debug.WriteLine("Left button down event triggered.");
-            IsLeftButtonDown = true;
-            _mouseHook.CaptureMouse(true);
-            //// Set the mouse hook to capture the window under the cursor
-            //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
-            //if (hWnd != IntPtr.Zero)
-            //{
-            //    _centerService.CenterWindow(hWnd, 255);
-            //}
-        }
-        catch (TaskCanceledException)
-        {
-        }
+        IsLeftButtonDown = true;
+        _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), true, true);
     }
 
     [RelayCommand]
     private async Task OnLeftButtonUpAsync(PointerRoutedEventArgs args)
     {
-        try
+        IsLeftButtonDown = false;
+        _mouseHook.ReleaseMouse();
+        if (int.TryParse(WindowHandle, out var handle) && handle != 0)
         {
-            Debug.WriteLine("Left button up event triggered.");
-            IsLeftButtonDown = false;
-            await _mouseHook.CaptureMouse(false);
-            //if (hWnd != IntPtr.Zero)
-            //{
-            //    _centerService.CenterWindow(hWnd, 255);
-            //}
+            _centerService.CenterWindow((IntPtr)handle, 255);
         }
-        catch (TaskCanceledException)
-        {
-        }
-
     }
 
     /// <summary>
@@ -129,7 +106,6 @@ public partial class SelectWindowViewModel : ObservableRecipient
     /// </summary>
     partial void OnIsLeftButtonDownChanged(bool oldValue, bool newValue)
     {
-        Debug.WriteLine($"IsLeftButtonDown changed from {oldValue} to {newValue}");
         ToggleImage();
     }
 
