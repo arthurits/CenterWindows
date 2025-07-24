@@ -47,19 +47,19 @@
                                 Spacing="4">
                         <Grid x:Name="WindowProperties" ColumnDefinitions="*, *" RowDefinitions ="*, *">
                             <StackPanel x:Name="WindowText" Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-                                <TextBlock Text="Window text" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBlock Text="Window text"/>
                                 <TextBlock Text="{Binding WindowTitle}"/>
                             </StackPanel>
                             <StackPanel x:Name="WindowHandle" Orientation="Vertical" Grid.Row="1" Grid.Column="0">
-                                <TextBlock Text="Window handle" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBlock Text="Window handle"/>
                                 <TextBlock Text="{Binding WindowHandle}"/>
                             </StackPanel>
                             <StackPanel x:Name="WindowClassName" Orientation="Vertical" Grid.Row="0" Grid.Column="1">
-                                <TextBlock Text="Window class name" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBlock Text="Window class name"/>
                                 <TextBlock Text="{Binding WindowClassName}"/>
                             </StackPanel>
                             <StackPanel x:Name="WindowDimensions" Orientation="Vertical" Grid.Row="1" Grid.Column="1">
-                                <TextBlock Text="Window dimensions" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBlock Text="Window dimensions"/>
                                 <TextBlock Text="{Binding WindowDimensions}"/>
                             </StackPanel>
                         </Grid>
