@@ -2,6 +2,7 @@
 using CenterWindow.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
@@ -23,6 +24,17 @@ public partial class SelectWindowViewModel : ObservableRecipient
     [ObservableProperty]
     public partial ImageSource CurrentImage { get; set; } = null!;
 
+    [ObservableProperty]
+    public partial string WindowTitle { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string WindowHandle { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string WindowClassName { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string WindowDimensions { get; set; } = string.Empty;
 
     public SelectWindowViewModel(
         IWindowCenterService centerService,
@@ -57,13 +69,17 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
     private void OnMouseMoved(object? sender, MouseMoveEventArgs e)
     {
-        // Si necesitas actualizar propiedades enlazadas a UI, despacha al hilo principal:
+        // Dispatch to the UI thread to avoid cross-thread operation exceptions
         _ = DispatcherQueue
             .GetForCurrentThread()
             .TryEnqueue(() =>
             {
                 // Ejemplo: guardas la posición para mostrar en un TextBlock
                 Debug.WriteLine($"Window handle: {e.HWnd} & Mouse moved to: {e.X}, {e.Y}");
+                WindowHandle = e.HWnd.ToString();
+                WindowTitle = e.WindowText;
+                WindowClassName = e.ClassName;
+                WindowDimensions = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
                 //CurrentMousePosition = $"{e.Point.X}, {e.Point.Y}";
             });
     }
@@ -92,7 +108,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         {
             Debug.WriteLine("Left button down event triggered.");
             IsLeftButtonDown = true;
-            _mouseHook.CaptureMouse(true);
+            _mouseHook.CaptureMouse("ms-appx:///Assets/Finder - 32x32.cur", true);
             //// Set the mouse hook to capture the window under the cursor
             //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
             //if (hWnd != IntPtr.Zero)
@@ -112,7 +128,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         {
             Debug.WriteLine("Left button up event triggered.");
             IsLeftButtonDown = false;
-            await _mouseHook.CaptureMouse(false);
+            _mouseHook.ReleaseMouse();
             //if (hWnd != IntPtr.Zero)
             //{
             //    _centerService.CenterWindow(hWnd, 255);
