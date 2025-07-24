@@ -17,6 +17,8 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     private CancellationTokenRegistration? _ctr;
     private CancellationToken _token;
 
+    public event EventHandler<MouseMoveEventArgs>? MouseMoved;
+
     public MouseHookService()
     {
         // Create the hook callback delegate
@@ -87,17 +89,32 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     {
         try
         {
-            if (nCode >= 0 && wParam == NativeMethods.WM_LBUTTONDOWN)
+            if (nCode >= 0)
             {
-                // Read the mouse position from the lParam
+                // Read the mouse position from lParam
                 var hookStruct = Marshal.PtrToStructure<NativeMethods.MSLLHOOKSTRUCT>(lParam)!;
 
-                // Retrieve the window handle at the mouse position
-                var hWnd = NativeMethods.WindowFromPoint(hookStruct.pt);
+                // Retrieve the message type from wParam
+                uint msg = (uint)wParam;
 
-                Cleanup();
-                _taskCS?.TrySetResult(hWnd);
+                switch (msg)
+                {
+                    case NativeMethods.WM_MOUSEMOVE:
+                        // Levanta el evento (ojo: esto corre en hilo de hook, muy ligero)
+                        MouseMoved?.Invoke(this, new MouseMoveEventArgs(hookStruct.pt));
+                        break;
+
+                    case NativeMethods.WM_LBUTTONDOWN:
+
+                        // Retrieve the window handle at the mouse position
+                        var hWnd = NativeMethods.WindowFromPoint(hookStruct.pt);
+
+                        Cleanup();
+                        _taskCS?.TrySetResult(hWnd);
+                        break;
+                }
             }
+            
         }
         catch (Exception ex)
         {
