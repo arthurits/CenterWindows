@@ -20,6 +20,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
     private readonly string _defaultImagePath;
     private readonly string _clickedImagePath;
+    private readonly string _cursorPath;
 
     [ObservableProperty]
     public partial ImageSource CurrentImage { get; set; } = null!;
@@ -48,6 +49,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         // Initialize the image sources. This could be read from a settings file.
         _defaultImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder home.svg";
         _clickedImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder gone.svg";
+        _cursorPath = "ms-appx:///Assets/Finder - 32x32.cur";
 
         // Set the initial image
         ToggleImage();
@@ -80,7 +82,6 @@ public partial class SelectWindowViewModel : ObservableRecipient
                 WindowTitle = e.WindowText;
                 WindowClassName = e.ClassName;
                 WindowDimensions = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
-                //CurrentMousePosition = $"{e.Point.X}, {e.Point.Y}";
             });
     }
 
@@ -91,7 +92,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         {
             Debug.WriteLine("Left button down event triggered.");
             IsLeftButtonDown = true;
-            _mouseHook.CaptureMouse("ms-appx:///Assets/Finder - 32x32.cur", true);
+            _mouseHook.CaptureMouse(_cursorPath, true, true);
             //// Set the mouse hook to capture the window under the cursor
             //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
             //if (hWnd != IntPtr.Zero)
