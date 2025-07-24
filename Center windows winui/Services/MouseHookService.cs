@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 using Microsoft.Win32;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CenterWindow.Services;
 
@@ -94,6 +95,9 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             {
                 // Read the mouse position from lParam
                 var hookStruct = Marshal.PtrToStructure<NativeMethods.MSLLHOOKSTRUCT>(lParam)!;
+                
+                // Retrieve the window handle at the mouse position
+                var hWnd = NativeMethods.WindowFromPoint(hookStruct.pt);
 
                 // Retrieve the message type from wParam
                 var msg = (uint)wParam;
@@ -102,15 +106,10 @@ public partial class MouseHookService : IMouseHookService, IDisposable
                 {
                     case NativeMethods.WM_MOUSEMOVE:
                         // Rise the MouseMoved event with the current mouse position
-                        var dto = new MousePoint { X = hookStruct.pt.x, Y = hookStruct.pt.y };
-                        OnMouseMoved(new MouseMoveEventArgs(dto));
+                        OnMouseMoved(new MouseMoveEventArgs(hWnd, hookStruct.pt.x, hookStruct.pt.y));
                         break;
 
                     case NativeMethods.WM_LBUTTONDOWN:
-
-                        // Retrieve the window handle at the mouse position
-                        var hWnd = NativeMethods.WindowFromPoint(hookStruct.pt);
-
                         Cleanup();
                         _taskCS?.TrySetResult(hWnd);
                         break;
