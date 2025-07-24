@@ -78,7 +78,6 @@ public partial class SelectWindowViewModel : ObservableRecipient
             .TryEnqueue(() =>
             {
                 // Ejemplo: guardas la posición para mostrar en un TextBlock
-                Debug.WriteLine($"Window handle: {e.HWnd} & Mouse moved to: {e.X}, {e.Y}");
                 WindowHandle = e.HWnd.ToString();
                 WindowTitle = e.WindowText;
                 WindowClassName = e.ClassName;
@@ -91,7 +90,6 @@ public partial class SelectWindowViewModel : ObservableRecipient
     {        
         try
         {
-            Debug.WriteLine("Left button down event triggered.");
             IsLeftButtonDown = true;
             //var fullPath = Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
             _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), true, true);
@@ -112,7 +110,6 @@ public partial class SelectWindowViewModel : ObservableRecipient
     {
         try
         {
-            Debug.WriteLine("Left button up event triggered.");
             IsLeftButtonDown = false;
             _mouseHook.ReleaseMouse();
             if (int.TryParse(WindowHandle, out var handle) && handle != 0)
@@ -131,7 +128,6 @@ public partial class SelectWindowViewModel : ObservableRecipient
     /// </summary>
     partial void OnIsLeftButtonDownChanged(bool oldValue, bool newValue)
     {
-        Debug.WriteLine($"IsLeftButtonDown changed from {oldValue} to {newValue}");
         ToggleImage();
     }
 
