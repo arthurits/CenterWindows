@@ -2,6 +2,7 @@
 using CenterWindow.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -30,6 +31,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         // Services
         _centerService = centerService;
         _mouseHook = mouseHook;
+        _mouseHook.MouseMoved += OnMouseMoved;
 
         // Initialize the image sources. This could be read from a settings file.
         _defaultImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder home.svg";
@@ -37,6 +39,15 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
         // Set the initial image
         ToggleImage();
+    }
+
+    private void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            // Unsubscribe from events
+            _mouseHook.MouseMoved -= OnMouseMoved;
+        }
     }
 
     private void ToggleImage()
@@ -66,7 +77,19 @@ public partial class SelectWindowViewModel : ObservableRecipient
         }
     }
 
-    [RelayCommand]
+    private void OnMouseMoved(object? sender, MouseMoveEventArgs e)
+    {
+        // Si necesitas actualizar propiedades enlazadas a UI, despacha al hilo principal:
+        _ = DispatcherQueue
+            .GetForCurrentThread()
+            .TryEnqueue(() =>
+            {
+                // Ejemplo: guardas la posición para mostrar en un TextBlock
+                //CurrentMousePosition = $"{e.Point.X}, {e.Point.Y}";
+            });
+    }
+
+        [RelayCommand]
     private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
     {
         //// Alterna rutas
