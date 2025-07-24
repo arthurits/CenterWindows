@@ -10,7 +10,9 @@ public interface IMouseHookService
 {
     event EventHandler<MouseMoveEventArgs>? MouseMoved;
 
-    Task<IntPtr> CaptureMouse(bool capture, CancellationToken cancellationToken = default);
+    void CaptureMouse(bool onParentWnd = false);
+
+    void ReleaseMouse();
 
     /// <summary>
     /// Captures the handle of the window currently located under the cursor.
