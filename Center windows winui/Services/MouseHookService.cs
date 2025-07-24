@@ -18,6 +18,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     private CancellationToken _token;
 
     public event EventHandler<MouseMoveEventArgs>? MouseMoved;
+    protected virtual void OnMouseMoved(MouseMoveEventArgs e) => MouseMoved?.Invoke(this, e);
 
     public MouseHookService()
     {
@@ -101,7 +102,8 @@ public partial class MouseHookService : IMouseHookService, IDisposable
                 {
                     case NativeMethods.WM_MOUSEMOVE:
                         // Levanta el evento (ojo: esto corre en hilo de hook, muy ligero)
-                        MouseMoved?.Invoke(this, new MouseMoveEventArgs(hookStruct.pt));
+                        // Rise the MouseMoved event with the current mouse position
+                        OnMouseMoved(new MouseMoveEventArgs(hookStruct.pt));
                         break;
 
                     case NativeMethods.WM_LBUTTONDOWN:
