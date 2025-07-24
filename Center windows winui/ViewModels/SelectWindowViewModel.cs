@@ -67,14 +67,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         //        ? (currentUri.Contains("Default") ? clickedPath : defaultPath)
         //        : (currentUri.Contains("Default") ? png2 : png1);
 
-        if (IsLeftButtonDown)
-        {
-            CurrentImage = CreateImageSource(_clickedImagePath);
-        }
-        else
-        {
-            CurrentImage = CreateImageSource(_defaultImagePath);
-        }
+        CurrentImage = CreateImageSource(IsLeftButtonDown ? _clickedImagePath : _defaultImagePath);
     }
 
     private void OnMouseMoved(object? sender, MouseMoveEventArgs e)
@@ -85,7 +78,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
             .TryEnqueue(() =>
             {
                 // Ejemplo: guardas la posición para mostrar en un TextBlock
-                Debug.WriteLine($"Mouse moved to: {e.Point.X}, {e.Point.Y}");
+                Debug.WriteLine($"Window handle: {e.HWnd} & Mouse moved to: {e.X}, {e.Y}");
                 //CurrentMousePosition = $"{e.Point.X}, {e.Point.Y}";
             });
     }
