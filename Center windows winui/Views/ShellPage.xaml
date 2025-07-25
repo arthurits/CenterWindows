@@ -63,7 +63,7 @@
                                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SelectWindowViewModel"
                                     ToolTipService.ToolTip="{Binding StrSelectWindowToolTip}">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <ImageIcon Source="/Assets/Shell - Select window - 24x24.svg"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
@@ -74,7 +74,7 @@
                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SettingsViewModel"
                     ToolTipService.ToolTip="{Binding StrSettingsToolTip}">
                     <NavigationViewItem.Icon>
-                        <ImageIcon Source="/Assets/Settings_windows.svg"/>
+                        <ImageIcon Source="/Assets/Shell - Settings windows.svg"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -82,7 +82,7 @@
                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.AboutViewModel"
                     ToolTipService.ToolTip="{Binding StrAboutToolTip}">
                     <NavigationViewItem.Icon>
-                        <BitmapIcon UriSource="/Assets/Settings_about.ico" ShowAsMonochrome="False" />
+                        <BitmapIcon UriSource="/Assets/Shell - About.ico" ShowAsMonochrome="False" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
