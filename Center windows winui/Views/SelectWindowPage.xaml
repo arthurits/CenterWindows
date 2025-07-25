@@ -35,7 +35,7 @@
                             <Image
                                 Source="{Binding CurrentImage}"
                                 Width="48"
-                                Height="48"
+                                Height="44"
                                 Stretch="Uniform" />
                         </Button>
                     </StackPanel>
