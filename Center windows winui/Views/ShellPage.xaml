@@ -56,7 +56,7 @@
                                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.ListWindowsViewModel"
                                     ToolTipService.ToolTip="{Binding StrListWindowsToolTip}">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <ImageIcon Source="/Assets/Shell - List windows - 24x24.svg"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="{Binding StrSelectWindowItem}"
