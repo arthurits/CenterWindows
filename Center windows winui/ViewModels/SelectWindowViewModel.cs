@@ -52,6 +52,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         _defaultImagePath = _appSettings.SelectWindowDefaultImagePath;
         _clickedImagePath = _appSettings.SelectWindowClickedImagePath;
         _cursorPath = _appSettings.SelectWindowCursorPath;
+        // Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
 
         // Set the initial image
         ToggleImage();
