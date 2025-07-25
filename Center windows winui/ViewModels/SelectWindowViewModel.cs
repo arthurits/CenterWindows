@@ -45,8 +45,8 @@ public partial class SelectWindowViewModel : ObservableRecipient
         _mouseHook.MouseMoved += OnMouseMoved;
 
         // Initialize the image sources. This could be read from a settings file.
-        _defaultImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder home.svg";
-        _clickedImagePath = "ms-appx:///Assets/Select window - 24x24 - Finder gone.svg";
+        _defaultImagePath = "ms-appx:///Assets/Select window - 48x44 - Finder home.svg";
+        _clickedImagePath = "ms-appx:///Assets/Select window - 48x44 - Finder gone.svg";
         _cursorPath = "Assets/Finder - 32x32.cur";
         // Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
 
