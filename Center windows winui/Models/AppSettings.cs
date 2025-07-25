@@ -12,6 +12,13 @@ public partial class AppSettings
     [JsonIgnore]
     public string AppDataFolder { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CenterWindows", "ApplicationData");
 
+    [JsonPropertyName("Select window default image path")]
+    public string SelectWindowDefaultImagePath { get; set; } = "ms-appx:///Assets/Select window - 48x44 - Finder home.svg";
+    [JsonPropertyName("Select window clicked image path")]
+    public string SelectWindowClickedImagePath { get; set; } = "ms-appx:///Assets/Select window - 48x44 - Finder gone.svg";
+    [JsonPropertyName("Select window cursor path")]
+    public string SelectWindowCursorPath { get; set; } = "Assets/Finder - 32x32.cur";
+
 
     /// <summary>
     /// Remember window position on start up
