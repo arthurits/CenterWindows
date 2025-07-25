@@ -1,4 +1,5 @@
 ﻿using CenterWindow.Contracts.Services;
+using CenterWindow.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
@@ -12,6 +13,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
 {
     private readonly IWindowCenterService _centerService;
     private readonly IMouseHookService _mouseHook;
+    private readonly AppSettings _appSettings;
 
     [ObservableProperty]
     public partial bool IsLeftButtonDown { get; set; } = false;
@@ -36,19 +38,20 @@ public partial class SelectWindowViewModel : ObservableRecipient
     public partial string WindowDimensions { get; set; } = string.Empty;
 
     public SelectWindowViewModel(
+        ILocalSettingsService<AppSettings> settings,
         IWindowCenterService centerService,
         IMouseHookService mouseHook)
     {
         // Services
+        _appSettings = settings.GetValues;
         _centerService = centerService;
         _mouseHook = mouseHook;
         _mouseHook.MouseMoved += OnMouseMoved;
 
         // Initialize the image sources. This could be read from a settings file.
-        _defaultImagePath = "ms-appx:///Assets/Select window - 48x44 - Finder home.svg";
-        _clickedImagePath = "ms-appx:///Assets/Select window - 48x44 - Finder gone.svg";
-        _cursorPath = "Assets/Finder - 32x32.cur";
-        // Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
+        _defaultImagePath = _appSettings.SelectWindowDefaultImagePath;
+        _clickedImagePath = _appSettings.SelectWindowClickedImagePath;
+        _cursorPath = _appSettings.SelectWindowCursorPath;
 
         // Set the initial image
         ToggleImage();
