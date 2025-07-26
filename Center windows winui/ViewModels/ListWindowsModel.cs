@@ -79,31 +79,31 @@ public partial class ListWindowsViewModel : ObservableRecipient
         LoadWindows();
     }
 
-    [RelayCommand]
-    private async Task SelectWindowAsync()
-    {
-        try
-        {
-            //// Set the mouse hook to capture the window under the cursor
-            //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
-            //if (hWnd != IntPtr.Zero)
-            //{
-            //    // If the window is already in the list, select it; otherwise, center it
-            //    var win = WindowsList.FirstOrDefault(w => w.Hwnd == hWnd);
-            //    if (win is not null)
-            //    {
-            //        SelectedWindow = win;
-            //    }
-            //    else
-            //    {
-            //        _centerService.CenterWindow(hWnd, 255);
-            //    }
-            //}
-        }
-        catch (TaskCanceledException)
-        {
-        }
-    }
+    //[RelayCommand]
+    //private async Task SelectWindowAsync()
+    //{
+    //    try
+    //    {
+    //        //// Set the mouse hook to capture the window under the cursor
+    //        //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
+    //        //if (hWnd != IntPtr.Zero)
+    //        //{
+    //        //    // If the window is already in the list, select it; otherwise, center it
+    //        //    var win = WindowsList.FirstOrDefault(w => w.Hwnd == hWnd);
+    //        //    if (win is not null)
+    //        //    {
+    //        //        SelectedWindow = win;
+    //        //    }
+    //        //    else
+    //        //    {
+    //        //        _centerService.CenterWindow(hWnd, 255);
+    //        //    }
+    //        //}
+    //    }
+    //    catch (TaskCanceledException)
+    //    {
+    //    }
+    //}
 
     [RelayCommand]
     private void CenterMenu(WindowModel window)
