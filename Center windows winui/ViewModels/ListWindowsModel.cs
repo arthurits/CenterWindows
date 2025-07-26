@@ -64,14 +64,14 @@ public partial class ListWindowsViewModel : ObservableRecipient
         WindowsList = list;
     }
 
-    [RelayCommand]
-    public void CenterSelectedWindow()
-    {
-        if (SelectedWindow is not null)
-        {
-            _centerService.CenterWindow(SelectedWindow.Hwnd, _alpha);
-        }
-    }
+    //[RelayCommand]
+    //public void CenterSelectedWindow()
+    //{
+    //    if (SelectedWindow is not null)
+    //    {
+    //        _centerService.CenterWindow(SelectedWindow.Hwnd, _alpha);
+    //    }
+    //}
 
     [RelayCommand]
     public void RefreshWindows()
