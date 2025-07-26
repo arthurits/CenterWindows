@@ -3,6 +3,6 @@
 namespace CenterWindow.Contracts.Services;
 public interface IWindowCenterService
 {
-    void CenterWindow(IntPtr hWnd, byte alpha);
+    void CenterWindow(IntPtr hWnd);
     void SetWindowTransparency(IntPtr hWnd, byte alpha);
 }
