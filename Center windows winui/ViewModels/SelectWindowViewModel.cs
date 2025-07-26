@@ -1,4 +1,5 @@
-﻿using CenterWindow.Contracts.Services;
+﻿using System.Collections.ObjectModel;
+using CenterWindow.Contracts.Services;
 using CenterWindow.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,6 +9,21 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace CenterWindow.ViewModels;
+
+public partial class PropertyItem(string key, string value, string iconPath) : ObservableObject
+{
+    [ObservableProperty]
+    public partial string Key { get; set; } = key;
+
+    [ObservableProperty]
+    public partial string Value { get; set; } = value;
+
+    [ObservableProperty]
+    public partial string IconPath { get; set; } = iconPath;
+
+    [ObservableProperty]
+    public partial bool IsLastItem { get; set; } = false;
+}
 
 public partial class SelectWindowViewModel : ObservableRecipient
 {
@@ -37,6 +53,13 @@ public partial class SelectWindowViewModel : ObservableRecipient
     [ObservableProperty]
     public partial string WindowDimensions { get; set; } = string.Empty;
 
+    public ObservableCollection<PropertyItem> WindowPropertiesCollection { get; } = [];
+
+    [ObservableProperty]
+    public partial int Transparency { get; set; } = 255;
+
+    private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
+
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
         IWindowCenterService centerService,
@@ -53,6 +76,14 @@ public partial class SelectWindowViewModel : ObservableRecipient
         _clickedImagePath = _appSettings.SelectWindowClickedImagePath;
         _cursorPath = _appSettings.SelectWindowCursorPath;
         // Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
+
+        // Initialize the window properties collection
+        // Ejemplo: inicializa con pares clave/valor
+        WindowPropertiesCollection.Add(new PropertyItem("Window text", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Window handle", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Window class name", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Window dimensions", string.Empty, string.Empty));
+        WindowPropertiesCollection.Last().IsLastItem = true;
 
         // Set the initial image
         ToggleImage();
@@ -84,6 +115,19 @@ public partial class SelectWindowViewModel : ObservableRecipient
                 WindowTitle = e.WindowText;
                 WindowClassName = e.ClassName;
                 WindowDimensions = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
+                // Update the properties collection
+                WindowPropertiesCollection[0].Value = e.WindowText;
+                WindowPropertiesCollection[1].Value = $"{e.HWnd} ({e.HWnd:X})";
+                WindowPropertiesCollection[2].Value = e.ClassName;
+                WindowPropertiesCollection[3].Value = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
+
+                // Force rebinding of the properties collection in the UI
+                //OnPropertyChanged(nameof(WindowPropertiesCollection));
+
+                // OnLanguageChanged()
+                //var localizedKeys = localizationService.GetLocalizedKeys();
+                //for (int i = 0; i < WindowPropertiesCollection.Count; i++)
+                //    WindowPropertiesCollection[i].Key = localizedKeys[i];
             });
     }
 
@@ -101,7 +145,8 @@ public partial class SelectWindowViewModel : ObservableRecipient
         _mouseHook.ReleaseMouse();
         if (int.TryParse(WindowHandle, out var handle) && handle != 0)
         {
-            _centerService.CenterWindow((IntPtr)handle, 255);
+            _centerService.CenterWindow((IntPtr)handle, _alpha);
+            _centerService.SetWindowTransparency((IntPtr)handle, _alpha);
         }
     }
 

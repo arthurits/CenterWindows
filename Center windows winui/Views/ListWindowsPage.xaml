@@ -14,107 +14,148 @@
         <conv:NullToBoolConverter x:Key="NullToBool"/>
     </Page.Resources>
 
-    <ScrollViewer Padding="20">
-        <StackPanel Orientation="Vertical" Spacing="12">
+    <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*">
+        <ScrollView x:Name="ScrollViewPage" ContentOrientation="Vertical"
+                    HorizontalContentAlignment="Stretch"  VerticalContentAlignment="Stretch"
+                    ZoomMode="Disabled" IsTabStop="True"
+                    VerticalAlignment="Top" HorizontalAlignment="Left"
+                    HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto"
+                    Width="{Binding ActualWidth, ElementName=ContentArea}"
+                    Height="{Binding ActualHeight, ElementName=ContentArea}">
 
-            <!-- Column headers -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Title"           Grid.Column="0" FontWeight="SemiBold"/>
-                <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
-                <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
-            </Grid>
+            <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
 
-            <!-- Window list -->
-            <ListView
-                x:Name="WindowsListView"
-                ItemsSource="{Binding WindowsList, Mode=OneWay}"
-                SelectedItem="{Binding SelectedWindow, Mode=TwoWay}">
-                
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:WindowModel">
-                        <Grid Padding="4"
-                              Background="Transparent"
-                              Tapped="ItemGrid_Tapped"
-                              RightTapped="ItemGrid_RightTapped">
-                            <!-- Flyout menu -->
-                            <Grid.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem
-                                          Text="{Binding DataContext.StrCenterMenu, ElementName=WindowsListView}"
-                                          Command="{Binding DataContext.CenterMenuCommand, ElementName=WindowsListView}"
-                                          CommandParameter="{Binding}" />
-                                    <MenuFlyoutItem
-                                          Text="{Binding DataContext.StrCenterWithAlphaMenu, ElementName=WindowsListView}"
-                                          Command="{Binding DataContext.CenterWithAlphaMenuCommand, ElementName=WindowsListView}"
-                                          CommandParameter="{Binding}" />
-                                    <MenuFlyoutItem
-                                          Text="{Binding DataContext.StrTransparencyMenu, ElementName=WindowsListView}"
-                                          Command="{Binding DataContext.TransparencyMenuCommand, ElementName=WindowsListView}"
-                                          CommandParameter="{Binding}" />
-                                    <MenuFlyoutSeparator />
-                                    <MenuFlyoutItem
-                                          Text="{Binding DataContext.StrDeselectMenu, ElementName=WindowsListView}"
-                                          Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=WindowsListView}"
-                                          IsEnabled="{Binding DataContext.IsWindowSelected, ElementName=WindowsListView}" />
-                                    <MenuFlyoutSeparator />
-                                    <MenuFlyoutItem
-                                          Text="{Binding DataContext.StrCenterAllMenu, ElementName=WindowsListView}"
-                                          Command="{Binding DataContext.CenterAllMenuCommand, ElementName=WindowsListView}" />
-                                </MenuFlyout>
-                            </Grid.ContextFlyout>
-                            
+                <Grid ColumnDefinitions="*" RowDefinitions ="*, *">
+
+                    <StackPanel
+                        x:Name="WindowList"
+                        Grid.Row="0"
+                        Orientation="Vertical"
+                        Spacing="12"
+                        Style="{StaticResource ContentStackPanel}">
+
+                        <!-- Column headers -->
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Text="{x:Bind Title}"
-                                Grid.Column="0"
-                                TextTrimming="CharacterEllipsis"/>
-                            <TextBlock
-                                Text="{x:Bind Handle}"
-                                Grid.Column="1"
-                                HorizontalAlignment="Center"/>
-                            <TextBlock
-                                Text="{x:Bind Rect}"
-                                Grid.Column="2"/>
+                            <TextBlock Text="Title"           Grid.Column="0" FontWeight="SemiBold"/>
+                            <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
+                            <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
                         </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
 
-            <!-- Transparency selection and center button -->
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <TextBlock Text="Transparency:" VerticalAlignment="Center"/>
-                <Slider
-                      Minimum="0"
-                      Maximum="255"
-                      Value="{Binding Transparency, Mode=TwoWay}"
-                      Width="200"/>
-                <TextBlock
-                      Text="{Binding Transparency, Mode=OneWay}"
-                      VerticalAlignment="Center"/>
-                <!--<Button
-                      Content="Center with alpha"
-                      Command="{Binding CenterSelectedWindowCommand}"
-                      IsEnabled="{Binding SelectedWindow, Converter={StaticResource NullToBool}, Mode=OneWay}"/>-->
+                        <!-- Window list -->
+                        <ListView
+                            x:Name="WindowsListView"
+                            ItemsSource="{Binding WindowsList, Mode=OneWay}"
+                            SelectedItem="{Binding SelectedWindow, Mode=TwoWay}">
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:WindowModel">
+                                    <Grid Padding="4"
+                                          Background="Transparent"
+                                          Tapped="ItemGrid_Tapped"
+                                          RightTapped="ItemGrid_RightTapped">
+                                        <!-- Flyout menu -->
+                                        <Grid.ContextFlyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutItem
+                                                      Text="{Binding DataContext.StrCenterMenu, ElementName=WindowsListView}"
+                                                      Command="{Binding DataContext.CenterMenuCommand, ElementName=WindowsListView}"
+                                                      CommandParameter="{Binding}" />
+                                                <MenuFlyoutItem
+                                                      Text="{Binding DataContext.StrCenterWithAlphaMenu, ElementName=WindowsListView}"
+                                                      Command="{Binding DataContext.CenterWithAlphaMenuCommand, ElementName=WindowsListView}"
+                                                      CommandParameter="{Binding}" />
+                                                <MenuFlyoutItem
+                                                      Text="{Binding DataContext.StrTransparencyMenu, ElementName=WindowsListView}"
+                                                      Command="{Binding DataContext.TransparencyMenuCommand, ElementName=WindowsListView}"
+                                                      CommandParameter="{Binding}" />
+                                                <MenuFlyoutSeparator />
+                                                <MenuFlyoutItem
+                                                      Text="{Binding DataContext.StrDeselectMenu, ElementName=WindowsListView}"
+                                                      Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=WindowsListView}"
+                                                      IsEnabled="{Binding DataContext.IsWindowSelected, ElementName=WindowsListView}" />
+                                                <MenuFlyoutSeparator />
+                                                <MenuFlyoutItem
+                                                      Text="{Binding DataContext.StrCenterAllMenu, ElementName=WindowsListView}"
+                                                      Command="{Binding DataContext.CenterAllMenuCommand, ElementName=WindowsListView}" />
+                                            </MenuFlyout>
+                                        </Grid.ContextFlyout>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Text="{x:Bind Title}"
+                                            Grid.Column="0"
+                                            TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock
+                                            Text="{x:Bind Handle}"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Center"/>
+                                        <TextBlock
+                                            Text="{x:Bind Rect}"
+                                            Grid.Column="2"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <!-- Crosshair button -->
+                        <!--
+                        <Button
+                              Command="{Binding SelectWindowCommand}"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Width="36" Height="36"
+                              ToolTipService.ToolTip="Select window with mouse">
+                            <FontIcon Glyph="&#xEC78;" /> -->
+                                    <!-- Segoe MDL2 crosshair -->
+                                    <!--
+                        </Button>-->
+                    </StackPanel>
+                    
+                    <!-- Transparency selection -->
+                    <StackPanel
+                        x:Name="WindowTransparency"
+                        Grid.Row="1"
+                        Margin="0,8,0,0"
+                        Padding="8"
+                        Style="{StaticResource ContentStackPanel}">
+                        <StackPanel
+                            x:Name="TransparencySlider"
+                            Orientation="Horizontal"
+                            Spacing="12">
+                            <TextBlock
+                                Text="Transparency:"
+                                VerticalAlignment="Center"/>
+                            <Slider
+                                Minimum="0"
+                                Maximum="255"
+                                Value="{Binding Transparency, Mode=TwoWay}"
+                                Width="200"/>
+                            <TextBlock
+                                Text="{Binding Transparency, Mode=OneWay}"
+                                VerticalAlignment="Center"/>
+                            <!--<Button
+                                Content="Center with alpha"
+                                Command="{Binding CenterSelectedWindowCommand}"
+                                IsEnabled="{Binding SelectedWindow, Converter={StaticResource NullToBool}, Mode=OneWay}"/>-->
+                        </StackPanel>
+                    </StackPanel>
+                    
+                </Grid>
+                
             </StackPanel>
-
-            <!-- Crosshair button --><!--
-            <Button
-                  Command="{Binding SelectWindowCommand}"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  Width="36" Height="36"
-                  ToolTipService.ToolTip="Select window with mouse">
-                <FontIcon Glyph="&#xEC78;" /> --><!-- Segoe MDL2 crosshair --><!--
-            </Button>-->
-        </StackPanel>
-    </ScrollViewer>
+            
+        </ScrollView>
+        
+    </Grid>
+    
 </Page>
