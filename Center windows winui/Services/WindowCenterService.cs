@@ -16,9 +16,7 @@ public class WindowCenterService : IWindowCenterService
     /// <remarks>This method calculates the dimensions of the specified window and positions it at the center
     /// of the screen. The method does not perform any action if the window's dimensions cannot be retrieved.</remarks>
     /// <param name="hWnd">A handle to the window to be centered. This must be a valid window handle.</param>
-    /// <param name="alpha">The alpha transparency value to apply to the window. Valid values range from 0 (completely transparent)  to 255
-    /// (completely opaque). This parameter is currently unused in the method implementation.</param>
-    public void CenterWindow(IntPtr hWnd, byte alpha)
+    public void CenterWindow(IntPtr hWnd)
     {
         if (!NativeMethods.GetWindowRect(hWnd, out var rect))
         {
@@ -48,8 +46,8 @@ public class WindowCenterService : IWindowCenterService
     /// set. The transparency level is controlled by the <paramref name="alpha"/> parameter, which determines  the
     /// opacity of the window.</remarks>
     /// <param name="hWnd">A handle to the window whose transparency level is to be set.</param>
-    /// <param name="alpha">The alpha value to apply to the window. Valid values range from 0 (completely transparent)  to 255 (completely
-    /// opaque).</param>
+    /// <param name="alpha">The alpha transparency value to apply to the window. Valid values range from 0 (completely transparent)  to 255
+    /// (completely opaque).</param>
     public void SetWindowTransparency(IntPtr hWnd, byte alpha)
     {
         // Enable layered style if not already set
