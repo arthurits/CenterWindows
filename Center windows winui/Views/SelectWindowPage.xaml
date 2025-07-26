@@ -65,7 +65,7 @@
 
             <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
 
-                <Grid ColumnDefinitions="*" RowDefinitions ="*, *">
+                <Grid ColumnDefinitions="*" RowDefinitions ="*, *, *">
 
                     <StackPanel x:Name="PanelSelect"
                                 Grid.Row="0"
@@ -90,22 +90,49 @@
                         </Button>
                     </StackPanel>
 
+                    <!-- Transparency selection -->
+                    <StackPanel
+                        x:Name="WindowTransparency"
+                        Grid.Row="1"
+                        Margin="0,8,0,0"
+                        Padding="8"
+                        Style="{StaticResource ContentStackPanel}">
+                        <StackPanel
+                            x:Name="TransparencySlider"
+                            Orientation="Horizontal"
+                            Spacing="12">
+                            <TextBlock
+                                Text="Transparency:"
+                                VerticalAlignment="Center"/>
+                            <Slider
+                                Minimum="0"
+                                Maximum="255"
+                                Value="{Binding Transparency, Mode=TwoWay}"
+                                Width="200"/>
+                            <TextBlock
+                                Text="{Binding Transparency, Mode=OneWay}"
+                                VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Selected window data -->
                     <StackPanel x:Name="PanelData"
-                                Grid.Row="1"
-                                Orientation="Vertical"
-                                Style="{StaticResource ContentStackPanel}"
-                                Margin="0, 8, 0, 0"
-                                Spacing="4">
+                        Grid.Row="1"
+                        Orientation="Vertical"
+                        Style="{StaticResource ContentStackPanel}"
+                        Margin="0, 8, 0, 0"
+                        Spacing="4">
                         <Border Background="{StaticResource PanelAcrylicBrush}"
-                                  Padding="12"
-                                  CornerRadius="8">
+                            Padding="12"
+                            CornerRadius="8">
                             <ListView ItemsSource="{Binding WindowPropertiesCollection}"
-                                      ItemTemplate="{StaticResource PropertyTemplate}"
-                                      SelectionMode="None"
-                                      IsItemClickEnabled="False"
-                                      BorderThickness="0"/>
+                                ItemTemplate="{StaticResource PropertyTemplate}"
+                                SelectionMode="None"
+                                IsItemClickEnabled="False"
+                                BorderThickness="0"/>
                         </Border>
                     </StackPanel>
+                    
                 </Grid>
             </StackPanel>
         </ScrollView>
