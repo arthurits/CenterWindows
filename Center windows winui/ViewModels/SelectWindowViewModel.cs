@@ -145,7 +145,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         _mouseHook.ReleaseMouse();
         if (int.TryParse(WindowHandle, out var handle) && handle != 0)
         {
-            _centerService.CenterWindow((IntPtr)handle, _alpha);
+            _centerService.CenterWindow((IntPtr)handle);
             _centerService.SetWindowTransparency((IntPtr)handle, _alpha);
         }
     }
