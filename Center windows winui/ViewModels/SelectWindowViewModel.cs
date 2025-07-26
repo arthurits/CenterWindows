@@ -8,16 +8,20 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Media.AppBroadcasting;
 
 namespace CenterWindow.ViewModels;
 
-public partial class PropertyItem(string key, string value) : ObservableObject
+public partial class PropertyItem(string key, string value, string iconPath) : ObservableObject
 {
     [ObservableProperty]
     public partial string Key { get; set; } = key;
 
     [ObservableProperty]
     public partial string Value { get; set; } = value;
+
+    [ObservableProperty]
+    public partial string IconPath { get; set; } = iconPath;
 }
 
 public partial class SelectWindowViewModel : ObservableRecipient
@@ -69,10 +73,10 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
         // Initialize the window properties collection
         // Ejemplo: inicializa con pares clave/valor
-        WindowPropertiesCollection.Add(new PropertyItem("Window text", ""));
-        WindowPropertiesCollection.Add(new PropertyItem("Window handle", ""));
-        WindowPropertiesCollection.Add(new PropertyItem("Window class name", ""));
-        WindowPropertiesCollection.Add(new PropertyItem("Window dimensions", ""));
+        WindowPropertiesCollection.Add(new PropertyItem("Window text", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Window handle", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Window class name", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Window dimensions", string.Empty, string.Empty));
 
         // Set the initial image
         ToggleImage();

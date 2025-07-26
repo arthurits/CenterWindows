@@ -13,19 +13,30 @@
     <Page.Resources>
         <!-- ListView DataTemplate -->
         <DataTemplate x:Key="PropertyTemplate">
-            <Grid ColumnDefinitions="Auto, *" Padding="8" ColumnSpacing="12">
-                <TextBlock Text="{Binding Key}" Style="{StaticResource DataLabelTextStyle}"/>
-                <TextBlock Text="{Binding Value}" Style="{StaticResource DataValueTextStyle}"
-                   Grid.Column="1"/>
+            <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12" Padding="4">
+                <Image
+                    Source="{Binding IconPath}"
+                    Width="20"
+                    Height="20"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding IconPath, Converter={StaticResource NullToVisibilityConverter}}"/>
+                <TextBlock
+                    Text="{Binding Key}"
+                    Style="{StaticResource DataLabelTextStyle}"
+                    Grid.Column="1"/>
+                <TextBlock
+                    Text="{Binding Value}"
+                    Style="{StaticResource DataValueTextStyle}"
+                    Grid.Column="2"/>
             </Grid>
         </DataTemplate>
 
         <!-- AcrylicBrush -->
         <media:AcrylicBrush x:Key="PanelAcrylicBrush"
-                  TintColor="#CCFFFFFF"
-                  TintOpacity="0.6"
-                  FallbackColor="#F0F0F0"
-                  AlwaysUseFallback="True"/>
+                  AlwaysUseFallback="True"
+                  TintColor="#FFF7E7CE"
+                  TintOpacity="0.3"
+                  FallbackColor="#FFFAF3E0"/>
     </Page.Resources>
     
     <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*">
@@ -70,13 +81,14 @@
                                 Grid.Row="1"
                                 Orientation="Vertical"
                                 Style="{StaticResource ContentStackPanel}"
-                                Margin="0, 12, 0, 0"
+                                Margin="0, 8, 0, 0"
                                 Spacing="4">
                         <Border Background="{StaticResource PanelAcrylicBrush}"
                                   Padding="12"
                                   CornerRadius="8">
                             <ListView ItemsSource="{Binding WindowPropertiesCollection}"
                                       ItemTemplate="{StaticResource PropertyTemplate}"
+                                      ItemContainerStyle="{StaticResource ListViewItemSeparatorStyle}"
                                       SelectionMode="None"
                                       IsItemClickEnabled="False"
                                       BorderThickness="0"/>
