@@ -100,7 +100,8 @@
                         <StackPanel
                             x:Name="TransparencySlider"
                             Orientation="Horizontal"
-                            Spacing="12">
+                            Spacing="12"
+                            HorizontalAlignment="Center">
                             <TextBlock
                                 Text="Transparency:"
                                 VerticalAlignment="Center"/>
@@ -117,7 +118,7 @@
 
                     <!-- Selected window data -->
                     <StackPanel x:Name="PanelData"
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Orientation="Vertical"
                         Style="{StaticResource ContentStackPanel}"
                         Margin="0, 8, 0, 0"
