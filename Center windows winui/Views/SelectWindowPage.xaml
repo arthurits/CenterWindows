@@ -5,10 +5,29 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:viewmodel="using:CenterWindow.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodel:SelectWindowViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
+    
+    <Page.Resources>
+        <!-- ListView DataTemplate -->
+        <DataTemplate x:Key="PropertyTemplate">
+            <Grid ColumnDefinitions="Auto, *" Padding="8" ColumnSpacing="12">
+                <TextBlock Text="{Binding Key}" Style="{StaticResource DataLabelTextStyle}"/>
+                <TextBlock Text="{Binding Value}" Style="{StaticResource DataValueTextStyle}"
+                   Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
 
+        <!-- AcrylicBrush -->
+        <media:AcrylicBrush x:Key="PanelAcrylicBrush"
+                  TintColor="#CCFFFFFF"
+                  TintOpacity="0.6"
+                  FallbackColor="#F0F0F0"
+                  AlwaysUseFallback="True"/>
+    </Page.Resources>
+    
     <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*">
 
         <ScrollView x:Name="ScrollViewPage" ContentOrientation="Vertical"
@@ -53,24 +72,15 @@
                                 Style="{StaticResource ContentStackPanel}"
                                 Margin="0, 12, 0, 0"
                                 Spacing="4">
-                        <Grid x:Name="WindowProperties" ColumnDefinitions="*, *" RowDefinitions ="*, *" ColumnSpacing="12">
-                            <StackPanel x:Name="WindowText" Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-                                <TextBlock Text="Window text"/>
-                                <TextBlock Text="{Binding WindowTitle}"/>
-                            </StackPanel>
-                            <StackPanel x:Name="WindowHandle" Orientation="Vertical" Grid.Row="1" Grid.Column="0">
-                                <TextBlock Text="Window handle"/>
-                                <TextBlock Text="{Binding WindowHandle}"/>
-                            </StackPanel>
-                            <StackPanel x:Name="WindowClassName" Orientation="Vertical" Grid.Row="0" Grid.Column="1">
-                                <TextBlock Text="Window class name"/>
-                                <TextBlock Text="{Binding WindowClassName}"/>
-                            </StackPanel>
-                            <StackPanel x:Name="WindowDimensions" Orientation="Vertical" Grid.Row="1" Grid.Column="1">
-                                <TextBlock Text="Window dimensions"/>
-                                <TextBlock Text="{Binding WindowDimensions}"/>
-                            </StackPanel>
-                        </Grid>
+                        <Border Background="{StaticResource PanelAcrylicBrush}"
+                                  Padding="12"
+                                  CornerRadius="8">
+                            <ListView ItemsSource="{Binding WindowPropertiesCollection}"
+                                      ItemTemplate="{StaticResource PropertyTemplate}"
+                                      SelectionMode="None"
+                                      IsItemClickEnabled="False"
+                                      BorderThickness="0"/>
+                        </Border>
                     </StackPanel>
                 </Grid>
             </StackPanel>
