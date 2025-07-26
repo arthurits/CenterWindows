@@ -12,24 +12,35 @@
     mc:Ignorable="d">
     
     <Page.Resources>
+        <!-- Converters -->
         <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        
         <!-- ListView DataTemplate -->
         <DataTemplate x:Key="PropertyTemplate">
-            <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12" Padding="4">
-                <Image
-                    Source="{Binding IconPath}"
-                    Width="20"
-                    Height="20"
-                    VerticalAlignment="Center"
-                    Visibility="{Binding IconPath, Converter={StaticResource NullToVisibilityConverter}}"/>
-                <TextBlock
-                    Text="{Binding Key}"
-                    Style="{StaticResource DataLabelTextStyle}"
-                    Grid.Column="1"/>
-                <TextBlock
-                    Text="{Binding Value}"
-                    Style="{StaticResource DataValueTextStyle}"
-                    Grid.Column="2"/>
+            <Grid RowDefinitions="Auto, Auto">
+                <Grid ColumnDefinitions="Auto, Auto, *" ColumnSpacing="12" Padding="4">
+                    <Image
+                        Source="{Binding IconPath}"
+                        Width="20"
+                        Height="20"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding IconPath, Converter={StaticResource NullToVisibilityConverter}}"/>
+                    <TextBlock
+                        Text="{Binding Key}"
+                        Style="{StaticResource DataLabelTextStyle}"
+                        Grid.Column="1"/>
+                    <TextBlock
+                        Text="{Binding Value}"
+                        Style="{StaticResource DataValueTextStyle}"
+                        Grid.Column="2"/>
+                </Grid>
+                <Rectangle
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Height="1"
+                        Fill="#FFE0E0E0"
+                        Visibility="{Binding IsLastItem, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
             </Grid>
         </DataTemplate>
 
@@ -90,7 +101,6 @@
                                   CornerRadius="8">
                             <ListView ItemsSource="{Binding WindowPropertiesCollection}"
                                       ItemTemplate="{StaticResource PropertyTemplate}"
-                                      ItemContainerStyle="{StaticResource ListViewItemSeparatorStyle}"
                                       SelectionMode="None"
                                       IsItemClickEnabled="False"
                                       BorderThickness="0"/>
