@@ -57,6 +57,11 @@ public partial class SelectWindowViewModel : ObservableRecipient
 
     public ObservableCollection<PropertyItem> WindowPropertiesCollection { get; } = [];
 
+    [ObservableProperty]
+    public partial int Transparency { get; set; } = 255;
+
+    private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
+
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
         IWindowCenterService centerService,
