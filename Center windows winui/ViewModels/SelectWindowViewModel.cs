@@ -114,7 +114,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
                 WindowDimensions = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
                 // Update the properties collection
                 WindowPropertiesCollection[0].Value = e.WindowText;
-                WindowPropertiesCollection[1].Value = e.HWnd.ToString();
+                WindowPropertiesCollection[1].Value = $"{e.HWnd} ({e.HWnd:X})";
                 WindowPropertiesCollection[2].Value = e.ClassName;
                 WindowPropertiesCollection[3].Value = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
 
