@@ -80,6 +80,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         WindowPropertiesCollection.Add(new PropertyItem("Window handle", string.Empty, string.Empty));
         WindowPropertiesCollection.Add(new PropertyItem("Window class name", string.Empty, string.Empty));
         WindowPropertiesCollection.Add(new PropertyItem("Window dimensions", string.Empty, string.Empty));
+        WindowPropertiesCollection.Last().IsLastItem = true;
 
         // Set the initial image
         ToggleImage();
