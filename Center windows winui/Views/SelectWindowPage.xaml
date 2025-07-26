@@ -7,10 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:viewmodel="using:CenterWindow.ViewModels"
+    xmlns:converter="using:CenterWindow.Converters"
     d:DataContext="{d:DesignInstance Type=viewmodel:SelectWindowViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
     
     <Page.Resources>
+        <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         <!-- ListView DataTemplate -->
         <DataTemplate x:Key="PropertyTemplate">
             <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12" Padding="4">

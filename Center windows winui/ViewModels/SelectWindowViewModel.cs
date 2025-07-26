@@ -22,6 +22,8 @@ public partial class PropertyItem(string key, string value, string iconPath) : O
 
     [ObservableProperty]
     public partial string IconPath { get; set; } = iconPath;
+    
+    
 }
 
 public partial class SelectWindowViewModel : ObservableRecipient
