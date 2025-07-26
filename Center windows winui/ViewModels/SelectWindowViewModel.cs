@@ -1,14 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Models;
-using CenterWindow.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Windows.Media.AppBroadcasting;
 
 namespace CenterWindow.ViewModels;
 
@@ -147,7 +145,8 @@ public partial class SelectWindowViewModel : ObservableRecipient
         _mouseHook.ReleaseMouse();
         if (int.TryParse(WindowHandle, out var handle) && handle != 0)
         {
-            _centerService.CenterWindow((IntPtr)handle, 255);
+            _centerService.CenterWindow((IntPtr)handle, _alpha);
+            _centerService.SetWindowTransparency((IntPtr)handle, _alpha);
         }
     }
 
