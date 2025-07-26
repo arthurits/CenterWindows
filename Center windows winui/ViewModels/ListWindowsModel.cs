@@ -108,13 +108,13 @@ public partial class ListWindowsViewModel : ObservableRecipient
     [RelayCommand]
     private void CenterMenu(WindowModel window)
     {
-        _centerService.CenterWindow(window.Hwnd, 255);
+        _centerService.CenterWindow(window.Hwnd);
     }
 
     [RelayCommand]
     private void CenterWithAlphaMenu(WindowModel window)
     {
-        _centerService.CenterWindow(window.Hwnd, _alpha);
+        _centerService.CenterWindow(window.Hwnd);
         _centerService.SetWindowTransparency(window.Hwnd, _alpha);
     }
 
@@ -136,7 +136,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     {
         foreach (var w in WindowsList)
         {
-            _centerService.CenterWindow(w.Hwnd, 255);
+            _centerService.CenterWindow(w.Hwnd);
         }
     }
 
