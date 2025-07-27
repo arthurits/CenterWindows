@@ -20,9 +20,7 @@
                     ZoomMode="Disabled" IsTabStop="True"
                     VerticalAlignment="Top" HorizontalAlignment="Left"
                     HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto"
-                    Width="{Binding ActualWidth, ElementName=ContentArea}"
-                    Height="{Binding ActualHeight, ElementName=ContentArea}">
+                    VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
 
             <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
 
