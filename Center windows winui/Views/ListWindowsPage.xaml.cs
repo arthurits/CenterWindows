@@ -24,6 +24,12 @@ public sealed partial class ListWindowsPage : Page
         ViewModel.LoadWindows();
     }
 
+    private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        ScrollViewPage.Height = ActualHeight;
+        ScrollViewPage.Width = ActualWidth;
+    }
+
     private void ItemGrid_Tapped(object sender, TappedRoutedEventArgs e)
     {
         var grid = (FrameworkElement)sender;

@@ -8,7 +8,8 @@
     xmlns:conv="using:CenterWindow.Converters"
     xmlns:vm="using:CenterWindow.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:ListWindowsViewModel, IsDesignTimeCreatable=False}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    SizeChanged="Page_SizeChanged">
 
     <Page.Resources>
         <conv:NullToBoolConverter x:Key="NullToBool"/>
@@ -20,9 +21,7 @@
                     ZoomMode="Disabled" IsTabStop="True"
                     VerticalAlignment="Top" HorizontalAlignment="Left"
                     HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto"
-                    Width="{Binding ActualWidth, ElementName=ContentArea}"
-                    Height="{Binding ActualHeight, ElementName=ContentArea}">
+                    VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
 
             <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
 
