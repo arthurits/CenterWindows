@@ -28,6 +28,12 @@ public sealed partial class SelectWindowPage : Page
           handledEventsToo: true);
     }
 
+    private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        ScrollViewPage.Height = ActualHeight;
+        ScrollViewPage.Width = ActualWidth;
+    }
+
     private void OnSelectWindow_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         // Filter out non-left button clicks
