@@ -151,7 +151,7 @@ public partial class SettingsViewModel : ObservableRecipient
     }
     partial void OnWindowWidthChanged(int oldValue, int newValue)
     {
-        OnPropertyChanged(WindowSizeDescription);
+        OnPropertyChanged(nameof(WindowSizeDescription));
     }
     partial void OnWindowHeightChanged(int oldValue, int newValue)
     {
