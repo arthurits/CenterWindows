@@ -29,8 +29,6 @@ public partial class ShellViewModel : ObservableRecipient
     [ObservableProperty]
     public partial string StrAppDisplayName_File { get; set; } = string.Empty;
 
-    public readonly string StrTitleUnion;
-
     [ObservableProperty]
     public partial string StrAboutItem { get; set; } = string.Empty;
     [ObservableProperty]
@@ -48,20 +46,26 @@ public partial class ShellViewModel : ObservableRecipient
     [ObservableProperty]
     public partial string StrSettingsToolTip { get; set; } = string.Empty;
 
-    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, ILocalizationService localizationService)
+    public ShellViewModel(
+        INavigationService navigationService,
+        INavigationViewService navigationViewService,
+        ILocalizationService localizationService,
+        IMainWindowService mainWindowService)
     {
         // Retrieve the navigation service and navigation view service
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
 
-        // Set the title union character
-        StrTitleUnion = "StrTitleUnion".GetLocalized("Shell");
-
-
         // Subscribe to localization service events
         _localizationService = localizationService;
         _localizationService.LanguageChanged += OnLanguageChanged;
+
+        // Get the MainWindow service
+        _mainWindowService = mainWindowService;
+
+        // Set the title union character
+        _mainWindowService.TitleUnion = "StrTitleUnion".GetLocalized("Shell");
     }
 
     public void Dispose()
@@ -105,13 +109,11 @@ public partial class ShellViewModel : ObservableRecipient
 
     partial void OnStrAppDisplayName_FileChanged(string oldValue, string newValue)
     {
-        // Update the display name when StrAppDisplayName_File changes
-        //StrAppDisplayName = WindowTitle.SetWindowTitle(StrAppDisplayName_Base, newValue, StrTitleUnion);
+        _mainWindowService.TitleFile = newValue;
     }
 
     partial void OnStrAppDisplayName_BaseChanged(string oldValue, string newValue)
     {
-        // Update the display name when StrAppDisplayName_Base changes
-        //StrAppDisplayName = WindowTitle.SetWindowTitle(newValue, StrAppDisplayName_File, StrTitleUnion);
+        _mainWindowService.TitleMain = newValue;
     }
 }
