@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CenterWindow.Contracts.Services;
 
-namespace HeatStress.Services;
+namespace CenterWindow.Services;
 public partial class MainWindowService : ObservableObject, IMainWindowService
 {
     private readonly WindowEx _window;
