@@ -91,16 +91,16 @@ public partial class ShellViewModel : ObservableRecipient
     {
         IsBackEnabled = NavigationService.CanGoBack;
 
-        if (e.SourcePageType == typeof(SettingsPage))
-        {
-            Selected = NavigationViewService.SettingsItem;
-            return;
-        }
-
         var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-        if (selectedItem != null)
+        if (selectedItem is not null)
         {
             Selected = selectedItem;
+        }
+
+        // Copilot suggested this line, but it seems redundant since SyncSelectedItem is called in the constructor.
+        if (NavigationService.Frame is not null)
+        {
+            NavigationViewService.SyncSelectedItem(NavigationService.Frame.CurrentSourcePageType);
         }
     }
 
