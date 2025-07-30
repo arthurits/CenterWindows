@@ -38,14 +38,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
     [ObservableProperty]
     public partial bool WindowPosition { get; set; }
-    [ObservableProperty]
-    public partial int WindowTop { get; set; }
-    [ObservableProperty]
-    public partial int WindowLeft { get; set; }
-    [ObservableProperty]
-    public partial int WindowWidth { get; set; }
-    [ObservableProperty]
-    public partial int WindowHeight { get; set; }
+    
     [ObservableProperty]
     public partial bool RememberFileDialogPath { get; set; }
 
