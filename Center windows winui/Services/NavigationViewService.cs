@@ -100,4 +100,19 @@ public class NavigationViewService : INavigationViewService
 
         return false;
     }
+
+    // Copilot suggested this method to sync the selected item in the NavigationView
+    public void SyncSelectedItem(Type? pageType)
+    {
+        if (pageType is null)
+        {
+            return;
+        }
+
+        var item = GetSelectedItem(pageType);
+        if (item is not null)
+        {
+            _navigationView?.SelectedItem = item;
+        }
+    }
 }
