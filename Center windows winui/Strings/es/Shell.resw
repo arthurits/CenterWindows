@@ -126,6 +126,9 @@
   <data name="StrAboutToolTip" xml:space="preserve">
     <value>Información sobre el programa</value>
   </data>
+  <data name="StrAppDisplayName" xml:space="preserve">
+    <value>Center windows</value>
+  </data>
   <data name="StrListWindowsItem" xml:space="preserve">
     <value>Lista</value>
   </data>
