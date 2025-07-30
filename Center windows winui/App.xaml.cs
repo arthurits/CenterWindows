@@ -81,6 +81,13 @@ public partial class App : Application
             services.AddSingleton<IconLoaderFactory>();
             services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow, sp.GetRequiredService<IconLoaderFactory>()));
 
+            // Register the MainWindow service. We use the factory method instantiation of MainWindow but
+            // leave the option to use the inline if needed in the future.
+            services.AddSingleton<WindowEx>(sp => MainWindow);
+            services.AddSingleton<IMainWindowService, MainWindowService>();
+            //services.AddSingleton<IMainWindowService>(sp => new MainWindowService(MainWindow));
+
+
             // Views and ViewModels
             services.AddSingleton<SelectWindowViewModel>();
             services.AddTransient<SelectWindowPage>();

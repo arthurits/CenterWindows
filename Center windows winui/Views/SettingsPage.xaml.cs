@@ -11,7 +11,6 @@ public sealed partial class SettingsPage : Page, IDisposable
 {
     public SettingsViewModel ViewModel { get; }
     private readonly ILocalizationService _localizationService;
-    private readonly WindowEx MainWindow;
 
     public SettingsPage()
     {
@@ -21,34 +20,11 @@ public sealed partial class SettingsPage : Page, IDisposable
         ViewModel = App.GetService<SettingsViewModel>();
         _localizationService = App.GetService<ILocalizationService>();
         DataContext = ViewModel;
-
-        // Keep track of the main window size and position
-        this.MainWindow = App.MainWindow;
-        MainWindow.PositionChanged += Window_PositionChanged;
-        MainWindow.SizeChanged += MainWindow_SizeChanged;
-
-        ViewModel.WindowLeft = MainWindow.AppWindow.Position.X;
-        ViewModel.WindowTop = MainWindow.AppWindow.Position.Y;
-        ViewModel.WindowWidth = MainWindow.AppWindow.Size.Width;
-        ViewModel.WindowHeight = MainWindow.AppWindow.Size.Height;
     }
 
     public void Dispose()
     {
-        MainWindow.PositionChanged -= Window_PositionChanged;
-        MainWindow.SizeChanged -= MainWindow_SizeChanged;
-    }
-
-    private void MainWindow_SizeChanged(object sender, Microsoft.UI.Xaml.WindowSizeChangedEventArgs args)
-    {
-        ViewModel.WindowWidth = (int)args.Size.Width;
-        ViewModel.WindowHeight = (int)args.Size.Height;
-    }
-
-    private void Window_PositionChanged(object? sender, Windows.Graphics.PointInt32 e)
-    {
-        ViewModel.WindowLeft = e.X;
-        ViewModel.WindowTop = e.Y;
+        
     }
 
     /// <summary>

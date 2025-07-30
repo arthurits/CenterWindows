@@ -23,6 +23,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly ILocalizationService _localizationService;
     private readonly ITrayIconService _trayIconService;
+    private readonly IMainWindowService _mainWindowService;
     private readonly ILocalSettingsService<AppSettings> _settingsService;
     private AppSettings _appSettings;
 
@@ -37,14 +38,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
     [ObservableProperty]
     public partial bool WindowPosition { get; set; }
-    [ObservableProperty]
-    public partial int WindowTop { get; set; }
-    [ObservableProperty]
-    public partial int WindowLeft { get; set; }
-    [ObservableProperty]
-    public partial int WindowWidth { get; set; }
-    [ObservableProperty]
-    public partial int WindowHeight { get; set; }
+    
     [ObservableProperty]
     public partial bool RememberFileDialogPath { get; set; }
 
@@ -59,11 +53,16 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
 
-    public string WindowSizeDescription => string.Format(StrWindowSize, WindowWidth, WindowHeight);
+    public string WindowSizeDescription => string.Format(StrWindowSize, _mainWindowService.WindowWidth, _mainWindowService.WindowHeight);
 
-    public string WindowPositionDescription => string.Format(StrWindowPosition, WindowTop, WindowLeft);
+    public string WindowPositionDescription => string.Format(StrWindowPosition, _mainWindowService.WindowTop, _mainWindowService.WindowLeft);
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, ILocalSettingsService<AppSettings> settings, ILocalizationService localizationService, ITrayIconService trayIconService)
+    public SettingsViewModel(
+        IThemeSelectorService themeSelectorService,
+        ILocalSettingsService<AppSettings> settings,
+        ILocalizationService localizationService,
+        ITrayIconService trayIconService,
+        IMainWindowService mainWindowService)
     {
         // Tray icon service
         _trayIconService = trayIconService;
@@ -83,6 +82,10 @@ public partial class SettingsViewModel : ObservableRecipient
         Theme = (int)Enum.Parse<ElementTheme>(_appSettings.ThemeName);
         //_elementTheme = _themeSelectorService.Theme;
         //_versionDescription = GetVersionDescription();
+
+        // Main window service and susbcription to changed event
+        _mainWindowService = mainWindowService;
+        _mainWindowService.PropertyChanged += MainWindow_Changed;
 
         // Subscribe to localization service events
         _localizationService = localizationService;
@@ -107,14 +110,23 @@ public partial class SettingsViewModel : ObservableRecipient
 
         // Populate the settings dictionary for synchronization
         _syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
-        _syncActions[nameof(WindowTop)] = () => _appSettings.WindowTop = WindowTop;
-        _syncActions[nameof(WindowLeft)] = () => _appSettings.WindowLeft = WindowLeft;
-        _syncActions[nameof(WindowWidth)] = () => _appSettings.WindowWidth = WindowWidth;
-        _syncActions[nameof(WindowHeight)] = () => _appSettings.WindowHeight = WindowHeight;
         _syncActions[nameof(RememberFileDialogPath)] = () => _appSettings.RememberFileDialogPath = RememberFileDialogPath;
         _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
     }
+
+    private void MainWindow_Changed(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(_mainWindowService.WindowWidth) or nameof(_mainWindowService.WindowHeight))
+        {
+            OnPropertyChanged(nameof(WindowSizeDescription));
+        }
+        if (e.PropertyName is nameof(_mainWindowService.WindowLeft) or nameof(_mainWindowService.WindowTop))
+        {
+            OnPropertyChanged(nameof(WindowPositionDescription));
+        }
+    }
+
 
     public void Dispose()
     {
@@ -139,23 +151,6 @@ public partial class SettingsViewModel : ObservableRecipient
             //SelectedLanguageIndex = updated.ToList().FindIndex(c => c.LanguageTag == selected.LanguageTag);
             //SelectedLanguageIndex = newValue; // Re-assign to trigger property change
         }
-    }
-
-    partial void OnWindowLeftChanged(int oldValue, int newValue)
-    {
-        OnPropertyChanged(nameof(WindowPositionDescription));
-    }
-    partial void OnWindowTopChanged(int oldValue, int newValue)
-    {
-        OnPropertyChanged(nameof(WindowPositionDescription));
-    }
-    partial void OnWindowWidthChanged(int oldValue, int newValue)
-    {
-        OnPropertyChanged(nameof(WindowSizeDescription));
-    }
-    partial void OnWindowHeightChanged(int oldValue, int newValue)
-    {
-        OnPropertyChanged(nameof(WindowSizeDescription));
     }
 
     private void ThemeSelectorChanged(string? themeName)
@@ -185,16 +180,6 @@ public partial class SettingsViewModel : ObservableRecipient
         }
     }
 
-    partial void OnStrWindowSizeChanged(string oldValue, string newValue)
-    {
-        OnPropertyChanged(nameof(WindowSizeDescription));
-    }
-
-    partial void OnStrWindowPositionChanged(string oldValue, string newValue)
-    {
-        OnPropertyChanged(nameof(WindowPositionDescription));
-    }
-
     /// <summary>
     /// Override OnPropertyChanged to handle custom behaviour
     /// </summary>
@@ -218,15 +203,9 @@ public partial class SettingsViewModel : ObservableRecipient
         }
 
         // Set the reset button visibility
-        if (e.PropertyName != nameof(WindowLeft) &&
-            e.PropertyName != nameof(WindowTop) &&
-            e.PropertyName != nameof(WindowWidth) &&
-            e.PropertyName != nameof(WindowHeight))
+        if (IsResetVisible == false)
         {
-            if (IsResetVisible == false)
-            {
-                IsResetVisible = true;
-            }
+            IsResetVisible = true;
         }
 
     }

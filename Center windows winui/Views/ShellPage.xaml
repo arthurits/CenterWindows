@@ -23,6 +23,7 @@
                    Width="24"
                    Height="24" />
             <TextBlock x:Name="AppTitleBarText"
+                       Text="{Binding MainWindowService.Title, Mode=TwoWay}"
                        VerticalAlignment="Center"
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}"
