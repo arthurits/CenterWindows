@@ -23,6 +23,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly ILocalizationService _localizationService;
     private readonly ITrayIconService _trayIconService;
+    private readonly IMainWindowService _mainWindowService;
     private readonly ILocalSettingsService<AppSettings> _settingsService;
     private AppSettings _appSettings;
 
@@ -63,7 +64,12 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public string WindowPositionDescription => string.Format(StrWindowPosition, WindowTop, WindowLeft);
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, ILocalSettingsService<AppSettings> settings, ILocalizationService localizationService, ITrayIconService trayIconService)
+    public SettingsViewModel(
+        IThemeSelectorService themeSelectorService,
+        ILocalSettingsService<AppSettings> settings,
+        ILocalizationService localizationService,
+        ITrayIconService trayIconService,
+        IMainWindowService mainWindowService)
     {
         // Tray icon service
         _trayIconService = trayIconService;
@@ -83,6 +89,10 @@ public partial class SettingsViewModel : ObservableRecipient
         Theme = (int)Enum.Parse<ElementTheme>(_appSettings.ThemeName);
         //_elementTheme = _themeSelectorService.Theme;
         //_versionDescription = GetVersionDescription();
+
+        // Main window service and susbcription to changed event
+        _mainWindowService = mainWindowService;
+        _mainWindowService.PropertyChanged += MainWindow_Changed;
 
         // Subscribe to localization service events
         _localizationService = localizationService;
