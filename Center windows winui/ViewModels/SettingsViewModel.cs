@@ -110,10 +110,6 @@ public partial class SettingsViewModel : ObservableRecipient
 
         // Populate the settings dictionary for synchronization
         _syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
-        _syncActions[nameof(WindowTop)] = () => _appSettings.WindowTop = WindowTop;
-        _syncActions[nameof(WindowLeft)] = () => _appSettings.WindowLeft = WindowLeft;
-        _syncActions[nameof(WindowWidth)] = () => _appSettings.WindowWidth = WindowWidth;
-        _syncActions[nameof(WindowHeight)] = () => _appSettings.WindowHeight = WindowHeight;
         _syncActions[nameof(RememberFileDialogPath)] = () => _appSettings.RememberFileDialogPath = RememberFileDialogPath;
         _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
@@ -207,15 +203,9 @@ public partial class SettingsViewModel : ObservableRecipient
         }
 
         // Set the reset button visibility
-        if (e.PropertyName != nameof(WindowLeft) &&
-            e.PropertyName != nameof(WindowTop) &&
-            e.PropertyName != nameof(WindowWidth) &&
-            e.PropertyName != nameof(WindowHeight))
+        if (IsResetVisible == false)
         {
-            if (IsResetVisible == false)
-            {
-                IsResetVisible = true;
-            }
+            IsResetVisible = true;
         }
 
     }
