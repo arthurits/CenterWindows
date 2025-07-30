@@ -126,6 +126,19 @@ public partial class SettingsViewModel : ObservableRecipient
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
     }
 
+    private void MainWindow_Changed(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(_mainWindowService.WindowWidth) or nameof(_mainWindowService.WindowHeight))
+        {
+            OnPropertyChanged(nameof(WindowSizeDescription));
+        }
+        if (e.PropertyName is nameof(_mainWindowService.WindowLeft) or nameof(_mainWindowService.WindowTop))
+        {
+            OnPropertyChanged(nameof(WindowPositionDescription));
+        }
+    }
+
+
     public void Dispose()
     {
         _localizationService.LanguageChanged -= OnLanguageChanged;
