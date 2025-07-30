@@ -23,8 +23,6 @@ public partial class ShellViewModel : ObservableRecipient
     public IMainWindowService MainWindowService => _mainWindowService;
 
     [ObservableProperty]
-    public partial string StrAppDisplayName { get; set; } = string.Empty;
-    [ObservableProperty]
     public partial string StrAppDisplayName_Base { get; private set; } = string.Empty;
     [ObservableProperty]
     public partial string StrAppDisplayName_File { get; set; } = string.Empty;
@@ -77,8 +75,7 @@ public partial class ShellViewModel : ObservableRecipient
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
         // Update the display name and tooltips based on the current language
-        StrAppDisplayName = "StrAppDisplayName".GetLocalized("Shell");
-        //StrAppDisplayName_Base = "StrAppDisplayName".GetLocalized("Shell");
+        StrAppDisplayName_Base = "StrAppDisplayName".GetLocalized("Shell");
         StrAboutItem = "StrAboutItem".GetLocalized("Shell");
         StrAboutToolTip = "StrAboutToolTip".GetLocalized("Shell");
         StrListWindowsItem = "StrListWindowsItem".GetLocalized("Shell");
