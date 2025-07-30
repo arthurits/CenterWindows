@@ -11,15 +11,16 @@ namespace CenterWindow.ViewModels;
 public partial class ShellViewModel : ObservableRecipient
 {
     [ObservableProperty]
-    private bool isBackEnabled;
-
+    public partial bool IsBackEnabled { get; set; }
     [ObservableProperty]
-    private object? selected;
+    public partial object? Selected { get; set; }
 
     // Services
     public INavigationService NavigationService { get; }
     public INavigationViewService NavigationViewService { get; }
     private readonly ILocalizationService _localizationService;
+    private readonly IMainWindowService _mainWindowService;
+    public IMainWindowService MainWindowService => _mainWindowService;
 
     [ObservableProperty]
     public partial string StrAppDisplayName { get; set; } = string.Empty;
