@@ -164,23 +164,6 @@ public partial class SettingsViewModel : ObservableRecipient
         }
     }
 
-    partial void OnWindowLeftChanged(int oldValue, int newValue)
-    {
-        OnPropertyChanged(nameof(WindowPositionDescription));
-    }
-    partial void OnWindowTopChanged(int oldValue, int newValue)
-    {
-        OnPropertyChanged(nameof(WindowPositionDescription));
-    }
-    partial void OnWindowWidthChanged(int oldValue, int newValue)
-    {
-        OnPropertyChanged(nameof(WindowSizeDescription));
-    }
-    partial void OnWindowHeightChanged(int oldValue, int newValue)
-    {
-        OnPropertyChanged(nameof(WindowSizeDescription));
-    }
-
     private void ThemeSelectorChanged(string? themeName)
     {
         if (Enum.TryParse(themeName, out ElementTheme theme) is true)
@@ -206,16 +189,6 @@ public partial class SettingsViewModel : ObservableRecipient
                 IsResetVisible = true;
             }
         }
-    }
-
-    partial void OnStrWindowSizeChanged(string oldValue, string newValue)
-    {
-        OnPropertyChanged(nameof(WindowSizeDescription));
-    }
-
-    partial void OnStrWindowPositionChanged(string oldValue, string newValue)
-    {
-        OnPropertyChanged(nameof(WindowPositionDescription));
     }
 
     /// <summary>
