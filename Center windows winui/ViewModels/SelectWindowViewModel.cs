@@ -38,7 +38,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
     private readonly string _clickedImagePath;
     private readonly string _cursorPath;
     private IntPtr _selectedWindowHandle = IntPtr.Zero;
-    private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
+    private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
     
     [ObservableProperty]
     public partial ImageSource CurrentImage { get; set; } = null!;
@@ -130,7 +130,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
         if (_selectedWindowHandle != IntPtr.Zero)
         {
             _centerService.CenterWindow(_selectedWindowHandle);
-            _centerService.SetWindowTransparency(_selectedWindowHandle, _alpha);
+            _centerService.SetWindowTransparency(_selectedWindowHandle, Alpha);
         }
     }
 
