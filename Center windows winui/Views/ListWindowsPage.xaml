@@ -46,6 +46,10 @@
                             Text="{Binding DataContext.StrCenterAllMenu, ElementName=RootPage}"
                             Command="{Binding DataContext.CenterAllMenuCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}" />
+                        <MenuFlyoutItem
+                            Text="{Binding DataContext.StrRefreshWindows, ElementName=RootPage}"
+                            Command="{Binding DataContext.LoadWindowsCommand, ElementName=RootPage}"
+                            CommandParameter="{Binding}" />
                     </MenuFlyout>
                 </Grid.ContextFlyout>
                 <Grid.ColumnDefinitions>
