@@ -21,7 +21,7 @@ public sealed partial class SelectWindowPage : Page
             new PointerEventHandler(OnSelectWindow_PointerPressed),
             handledEventsToo: true);
 
-        // Escucha el PointerReleased aunque el control ya lo haya manejado
+        // Listen for pointer released events on the SelectWindow element even if the event is handled internally
         SelectWindow.AddHandler(
           UIElement.PointerReleasedEvent,
           new PointerEventHandler(OnSelectWindow_PointerReleased),

@@ -37,28 +37,16 @@ public partial class SelectWindowViewModel : ObservableRecipient
     private readonly string _defaultImagePath;
     private readonly string _clickedImagePath;
     private readonly string _cursorPath;
-
+    private IntPtr _selectedWindowHandle = IntPtr.Zero;
+    private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
+    
     [ObservableProperty]
     public partial ImageSource CurrentImage { get; set; } = null!;
-
-    [ObservableProperty]
-    public partial string WindowTitle { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string WindowHandle { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string WindowClassName { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string WindowDimensions { get; set; } = string.Empty;
 
     public ObservableCollection<PropertyItem> WindowPropertiesCollection { get; } = [];
 
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
-
-    private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
 
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
@@ -110,12 +98,8 @@ public partial class SelectWindowViewModel : ObservableRecipient
             .GetForCurrentThread()
             .TryEnqueue(() =>
             {
-                // Get the window information from the mouse hook event
-                WindowHandle = e.HWnd.ToString();
-                WindowTitle = e.WindowText;
-                WindowClassName = e.ClassName;
-                WindowDimensions = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
-                // Update the properties collection
+                // Update the properties collection with information from the mouse hook event
+                _selectedWindowHandle = e.HWnd;
                 WindowPropertiesCollection[0].Value = e.WindowText;
                 WindowPropertiesCollection[1].Value = $"{e.HWnd} ({e.HWnd:X})";
                 WindowPropertiesCollection[2].Value = e.ClassName;
@@ -131,22 +115,22 @@ public partial class SelectWindowViewModel : ObservableRecipient
             });
     }
 
-        [RelayCommand]
-    private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
+    [RelayCommand]
+    private void OnLeftButtonDown(PointerRoutedEventArgs args)
     {
         IsLeftButtonDown = true;
         _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), true, true);
     }
 
     [RelayCommand]
-    private async Task OnLeftButtonUpAsync(PointerRoutedEventArgs args)
+    private void OnLeftButtonUp(PointerRoutedEventArgs args)
     {
         IsLeftButtonDown = false;
         _mouseHook.ReleaseMouse();
-        if (int.TryParse(WindowHandle, out var handle) && handle != 0)
+        if (_selectedWindowHandle != IntPtr.Zero)
         {
-            _centerService.CenterWindow((IntPtr)handle);
-            _centerService.SetWindowTransparency((IntPtr)handle, _alpha);
+            _centerService.CenterWindow(_selectedWindowHandle);
+            _centerService.SetWindowTransparency(_selectedWindowHandle, Alpha);
         }
     }
 
