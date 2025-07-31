@@ -51,7 +51,7 @@ public sealed partial class ListWindowsPage : Page
         // Select the corresponding ListView item in the ViewModel
         if (grid.DataContext is WindowModel window)
         {
-            ViewModel.SelectedWindow = window;
+            //ViewModel.SelectedWindow = window;
         }
 
         // Get the ContextFlyout from the grid and show it at the tapped position
@@ -78,7 +78,7 @@ public sealed partial class ListWindowsPage : Page
         // Select the corresponding ListView item in the ViewModel
         if (grid.DataContext is WindowModel win)
         {
-            ViewModel.SelectedWindow = win;
+            //ViewModel.SelectedWindow = win;
         }
 
         // Show the context menu

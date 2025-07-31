@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:models="using:CenterWindow.Models"
     xmlns:conv="using:CenterWindow.Converters"
     xmlns:vm="using:CenterWindow.ViewModels"
@@ -34,7 +35,7 @@
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrApplyToSelectedWindow, ElementName=RootPage}"
-                            Command="{Binding DataContext.ApplyToSelectedCommand, ElementName=RootPage}"
+                            Command="{Binding DataContext.ApplyToSelectedWindowsCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}" />
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrApplyToAllWindows, ElementName=RootPage}"
@@ -45,7 +46,7 @@
                             Text="{Binding DataContext.StrDeselectMenu, ElementName=RootPage}"
                             Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}"
-                            IsEnabled="{Binding DataContext.IsWindowSelected, ElementName=RootPage}" />
+                            IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}" />
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrRefreshWindows, ElementName=RootPage}"
@@ -100,11 +101,17 @@
                         <ListView
                             x:Name="WindowsListView"
                             ItemsSource="{Binding WindowsList}"
-                            SelectedItem="{Binding SelectedWindow, Mode=TwoWay}"
                             ItemTemplate="{StaticResource WindowItemTemplate}"
-                            IsItemClickEnabled="True"
-                            SelectionMode="Single"
+                            IsItemClickEnabled="False"
+                            SelectionMode="Multiple"
                             Margin="0,12,0,0">
+                            <interactivity:Interaction.Behaviors>
+                                <interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                                    <interactivity:InvokeCommandAction
+                                        Command="{Binding WindowsSelectionChangedCommand}"
+                                        CommandParameter="{x:Bind WindowsListView.SelectedItems, Mode=OneWay}" />
+                                </interactivity:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
                         </ListView>
                         
                     </StackPanel>
