@@ -1,5 +1,6 @@
 ﻿using CenterWindow.Models;
 using CenterWindow.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -9,10 +10,8 @@ namespace CenterWindow.Views;
 
 public sealed partial class ListWindowsPage : Page
 {
-    public ListWindowsViewModel ViewModel
-    {
-        get;
-    }
+    public ListWindowsViewModel ViewModel { get; }
+    private bool _cancelNextClose = false;
 
     public ListWindowsPage()
     {
@@ -28,6 +27,21 @@ public sealed partial class ListWindowsPage : Page
     {
         ScrollViewPage.Height = ActualHeight;
         ScrollViewPage.Width = ActualWidth;
+    }
+
+    private void ToggleMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+    {
+        _cancelNextClose = true;
+    }
+
+    private void OptionsMenuFlyout_Closing(FlyoutBase sender, FlyoutBaseClosingEventArgs args)
+    {
+        // If the closing comes from a ToggleMenuFlyoutItem, we cancel the closing of the flyout.
+        if (_cancelNextClose)
+        {
+            args.Cancel = true;
+            _cancelNextClose = false;
+        }
     }
 
     private void ItemGrid_Tapped(object sender, TappedRoutedEventArgs e)

@@ -22,13 +22,15 @@
                 Tapped="ItemGrid_Tapped"
                 RightTapped="ItemGrid_RightTapped">
                 <Grid.ContextFlyout>
-                    <MenuFlyout>
+                    <MenuFlyout Closing="OptionsMenuFlyout_Closing">
                         <ToggleMenuFlyoutItem
                             Text="{Binding DataContext.StrCenterMenu, ElementName=RootPage}"
-                            IsChecked="{Binding DataContext.CenterMenu, Mode=TwoWay, ElementName=RootPage}"/>
+                            IsChecked="{Binding DataContext.CenterMenu, Mode=TwoWay, ElementName=RootPage}"
+                            Click="ToggleMenuFlyoutItem_Click"/>
                         <ToggleMenuFlyoutItem
                             Text="{Binding DataContext.StrTransparencyMenu, ElementName=RootPage}"
-                            IsChecked="{Binding DataContext.AlphaMenu, Mode=TwoWay, ElementName=RootPage}"/>
+                            IsChecked="{Binding DataContext.AlphaMenu, Mode=TwoWay, ElementName=RootPage}"
+                            Click="ToggleMenuFlyoutItem_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrApplyToSelectedWindow, ElementName=RootPage}"
