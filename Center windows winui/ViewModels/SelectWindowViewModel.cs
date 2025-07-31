@@ -37,17 +37,16 @@ public partial class SelectWindowViewModel : ObservableRecipient
     private readonly string _defaultImagePath;
     private readonly string _clickedImagePath;
     private readonly string _cursorPath;
-
+    private IntPtr _selectedWindowHandle = IntPtr.Zero;
+    private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
+    
     [ObservableProperty]
     public partial ImageSource CurrentImage { get; set; } = null!;
 
     public ObservableCollection<PropertyItem> WindowPropertiesCollection { get; } = [];
-    private IntPtr WindowHandle = IntPtr.Zero;
 
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
-
-    private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
 
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
@@ -100,7 +99,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
             .TryEnqueue(() =>
             {
                 // Update the properties collection with information from the mouse hook event
-                WindowHandle = e.HWnd;
+                _selectedWindowHandle = e.HWnd;
                 WindowPropertiesCollection[0].Value = e.WindowText;
                 WindowPropertiesCollection[1].Value = $"{e.HWnd} ({e.HWnd:X})";
                 WindowPropertiesCollection[2].Value = e.ClassName;
@@ -117,21 +116,21 @@ public partial class SelectWindowViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
+    private void OnLeftButtonDown(PointerRoutedEventArgs args)
     {
         IsLeftButtonDown = true;
         _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), true, true);
     }
 
     [RelayCommand]
-    private async Task OnLeftButtonUpAsync(PointerRoutedEventArgs args)
+    private void OnLeftButtonUp(PointerRoutedEventArgs args)
     {
         IsLeftButtonDown = false;
         _mouseHook.ReleaseMouse();
-        if (WindowHandle != IntPtr.Zero)
+        if (_selectedWindowHandle != IntPtr.Zero)
         {
-            _centerService.CenterWindow(WindowHandle);
-            _centerService.SetWindowTransparency(WindowHandle, _alpha);
+            _centerService.CenterWindow(_selectedWindowHandle);
+            _centerService.SetWindowTransparency(_selectedWindowHandle, _alpha);
         }
     }
 
