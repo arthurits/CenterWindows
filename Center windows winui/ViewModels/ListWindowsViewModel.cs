@@ -1,9 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Models;
 using CenterWindow.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml;
 
 namespace CenterWindow.ViewModels;
 
@@ -19,16 +22,24 @@ public partial class ListWindowsViewModel : ObservableRecipient
     // Properties
     [ObservableProperty]
     public partial ObservableCollection<WindowModel> WindowsList { get; set; } = [];
-
+    
     [ObservableProperty]
-    public partial WindowModel? SelectedWindow { get; set; } = null;
+    public partial ObservableCollection<WindowModel> SelectedWindows { get; private set; } = [];
 
-    public bool IsListItemSelected => SelectedWindow is not null;
+    //[ObservableProperty]
+    //public partial WindowModel? SelectedWindow { get; set; } = null;
+
+    public bool IsListItemSelected => SelectedWindows.Count > 0;
 
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
 
     private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
+
+    [ObservableProperty]
+    public partial bool IsAlphaChecked { get; set; } = false;
+    [ObservableProperty]
+    public partial bool IsCenterChecked { get; set; } = false;
 
     public ListWindowsViewModel(
         IWindowEnumerationService enumerationService,
@@ -50,6 +61,8 @@ public partial class ListWindowsViewModel : ObservableRecipient
 
         // Load string resources into binding variables for the UI
         OnLanguageChanged(null, EventArgs.Empty);
+
+        SelectedWindows.CollectionChanged += SelectedWindows_CollectionChanged;
     }
 
     [RelayCommand]
@@ -64,14 +77,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
         WindowsList = list;
     }
 
-    //[RelayCommand]
-    //public void CenterSelectedWindow()
-    //{
-    //    if (SelectedWindow is not null)
-    //    {
-    //        _centerService.CenterWindow(SelectedWindow.Hwnd, _alpha);
-    //    }
-    //}
+    
 
     [RelayCommand]
     public void RefreshWindows()
@@ -79,68 +85,61 @@ public partial class ListWindowsViewModel : ObservableRecipient
         LoadWindows();
     }
 
-    //[RelayCommand]
-    //private async Task SelectWindowAsync()
-    //{
-    //    try
-    //    {
-    //        //// Set the mouse hook to capture the window under the cursor
-    //        //var hWnd = await _mouseHook.CaptureWindowUnderCursorAsync();
-    //        //if (hWnd != IntPtr.Zero)
-    //        //{
-    //        //    // If the window is already in the list, select it; otherwise, center it
-    //        //    var win = WindowsList.FirstOrDefault(w => w.Hwnd == hWnd);
-    //        //    if (win is not null)
-    //        //    {
-    //        //        SelectedWindow = win;
-    //        //    }
-    //        //    else
-    //        //    {
-    //        //        _centerService.CenterWindow(hWnd, 255);
-    //        //    }
-    //        //}
-    //    }
-    //    catch (TaskCanceledException)
-    //    {
-    //    }
-    //}
-
     [RelayCommand]
-    private void CenterMenu(WindowModel window)
+    private void ApplyToSelectedWindows()
     {
-        _centerService.CenterWindow(window.Hwnd);
+        foreach (var selectedWindow in SelectedWindows)
+        {
+            if (IsCenterChecked)
+            {
+                _centerService.CenterWindow(selectedWindow.Hwnd);
+            }
+            if (IsAlphaChecked)
+            {
+                _centerService.SetWindowTransparency(selectedWindow.Hwnd, _alpha);
+            }
+        }
     }
 
     [RelayCommand]
-    private void CenterWithAlphaMenu(WindowModel window)
+    private void ApplyToAllWindows()
     {
-        _centerService.CenterWindow(window.Hwnd);
-        _centerService.SetWindowTransparency(window.Hwnd, _alpha);
-    }
-
-    [RelayCommand]
-    private void TransparencyMenu(WindowModel window)
-    {
-        _centerService.SetWindowTransparency(window.Hwnd, _alpha);
+        foreach (var window in WindowsList)
+        {
+            if (IsCenterChecked)
+            {
+                _centerService.CenterWindow(window.Hwnd);
+            }
+            if (IsAlphaChecked)
+            {
+                _centerService.SetWindowTransparency(window.Hwnd, _alpha);
+            }
+        }
     }
 
     [RelayCommand]
     private void DeselectWindowMenu()
     {
-        SelectedWindow = null;
+        //SelectedWindow = null;
+        SelectedWindows.Clear();
     }
-    
-    // 5) Centrar todas las ventanas de la lista
+
     [RelayCommand]
-    private void CenterAllMenu()
+    private void WindowsSelectionChanged(IList<object> selectedItems)
     {
-        foreach (var w in WindowsList)
+        SelectedWindows.Clear();
+        if (selectedItems is null)
         {
-            _centerService.CenterWindow(w.Hwnd);
+            return;
+        }
+
+        foreach (var item in selectedItems.OfType<WindowModel>())
+        {
+            SelectedWindows.Add(item);
         }
     }
 
-    partial void OnSelectedWindowChanged(WindowModel? value)
+    private void SelectedWindows_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         OnPropertyChanged(nameof(IsListItemSelected));
     }
