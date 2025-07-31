@@ -41,19 +41,8 @@ public partial class SelectWindowViewModel : ObservableRecipient
     [ObservableProperty]
     public partial ImageSource CurrentImage { get; set; } = null!;
 
-    [ObservableProperty]
-    public partial string WindowTitle { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string WindowHandle { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string WindowClassName { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    public partial string WindowDimensions { get; set; } = string.Empty;
-
     public ObservableCollection<PropertyItem> WindowPropertiesCollection { get; } = [];
+    private IntPtr WindowHandle = IntPtr.Zero;
 
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
@@ -110,12 +99,8 @@ public partial class SelectWindowViewModel : ObservableRecipient
             .GetForCurrentThread()
             .TryEnqueue(() =>
             {
-                // Get the window information from the mouse hook event
-                WindowHandle = e.HWnd.ToString();
-                WindowTitle = e.WindowText;
-                WindowClassName = e.ClassName;
-                WindowDimensions = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
-                // Update the properties collection
+                // Update the properties collection with information from the mouse hook event
+                WindowHandle = e.HWnd;
                 WindowPropertiesCollection[0].Value = e.WindowText;
                 WindowPropertiesCollection[1].Value = $"{e.HWnd} ({e.HWnd:X})";
                 WindowPropertiesCollection[2].Value = e.ClassName;
@@ -131,7 +116,7 @@ public partial class SelectWindowViewModel : ObservableRecipient
             });
     }
 
-        [RelayCommand]
+    [RelayCommand]
     private async Task OnLeftButtonDownAsync(PointerRoutedEventArgs args)
     {
         IsLeftButtonDown = true;
@@ -143,10 +128,10 @@ public partial class SelectWindowViewModel : ObservableRecipient
     {
         IsLeftButtonDown = false;
         _mouseHook.ReleaseMouse();
-        if (int.TryParse(WindowHandle, out var handle) && handle != 0)
+        if (WindowHandle != IntPtr.Zero)
         {
-            _centerService.CenterWindow((IntPtr)handle);
-            _centerService.SetWindowTransparency((IntPtr)handle, _alpha);
+            _centerService.CenterWindow(WindowHandle);
+            _centerService.SetWindowTransparency(WindowHandle, _alpha);
         }
     }
 
