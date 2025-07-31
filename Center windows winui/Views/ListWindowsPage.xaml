@@ -23,17 +23,20 @@
                 RightTapped="ItemGrid_RightTapped">
                 <Grid.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem
+                        <ToggleMenuFlyoutItem
                             Text="{Binding DataContext.StrCenterMenu, ElementName=RootPage}"
-                            Command="{Binding DataContext.CenterMenuCommand, ElementName=RootPage}"
-                            CommandParameter="{Binding}" />
-                        <MenuFlyoutItem
-                            Text="{Binding DataContext.StrCenterWithAlphaMenu, ElementName=RootPage}"
-                            Command="{Binding DataContext.CenterWithAlphaMenuCommand, ElementName=RootPage}"
-                            CommandParameter="{Binding}" />
-                        <MenuFlyoutItem
+                            IsChecked="{Binding DataContext.CenterMenu, Mode=TwoWay, ElementName=RootPage}"/>
+                        <ToggleMenuFlyoutItem
                             Text="{Binding DataContext.StrTransparencyMenu, ElementName=RootPage}"
-                            Command="{Binding DataContext.TransparencyMenuCommand, ElementName=RootPage}"
+                            IsChecked="{Binding DataContext.AlphaMenu, Mode=TwoWay, ElementName=RootPage}"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem
+                            Text="{Binding DataContext.StrApplyToSelectedWindow, ElementName=RootPage}"
+                            Command="{Binding DataContext.ApplyToSelectedCommand, ElementName=RootPage}"
+                            CommandParameter="{Binding}" />
+                        <MenuFlyoutItem
+                            Text="{Binding DataContext.StrApplyToAllWindows, ElementName=RootPage}"
+                            Command="{Binding DataContext.ApplyToAllWindowsCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}" />
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
@@ -42,10 +45,6 @@
                             CommandParameter="{Binding}"
                             IsEnabled="{Binding DataContext.IsWindowSelected, ElementName=RootPage}" />
                         <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem
-                            Text="{Binding DataContext.StrCenterAllMenu, ElementName=RootPage}"
-                            Command="{Binding DataContext.CenterAllMenuCommand, ElementName=RootPage}"
-                            CommandParameter="{Binding}" />
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrRefreshWindows, ElementName=RootPage}"
                             Command="{Binding DataContext.LoadWindowsCommand, ElementName=RootPage}"
