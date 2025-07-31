@@ -17,7 +17,10 @@
 
         <!-- Template with each UI row formatting -->
         <DataTemplate x:Key="WindowItemTemplate" x:DataType="models:WindowModel">
-            <Grid Padding="4" Background="Transparent">
+            <Grid Padding="4"
+                Background="Transparent"
+                Tapped="ItemGrid_Tapped"
+                RightTapped="ItemGrid_RightTapped">
                 <Grid.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem
