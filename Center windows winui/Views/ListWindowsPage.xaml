@@ -13,6 +13,44 @@
 
     <Page.Resources>
         <conv:NullToBoolConverter x:Key="NullToBool"/>
+        <!-- Flyout for each WindowModel -->
+        <MenuFlyout x:Key="WindowItemContextFlyout">
+            <MenuFlyoutItem
+                      Text="{Binding DataContext.StrCenterMenu, ElementName=WindowsListView}"
+                      Command="{Binding DataContext.CenterMenuCommand, ElementName=WindowsListView}"
+                      CommandParameter="{Binding}" />
+            <MenuFlyoutItem
+                      Text="{Binding DataContext.StrCenterWithAlphaMenu, ElementName=WindowsListView}"
+                      Command="{Binding DataContext.CenterWithAlphaMenuCommand, ElementName=WindowsListView}"
+                      CommandParameter="{Binding}" />
+            <MenuFlyoutItem
+                      Text="{Binding DataContext.StrTransparencyMenu, ElementName=WindowsListView}"
+                      Command="{Binding DataContext.TransparencyMenuCommand, ElementName=WindowsListView}"
+                      CommandParameter="{Binding}" />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem
+                      Text="{Binding DataContext.StrDeselectMenu, ElementName=WindowsListView}"
+                      Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=WindowsListView}"
+                      IsEnabled="{Binding DataContext.IsWindowSelected, ElementName=WindowsListView}" />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem
+                      Text="{Binding DataContext.StrCenterAllMenu, ElementName=WindowsListView}"
+                      Command="{Binding DataContext.CenterAllMenuCommand, ElementName=WindowsListView}" />
+        </MenuFlyout>
+
+        <!-- Template with each UI row formatting -->
+        <DataTemplate x:Key="WindowItemTemplate" x:DataType="models:WindowModel">
+            <Grid Padding="4" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Bind Title}" Grid.Column="0" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{x:Bind Handle}" Grid.Column="1" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind Rect}"   Grid.Column="2"/>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
     <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*">
@@ -48,63 +86,18 @@
 
                         <!-- Window list -->
                         <ListView
-                            x:Name="WindowsListView"
-                            ItemsSource="{Binding WindowsList, Mode=OneWay}"
-                            SelectedItem="{Binding SelectedWindow, Mode=TwoWay}">
-
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="models:WindowModel">
-                                    <Grid Padding="4"
-                                          Background="Transparent"
-                                          Tapped="ItemGrid_Tapped"
-                                          RightTapped="ItemGrid_RightTapped">
-                                        <!-- Flyout menu -->
-                                        <Grid.ContextFlyout>
-                                            <MenuFlyout>
-                                                <MenuFlyoutItem
-                                                      Text="{Binding DataContext.StrCenterMenu, ElementName=WindowsListView}"
-                                                      Command="{Binding DataContext.CenterMenuCommand, ElementName=WindowsListView}"
-                                                      CommandParameter="{Binding}" />
-                                                <MenuFlyoutItem
-                                                      Text="{Binding DataContext.StrCenterWithAlphaMenu, ElementName=WindowsListView}"
-                                                      Command="{Binding DataContext.CenterWithAlphaMenuCommand, ElementName=WindowsListView}"
-                                                      CommandParameter="{Binding}" />
-                                                <MenuFlyoutItem
-                                                      Text="{Binding DataContext.StrTransparencyMenu, ElementName=WindowsListView}"
-                                                      Command="{Binding DataContext.TransparencyMenuCommand, ElementName=WindowsListView}"
-                                                      CommandParameter="{Binding}" />
-                                                <MenuFlyoutSeparator />
-                                                <MenuFlyoutItem
-                                                      Text="{Binding DataContext.StrDeselectMenu, ElementName=WindowsListView}"
-                                                      Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=WindowsListView}"
-                                                      IsEnabled="{Binding DataContext.IsWindowSelected, ElementName=WindowsListView}" />
-                                                <MenuFlyoutSeparator />
-                                                <MenuFlyoutItem
-                                                      Text="{Binding DataContext.StrCenterAllMenu, ElementName=WindowsListView}"
-                                                      Command="{Binding DataContext.CenterAllMenuCommand, ElementName=WindowsListView}" />
-                                            </MenuFlyout>
-                                        </Grid.ContextFlyout>
-
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="2*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock
-                                            Text="{x:Bind Title}"
-                                            Grid.Column="0"
-                                            TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock
-                                            Text="{x:Bind Handle}"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Center"/>
-                                        <TextBlock
-                                            Text="{x:Bind Rect}"
-                                            Grid.Column="2"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
+                                  x:Name="WindowsListView"
+                                  ItemsSource="{Binding WindowsList}"
+                                  SelectedItem="{Binding SelectedWindow, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource WindowItemTemplate}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="ContextFlyout"    
+                                            Value="{StaticResource WindowItemContextFlyout}" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
                         </ListView>
+                        
                     </StackPanel>
                     
                     <!-- Transparency selection -->
