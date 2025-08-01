@@ -25,7 +25,7 @@
                 <Grid.ContextFlyout>
                     <MenuFlyout Closing="OptionsMenuFlyout_Closing">
                         <ToggleMenuFlyoutItem
-                            Text="{Binding DataContext.StrCenterMenu, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrCenter, ElementName=RootPage}"
                             IsChecked="{Binding DataContext.CenterMenu, Mode=TwoWay, ElementName=RootPage}"
                             Click="ToggleMenuFlyoutItem_Click"/>
                         <ToggleMenuFlyoutItem
@@ -104,14 +104,14 @@
                                               Icon="Add"
                                               Label="{Binding StrCenter}"
                                               LabelPosition="Default"
-                                              IsEnabled="{Binding IsCenterChecked}"
+                                              IsChecked="{Binding IsCenterChecked, Mode=TwoWay}"
                                               Foreground="MidnightBlue" />
                                     <AppBarToggleButton x:Name="CmdBarTransparency"
                                               ToolTipService.ToolTip="{Binding StrTransparencyToolTip}"
                                               Icon="Delete"
                                               Label="{Binding StrTransparency}"
                                               LabelPosition="Default"
-                                              IsEnabled="{Binding IsAlphaChecked}"
+                                              IsChecked="{Binding IsAlphaChecked, Mode=TwoWay}"
                                               Foreground="MidnightBlue" />
                                     <AppBarSeparator />
                                     <AppBarButton x:Name="CmdBarApplyToSelected"
