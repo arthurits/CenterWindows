@@ -33,7 +33,6 @@ public sealed partial class ListWindowsPage : Page
         if (WindowsListView.SelectedItems.Count > 0)
         {
             WindowsListView.SelectedItems.Clear();
-            ViewModel.SelectedWindows.Clear();
         }
     }
 

@@ -26,17 +26,18 @@
                     <MenuFlyout Closing="OptionsMenuFlyout_Closing">
                         <ToggleMenuFlyoutItem
                             Text="{Binding DataContext.StrCenter, ElementName=RootPage}"
-                            IsChecked="{Binding DataContext.CenterMenu, Mode=TwoWay, ElementName=RootPage}"
+                            IsChecked="{Binding DataContext.IsCenterChecked, Mode=TwoWay, ElementName=RootPage}"
                             Click="ToggleMenuFlyoutItem_Click"/>
                         <ToggleMenuFlyoutItem
                             Text="{Binding DataContext.StrTransparency, ElementName=RootPage}"
-                            IsChecked="{Binding DataContext.AlphaMenu, Mode=TwoWay, ElementName=RootPage}"
+                            IsChecked="{Binding DataContext.IsAlphaChecked, Mode=TwoWay, ElementName=RootPage}"
                             Click="ToggleMenuFlyoutItem_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrApplyToSelected, ElementName=RootPage}"
                             Command="{Binding DataContext.ApplyToSelectedWindowsCommand, ElementName=RootPage}"
-                            CommandParameter="{Binding}" />
+                            CommandParameter="{Binding}"
+                            IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}"/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrApplyToAll, ElementName=RootPage}"
                             Command="{Binding DataContext.ApplyToAllWindowsCommand, ElementName=RootPage}"
@@ -44,13 +45,14 @@
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrDeselect, ElementName=RootPage}"
-                            Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=RootPage}"
+                            Command="{Binding DataContext.DeselectWindowCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}"
-                            IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}" />
+                            IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}"
+                            Click="DeselectWindows_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrRefresh, ElementName=RootPage}"
-                            Command="{Binding DataContext.LoadWindowsCommand, ElementName=RootPage}"
+                            Command="{Binding DataContext.RefreshWindowsCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}" />
                     </MenuFlyout>
                 </Grid.ContextFlyout>
@@ -115,13 +117,12 @@
                                               Foreground="MidnightBlue" />
                                     <AppBarSeparator />
                                     <AppBarButton x:Name="CmdBarApplyToSelected"
-                                              ToolTipService.ToolTip="{Binding StrApplyToSelectedToopTip}"
+                                              ToolTipService.ToolTip="{Binding StrApplyToSelectedToolTip}"
                                               Icon="Copy"
                                               Label="{Binding StrApplyToSelected}"
                                               LabelPosition="Default"
                                               IsEnabled="{Binding IsListItemSelected}"
                                               Command="{Binding ApplyToSelectedWindowsCommand}"
-                                              CommandParameter="{Binding ElementName=DataTable}"
                                               Foreground="MidnightBlue">
                                     </AppBarButton>
                                     <AppBarButton x:Name="CmdBarApplyToAll"
@@ -133,16 +134,17 @@
                                               Foreground="MidnightBlue" />
                                     <AppBarSeparator />
                                     <AppBarButton x:Name="CmdBarDeselect"
-                                            ToolTipService.ToolTip="{Binding StrDeselectToopTip}"
+                                            ToolTipService.ToolTip="{Binding StrDeselectToolTip}"
                                             Icon="Copy"
                                             Label="{Binding StrDeselect}"
                                             LabelPosition="Default"
                                             IsEnabled="{Binding IsListItemSelected}"
+                                            Command="{Binding DeselectWindowCommand}"
                                             Click="DeselectWindows_Click"
                                             Foreground="MidnightBlue">
                                     </AppBarButton>
                                     <AppBarButton x:Name="CmdBarRefresh"
-                                            ToolTipService.ToolTip="{Binding StrRefreshToopTip}"
+                                            ToolTipService.ToolTip="{Binding StrRefreshToolTip}"
                                             Icon="Copy"
                                             Label="{Binding StrRefresh}"
                                             LabelPosition="Default"

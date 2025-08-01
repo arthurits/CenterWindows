@@ -118,10 +118,12 @@ public partial class ListWindowsViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    private void DeselectWindowMenu()
+    private void DeselectWindow()
     {
-        //SelectedWindow = null;
-        SelectedWindows.Clear();
+        if (SelectedWindows.Count > 0)
+        {
+            SelectedWindows.Clear();
+        }
     }
 
     [RelayCommand]
