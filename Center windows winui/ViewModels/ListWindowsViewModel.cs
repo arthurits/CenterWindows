@@ -42,6 +42,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     public partial bool IsCenterChecked { get; set; } = false;
     public bool IsApplyToAllEnabled => IsAlphaChecked || IsCenterChecked;
     public bool IsApplyToSelectedEnabled => (IsAlphaChecked || IsCenterChecked) && SelectedWindows.Count > 0;
+    public bool IsDeselectEnabled => SelectedWindows.Count > 0;
 
     public ListWindowsViewModel(
         IWindowEnumerationService enumerationService,
