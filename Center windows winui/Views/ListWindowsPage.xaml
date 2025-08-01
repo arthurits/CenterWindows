@@ -43,7 +43,7 @@
                             CommandParameter="{Binding}" />
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
-                            Text="{Binding DataContext.StrDeselectMenu, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrDeselect, ElementName=RootPage}"
                             Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}"
                             IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}" />
@@ -82,8 +82,78 @@
                         x:Name="WindowList"
                         Grid.Row="0"
                         Orientation="Vertical"
-                        Spacing="12"
+                        Margin="0, 12, 0, 0"
+                        Spacing="4"
                         Style="{StaticResource ContentStackPanel}">
+
+                        <Border CornerRadius="4"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            BorderThickness="1"
+                            BorderBrush="MistyRose">
+                            <Border.Background>
+                                <SolidColorBrush Color="MistyRose"
+                                             Opacity=".4" />
+                            </Border.Background>
+                            <CommandBar DefaultLabelPosition="Right"
+                                        OverflowButtonVisibility="Collapsed"
+                                        x:DefaultBindMode="OneWay">
+                                <CommandBar.PrimaryCommands>
+                                    <AppBarToggleButton x:Name="CmdBarCenter"
+                                              ToolTipService.ToolTip="{Binding StrCenterToolTip}"
+                                              Icon="Add"
+                                              Label="{Binding StrCenter}"
+                                              LabelPosition="Default"
+                                              IsEnabled="{Binding IsCenterChecked}"
+                                              Command="{Binding AddDataTaskCommand}"
+                                              Foreground="MidnightBlue" />
+                                    <AppBarToggleButton x:Name="CmdBarTransparency"
+                                              ToolTipService.ToolTip="{Binding StrTransparencyToolTip}"
+                                              Icon="Delete"
+                                              Label="{Binding StrTransparency}"
+                                              LabelPosition="Default"
+                                              IsEnabled="{Binding IsAlphaChecked}"
+                                              Foreground="MidnightBlue" />
+                                    <AppBarSeparator />
+                                    <AppBarButton x:Name="CmdBarApplyToSelected"
+                                              ToolTipService.ToolTip="{Binding StrApplyToSelectedWindowToopTip}"
+                                              Icon="Copy"
+                                              Label="{Binding StrApplyToSelectedWindow}"
+                                              LabelPosition="Default"
+                                              IsEnabled="{Binding IsListItemSelected}"
+                                              Command="{Binding ApplyToSelectedWindowsCommand}"
+                                              CommandParameter="{Binding ElementName=DataTable}"
+                                              Foreground="MidnightBlue">
+                                    </AppBarButton>
+                                    <AppBarButton x:Name="CmdBarApplyToAll"
+                                              ToolTipService.ToolTip="{Binding StrApplyToAllWindowsToolTip}"
+                                              Icon="Download"
+                                              Label="{Binding StrApplyToAllWindows}"
+                                              LabelPosition="Default"
+                                              Command="{Binding ApplyToAllWindowsCommand}"
+                                              Foreground="MidnightBlue" />
+                                    <AppBarSeparator />
+                                    <AppBarButton x:Name="CmdBarDeselect"
+                                            ToolTipService.ToolTip="{Binding StrDeselectToopTip}"
+                                            Icon="Copy"
+                                            Label="{Binding StrDeselect}"
+                                            LabelPosition="Default"
+                                            IsEnabled="{Binding IsListItemSelected}"
+                                            Click="DeselectWindows_Click"
+                                            Foreground="MidnightBlue">
+                                    </AppBarButton>
+                                    <AppBarButton x:Name="CmdBarRefresh"
+                                            ToolTipService.ToolTip="{Binding StrRefreshWindowsToopTip}"
+                                            Icon="Copy"
+                                            Label="{Binding StrRefreshWindows}"
+                                            LabelPosition="Default"
+                                            Command="{Binding RefreshWindowsCommand}"
+                                            Foreground="MidnightBlue">
+                                    </AppBarButton>
+                                </CommandBar.PrimaryCommands>
+                            </CommandBar>
+                        </Border>
+
 
                         <!-- Column headers -->
                         <Grid>
