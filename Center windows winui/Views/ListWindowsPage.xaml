@@ -25,32 +25,35 @@
                 <Grid.ContextFlyout>
                     <MenuFlyout Closing="OptionsMenuFlyout_Closing">
                         <ToggleMenuFlyoutItem
-                            Text="{Binding DataContext.StrCenterMenu, ElementName=RootPage}"
-                            IsChecked="{Binding DataContext.CenterMenu, Mode=TwoWay, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrCenter, ElementName=RootPage}"
+                            IsChecked="{Binding DataContext.IsCenterChecked, Mode=TwoWay, ElementName=RootPage}"
                             Click="ToggleMenuFlyoutItem_Click"/>
                         <ToggleMenuFlyoutItem
-                            Text="{Binding DataContext.StrTransparencyMenu, ElementName=RootPage}"
-                            IsChecked="{Binding DataContext.AlphaMenu, Mode=TwoWay, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrTransparency, ElementName=RootPage}"
+                            IsChecked="{Binding DataContext.IsAlphaChecked, Mode=TwoWay, ElementName=RootPage}"
                             Click="ToggleMenuFlyoutItem_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
-                            Text="{Binding DataContext.StrApplyToSelectedWindow, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrApplyToSelected, ElementName=RootPage}"
                             Command="{Binding DataContext.ApplyToSelectedWindowsCommand, ElementName=RootPage}"
-                            CommandParameter="{Binding}" />
-                        <MenuFlyoutItem
-                            Text="{Binding DataContext.StrApplyToAllWindows, ElementName=RootPage}"
-                            Command="{Binding DataContext.ApplyToAllWindowsCommand, ElementName=RootPage}"
-                            CommandParameter="{Binding}" />
-                        <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem
-                            Text="{Binding DataContext.StrDeselectMenu, ElementName=RootPage}"
-                            Command="{Binding DataContext.DeselectWindowMenuCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}"
-                            IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}" />
+                            IsEnabled="{Binding DataContext.IsApplyToSelectedEnabled, ElementName=RootPage}"/>
+                        <MenuFlyoutItem
+                            Text="{Binding DataContext.StrApplyToAll, ElementName=RootPage}"
+                            Command="{Binding DataContext.ApplyToAllWindowsCommand, ElementName=RootPage}"
+                            CommandParameter="{Binding}"
+                            IsEnabled="{Binding DataContext.IsApplyToAllEnabled, ElementName=RootPage}"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
-                            Text="{Binding DataContext.StrRefreshWindows, ElementName=RootPage}"
-                            Command="{Binding DataContext.LoadWindowsCommand, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrDeselect, ElementName=RootPage}"
+                            Command="{Binding DataContext.DeselectWindowCommand, ElementName=RootPage}"
+                            CommandParameter="{Binding}"
+                            IsEnabled="{Binding DataContext.IsDeselectEnabled, ElementName=RootPage}"
+                            Click="DeselectWindows_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem
+                            Text="{Binding DataContext.StrRefresh, ElementName=RootPage}"
+                            Command="{Binding DataContext.RefreshWindowsCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}" />
                     </MenuFlyout>
                 </Grid.ContextFlyout>
@@ -82,37 +85,110 @@
                         x:Name="WindowList"
                         Grid.Row="0"
                         Orientation="Vertical"
-                        Spacing="12"
-                        Style="{StaticResource ContentStackPanel}">
+                        Margin="0, 12, 0, 0"
+                        Spacing="4">
 
-                        <!-- Column headers -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Title"           Grid.Column="0" FontWeight="SemiBold"/>
-                            <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
-                            <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
-                        </Grid>
+                        <Border CornerRadius="{x:Bind WindowList.CornerRadius}"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            BorderThickness="{x:Bind WindowList.BorderThickness}"
+                            BorderBrush="MistyRose">
+                            <Border.Background>
+                                <SolidColorBrush Color="MistyRose"
+                                             Opacity=".4" />
+                            </Border.Background>
+                            <CommandBar DefaultLabelPosition="Right"
+                                        OverflowButtonVisibility="Collapsed"
+                                        x:DefaultBindMode="OneWay">
+                                <CommandBar.PrimaryCommands>
+                                    <AppBarToggleButton x:Name="CmdBarCenter"
+                                              ToolTipService.ToolTip="{Binding StrCenterToolTip}"
+                                              Icon="Add"
+                                              Label="{Binding StrCenter}"
+                                              LabelPosition="Default"
+                                              IsChecked="{Binding IsCenterChecked, Mode=TwoWay}"
+                                              Foreground="MidnightBlue" />
+                                    <AppBarToggleButton x:Name="CmdBarTransparency"
+                                              ToolTipService.ToolTip="{Binding StrTransparencyToolTip}"
+                                              Icon="Delete"
+                                              Label="{Binding StrTransparency}"
+                                              LabelPosition="Default"
+                                              IsChecked="{Binding IsAlphaChecked, Mode=TwoWay}"
+                                              Foreground="MidnightBlue" />
+                                    <AppBarSeparator />
+                                    <AppBarButton x:Name="CmdBarApplyToSelected"
+                                              ToolTipService.ToolTip="{Binding StrApplyToSelectedToolTip}"
+                                              Icon="Copy"
+                                              Label="{Binding StrApplyToSelected}"
+                                              LabelPosition="Default"
+                                              IsEnabled="{Binding IsApplyToSelectedEnabled}"
+                                              Command="{Binding ApplyToSelectedWindowsCommand}"
+                                              Foreground="MidnightBlue">
+                                    </AppBarButton>
+                                    <AppBarButton x:Name="CmdBarApplyToAll"
+                                              ToolTipService.ToolTip="{Binding StrApplyToAllToolTip}"
+                                              Icon="Download"
+                                              Label="{Binding StrApplyToAll}"
+                                              LabelPosition="Default"
+                                              IsEnabled="{Binding IsApplyToAllEnabled}"
+                                              Command="{Binding ApplyToAllWindowsCommand}"
+                                              Foreground="MidnightBlue" />
+                                    <AppBarSeparator />
+                                    <AppBarButton x:Name="CmdBarDeselect"
+                                            ToolTipService.ToolTip="{Binding StrDeselectToolTip}"
+                                            Icon="Copy"
+                                            Label="{Binding StrDeselect}"
+                                            LabelPosition="Default"
+                                            IsEnabled="{Binding IsDeselectEnabled}"
+                                            Command="{Binding DeselectWindowCommand}"
+                                            Click="DeselectWindows_Click"
+                                            Foreground="MidnightBlue">
+                                    </AppBarButton>
+                                    <AppBarButton x:Name="CmdBarRefresh"
+                                            ToolTipService.ToolTip="{Binding StrRefreshToolTip}"
+                                            Icon="Copy"
+                                            Label="{Binding StrRefresh}"
+                                            LabelPosition="Default"
+                                            Command="{Binding RefreshWindowsCommand}"
+                                            Foreground="MidnightBlue">
+                                    </AppBarButton>
+                                </CommandBar.PrimaryCommands>
+                            </CommandBar>
+                        </Border>
 
-                        <!-- Window list -->
-                        <ListView
+                        <StackPanel
+                            x:Name="PanelWindowList"
+                            Style="{StaticResource ContentStackPanel}">
+                        
+                            <!-- Column headers -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Title"           Grid.Column="0" FontWeight="SemiBold"/>
+                                <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
+                                <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
+                            </Grid>
+                            
+                            <!-- Window list -->
+                            <ListView
                             x:Name="WindowsListView"
                             ItemsSource="{Binding WindowsList}"
                             ItemTemplate="{StaticResource WindowItemTemplate}"
                             IsItemClickEnabled="False"
                             SelectionMode="Multiple"
                             Margin="0,12,0,0">
-                            <interactivity:Interaction.Behaviors>
-                                <interactivity:EventTriggerBehavior EventName="SelectionChanged">
-                                    <interactivity:InvokeCommandAction
+                                <interactivity:Interaction.Behaviors>
+                                    <interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                                        <interactivity:InvokeCommandAction
                                         Command="{Binding WindowsSelectionChangedCommand}"
                                         CommandParameter="{x:Bind WindowsListView.SelectedItems, Mode=OneWay}" />
-                                </interactivity:EventTriggerBehavior>
-                            </interactivity:Interaction.Behaviors>
-                        </ListView>
+                                    </interactivity:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                            </ListView>
+                        </StackPanel>
                         
                     </StackPanel>
                     

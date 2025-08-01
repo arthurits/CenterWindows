@@ -29,17 +29,22 @@ public partial class ListWindowsViewModel : ObservableRecipient
     //[ObservableProperty]
     //public partial WindowModel? SelectedWindow { get; set; } = null;
 
-    public bool IsListItemSelected => SelectedWindows.Count > 0;
-
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
 
     private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsApplyToSelectedEnabled))]
     public partial bool IsAlphaChecked { get; set; } = false;
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsApplyToSelectedEnabled))]
     public partial bool IsCenterChecked { get; set; } = false;
+    public bool IsApplyToAllEnabled => IsAlphaChecked || IsCenterChecked;
+    public bool IsApplyToSelectedEnabled => (IsAlphaChecked || IsCenterChecked) && SelectedWindows.Count > 0;
+    public bool IsDeselectEnabled => SelectedWindows.Count > 0;
 
     public ListWindowsViewModel(
         IWindowEnumerationService enumerationService,
@@ -57,7 +62,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
         _trayIconService.TrayMenuItemClicked += OnTrayMenuItem;
         _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
 
-        LoadWindows();
+        RefreshWindows();
 
         // Load string resources into binding variables for the UI
         OnLanguageChanged(null, EventArgs.Empty);
@@ -66,7 +71,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    public void LoadWindows()
+    public void RefreshWindows()
     {
         var list = new ObservableCollection<WindowModel>();
         foreach (var window in _enumerationService.GetDesktopWindows())
@@ -75,14 +80,6 @@ public partial class ListWindowsViewModel : ObservableRecipient
         }
 
         WindowsList = list;
-    }
-
-    
-
-    [RelayCommand]
-    public void RefreshWindows()
-    {
-        LoadWindows();
     }
 
     [RelayCommand]
@@ -118,10 +115,12 @@ public partial class ListWindowsViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    private void DeselectWindowMenu()
+    private void DeselectWindow()
     {
-        //SelectedWindow = null;
-        SelectedWindows.Clear();
+        if (SelectedWindows.Count > 0)
+        {
+            SelectedWindows.Clear();
+        }
     }
 
     [RelayCommand]
@@ -141,7 +140,8 @@ public partial class ListWindowsViewModel : ObservableRecipient
 
     private void SelectedWindows_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        OnPropertyChanged(nameof(IsListItemSelected));
+        OnPropertyChanged(nameof(IsApplyToSelectedEnabled));
+        OnPropertyChanged(nameof(IsDeselectEnabled));
     }
 
     private void OnTrayMenuOpening(object? sender, TrayMenuOpeningEventArgs e)

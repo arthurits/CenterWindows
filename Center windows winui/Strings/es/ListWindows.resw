@@ -39,19 +39,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="StrCenterMenu" xml:space="preserve">
+  <data name="StrCenter" xml:space="preserve">
     <value>Centrar</value>
   </data>
-  <data name="StrCenterWithAlphaMenu" xml:space="preserve">
-    <value>Centrar con transparencia</value>
+  <data name="StrCenterToolTip" xml:space="preserve">
+    <value>Activar para centrar las ventas en la pantalla</value>
   </data>
-  <data name="StrTransparencyMenu" xml:space="preserve">
+  <data name="StrTransparency" xml:space="preserve">
     <value>Transparencia</value>
   </data>
-  <data name="StrDeselectMenu" xml:space="preserve">
+  <data name="StrDeselect" xml:space="preserve">
     <value>Deseleccionar</value>
   </data>
-  <data name="StrCenterAllMenu" xml:space="preserve">
-    <value>Centrar todo</value>
+  <data name="StrRefresh" xml:space="preserve">
+    <value>Actualizar listado</value>
+  </data>
+  <data name="StrTransparencyToolTip" xml:space="preserve">
+    <value>Activar para añadir transparencia a las ventanas</value>
+  </data>
+  <data name="StrApplyToSelected" xml:space="preserve">
+    <value>Aplicar a la selección</value>
+  </data>
+  <data name="StrApplyToSelectedToolTip" xml:space="preserve">
+    <value>Aplicar centrado y transparencia a la selección</value>
+  </data>
+  <data name="StrApplyToAll" xml:space="preserve">
+    <value>Aplicar a todos</value>
+  </data>
+  <data name="StrApplyToAllToolTip" xml:space="preserve">
+    <value>Aplicar centrado y transparencia a todas las ventanas de la lista</value>
+  </data>
+  <data name="StrDeselectToolTip" xml:space="preserve">
+    <value>Deseleccionar todas las ventanas de la lista</value>
+  </data>
+  <data name="StrRefreshToolTip" xml:space="preserve">
+    <value>Actualizar el listado de ventanas</value>
   </data>
 </root>
