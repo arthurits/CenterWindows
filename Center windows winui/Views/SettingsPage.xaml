@@ -10,7 +10,6 @@
     xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:sys="using:System"
     xmlns:viewmodel="using:CenterWindow.ViewModels"
-    NavigationCacheMode="Enabled"
     d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
