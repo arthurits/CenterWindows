@@ -29,8 +29,6 @@ public partial class ListWindowsViewModel : ObservableRecipient
     //[ObservableProperty]
     //public partial WindowModel? SelectedWindow { get; set; } = null;
 
-    public bool IsListItemSelected => SelectedWindows.Count > 0;
-
     [ObservableProperty]
     public partial int Transparency { get; set; } = 255;
 
@@ -43,6 +41,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
     public partial bool IsCenterChecked { get; set; } = false;
     public bool IsApplyToAllEnabled => IsAlphaChecked || IsCenterChecked;
+    public bool IsApplyToSelectedEnabled => (IsAlphaChecked || IsCenterChecked) && SelectedWindows.Count > 0;
 
     public ListWindowsViewModel(
         IWindowEnumerationService enumerationService,
