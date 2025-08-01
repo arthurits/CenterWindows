@@ -42,8 +42,8 @@
   <data name="StrCenter" xml:space="preserve">
     <value>Center</value>
   </data>
-  <data name="StrCenterWithAlphaMenu" xml:space="preserve">
-    <value>Center with alpha</value>
+  <data name="StrCenterToolTip" xml:space="preserve">
+    <value>Activate to center windows in screen</value>
   </data>
   <data name="StrTransparency" xml:space="preserve">
     <value>Alpha blend</value>
@@ -51,7 +51,28 @@
   <data name="StrDeselect" xml:space="preserve">
     <value>Unselect</value>
   </data>
-  <data name="StrRefreshWindows" xml:space="preserve">
+  <data name="StrRefresh" xml:space="preserve">
     <value>Refresh list</value>
+  </data>
+  <data name="StrTransparencyToolTip" xml:space="preserve">
+    <value>Activate to add alpha blend to windows</value>
+  </data>
+  <data name="StrApplyToSelected" xml:space="preserve">
+    <value>Apply to selection</value>
+  </data>
+  <data name="StrApplyToSelectedToolTip" xml:space="preserve">
+    <value>Apply center and alpha blend to selection</value>
+  </data>
+  <data name="StrApplyToAll" xml:space="preserve">
+    <value>Apply to all</value>
+  </data>
+  <data name="StrApplyToAllToolTip" xml:space="preserve">
+    <value>Apply center and alpha blend to all listed windows</value>
+  </data>
+  <data name="StrDeselectToolTip" xml:space="preserve">
+    <value>Unselect all listed windows</value>
+  </data>
+  <data name="StrRefreshToolTip" xml:space="preserve">
+    <value>Refresh windows list</value>
   </data>
 </root>
