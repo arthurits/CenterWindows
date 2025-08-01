@@ -12,7 +12,8 @@
     xmlns:viewmodel="using:CenterWindow.ViewModels"
     NavigationCacheMode="Enabled"
     d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel, IsDesignTimeCreatable=False}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled">
 
     <Grid x:Name="Settings" ColumnDefinitions="*" RowDefinitions ="*">
         <ScrollView x:Name="ScrollSettingsPage" ContentOrientation="Vertical"

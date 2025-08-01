@@ -10,6 +10,7 @@
     xmlns:converter="using:CenterWindow.Converters"
     d:DataContext="{d:DesignInstance Type=viewmodel:SelectWindowViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
     SizeChanged="Page_SizeChanged">
     
     <Page.Resources>

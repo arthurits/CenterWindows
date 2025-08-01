@@ -11,6 +11,7 @@
     xmlns:vm="using:CenterWindow.ViewModels"
     d:DataContext="{d:DesignInstance Type=vm:ListWindowsViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
     SizeChanged="Page_SizeChanged">
 
     <Page.Resources>
