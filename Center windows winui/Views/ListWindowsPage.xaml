@@ -29,16 +29,16 @@
                             IsChecked="{Binding DataContext.CenterMenu, Mode=TwoWay, ElementName=RootPage}"
                             Click="ToggleMenuFlyoutItem_Click"/>
                         <ToggleMenuFlyoutItem
-                            Text="{Binding DataContext.StrTransparencyMenu, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrTransparency, ElementName=RootPage}"
                             IsChecked="{Binding DataContext.AlphaMenu, Mode=TwoWay, ElementName=RootPage}"
                             Click="ToggleMenuFlyoutItem_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
-                            Text="{Binding DataContext.StrApplyToSelectedWindow, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrApplyToSelected, ElementName=RootPage}"
                             Command="{Binding DataContext.ApplyToSelectedWindowsCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}" />
                         <MenuFlyoutItem
-                            Text="{Binding DataContext.StrApplyToAllWindows, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrApplyToAll, ElementName=RootPage}"
                             Command="{Binding DataContext.ApplyToAllWindowsCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}" />
                         <MenuFlyoutSeparator/>
@@ -49,7 +49,7 @@
                             IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}" />
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
-                            Text="{Binding DataContext.StrRefreshWindows, ElementName=RootPage}"
+                            Text="{Binding DataContext.StrRefresh, ElementName=RootPage}"
                             Command="{Binding DataContext.LoadWindowsCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}" />
                     </MenuFlyout>
@@ -105,7 +105,6 @@
                                               Label="{Binding StrCenter}"
                                               LabelPosition="Default"
                                               IsEnabled="{Binding IsCenterChecked}"
-                                              Command="{Binding AddDataTaskCommand}"
                                               Foreground="MidnightBlue" />
                                     <AppBarToggleButton x:Name="CmdBarTransparency"
                                               ToolTipService.ToolTip="{Binding StrTransparencyToolTip}"
@@ -116,9 +115,9 @@
                                               Foreground="MidnightBlue" />
                                     <AppBarSeparator />
                                     <AppBarButton x:Name="CmdBarApplyToSelected"
-                                              ToolTipService.ToolTip="{Binding StrApplyToSelectedWindowToopTip}"
+                                              ToolTipService.ToolTip="{Binding StrApplyToSelectedToopTip}"
                                               Icon="Copy"
-                                              Label="{Binding StrApplyToSelectedWindow}"
+                                              Label="{Binding StrApplyToSelected}"
                                               LabelPosition="Default"
                                               IsEnabled="{Binding IsListItemSelected}"
                                               Command="{Binding ApplyToSelectedWindowsCommand}"
@@ -126,9 +125,9 @@
                                               Foreground="MidnightBlue">
                                     </AppBarButton>
                                     <AppBarButton x:Name="CmdBarApplyToAll"
-                                              ToolTipService.ToolTip="{Binding StrApplyToAllWindowsToolTip}"
+                                              ToolTipService.ToolTip="{Binding StrApplyToAllToolTip}"
                                               Icon="Download"
-                                              Label="{Binding StrApplyToAllWindows}"
+                                              Label="{Binding StrApplyToAll}"
                                               LabelPosition="Default"
                                               Command="{Binding ApplyToAllWindowsCommand}"
                                               Foreground="MidnightBlue" />
@@ -143,9 +142,9 @@
                                             Foreground="MidnightBlue">
                                     </AppBarButton>
                                     <AppBarButton x:Name="CmdBarRefresh"
-                                            ToolTipService.ToolTip="{Binding StrRefreshWindowsToopTip}"
+                                            ToolTipService.ToolTip="{Binding StrRefreshToopTip}"
                                             Icon="Copy"
-                                            Label="{Binding StrRefreshWindows}"
+                                            Label="{Binding StrRefresh}"
                                             LabelPosition="Default"
                                             Command="{Binding RefreshWindowsCommand}"
                                             Foreground="MidnightBlue">

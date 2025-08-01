@@ -39,19 +39,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="StrCenterMenu" xml:space="preserve">
+  <data name="StrCenter" xml:space="preserve">
     <value>Centrar</value>
   </data>
   <data name="StrCenterWithAlphaMenu" xml:space="preserve">
     <value>Centrar con transparencia</value>
   </data>
-  <data name="StrTransparencyMenu" xml:space="preserve">
+  <data name="StrTransparency" xml:space="preserve">
     <value>Transparencia</value>
   </data>
-  <data name="StrDeselectMenu" xml:space="preserve">
+  <data name="StrDeselect" xml:space="preserve">
     <value>Deseleccionar</value>
   </data>
-  <data name="StrCenterAllMenu" xml:space="preserve">
-    <value>Centrar todo</value>
+  <data name="StrRefreshWindows" xml:space="preserve">
+    <value>Actualizar listado</value>
   </data>
 </root>
