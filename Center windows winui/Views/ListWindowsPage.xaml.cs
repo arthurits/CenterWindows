@@ -18,8 +18,7 @@ public sealed partial class ListWindowsPage : Page
         DataContext = ViewModel;
         InitializeComponent();
 
-        // Set data context for the page
-        ViewModel.LoadWindows();
+        //ViewModel.RefreshWindows();
     }
 
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)

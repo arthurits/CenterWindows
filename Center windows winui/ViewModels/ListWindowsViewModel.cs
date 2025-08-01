@@ -62,7 +62,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
         _trayIconService.TrayMenuItemClicked += OnTrayMenuItem;
         _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
 
-        LoadWindows();
+        RefreshWindows();
 
         // Load string resources into binding variables for the UI
         OnLanguageChanged(null, EventArgs.Empty);
@@ -71,7 +71,7 @@ public partial class ListWindowsViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    public void LoadWindows()
+    public void RefreshWindows()
     {
         var list = new ObservableCollection<WindowModel>();
         foreach (var window in _enumerationService.GetDesktopWindows())
@@ -80,14 +80,6 @@ public partial class ListWindowsViewModel : ObservableRecipient
         }
 
         WindowsList = list;
-    }
-
-    
-
-    [RelayCommand]
-    public void RefreshWindows()
-    {
-        LoadWindows();
     }
 
     [RelayCommand]
