@@ -7,7 +7,8 @@
     xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:viewmodel="using:CenterWindow.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodel:AboutViewModel, IsDesignTimeCreatable=False}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled">
 
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow"
