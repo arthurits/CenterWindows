@@ -85,13 +85,12 @@
                         Grid.Row="0"
                         Orientation="Vertical"
                         Margin="0, 12, 0, 0"
-                        Spacing="4"
-                        Style="{StaticResource ContentStackPanel}">
+                        Spacing="4">
 
-                        <Border CornerRadius="4"
+                        <Border CornerRadius="{x:Bind WindowList.CornerRadius}"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
-                            BorderThickness="1"
+                            BorderThickness="{x:Bind WindowList.BorderThickness}"
                             BorderBrush="MistyRose">
                             <Border.Background>
                                 <SolidColorBrush Color="MistyRose"
@@ -155,35 +154,39 @@
                             </CommandBar>
                         </Border>
 
-
-                        <!-- Column headers -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Title"           Grid.Column="0" FontWeight="SemiBold"/>
-                            <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
-                            <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
-                        </Grid>
-
-                        <!-- Window list -->
-                        <ListView
+                        <StackPanel
+                            x:Name="PanelWindowList"
+                            Style="{StaticResource ContentStackPanel}">
+                        
+                            <!-- Column headers -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Title"           Grid.Column="0" FontWeight="SemiBold"/>
+                                <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
+                                <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
+                            </Grid>
+                            
+                            <!-- Window list -->
+                            <ListView
                             x:Name="WindowsListView"
                             ItemsSource="{Binding WindowsList}"
                             ItemTemplate="{StaticResource WindowItemTemplate}"
                             IsItemClickEnabled="False"
                             SelectionMode="Multiple"
                             Margin="0,12,0,0">
-                            <interactivity:Interaction.Behaviors>
-                                <interactivity:EventTriggerBehavior EventName="SelectionChanged">
-                                    <interactivity:InvokeCommandAction
+                                <interactivity:Interaction.Behaviors>
+                                    <interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                                        <interactivity:InvokeCommandAction
                                         Command="{Binding WindowsSelectionChangedCommand}"
                                         CommandParameter="{x:Bind WindowsListView.SelectedItems, Mode=OneWay}" />
-                                </interactivity:EventTriggerBehavior>
-                            </interactivity:Interaction.Behaviors>
-                        </ListView>
+                                    </interactivity:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                            </ListView>
+                        </StackPanel>
                         
                     </StackPanel>
                     
