@@ -41,7 +41,8 @@
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrApplyToAll, ElementName=RootPage}"
                             Command="{Binding DataContext.ApplyToAllWindowsCommand, ElementName=RootPage}"
-                            CommandParameter="{Binding}" />
+                            CommandParameter="{Binding}"
+                            IsEnabled="{Binding DataContext.IsApplyToAllEnabled, ElementName=RootPage}"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrDeselect, ElementName=RootPage}"
@@ -129,6 +130,7 @@
                                               Icon="Download"
                                               Label="{Binding StrApplyToAll}"
                                               LabelPosition="Default"
+                                              IsEnabled="{Binding IsApplyToAllEnabled}"
                                               Command="{Binding ApplyToAllWindowsCommand}"
                                               Foreground="MidnightBlue" />
                                     <AppBarSeparator />

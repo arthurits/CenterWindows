@@ -37,9 +37,12 @@ public partial class ListWindowsViewModel : ObservableRecipient
     private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
     public partial bool IsAlphaChecked { get; set; } = false;
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
     public partial bool IsCenterChecked { get; set; } = false;
+    public bool IsApplyToAllEnabled => IsAlphaChecked || IsCenterChecked;
 
     public ListWindowsViewModel(
         IWindowEnumerationService enumerationService,
