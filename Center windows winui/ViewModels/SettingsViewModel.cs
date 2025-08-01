@@ -14,7 +14,7 @@ using Windows.System.UserProfile;
 
 namespace CenterWindow.ViewModels;
 
-public partial class SettingsViewModel : ObservableRecipient
+public partial class SettingsViewModel : ObservableRecipient, IDisposable
 {
     // Settings synchronization dictionary
     private readonly Dictionary<string, Action> _syncActions = [];
@@ -115,6 +115,12 @@ public partial class SettingsViewModel : ObservableRecipient
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
     }
 
+    public void Dispose()
+    {
+        _mainWindowService.PropertyChanged   -= MainWindow_Changed;
+        _localizationService.LanguageChanged -= OnLanguageChanged;
+        _trayIconService.Dispose();
+    }
     private void MainWindow_Changed(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is nameof(_mainWindowService.WindowWidth) or nameof(_mainWindowService.WindowHeight))
@@ -125,12 +131,6 @@ public partial class SettingsViewModel : ObservableRecipient
         {
             OnPropertyChanged(nameof(WindowPositionDescription));
         }
-    }
-
-
-    public void Dispose()
-    {
-        _localizationService.LanguageChanged -= OnLanguageChanged;
     }
 
     partial void OnSelectedLanguageIndexChanged(int oldValue, int newValue)
