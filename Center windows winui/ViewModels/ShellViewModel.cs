@@ -8,7 +8,7 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace CenterWindow.ViewModels;
 
-public partial class ShellViewModel : ObservableRecipient
+public partial class ShellViewModel : ObservableRecipient, IDisposable
 {
     [ObservableProperty]
     public partial bool IsBackEnabled { get; set; }

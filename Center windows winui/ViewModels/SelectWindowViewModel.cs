@@ -25,7 +25,7 @@ public partial class PropertyItem(string key, string value, string iconPath) : O
     public partial bool IsLastItem { get; set; } = false;
 }
 
-public partial class SelectWindowViewModel : ObservableRecipient
+public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 {
     private readonly IWindowCenterService _centerService;
     private readonly IMouseHookService _mouseHook;
@@ -77,13 +77,9 @@ public partial class SelectWindowViewModel : ObservableRecipient
         ToggleImage();
     }
 
-    private void Dispose(bool disposing)
+    public void Dispose()
     {
-        if (disposing)
-        {
-            // Unsubscribe from events
-            _mouseHook.MouseMoved -= OnMouseMoved;
-        }
+        _mouseHook.MouseMoved -= OnMouseMoved;
     }
 
     private void ToggleImage()

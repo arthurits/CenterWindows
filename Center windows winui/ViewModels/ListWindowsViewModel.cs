@@ -10,7 +10,7 @@ using Microsoft.UI.Xaml;
 
 namespace CenterWindow.ViewModels;
 
-public partial class ListWindowsViewModel : ObservableRecipient
+public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
 {
     // Services
     private readonly IWindowEnumerationService _enumerationService;
@@ -68,6 +68,14 @@ public partial class ListWindowsViewModel : ObservableRecipient
         OnLanguageChanged(null, EventArgs.Empty);
 
         SelectedWindows.CollectionChanged += SelectedWindows_CollectionChanged;
+    }
+
+    public void Dispose()
+    {
+        _localizationService.LanguageChanged -= OnLanguageChanged;
+        _trayIconService.TrayMenuItemClicked -= OnTrayMenuItem;
+        _trayIconService.TrayMenuOpening     -= OnTrayMenuOpening;
+        SelectedWindows.CollectionChanged    -= SelectedWindows_CollectionChanged;
     }
 
     [RelayCommand]

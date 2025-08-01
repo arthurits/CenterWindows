@@ -1,4 +1,6 @@
-﻿using CenterWindow.Activation;
+﻿using System;
+using System.ComponentModel;
+using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
 using CenterWindow.Models;
@@ -21,10 +23,7 @@ public partial class App : Application
     // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
     // https://docs.microsoft.com/dotnet/core/extensions/configuration
     // https://docs.microsoft.com/dotnet/core/extensions/logging
-    public IHost Host
-    {
-        get;
-    }
+    public IHost Host { get; }
 
     public static T GetService<T>()
         where T : class
@@ -39,10 +38,7 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar
-    {
-        get; set;
-    }
+    public static UIElement? AppTitlebar { get; set; }
 
     public App()
     {
@@ -128,6 +124,7 @@ public partial class App : Application
 
         // Handle closing event
         MainWindow.AppWindow.Closing += OnClosing;
+        MainWindow.Closed += OnClosed;
 
         // Read settings and set initial window position
         // https://github.com/arthurits/OpenXML-editor/blob/master/OpenXML%20WinUI/App.xaml.cs
@@ -167,7 +164,7 @@ public partial class App : Application
             _trayIconService.Initialize();
         }
 
-        // Just in case we mess the system cursors, reset them
+        // Just in case we mess with the system cursors, reset them
         //uint SPI_SETCURSORS = 0x0057;
         //uint SPIF_SENDCHANGE = 0x02;
         //SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
@@ -214,5 +211,13 @@ public partial class App : Application
 
             MainWindow.Close();
         }
+
     }
+
+    private async void OnClosed(object sender, WindowEventArgs args)
+    {
+        await Host.StopAsync();
+        Host.Dispose();
+    }
+
 }
