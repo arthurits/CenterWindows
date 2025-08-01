@@ -23,10 +23,7 @@ public partial class App : Application
     // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
     // https://docs.microsoft.com/dotnet/core/extensions/configuration
     // https://docs.microsoft.com/dotnet/core/extensions/logging
-    public IHost Host
-    {
-        get;
-    }
+    public IHost Host { get; }
 
     public static T GetService<T>()
         where T : class
@@ -41,10 +38,7 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar
-    {
-        get; set;
-    }
+    public static UIElement? AppTitlebar { get; set; }
 
     public App()
     {
