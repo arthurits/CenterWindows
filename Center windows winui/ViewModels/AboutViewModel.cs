@@ -4,7 +4,7 @@ using CenterWindow.Helpers;
 
 namespace CenterWindow.ViewModels;
 
-public partial class AboutViewModel : ObservableRecipient
+public partial class AboutViewModel : ObservableRecipient, IDisposable
 {
     private readonly ILocalizationService _localizationService;
 
