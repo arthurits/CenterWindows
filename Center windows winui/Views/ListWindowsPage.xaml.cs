@@ -1,6 +1,5 @@
 ﻿using CenterWindow.Models;
 using CenterWindow.ViewModels;
-using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -27,6 +26,15 @@ public sealed partial class ListWindowsPage : Page
     {
         ScrollViewPage.Height = ActualHeight;
         ScrollViewPage.Width = ActualWidth;
+    }
+
+    private void DeselectWindows_Click(object sender, RoutedEventArgs e)
+    {
+        if (WindowsListView.SelectedItems.Count > 0)
+        {
+            WindowsListView.SelectedItems.Clear();
+            ViewModel.SelectedWindows.Clear();
+        }
     }
 
     private void ToggleMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
