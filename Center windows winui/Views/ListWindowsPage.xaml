@@ -37,7 +37,7 @@
                             Text="{Binding DataContext.StrApplyToSelected, ElementName=RootPage}"
                             Command="{Binding DataContext.ApplyToSelectedWindowsCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}"
-                            IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}"/>
+                            IsEnabled="{Binding DataContext.IsApplyToSelectedEnabled, ElementName=RootPage}"/>
                         <MenuFlyoutItem
                             Text="{Binding DataContext.StrApplyToAll, ElementName=RootPage}"
                             Command="{Binding DataContext.ApplyToAllWindowsCommand, ElementName=RootPage}"
@@ -121,7 +121,7 @@
                                               Icon="Copy"
                                               Label="{Binding StrApplyToSelected}"
                                               LabelPosition="Default"
-                                              IsEnabled="{Binding IsListItemSelected}"
+                                              IsEnabled="{Binding IsApplyToSelectedEnabled}"
                                               Command="{Binding ApplyToSelectedWindowsCommand}"
                                               Foreground="MidnightBlue">
                                     </AppBarButton>
