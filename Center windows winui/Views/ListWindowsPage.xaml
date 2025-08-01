@@ -48,7 +48,7 @@
                             Text="{Binding DataContext.StrDeselect, ElementName=RootPage}"
                             Command="{Binding DataContext.DeselectWindowCommand, ElementName=RootPage}"
                             CommandParameter="{Binding}"
-                            IsEnabled="{Binding DataContext.IsListItemSelected, ElementName=RootPage}"
+                            IsEnabled="{Binding DataContext.IsDeselectEnabled, ElementName=RootPage}"
                             Click="DeselectWindows_Click"/>
                         <MenuFlyoutSeparator/>
                         <MenuFlyoutItem
@@ -139,7 +139,7 @@
                                             Icon="Copy"
                                             Label="{Binding StrDeselect}"
                                             LabelPosition="Default"
-                                            IsEnabled="{Binding IsListItemSelected}"
+                                            IsEnabled="{Binding IsDeselectEnabled}"
                                             Command="{Binding DeselectWindowCommand}"
                                             Click="DeselectWindows_Click"
                                             Foreground="MidnightBlue">
