@@ -36,9 +36,11 @@ public partial class ListWindowsViewModel : ObservableRecipient
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsApplyToSelectedEnabled))]
     public partial bool IsAlphaChecked { get; set; } = false;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsApplyToSelectedEnabled))]
     public partial bool IsCenterChecked { get; set; } = false;
     public bool IsApplyToAllEnabled => IsAlphaChecked || IsCenterChecked;
     public bool IsApplyToSelectedEnabled => (IsAlphaChecked || IsCenterChecked) && SelectedWindows.Count > 0;
@@ -146,7 +148,8 @@ public partial class ListWindowsViewModel : ObservableRecipient
 
     private void SelectedWindows_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        OnPropertyChanged(nameof(IsListItemSelected));
+        OnPropertyChanged(nameof(IsApplyToSelectedEnabled));
+        OnPropertyChanged(nameof(IsDeselectEnabled));
     }
 
     private void OnTrayMenuOpening(object? sender, TrayMenuOpeningEventArgs e)
