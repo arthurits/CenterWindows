@@ -67,9 +67,6 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
 
         RefreshWindows();
 
-        // Load string resources into binding variables for the UI
-        OnLanguageChanged(null, EventArgs.Empty);
-
         SelectedWindows.CollectionChanged += SelectedWindows_CollectionChanged;
     }
 
