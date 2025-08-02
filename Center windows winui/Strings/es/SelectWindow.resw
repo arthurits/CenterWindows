@@ -39,6 +39,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="StrDragCrossHair" xml:space="preserve">
+    <value>Arrastra el punto de mira para seleccionar cualquier ventana</value>
+  </data>
   <data name="StrTransparencyHeader" xml:space="preserve">
     <value>Transparencia</value>
   </data>

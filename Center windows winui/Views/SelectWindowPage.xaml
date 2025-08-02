@@ -72,15 +72,17 @@
                                 Orientation="Vertical"
                                 Style="{StaticResource ContentStackPanel}">
                         <TextBlock
-                            Text="Drag the crosshair to select any window"
-                            TextAlignment="Center"/>
+                            Text="{x:Bind ViewModel.StrDragCrossHair, Mode=OneWay}"
+                            TextAlignment="Center"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <!-- Transparent button to capture the click event -->
                         <Button
                             x:Name="SelectWindow"
                             Background="Transparent"
                             BorderThickness="0"
                             Padding="0"
-                            HorizontalAlignment="Center">
+                            HorizontalAlignment="Center"
+                            Margin="0, 6, 0, 6">
                             <!-- Change image according to CurrentImage -->
                             <Image
                                 Source="{Binding CurrentImage}"
@@ -94,18 +96,17 @@
                     <StackPanel
                         x:Name="PanelTransparency"
                         Grid.Row="1"
-                        Margin="0,8,0,0"
-                        Padding="8"
-                        Style="{StaticResource ContentStackPanel}">
+                        Style="{StaticResource ContentStackPanel}"
+                        Margin="0,12,0,0">
                         <TextBlock
                             Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
                             HorizontalAlignment="Center"
-                            Margin="0,0,0,8"/>
+                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <Grid
                             x:Name="TransparencySlider"
                             ColumnDefinitions = "Auto, 200, Auto"
-                            HorizontalAlignment="Center">
+                            HorizontalAlignment="Center"
+                            Margin="0, 6, 0, 6">
                             <TextBlock
                                 Text="0"
                                 VerticalAlignment="Center"
@@ -130,7 +131,7 @@
                         Grid.Row="2"
                         Orientation="Vertical"
                         Style="{StaticResource ContentStackPanel}"
-                        Margin="0, 8, 0, 0"
+                        Margin="0, 12, 0, 0"
                         Spacing="4">
                         <Border Background="{StaticResource PanelAcrylicBrush}"
                             Padding="12"

@@ -89,7 +89,7 @@
                         Margin="0, 12, 0, 0"
                         Spacing="4">
 
-                        <Border CornerRadius="{x:Bind WindowList.CornerRadius}"
+                        <Border CornerRadius="{x:Bind PanelWindowList.CornerRadius}"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
                             BorderThickness="{x:Bind WindowList.BorderThickness}"
@@ -205,9 +205,8 @@
                     <StackPanel
                         x:Name="PanelTransparency"
                         Grid.Row="1"
-                        Margin="0,8,0,0"
-                        Padding="8"
-                        Style="{StaticResource ContentStackPanel}">
+                        Style="{StaticResource ContentStackPanel}"
+                        Margin="0,12,0,0">
                         <TextBlock
                             Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
