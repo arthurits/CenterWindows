@@ -72,7 +72,7 @@
                                 Orientation="Vertical"
                                 Style="{StaticResource ContentStackPanel}">
                         <TextBlock
-                            Text="Drag the crosshair to select any window"
+                            Text="{x:Bind ViewModel.StrDragCrossHair, Mode=OneWay}"
                             TextAlignment="Center"
                             Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <!-- Transparent button to capture the click event -->
