@@ -108,17 +108,20 @@
                                               LabelPosition="Default"
                                               IsChecked="{Binding IsCenterChecked, Mode=TwoWay}"
                                               Foreground="MidnightBlue">
-                                              <AppBarToggleButton.Icon>
-                                                  <ImageIcon Source="/Assets/Finder - 32x32.svg"/>
-                                              </AppBarToggleButton.Icon>
+                                        <AppBarToggleButton.Icon>
+                                            <ImageIcon Source="/Assets/Finder - 32x32.svg" Width="48" Height="48"/>
+                                        </AppBarToggleButton.Icon>
                                     </AppBarToggleButton>
                                     <AppBarToggleButton x:Name="CmdBarTransparency"
                                               ToolTipService.ToolTip="{Binding StrTransparencyToolTip}"
-                                              Icon="Delete"
                                               Label="{Binding StrTransparency}"
                                               LabelPosition="Default"
                                               IsChecked="{Binding IsAlphaChecked, Mode=TwoWay}"
-                                              Foreground="MidnightBlue" />
+                                              Foreground="MidnightBlue">
+                                        <AppBarToggleButton.Icon>
+                                            <ImageIcon Source="/Assets/Transparency - 32x32.svg"/>
+                                        </AppBarToggleButton.Icon>
+                                    </AppBarToggleButton>
                                     <AppBarSeparator />
                                     <AppBarButton x:Name="CmdBarApplyToSelected"
                                               ToolTipService.ToolTip="{Binding StrApplyToSelectedToolTip}"
