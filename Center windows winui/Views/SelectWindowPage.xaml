@@ -94,9 +94,8 @@
                     <StackPanel
                         x:Name="PanelTransparency"
                         Grid.Row="1"
-                        Margin="0,8,0,0"
-                        Padding="8"
-                        Style="{StaticResource ContentStackPanel}">
+                        Style="{StaticResource ContentStackPanel}"
+                        Margin="0,12,0,0">
                         <TextBlock
                             Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
@@ -130,7 +129,7 @@
                         Grid.Row="2"
                         Orientation="Vertical"
                         Style="{StaticResource ContentStackPanel}"
-                        Margin="0, 8, 0, 0"
+                        Margin="0, 12, 0, 0"
                         Spacing="4">
                         <Border Background="{StaticResource PanelAcrylicBrush}"
                             Padding="12"
