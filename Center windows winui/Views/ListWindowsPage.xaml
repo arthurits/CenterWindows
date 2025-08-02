@@ -211,7 +211,8 @@
                         <StackPanel
                             x:Name="TransparencySlider"
                             Orientation="Horizontal"
-                            Spacing="12">
+                            Spacing="12"
+                            HorizontalAlignment="Center">
                             <TextBlock
                                 Text="Transparency:"
                                 VerticalAlignment="Center"/>
