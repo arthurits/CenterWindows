@@ -104,11 +104,14 @@
                                 <CommandBar.PrimaryCommands>
                                     <AppBarToggleButton x:Name="CmdBarCenter"
                                               ToolTipService.ToolTip="{Binding StrCenterToolTip}"
-                                              Icon="Add"
                                               Label="{Binding StrCenter}"
                                               LabelPosition="Default"
                                               IsChecked="{Binding IsCenterChecked, Mode=TwoWay}"
-                                              Foreground="MidnightBlue" />
+                                              Foreground="MidnightBlue">
+                                              <AppBarToggleButton.Icon>
+                                                  <ImageIcon Source="/Assets/Finder - 32x32.svg"/>
+                                              </AppBarToggleButton.Icon>
+                                    </AppBarToggleButton>
                                     <AppBarToggleButton x:Name="CmdBarTransparency"
                                               ToolTipService.ToolTip="{Binding StrTransparencyToolTip}"
                                               Icon="Delete"
@@ -119,16 +122,18 @@
                                     <AppBarSeparator />
                                     <AppBarButton x:Name="CmdBarApplyToSelected"
                                               ToolTipService.ToolTip="{Binding StrApplyToSelectedToolTip}"
-                                              Icon="Copy"
                                               Label="{Binding StrApplyToSelected}"
                                               LabelPosition="Default"
                                               IsEnabled="{Binding IsApplyToSelectedEnabled}"
                                               Command="{Binding ApplyToSelectedWindowsCommand}"
                                               Foreground="MidnightBlue">
+                                              <AppBarButton.Icon>
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE73A;"/>
+                                              </AppBarButton.Icon>
                                     </AppBarButton>
                                     <AppBarButton x:Name="CmdBarApplyToAll"
                                               ToolTipService.ToolTip="{Binding StrApplyToAllToolTip}"
-                                              Icon="Download"
+                                              Icon="SelectAll"
                                               Label="{Binding StrApplyToAll}"
                                               LabelPosition="Default"
                                               IsEnabled="{Binding IsApplyToAllEnabled}"
@@ -137,7 +142,7 @@
                                     <AppBarSeparator />
                                     <AppBarButton x:Name="CmdBarDeselect"
                                             ToolTipService.ToolTip="{Binding StrDeselectToolTip}"
-                                            Icon="Copy"
+                                            Icon="Clear"
                                             Label="{Binding StrDeselect}"
                                             LabelPosition="Default"
                                             IsEnabled="{Binding IsDeselectEnabled}"
@@ -147,7 +152,7 @@
                                     </AppBarButton>
                                     <AppBarButton x:Name="CmdBarRefresh"
                                             ToolTipService.ToolTip="{Binding StrRefreshToolTip}"
-                                            Icon="Copy"
+                                            Icon="Sync"
                                             Label="{Binding StrRefresh}"
                                             LabelPosition="Default"
                                             Command="{Binding RefreshWindowsCommand}"
