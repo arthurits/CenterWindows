@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CenterWindow.ViewModels;
-public partial class ListWindowsViewModel : ObservableRecipient
+public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
 {
     [ObservableProperty]
     public partial string StrCenter { get; set; } = string.Empty;
