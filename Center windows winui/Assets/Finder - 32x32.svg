@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" version="1.1" id="svg2" xml:space="preserve" width="42.666664" height="42.666664" viewBox="0 0 42.666664 42.666664" sodipodi:docname="35404a99233b4010caed15fdf9c7f6d0.ai">
+  <metadata>
+    <meta name="Producer" content="Online-Convert"/>
+  </metadata>
+  <defs id="defs6">
+    <clipPath clipPathUnits="userSpaceOnUse" id="clipPath16">
+      <path d="M 0,32 H 32 V 0 H 0 Z" id="path14"/>
+    </clipPath>
+  </defs>
+  <sodipodi:namedview id="namedview4" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0"/>
+  <g id="g8" inkscape:groupmode="layer" inkscape:label="35404a99233b4010caed15fdf9c7f6d0" transform="matrix(1.3333333,0,0,-1.3333333,0,42.666666)">
+    <g id="g10">
+      <g id="g12" clip-path="url(#clipPath16)">
+        <g id="g18" transform="translate(1,16)">
+          <path d="M 0,0 H 30" style="fill:none;stroke:#231f20;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" id="path20"/>
+        </g>
+        <g id="g22" transform="translate(16,31)">
+          <path d="M 0,0 V -30" style="fill:none;stroke:#231f20;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" id="path24"/>
+        </g>
+        <g id="g26" transform="translate(28,16)">
+          <path d="m 0,0 c 0,-6.627 -5.373,-12 -12,-12 -6.627,0 -12,5.373 -12,12 0,6.627 5.373,12 12,12 C -5.373,12 0,6.627 0,0 Z" style="fill:none;stroke:#231f20;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" id="path28"/>
+        </g>
+        <g id="g30" transform="translate(22,16)">
+          <path d="m 0,0 c 0,-3.314 -2.686,-6 -6,-6 -3.314,0 -6,2.686 -6,6 0,3.314 2.686,6 6,6 3.314,0 6,-2.686 6,-6 z" style="fill:none;stroke:#231f20;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" id="path32"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
