@@ -203,19 +203,20 @@
                     
                     <!-- Transparency selection -->
                     <StackPanel
-                        x:Name="WindowTransparency"
+                        x:Name="PanelTransparency"
                         Grid.Row="1"
                         Margin="0,8,0,0"
                         Padding="8"
-                        Style="{StaticResource ContentStackPanel}"
-                        HorizontalAlignment="Center">
+                        Style="{StaticResource ContentStackPanel}">
                         <TextBlock
-                            Text="{x:Bind ViewModel.StrTransparencyHeader, Mode=OneWay}"
+                            Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
                             FontSize="16"
-                            FontWeight="SemiBold"
                             HorizontalAlignment="Center"
                             Margin="0,0,0,8"/>
-                        <Grid x:Name="TransparencySlider" ColumnDefinitions = "Auto, 200, Auto">
+                        <Grid
+                            x:Name="TransparencySlider"
+                            ColumnDefinitions = "Auto, 200, Auto"
+                            HorizontalAlignment="Center">
                             <TextBlock
                                 Text="0"
                                 VerticalAlignment="Center"
