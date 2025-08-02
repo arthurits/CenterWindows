@@ -207,24 +207,32 @@
                         Grid.Row="1"
                         Margin="0,8,0,0"
                         Padding="8"
-                        Style="{StaticResource ContentStackPanel}">
-                        <StackPanel
-                            x:Name="TransparencySlider"
-                            Orientation="Horizontal"
-                            Spacing="12"
-                            HorizontalAlignment="Center">
+                        Style="{StaticResource ContentStackPanel}"
+                        HorizontalAlignment="Center">
+                        <TextBlock
+                            Text="{x:Bind ViewModel.StrTransparencyHeader, Mode=OneWay}"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,8"/>
+                        <Grid x:Name="TransparencySlider" ColumnDefinitions = "Auto, 200, Auto">
                             <TextBlock
-                                Text="Transparency:"
-                                VerticalAlignment="Center"/>
+                                Text="0"
+                                VerticalAlignment="Center"
+                                Grid.Column="0"
+                                Margin="0,0,8,0"/>
                             <Slider
+                                Grid.Column="1"
                                 Minimum="0"
                                 Maximum="255"
                                 Value="{Binding Transparency, Mode=TwoWay}"
                                 Width="200"/>
                             <TextBlock
-                                Text="{Binding Transparency, Mode=OneWay}"
-                                VerticalAlignment="Center"/>
-                        </StackPanel>
+                                Text="255"
+                                VerticalAlignment="Center"
+                                Grid.Column="2"
+                                Margin="8,0,0,0"/>
+                        </Grid>
                     </StackPanel>
                     
                 </Grid>
