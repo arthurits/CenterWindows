@@ -73,14 +73,16 @@
                                 Style="{StaticResource ContentStackPanel}">
                         <TextBlock
                             Text="Drag the crosshair to select any window"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <!-- Transparent button to capture the click event -->
                         <Button
                             x:Name="SelectWindow"
                             Background="Transparent"
                             BorderThickness="0"
                             Padding="0"
-                            HorizontalAlignment="Center">
+                            HorizontalAlignment="Center"
+                            Margin="0, 6, 0, 6">
                             <!-- Change image according to CurrentImage -->
                             <Image
                                 Source="{Binding CurrentImage}"
@@ -98,13 +100,13 @@
                         Margin="0,12,0,0">
                         <TextBlock
                             Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
                             HorizontalAlignment="Center"
-                            Margin="0,0,0,8"/>
+                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <Grid
                             x:Name="TransparencySlider"
                             ColumnDefinitions = "Auto, 200, Auto"
-                            HorizontalAlignment="Center">
+                            HorizontalAlignment="Center"
+                            Margin="0, 6, 0, 6">
                             <TextBlock
                                 Text="0"
                                 VerticalAlignment="Center"
