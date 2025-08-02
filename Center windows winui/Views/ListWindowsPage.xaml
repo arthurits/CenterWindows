@@ -130,9 +130,9 @@
                                               IsEnabled="{Binding IsApplyToSelectedEnabled}"
                                               Command="{Binding ApplyToSelectedWindowsCommand}"
                                               Foreground="MidnightBlue">
-                                              <AppBarButton.Icon>
-                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE73A;"/>
-                                              </AppBarButton.Icon>
+                                        <AppBarButton.Icon>
+                                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE73A;"/>
+                                        </AppBarButton.Icon>
                                     </AppBarButton>
                                     <AppBarButton x:Name="CmdBarApplyToAll"
                                               ToolTipService.ToolTip="{Binding StrApplyToAllToolTip}"
@@ -168,7 +168,7 @@
                         <StackPanel
                             x:Name="PanelWindowList"
                             Style="{StaticResource ContentStackPanel}">
-                        
+
                             <!-- Column headers -->
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -180,7 +180,7 @@
                                 <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
                                 <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
                             </Grid>
-                            
+
                             <!-- Window list -->
                             <ListView
                             x:Name="WindowsListView"
@@ -198,9 +198,9 @@
                                 </interactivity:Interaction.Behaviors>
                             </ListView>
                         </StackPanel>
-                        
+
                     </StackPanel>
-                    
+
                     <!-- Transparency selection -->
                     <StackPanel
                         x:Name="PanelTransparency"
@@ -210,7 +210,7 @@
                         Style="{StaticResource ContentStackPanel}">
                         <TextBlock
                             Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
-                            FontSize="16"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"
                             HorizontalAlignment="Center"
                             Margin="0,0,0,8"/>
                         <Grid
@@ -235,13 +235,10 @@
                                 Margin="8,0,0,0"/>
                         </Grid>
                     </StackPanel>
-                    
+
                 </Grid>
-                
             </StackPanel>
-            
         </ScrollView>
-        
     </Grid>
     
 </Page>
