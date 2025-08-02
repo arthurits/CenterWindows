@@ -76,6 +76,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         WindowPropertiesCollection.Add(new PropertyItem("Window text", string.Empty, string.Empty));
         WindowPropertiesCollection.Add(new PropertyItem("Window handle", string.Empty, string.Empty));
         WindowPropertiesCollection.Add(new PropertyItem("Window class name", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Window module name", string.Empty, string.Empty));
         WindowPropertiesCollection.Add(new PropertyItem("Window dimensions", string.Empty, string.Empty));
         WindowPropertiesCollection.Last().IsLastItem = true;
 
@@ -88,8 +89,8 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 
     public void Dispose()
     {
-        _mouseHook.MouseMoved -= OnMouseMoved;
-        _localizationService.LanguageChanged -= OnLanguageChanged;
+        _mouseHook.MouseMoved                   -= OnMouseMoved;
+        _localizationService.LanguageChanged    -= OnLanguageChanged;
     }
 
     private void ToggleImage()
@@ -107,9 +108,10 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 // Update the properties collection with information from the mouse hook event
                 _selectedWindowHandle = e.HWnd;
                 WindowPropertiesCollection[0].Value = e.WindowText;
-                WindowPropertiesCollection[1].Value = $"{e.HWnd} ({e.HWnd:X})";
+                WindowPropertiesCollection[1].Value = $"{e.HWnd} (0x{e.HWnd:X})";
                 WindowPropertiesCollection[2].Value = e.ClassName;
-                WindowPropertiesCollection[3].Value = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
+                WindowPropertiesCollection[4].Value = $"Not yet implemented";
+                WindowPropertiesCollection[4].Value = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
 
                 // Force rebinding of the properties collection in the UI
                 //OnPropertyChanged(nameof(WindowPropertiesCollection));
