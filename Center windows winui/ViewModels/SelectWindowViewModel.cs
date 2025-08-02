@@ -30,6 +30,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private readonly IWindowCenterService _centerService;
     private readonly IMouseHookService _mouseHook;
     private readonly AppSettings _appSettings;
+    private readonly ILocalizationService _localizationService;
 
     [ObservableProperty]
     public partial bool IsLeftButtonDown { get; set; } = false;
@@ -46,18 +47,24 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     public ObservableCollection<PropertyItem> WindowPropertiesCollection { get; } = [];
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
     public partial int Transparency { get; set; } = 255;
+
+    public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
 
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
         IWindowCenterService centerService,
-        IMouseHookService mouseHook)
+        IMouseHookService mouseHook,
+        ILocalizationService localizationService)
     {
         // Services
         _appSettings = settings.GetValues;
         _centerService = centerService;
         _mouseHook = mouseHook;
         _mouseHook.MouseMoved += OnMouseMoved;
+        _localizationService = localizationService;
+        _localizationService.LanguageChanged += OnLanguageChanged;
 
         // Initialize the image sources. This could be read from a settings file.
         _defaultImagePath = _appSettings.SelectWindowDefaultImagePath;
@@ -66,20 +73,24 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         // Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
 
         // Initialize the window properties collection
-        // Ejemplo: inicializa con pares clave/valor
         WindowPropertiesCollection.Add(new PropertyItem("Window text", string.Empty, string.Empty));
         WindowPropertiesCollection.Add(new PropertyItem("Window handle", string.Empty, string.Empty));
         WindowPropertiesCollection.Add(new PropertyItem("Window class name", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Window module name", string.Empty, string.Empty));
         WindowPropertiesCollection.Add(new PropertyItem("Window dimensions", string.Empty, string.Empty));
         WindowPropertiesCollection.Last().IsLastItem = true;
 
         // Set the initial image
         ToggleImage();
+
+        // Load string resources into binding variables for the UI
+        OnLanguageChanged(null, EventArgs.Empty);
     }
 
     public void Dispose()
     {
-        _mouseHook.MouseMoved -= OnMouseMoved;
+        _mouseHook.MouseMoved                   -= OnMouseMoved;
+        _localizationService.LanguageChanged    -= OnLanguageChanged;
     }
 
     private void ToggleImage()
@@ -97,9 +108,10 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 // Update the properties collection with information from the mouse hook event
                 _selectedWindowHandle = e.HWnd;
                 WindowPropertiesCollection[0].Value = e.WindowText;
-                WindowPropertiesCollection[1].Value = $"{e.HWnd} ({e.HWnd:X})";
+                WindowPropertiesCollection[1].Value = $"{e.HWnd} (0x{e.HWnd:X})";
                 WindowPropertiesCollection[2].Value = e.ClassName;
-                WindowPropertiesCollection[3].Value = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
+                WindowPropertiesCollection[4].Value = $"Not yet implemented";
+                WindowPropertiesCollection[4].Value = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
 
                 // Force rebinding of the properties collection in the UI
                 //OnPropertyChanged(nameof(WindowPropertiesCollection));

@@ -30,9 +30,12 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
     //public partial WindowModel? SelectedWindow { get; set; } = null;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
     public partial int Transparency { get; set; } = 255;
 
-    private byte _alpha => (byte)Math.Clamp(Transparency, 0, 255);
+    public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
+
+    private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
@@ -63,9 +66,6 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
 
         RefreshWindows();
-
-        // Load string resources into binding variables for the UI
-        OnLanguageChanged(null, EventArgs.Empty);
 
         SelectedWindows.CollectionChanged += SelectedWindows_CollectionChanged;
     }
@@ -101,7 +101,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
             }
             if (IsAlphaChecked)
             {
-                _centerService.SetWindowTransparency(selectedWindow.Hwnd, _alpha);
+                _centerService.SetWindowTransparency(selectedWindow.Hwnd, Alpha);
             }
         }
     }
@@ -117,7 +117,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
             }
             if (IsAlphaChecked)
             {
-                _centerService.SetWindowTransparency(window.Hwnd, _alpha);
+                _centerService.SetWindowTransparency(window.Hwnd, Alpha);
             }
         }
     }

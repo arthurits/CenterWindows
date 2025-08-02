@@ -130,9 +130,9 @@
                                               IsEnabled="{Binding IsApplyToSelectedEnabled}"
                                               Command="{Binding ApplyToSelectedWindowsCommand}"
                                               Foreground="MidnightBlue">
-                                              <AppBarButton.Icon>
-                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE73A;"/>
-                                              </AppBarButton.Icon>
+                                        <AppBarButton.Icon>
+                                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE73A;"/>
+                                        </AppBarButton.Icon>
                                     </AppBarButton>
                                     <AppBarButton x:Name="CmdBarApplyToAll"
                                               ToolTipService.ToolTip="{Binding StrApplyToAllToolTip}"
@@ -168,7 +168,7 @@
                         <StackPanel
                             x:Name="PanelWindowList"
                             Style="{StaticResource ContentStackPanel}">
-                        
+
                             <!-- Column headers -->
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -180,7 +180,7 @@
                                 <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
                                 <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
                             </Grid>
-                            
+
                             <!-- Window list -->
                             <ListView
                             x:Name="WindowsListView"
@@ -198,40 +198,47 @@
                                 </interactivity:Interaction.Behaviors>
                             </ListView>
                         </StackPanel>
-                        
+
                     </StackPanel>
-                    
+
                     <!-- Transparency selection -->
                     <StackPanel
-                        x:Name="WindowTransparency"
+                        x:Name="PanelTransparency"
                         Grid.Row="1"
                         Margin="0,8,0,0"
                         Padding="8"
                         Style="{StaticResource ContentStackPanel}">
-                        <StackPanel
+                        <TextBlock
+                            Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,8"/>
+                        <Grid
                             x:Name="TransparencySlider"
-                            Orientation="Horizontal"
-                            Spacing="12">
+                            ColumnDefinitions = "Auto, 200, Auto"
+                            HorizontalAlignment="Center">
                             <TextBlock
-                                Text="Transparency:"
-                                VerticalAlignment="Center"/>
+                                Text="0"
+                                VerticalAlignment="Center"
+                                Grid.Column="0"
+                                Margin="0,0,8,0"/>
                             <Slider
+                                Grid.Column="1"
                                 Minimum="0"
                                 Maximum="255"
                                 Value="{Binding Transparency, Mode=TwoWay}"
                                 Width="200"/>
                             <TextBlock
-                                Text="{Binding Transparency, Mode=OneWay}"
-                                VerticalAlignment="Center"/>
-                        </StackPanel>
+                                Text="255"
+                                VerticalAlignment="Center"
+                                Grid.Column="2"
+                                Margin="8,0,0,0"/>
+                        </Grid>
                     </StackPanel>
-                    
+
                 </Grid>
-                
             </StackPanel>
-            
         </ScrollView>
-        
     </Grid>
     
 </Page>

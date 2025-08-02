@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CenterWindow.ViewModels;
-public partial class ListWindowsViewModel : ObservableRecipient
+public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
 {
     [ObservableProperty]
     public partial string StrCenter { get; set; } = string.Empty;
@@ -40,8 +40,13 @@ public partial class ListWindowsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial string StrRefreshToolTip { get; set; } = string.Empty;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
+    public partial string StrTransparencyHeader { get; set; } = string.Empty;
+
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
+        // Flyout menu and CommandBar buttons
         StrCenter = "StrCenter".GetLocalized("ListWindows");
         StrCenterToolTip = "StrCenterToolTip".GetLocalized("ListWindows");
         StrTransparency = "StrTransparency".GetLocalized("ListWindows");
@@ -54,5 +59,8 @@ public partial class ListWindowsViewModel : ObservableRecipient
         StrDeselectToolTip = "StrDeselectToolTip".GetLocalized("ListWindows");
         StrRefresh = "StrRefresh".GetLocalized("ListWindows");
         StrRefreshToolTip = "StrRefreshToolTip".GetLocalized("ListWindows");
+
+        // Header for the transparency slider
+        StrTransparencyHeader = "StrTransparencyHeader".GetLocalized("ListWindows");
     }
 }
