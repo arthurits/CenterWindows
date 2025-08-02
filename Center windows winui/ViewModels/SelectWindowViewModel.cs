@@ -46,7 +46,10 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     public ObservableCollection<PropertyItem> WindowPropertiesCollection { get; } = [];
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
     public partial int Transparency { get; set; } = 255;
+
+    public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
 
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
