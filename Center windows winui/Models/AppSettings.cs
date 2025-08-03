@@ -93,6 +93,12 @@ public partial class AppSettings
     [JsonPropertyName("Minimize to tray")]
     public bool MinimizeToTray { get; set; } = true;
 
+    /// <summary>
+    /// Launch the application at system startup.
+    /// </summary>
+    [JsonPropertyName("Launch app on startup")]
+    public bool LaunchAtStartup { get; set; } = false;
+
     [JsonIgnore]
     public string? AppPath { get; set; } = Path.GetDirectoryName(Environment.ProcessPath);
     [JsonIgnore]
