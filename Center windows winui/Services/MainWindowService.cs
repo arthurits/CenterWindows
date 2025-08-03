@@ -1,5 +1,7 @@
 ﻿using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
+using CenterWindow.Models;
+using CenterWindow.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CenterWindow.Services;
@@ -7,6 +9,7 @@ public partial class MainWindowService : ObservableObject, IMainWindowService, I
 {
     private readonly WindowEx _window;
     private readonly IntPtr _hWnd;
+    private readonly ILocalSettingsService<AppSettings> _settingsService;
 
     [ObservableProperty]
     public partial int WindowLeft { get; set; }
@@ -43,7 +46,11 @@ public partial class MainWindowService : ObservableObject, IMainWindowService, I
         // Subscribe to window position and size change events
         window.SizeChanged          += OnSizeChanged;
         window.PositionChanged      += OnPositionChanged;
-        window.WindowStateChanged   += OnWindowStateChanged; ;
+        window.WindowStateChanged   += OnWindowStateChanged;
+
+        // Get the settings service
+        _settingsService = App.GetService<ILocalSettingsService<AppSettings>>();
+        
     }
 
     public void Dispose()
@@ -69,9 +76,10 @@ public partial class MainWindowService : ObservableObject, IMainWindowService, I
     {
         if (e == WindowState.Minimized)
         {
-            Hide();
-            // Y dejamos que el servicio de bandeja muestre su icono
-            // (el propio MainWindow.xaml.cs ya habrá inicializado ITrayIconService)
+            if (_settingsService.GetValues.CanMinimizeToTray)
+            {
+                Hide();
+            }
         }
     }
 
