@@ -38,6 +38,9 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial string StrMinimizeToTrayHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrMinimizeToTrayDescription { get; set; } = string.Empty;
+    public partial string StrLaunchAtStartupHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrLaunchAtStartupDescription { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial string StrResetButton { get; set; } = string.Empty;
@@ -92,6 +95,10 @@ public partial class SettingsViewModel : ObservableRecipient
         // Minimize to tray
         StrMinimizeToTrayHeader = "StrMinimizeToTrayHeader".GetLocalized("Settings");
         StrMinimizeToTrayDescription = "StrMinimizeToTrayDescription".GetLocalized("Settings");
+
+        // Launch at startup
+        StrLaunchAtStartupHeader = "StrLaunchAtStartupHeader".GetLocalized("Settings");
+        StrLaunchAtStartupDescription = "StrLaunchAtStartupDescription".GetLocalized("Settings");
 
         // Reset button
         StrResetButton = "StrResetButton".GetLocalized("Settings");
