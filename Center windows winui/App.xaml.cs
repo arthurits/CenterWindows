@@ -83,6 +83,8 @@ public partial class App : Application
             services.AddSingleton<IMainWindowService, MainWindowService>();
             //services.AddSingleton<IMainWindowService>(sp => new MainWindowService(MainWindow));
 
+            // Startup service
+            services.AddSingleton<IStartupService, StartupService>();
 
             // Views and ViewModels
             services.AddSingleton<SelectWindowViewModel>();
@@ -164,6 +166,15 @@ public partial class App : Application
             _trayIconService.Initialize();
         }
 
+        // If the app is set to launch at startup, hide the main window and initialize the tray icon
+        var mainWindowService = App.GetService<IMainWindowService>();
+        if (settings.GetValues.LaunchAtStartup)
+        {
+            mainWindowService.Hide();
+            _trayIconService.Initialize();
+            settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
+        }
+
         // Just in case we mess with the system cursors, reset them
         //uint SPI_SETCURSORS = 0x0057;
         //uint SPIF_SENDCHANGE = 0x02;
@@ -208,6 +219,10 @@ public partial class App : Application
             //settings.GetValues.ThemeName = themeService.GetThemeName();
 
             await settings.SaveSettingFileAsync();
+
+            // Set the startup enabled state based on the settings
+            var startupService = App.GetService<IStartupService>();
+            startupService.SetStartupEnabled(settings.GetValues.LaunchAtStartup);
 
             MainWindow.Close();
         }
