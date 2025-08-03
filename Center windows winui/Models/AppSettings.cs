@@ -99,6 +99,12 @@ public partial class AppSettings
     [JsonPropertyName("Launch app on startup")]
     public bool LaunchAtStartup { get; set; } = false;
 
+    /// <summary>
+    /// The application can only be minimized to the system tray if both <see cref="ShowTrayIcon"/> and <see cref="MinimizeToTray"/> are true.
+    /// </summary>
+    [JsonIgnore]
+    public bool CanMinimizeToTray => ShowTrayIcon && MinimizeToTray;
+
     [JsonIgnore]
     public string? AppPath { get; set; } = Path.GetDirectoryName(Environment.ProcessPath);
     [JsonIgnore]
