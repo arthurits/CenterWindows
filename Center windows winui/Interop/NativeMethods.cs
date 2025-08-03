@@ -211,7 +211,7 @@ internal static partial class NativeMethods
     public static extern bool SetForegroundWindow(IntPtr hWnd);
 
     [DllImport("user32.dll")]
-    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
     /// <summary>
 	/// Returns the caption of a window Win32.GetWindowText
