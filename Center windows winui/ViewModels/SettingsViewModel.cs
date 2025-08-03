@@ -44,11 +44,16 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
 
     [ObservableProperty]
     public partial bool ShowTrayIcon { get; set; }
+    
     [ObservableProperty]
     public partial bool MinimizeToTray { get; set; }
-
     [ObservableProperty]
     public partial bool IsMinimizeToTrayEnabled { get; set; }
+
+    [ObservableProperty]
+    public partial bool LaunchAtStartup { get; set; }
+    [ObservableProperty]
+    public partial bool IsLaunchAtStartupEnabled { get; set; }
 
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
@@ -113,6 +118,7 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _syncActions[nameof(RememberFileDialogPath)] = () => _appSettings.RememberFileDialogPath = RememberFileDialogPath;
         _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
+        _syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
     }
 
     public void Dispose()
@@ -219,16 +225,21 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
 
     partial void OnShowTrayIconChanged(bool value)
     {
+        IsMinimizeToTrayEnabled = value;
+        
         if (value)
         {
             _trayIconService.Initialize();
-            IsMinimizeToTrayEnabled = true;
         }
         else
         {
             _trayIconService.Dispose();
-            IsMinimizeToTrayEnabled = false;
         }
+    }
+
+    partial void OnMinimizeToTrayChanged(bool value)
+    {
+        IsLaunchAtStartupEnabled = value;
     }
 
     [RelayCommand]
