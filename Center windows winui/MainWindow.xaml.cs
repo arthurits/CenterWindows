@@ -1,6 +1,8 @@
-﻿using CenterWindow.Helpers;
-
+﻿using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
+using CenterWindow.Models;
 using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
 
 namespace CenterWindow;
 

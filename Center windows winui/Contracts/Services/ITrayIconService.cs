@@ -29,7 +29,12 @@ public interface ITrayIconService
     /// cref="TrayMenuItemEventArgs"/> parameter to access details about the clicked menu item, such as its identifier
     /// or associated data.</remarks>
     event EventHandler<TrayMenuItemEventArgs> TrayMenuItemClicked;
-    
+
+    /// <summary>
+    /// Occurs when the user doble clicks the icon on the traybar.
+    /// </summary>
+    event EventHandler? TrayMenuIconDoubleClicked;
+
     /// <summary>
     /// Occurs when the tray menu is about to open, allowing customization or preparation of the menu.
     /// </summary>

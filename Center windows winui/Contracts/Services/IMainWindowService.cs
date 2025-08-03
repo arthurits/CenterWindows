@@ -6,7 +6,7 @@ namespace CenterWindow.Contracts.Services;
 /// Defines the contract for the main window service.
 /// This service is responsible for managing the main window's title and dimensions.
 /// </summary>
-public interface IMainWindowService : INotifyPropertyChanged
+public interface IMainWindowService : INotifyPropertyChanged, IDisposable
 {
     /// <summary>
     /// The full-text title of the main window.
@@ -35,4 +35,14 @@ public interface IMainWindowService : INotifyPropertyChanged
     /// </summary>
     /// <returns>The window text</returns>
     string WindowText();
+
+    /// <summary>
+    /// Hide the window from desktop and task bar
+    /// </summary>
+    void Hide();
+
+    /// <summary>
+    /// Show the window, restore its position and place it on top
+    /// </summary>
+    void Show();
 }

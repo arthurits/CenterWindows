@@ -9,3 +9,9 @@ public class TrayMenuItemDefinition
     public string? IconPath { get; set; }
     public List<TrayMenuItemDefinition> Children { get; } = [];
 }
+
+public enum TrayMenuItemId
+{
+    Open = 0,
+    Exit = 1,
+}

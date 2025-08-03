@@ -18,6 +18,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
     private readonly IMouseHookService _mouseHook;
     private readonly ILocalizationService _localizationService;
     private readonly ITrayIconService _trayIconService;
+    private readonly IMainWindowService _mainWindowService;
 
     // Properties
     [ObservableProperty]
@@ -54,7 +55,8 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         IWindowCenterService centerService,
         IMouseHookService mouseHook,
         ILocalizationService localizationService,
-        ITrayIconService trayIcon)
+        ITrayIconService trayIcon,
+        IMainWindowService mainWindowService)
     {
         _enumerationService = enumerationService;
         _centerService = centerService;
@@ -64,6 +66,8 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         _trayIconService = trayIcon;
         _trayIconService.TrayMenuItemClicked += OnTrayMenuItem;
         _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
+        _trayIconService.TrayMenuIconDoubleClicked  += OnTrayMenuDoubleClicked;
+        _mainWindowService = mainWindowService;
 
         RefreshWindows();
 
@@ -75,6 +79,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         _localizationService.LanguageChanged -= OnLanguageChanged;
         _trayIconService.TrayMenuItemClicked -= OnTrayMenuItem;
         _trayIconService.TrayMenuOpening     -= OnTrayMenuOpening;
+        _trayIconService.TrayMenuIconDoubleClicked -= OnTrayMenuDoubleClicked;
         SelectedWindows.CollectionChanged    -= SelectedWindows_CollectionChanged;
     }
 
@@ -154,18 +159,19 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
 
     private void OnTrayMenuOpening(object? sender, TrayMenuOpeningEventArgs e)
     {
-        int id = 1;
+        var id = (int)TrayMenuItemId.Exit;
 
         // Open
         e.Items.Add(new TrayMenuItemDefinition
         {
-            Id   = id++,
+            Id   = (int)TrayMenuItemId.Open,
             Text = "Abrir",
             IsEnabled = false,
             IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico")
         });
 
         // Windows list submenu
+        RefreshWindows();
         var windows = new TrayMenuItemDefinition
         {
             Id   = id++,
@@ -191,7 +197,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         // Add "Exit" option
         e.Items.Add(new TrayMenuItemDefinition
         {
-            Id   = id++,
+            Id   = (int)TrayMenuItemId.Exit,
             Text = "Salir"
         });
     }
@@ -200,15 +206,17 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
     {
         switch (e.ItemId)
         {
-            //case TrayMenuItems.Open:
-            //    OpenWindowCommand.Execute(null);
-            //    break;
-            //case TrayMenuItems.Settings:
-            //    NavigateToSettingsCommand.Execute(null);
-            //    break;
-            //case TrayMenuItems.Exit:
-            //    ExitCommand.Execute(null);
-            //    break;
+            case (int)TrayMenuItemId.Open:
+                _mainWindowService.Show();
+                break;
+            case (int)TrayMenuItemId.Exit:
+                App.Current.Exit();
+                break;
         }
+    }
+
+    private void OnTrayMenuDoubleClicked(object? sender, EventArgs e)
+    {
+        _mainWindowService.Show();
     }
 }

@@ -62,4 +62,8 @@ internal static partial class NativeMethods
 
     // Win32 messages
     public const uint WM_COMMAND = 0x0111;
+
+    // CmdShow constants for ShowWindow function:
+    public const int SW_HIDE = 0;
+    public const int SW_SHOW = 5;
 }
