@@ -171,7 +171,7 @@ public partial class App : Application
         if (settings.GetValues.LaunchAtStartup)
         {
             mainWindowService.Hide();
-            _trayIconService.Initialize();
+            _trayIconService.Initialize();  // This should be already initializated, but we ensure the tray icon is set up
             settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
         }
 
