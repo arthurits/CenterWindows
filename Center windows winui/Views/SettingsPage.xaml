@@ -93,6 +93,14 @@
                     <ToggleSwitch IsOn="{Binding MinimizeToTray, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
 
+                <controls:SettingsCard x:Name="launchAtStartup"
+                        Description="{Binding StrMinimizeToTrayDescription}"
+                        Header="{Binding StrMinimizeToTrayHeader}"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}"
+                        IsEnabled="{x:Bind ViewModel.IsLaunchAtStartupEnabled}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.LaunchAtStartup, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
+                </controls:SettingsCard>
+
                 <!--Reset settings button-->
                 <Button x:Name="BtnReset"
                         Margin="{StaticResource SmallTopMargin}"
