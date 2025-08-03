@@ -8,20 +8,24 @@ public class StartupService : IStartupService
     private const string RegistryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string AppName = "CenterWindows";
 
-    private static string ExecutablePath => Process.GetCurrentProcess().MainModule.FileName;
+    private static string ExecutablePath => Environment.ProcessPath ?? string.Empty;
 
     public void SetStartupEnabled(bool enabled)
     {
         using var key = Registry.CurrentUser.OpenSubKey(RegistryKeyPath, writable: true);
-
-        if (enabled)
+        
+        if (ExecutablePath != string.Empty)
         {
-            key?.SetValue(AppName, ExecutablePath);
+            if (enabled)
+            {
+                key?.SetValue(AppName, ExecutablePath);
+            }
+            else
+            {
+                key?.DeleteValue(AppName, throwOnMissingValue: false);
+            }
         }
-        else
-        {
-            key?.DeleteValue(AppName, throwOnMissingValue: false);
-        }
+        
     }
 
     public bool IsStartupEnabled()
