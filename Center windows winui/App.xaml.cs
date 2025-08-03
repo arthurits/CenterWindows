@@ -83,6 +83,8 @@ public partial class App : Application
             services.AddSingleton<IMainWindowService, MainWindowService>();
             //services.AddSingleton<IMainWindowService>(sp => new MainWindowService(MainWindow));
 
+            // Startup service
+            services.AddSingleton<IStartupService, StartupService>();
 
             // Views and ViewModels
             services.AddSingleton<SelectWindowViewModel>();
