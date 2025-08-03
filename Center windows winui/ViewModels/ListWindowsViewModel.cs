@@ -154,18 +154,19 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
 
     private void OnTrayMenuOpening(object? sender, TrayMenuOpeningEventArgs e)
     {
-        int id = 1;
+        var id = (int)TrayMenuItemId.Exit;
 
         // Open
         e.Items.Add(new TrayMenuItemDefinition
         {
-            Id   = id++,
+            Id   = (int)TrayMenuItemId.Open,
             Text = "Abrir",
             IsEnabled = false,
             IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico")
         });
 
         // Windows list submenu
+        RefreshWindows();
         var windows = new TrayMenuItemDefinition
         {
             Id   = id++,
@@ -191,7 +192,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         // Add "Exit" option
         e.Items.Add(new TrayMenuItemDefinition
         {
-            Id   = id++,
+            Id   = (int)TrayMenuItemId.Exit,
             Text = "Salir"
         });
     }
