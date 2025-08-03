@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SettingsToolTip" xml:space="preserve">
+  <data name="StrSettingsToolTip" xml:space="preserve">
     <value>Program settings</value>
   </data>
   <data name="StrAboutItem" xml:space="preserve">
@@ -145,7 +145,7 @@
     <value>Settings</value>
   </data>
   <data name="StrTitleUnion" xml:space="preserve">
-    <value>—</value>
+    <value>-</value>
   </data>
   <data name="StrTrayMenuExitApp" xml:space="preserve">
     <value>Exit app</value>
