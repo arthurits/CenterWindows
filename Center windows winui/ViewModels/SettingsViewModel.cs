@@ -226,7 +226,8 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     partial void OnShowTrayIconChanged(bool value)
     {
         IsMinimizeToTrayEnabled = value;
-        
+        IsLaunchAtStartupEnabled = value;
+
         if (value)
         {
             _trayIconService.Initialize();

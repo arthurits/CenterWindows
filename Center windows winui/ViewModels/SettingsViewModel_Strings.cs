@@ -38,6 +38,7 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial string StrMinimizeToTrayHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrMinimizeToTrayDescription { get; set; } = string.Empty;
+    [ObservableProperty]
     public partial string StrLaunchAtStartupHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrLaunchAtStartupDescription { get; set; } = string.Empty;
