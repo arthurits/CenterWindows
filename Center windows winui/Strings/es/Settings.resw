@@ -138,6 +138,12 @@
   <data name="StrLanguageHeader" xml:space="preserve">
     <value>Idioma</value>
   </data>
+  <data name="StrLaunchAtStartupDescription" xml:space="preserve">
+    <value>Ejecutar la aplicación al inicio del sistema mediante un icono en la bandeja del sistema</value>
+  </data>
+  <data name="StrLaunchAtStartupHeader" xml:space="preserve">
+    <value>Ejecutar al inicio</value>
+  </data>
   <data name="StrMinimizeToTrayDescription" xml:space="preserve">
     <value>Minimizar la ventana a la bandeja de sistema</value>
   </data>

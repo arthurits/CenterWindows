@@ -138,6 +138,12 @@
   <data name="StrLanguageHeader" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="StrLaunchAtStartupDescription" xml:space="preserve">
+    <value>Launch the app at system startup by showing an icon at the system tray</value>
+  </data>
+  <data name="StrLaunchAtStartupHeader" xml:space="preserve">
+    <value>Launch at startup</value>
+  </data>
   <data name="StrMinimizeToTrayDescription" xml:space="preserve">
     <value>Minimize the app's window to the taskbar tray</value>
   </data>
