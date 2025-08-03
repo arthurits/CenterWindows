@@ -14,7 +14,7 @@
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
 
-    <Grid x:Name="Settings" ColumnDefinitions="*" RowDefinitions ="*">
+    <Grid x:Name="Settings" ColumnDefinitions="*" RowDefinitions ="*" x:DefaultBindMode="OneWay">
         <ScrollView x:Name="ScrollSettingsPage" ContentOrientation="Vertical"
                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                     ZoomMode="Disabled" IsTabStop="True"
@@ -91,6 +91,14 @@
                         HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}"
                         IsEnabled="{Binding IsMinimizeToTrayEnabled}">
                     <ToggleSwitch IsOn="{Binding MinimizeToTray, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard x:Name="launchAtStartup"
+                        Description="{x:Bind ViewModel.StrLaunchAtStartupDescription}"
+                        Header="{x:Bind ViewModel.StrLaunchAtStartupHeader}"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}"
+                        IsEnabled="{x:Bind ViewModel.IsLaunchAtStartupEnabled}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.LaunchAtStartup, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
                 </controls:SettingsCard>
 
                 <!--Reset settings button-->
