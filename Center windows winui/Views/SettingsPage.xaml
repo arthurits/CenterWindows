@@ -43,6 +43,19 @@
                     </ComboBox>
                 </controls:SettingsCard>
 
+                <controls:SettingsCard x:Name="cardCulture"
+                        Description="{Binding StrLanguageDescription}"
+                        Header="{Binding StrLanguageHeader}"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE774;}"
+                        IsEnabled="True">
+                    <ComboBox x:Name="LanguageComboBox"
+                        ItemsSource="{Binding AvailableLanguages}"
+                        SelectedIndex="{Binding SelectedLanguageIndex, Mode=TwoWay}"
+                        SelectedValuePath="LanguageTag"
+                        DisplayMemberPath="DisplayName">
+                    </ComboBox>
+                </controls:SettingsCard>
+                
                 <controls:SettingsCard x:Name="cardWinPos"
                        Header="{Binding StrWindowPositionHeader}"
                        HeaderIcon="{ui:FontIcon Glyph=&#xF7ED;}">
@@ -57,7 +70,7 @@
                     </controls:SettingsCard.Description>
                     <ToggleSwitch IsOn="{Binding WindowPosition, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
-                
+
                 <controls:SettingsCard x:Name="cardPath"
                         Description="{Binding StrFilepathDescription}"
                         Header="{Binding StrFilepathHeader}"
@@ -65,19 +78,6 @@
                     <ToggleSwitch IsOn="{Binding RememberFileDialogPath, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard x:Name="cardCulture"
-                                Description="{Binding StrLanguageDescription}"
-                                Header="{Binding StrLanguageHeader}"
-                                HeaderIcon="{ui:FontIcon Glyph=&#xE774;}"
-                               IsEnabled="True">
-                    <ComboBox x:Name="LanguageComboBox"
-                              ItemsSource="{Binding AvailableLanguages}"
-                              SelectedIndex="{Binding SelectedLanguageIndex, Mode=TwoWay}"
-                              SelectedValuePath="LanguageTag"
-                              DisplayMemberPath="DisplayName">
-                    </ComboBox>
-                </controls:SettingsCard>
-                
                 <controls:SettingsCard x:Name="showTrayIcon"
                         Description="{Binding StrShowTrayIconDescription}"
                         Header="{Binding StrShowTrayIconHeader}"
