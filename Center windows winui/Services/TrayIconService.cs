@@ -19,6 +19,9 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     public event EventHandler<TrayMenuItemEventArgs>? TrayMenuItemClicked;
     protected virtual void OnMenuItemClicked(int id) => TrayMenuItemClicked?.Invoke(this, new TrayMenuItemEventArgs(id));
 
+    public event EventHandler? TrayMenuIconDoubleClicked;
+    protected virtual void OnTrayIconDoubleClicked() => TrayMenuIconDoubleClicked?.Invoke(this, EventArgs.Empty);
+
     public event EventHandler<TrayMenuOpeningEventArgs>? TrayMenuOpening;
     protected virtual void OnTrayMenuOpening(TrayMenuOpeningEventArgs e) => TrayMenuOpening?.Invoke(this, e);
 
@@ -222,6 +225,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                     ShowContextMenu();
                     break;
                 case NativeMethods.WM_LBUTTONDBLCLK:
+                    OnTrayIconDoubleClicked();
                     break;
             }
         }
