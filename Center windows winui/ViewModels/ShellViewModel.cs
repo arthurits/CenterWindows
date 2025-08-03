@@ -1,6 +1,5 @@
 ﻿using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
-using CenterWindow.Views;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 

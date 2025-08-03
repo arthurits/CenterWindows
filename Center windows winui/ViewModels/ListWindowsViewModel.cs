@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
 using CenterWindow.Models;
 using CenterWindow.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -165,7 +166,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         e.Items.Add(new TrayMenuItemDefinition
         {
             Id   = (int)TrayMenuItemId.Open,
-            Text = "Abrir",
+            Text = "StrTrayMenuShowApp".GetLocalized("Shell"),
             IsEnabled = false,
             IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico")
         });
@@ -175,7 +176,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         var windows = new TrayMenuItemDefinition
         {
             Id   = id++,
-            Text = "Ventanas",
+            Text = "StrTrayMenuWindowList".GetLocalized("Shell"),
             IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Settings_windows.svg")
         };
         foreach (var window in WindowsList)
@@ -198,11 +199,11 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         e.Items.Add(new TrayMenuItemDefinition
         {
             Id   = (int)TrayMenuItemId.Exit,
-            Text = "Salir"
+            Text = "StrTrayMenuExitApp".GetLocalized("Shell")
         });
     }
 
-    private void OnTrayMenuItem(object? s, TrayMenuItemEventArgs e)
+    private async void OnTrayMenuItem(object? s, TrayMenuItemEventArgs e)
     {
         switch (e.ItemId)
         {
@@ -210,7 +211,11 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
                 _mainWindowService.Show();
                 break;
             case (int)TrayMenuItemId.Exit:
-                App.Current.Exit();
+                if (await App.ConfirmAppCloseAsync())
+                {
+                    //App.Current.Exit();
+                    App.MainWindow?.Close();
+                }
                 break;
         }
     }

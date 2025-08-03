@@ -10,8 +10,12 @@ using CenterWindow.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 
 namespace CenterWindow;
 
@@ -192,6 +196,15 @@ public partial class App : Application
     {
         args.Cancel = true; // https://github.com/microsoft/WindowsAppSDK/issues/3209
 
+        if (await ConfirmAppCloseAsync())
+        {
+            args.Cancel = false; // Allow the app to close
+        }
+    }
+
+    public static async Task<bool> ConfirmAppCloseAsync()
+    {
+
         var result = await MessageBox.Show(
             "MsgBoxExitContent".GetLocalized("MessageBox"),
             "MsgBoxExitTitle".GetLocalized("MessageBox"),
@@ -200,7 +213,9 @@ public partial class App : Application
             defaultButton: MessageBox.MessageBoxButtonDefault.CloseButton,
             icon: MessageBox.MessageBoxImage.Question);
 
-        if (result == Microsoft.UI.Xaml.Controls.ContentDialogResult.Primary)
+        var ClosingConfirmed = result == Microsoft.UI.Xaml.Controls.ContentDialogResult.Primary;
+
+        if (ClosingConfirmed)
         {
             var settings = App.GetService<ILocalSettingsService<AppSettings>>();
             //await settings.SaveSettingKeyAsync<string>("isTrue","yes");
@@ -223,16 +238,19 @@ public partial class App : Application
             // Set the startup enabled state based on the settings
             var startupService = App.GetService<IStartupService>();
             startupService.SetStartupEnabled(settings.GetValues.LaunchAtStartup);
-
-            MainWindow.Close();
         }
 
+        return ClosingConfirmed;
     }
 
     private async void OnClosed(object sender, WindowEventArgs args)
     {
-        await Host.StopAsync();
-        Host.Dispose();
+        App.MainWindow.DispatcherQueue.TryEnqueue(
+            DispatcherQueuePriority.Low,
+            new DispatcherQueueHandler(async () =>
+            {
+                await Host.StopAsync();
+                Host.Dispose();
+            }));
     }
-
 }
