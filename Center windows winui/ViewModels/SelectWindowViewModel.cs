@@ -31,15 +31,16 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private readonly IMouseHookService _mouseHook;
     private readonly AppSettings _appSettings;
     private readonly ILocalizationService _localizationService;
-
-    [ObservableProperty]
-    public partial bool IsLeftButtonDown { get; set; } = false;
+    private readonly IWindowHighlightService _highlightService;
 
     private readonly string _defaultImagePath;
     private readonly string _clickedImagePath;
     private readonly string _cursorPath;
     private IntPtr _selectedWindowHandle = IntPtr.Zero;
-    private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
+    private IntPtr _lastHighlightedHwnd = IntPtr.Zero;
+
+    [ObservableProperty]
+    public partial bool IsLeftButtonDown { get; set; } = false;
     
     [ObservableProperty]
     public partial ImageSource CurrentImage { get; set; } = null!;
@@ -50,12 +51,14 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
     public partial int Transparency { get; set; } = 255;
 
+    private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
     public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
 
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
         IWindowCenterService centerService,
         IMouseHookService mouseHook,
+        IWindowHighlightService highlightService,
         ILocalizationService localizationService)
     {
         // Services
@@ -63,6 +66,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         _centerService = centerService;
         _mouseHook = mouseHook;
         _mouseHook.MouseMoved += OnMouseMoved;
+        _highlightService  = highlightService;
         _localizationService = localizationService;
         _localizationService.LanguageChanged += OnLanguageChanged;
 
@@ -91,6 +95,8 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     {
         _mouseHook.MouseMoved                   -= OnMouseMoved;
         _localizationService.LanguageChanged    -= OnLanguageChanged;
+        _highlightService.ClearHighlight();
+        _highlightService.Dispose();
     }
 
     private void ToggleImage()
@@ -110,7 +116,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 WindowPropertiesCollection[0].Value = e.WindowText;
                 WindowPropertiesCollection[1].Value = $"{e.HWnd} (0x{e.HWnd:X})";
                 WindowPropertiesCollection[2].Value = e.ClassName;
-                WindowPropertiesCollection[4].Value = $"Not yet implemented";
+                WindowPropertiesCollection[3].Value = $"Not yet implemented";
                 WindowPropertiesCollection[4].Value = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
 
                 // Force rebinding of the properties collection in the UI
@@ -120,6 +126,26 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 //var localizedKeys = localizationService.GetLocalizedKeys();
                 //for (int i = 0; i < WindowPropertiesCollection.Count; i++)
                 //    WindowPropertiesCollection[i].Key = localizedKeys[i];
+
+                // If the new HWND is different from the last highlighted one, update the highlight
+                if (e.HWnd != _lastHighlightedHwnd)
+                {
+                    // Clear the previous highlight
+                    _highlightService.ClearHighlight();
+
+                    // If the new HWND is valid, highlight it
+                    if (e.HWnd != IntPtr.Zero)
+                    {
+                        _highlightService.HighlightWindow(
+                            e.HWnd,
+                            cornerRadius: 8,
+                            borderColor: 0xFFFF0000,  // 0xAARRGGBB
+                            thickness: 4);
+                    }
+
+                    // Store the last highlighted HWND
+                    _lastHighlightedHwnd = e.HWnd;
+                }
             });
     }
 
@@ -135,11 +161,17 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     {
         IsLeftButtonDown = false;
         _mouseHook.ReleaseMouse();
+
+        // Actions carriedn on the selected window
         if (_selectedWindowHandle != IntPtr.Zero)
         {
             _centerService.CenterWindow(_selectedWindowHandle);
             _centerService.SetWindowTransparency(_selectedWindowHandle, Alpha);
         }
+        
+        // Delete the highlight from the last selected window
+        _highlightService.ClearHighlight();
+        _lastHighlightedHwnd = IntPtr.Zero;
     }
 
     /// <summary>
