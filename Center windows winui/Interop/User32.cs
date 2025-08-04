@@ -202,14 +202,12 @@ internal static partial class NativeMethods
         IntPtr hbrFlickerFreeDraw,
         uint diFlags);
 
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern bool DeleteDC(IntPtr hdc);
+    
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern bool DeleteObject(IntPtr hObject);
+    
 
     [DllImport("gdiplus.dll", ExactSpelling = true)]
     public static extern int GdiplusStartup(
