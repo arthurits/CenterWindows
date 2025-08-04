@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.Runtime.InteropServices;
 using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
@@ -13,9 +12,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media;
-using Windows.ApplicationModel.Core;
-using Windows.UI.Core;
 
 namespace CenterWindow;
 
@@ -74,6 +70,9 @@ public partial class App : Application
 
             // Mouse Hook Service
             services.AddSingleton<IMouseHookService, MouseHookService>();
+
+            // Window Highlight Service
+            services.AddSingleton<IWindowHighlightService, WindowHighlightService>();
 
             // Tray Icon Service
             services.AddSingleton<GdiPlusIconLoader>();
@@ -180,16 +179,16 @@ public partial class App : Application
         }
 
         // Just in case we mess with the system cursors, reset them
-        //uint SPI_SETCURSORS = 0x0057;
-        //uint SPIF_SENDCHANGE = 0x02;
-        //SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
+        uint SPI_SETCURSORS = 0x0057;
+        uint SPIF_SENDCHANGE = 0x02;
+        SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
 
-        //[DllImport("user32.dll", SetLastError = true)]
-        //static extern bool SystemParametersInfo(
-        //uint uiAction,
-        //uint uiParam,
-        //IntPtr pvParam,
-        //uint fWinIni);
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool SystemParametersInfo(
+        uint uiAction,
+        uint uiParam,
+        IntPtr pvParam,
+        uint fWinIni);
     }
 
     private async void OnClosing(AppWindow sender, AppWindowClosingEventArgs args)

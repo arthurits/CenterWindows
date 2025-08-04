@@ -14,6 +14,10 @@ internal static partial class Win32
     public const int WM_MBUTTONDOWN = 0x0207;
     public const int WM_MBUTTONUP = 0x0208;
     public const int WM_MBUTTONDBLCLK = 0x0209;
+    public const int WM_PAINT = 0x000F;
+    public const int WM_ERASEBKGND = 0x0014;
+    public const int WM_NCHITTEST = 0x0084;
+
     public const uint OCR_NORMAL = 32512;
     public const IntPtr IDC_ARROW = 32512;
     public const IntPtr IDC_CROSS = 32515;
@@ -66,8 +70,26 @@ internal static partial class Win32
     // CmdShow constants for ShowWindow function:
     public const int SW_HIDE = 0;
     public const int SW_SHOW = 5;
+    public const int SW_SHOWNA = 8;
 
     // Constants
     public const uint BI_RGB = 0u;
     public const uint DIB_RGB_COLORS = 0u;
+
+    // Constants for window styles
+    public const int WS_EX_LAYERED = 0x80000;
+    public const int WS_EX_TRANSPARENT = 0x20;
+    public const int WS_EX_TOPMOST = 0x8;
+    public const int WS_EX_TOOLWINDOW = 0x00000080;
+    public const int WS_POPUP = unchecked((int)0x80000000);
+    public const int ULW_ALPHA = 0x2;
+
+    public const uint LWA_ALPHA = 0x00000002;
+    public static readonly IntPtr HWND_TOPMOST = new(-1);
+    public const uint SWP_NOACTIVATE = 0x0010;
+    public const uint SWP_SHOWWINDOW = 0x0040;
+
+    public const int RGN_DIFF = 4;
+
+    public const int GA_ROOT = 2;
 }
