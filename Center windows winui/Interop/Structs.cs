@@ -26,6 +26,15 @@ internal static partial class Win32
         public uint biClrImportant;
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct BLENDFUNCTION
+    {
+        public byte BlendOp;
+        public byte BlendFlags;
+        public byte SourceConstantAlpha;
+        public byte AlphaFormat;
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     internal struct DWM_BLURBEHIND
     {
@@ -102,9 +111,24 @@ internal static partial class Win32
         public uint uFlags;
         public uint uCallbackMessage;
         public IntPtr hIcon;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
         public string szTip;
-        // campos posteriores ignorados para no recargar la estructura
+
+        public uint dwState;
+        public uint dwStateMask;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+        public string szInfo;
+
+        public uint uTimeoutOrVersion;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string szInfoTitle;
+
+        public uint dwInfoFlags;
+        public Guid guidItem;
+        public IntPtr hBalloonIcon;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -124,6 +148,12 @@ internal static partial class Win32
 
         public readonly int Width => Right - Left;
         public readonly int Height => Bottom - Top;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct SIZE
+    {
+        public int cx, cy;
     }
 
     public struct WindowInfo
