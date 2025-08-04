@@ -109,9 +109,10 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
     {
         if (_overlayHwnd != IntPtr.Zero)
         {
-            //Win32.DestroyWindow(_overlayHwnd);
-            //_overlayHwnd = IntPtr.Zero;
-            Win32.ShowWindow(_overlayHwnd, Win32.SW_HIDE); }
+            Win32.DestroyWindow(_overlayHwnd);
+            _overlayHwnd = IntPtr.Zero;
+            //Win32.ShowWindow(_overlayHwnd, Win32.SW_HIDE);
+        }
         if (_borderBrush != IntPtr.Zero)
         {
             Win32.DeleteObject(_borderBrush);
