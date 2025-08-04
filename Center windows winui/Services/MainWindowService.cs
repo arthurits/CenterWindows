@@ -127,13 +127,13 @@ public partial class MainWindowService : ObservableObject, IMainWindowService, I
 
     public void Hide()
     {
-        NativeMethods.ShowWindow(_hWnd, NativeMethods.SW_HIDE);
+        Win32.ShowWindow(_hWnd, Win32.SW_HIDE);
     }
 
     public void Show()
     {
         // Show the window, restore it, and place it on top
-        NativeMethods.ShowWindow(_hWnd, NativeMethods.SW_SHOW);
+        Win32.ShowWindow(_hWnd, Win32.SW_SHOW);
         _window.Restore();
         _window.AppWindow.MoveInZOrderAtTop();
     }

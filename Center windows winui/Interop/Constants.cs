@@ -1,6 +1,6 @@
 ﻿namespace CenterWindow.Interop;
 
-internal static partial class NativeMethods
+internal static partial class Win32
 {
     // Constants Win32 for hooks and cursors
     public const int WH_MOUSE_LL = 14;
@@ -66,4 +66,8 @@ internal static partial class NativeMethods
     // CmdShow constants for ShowWindow function:
     public const int SW_HIDE = 0;
     public const int SW_SHOW = 5;
+
+    // Constants
+    public const uint BI_RGB = 0u;
+    public const uint DIB_RGB_COLORS = 0u;
 }

@@ -12,8 +12,8 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     private readonly IntPtr _hwnd;
     private readonly IntPtr _hIcon;
     private IntPtr _prevWndProc;
-    private NativeMethods.NOTIFYICONDATA _nid;
-    private readonly NativeMethods.WndProc _wndProcDelegate;
+    private Win32.NOTIFYICONDATA _nid;
+    private readonly Win32.WndProc _wndProcDelegate;
     private bool _isInitialized;
 
     public event EventHandler<TrayMenuItemEventArgs>? TrayMenuItemClicked;
@@ -49,15 +49,15 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                      .GetResult();
 
         // Configure the NOTIFYICONDATA structure
-        _nid = new NativeMethods.NOTIFYICONDATA
+        _nid = new Win32.NOTIFYICONDATA
         {
-            cbSize = (uint)Marshal.SizeOf<NativeMethods.NOTIFYICONDATA>(),
+            cbSize = (uint)Marshal.SizeOf<Win32.NOTIFYICONDATA>(),
             hWnd = _hwnd,
             uID = 1,  // identificador único
-            uFlags = NativeMethods.NIF_MESSAGE
-                   | NativeMethods.NIF_ICON
-                   | NativeMethods.NIF_TIP,
-            uCallbackMessage = NativeMethods.WM_TRAYICON,
+            uFlags = Win32.NIF_MESSAGE
+                   | Win32.NIF_ICON
+                   | Win32.NIF_TIP,
+            uCallbackMessage = Win32.WM_TRAYICON,
             hIcon = _hIcon,
             szTip = "Center windows"
         };
@@ -76,12 +76,12 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         _isInitialized = true;
 
         // Add the icon to the system tray
-        NativeMethods.Shell_NotifyIcon(NativeMethods.NIM_ADD, ref _nid);
+        Win32.Shell_NotifyIcon(Win32.NIM_ADD, ref _nid);
 
         // Subclass the window to listen the WM_TRAYICON messages
         var newProcPtr = Marshal.GetFunctionPointerForDelegate(_wndProcDelegate);
-        _prevWndProc = NativeMethods.GetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC);
-        _ = NativeMethods.SetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC, newProcPtr);
+        _prevWndProc = Win32.GetWindowLongPtr(_hwnd, Win32.GWL_WNDPROC);
+        _ = Win32.SetWindowLongPtr(_hwnd, Win32.GWL_WNDPROC, newProcPtr);
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         // Make sure the bitmaps list is empty before creating a new menu
         foreach (var oldBmp in _menuBitmaps)
         {
-            NativeMethods.DeleteObject(oldBmp);
+            Win32.DeleteObject(oldBmp);
         }
         _menuBitmaps.Clear();
 
@@ -104,7 +104,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         OnTrayMenuOpening(openingArgs);
 
         // Create the context menu
-        var hMenu = NativeMethods.CreatePopupMenu();
+        var hMenu = Win32.CreatePopupMenu();
         if (hMenu == IntPtr.Zero)
         {
             return;
@@ -118,13 +118,13 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         AppendItems(hMenu, openingArgs.Items);
 
         // Set the menu at the cursor position
-        NativeMethods.GetCursorPos(out var pt);
-        NativeMethods.SetForegroundWindow(_hwnd);
+        Win32.GetCursorPos(out var pt);
+        Win32.SetForegroundWindow(_hwnd);
 
         // Retrieve the command selected by the user: the TPM_RETURNCMD returns the command ID and doesn't post it to the WndProc method.
-        var cmd = NativeMethods.TrackPopupMenu(
+        var cmd = Win32.TrackPopupMenu(
             hMenu,
-            NativeMethods.TPM_RETURNCMD | NativeMethods.TPM_LEFTALIGN | NativeMethods.TPM_RIGHTBUTTON,
+            Win32.TPM_RETURNCMD | Win32.TPM_LEFTALIGN | Win32.TPM_RIGHTBUTTON,
             pt.x, pt.y, 0,
             _hwnd,
             IntPtr.Zero);
@@ -136,7 +136,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         }
 
         // Clean up the menu
-        NativeMethods.DestroyMenu(hMenu);
+        Win32.DestroyMenu(hMenu);
     }
 
     private void AppendItems(IntPtr parent, IEnumerable<TrayMenuItemDefinition> trayMenuItems)
@@ -145,28 +145,28 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         {
             if (menuItemDefinition.IsSeparator)
             {
-                NativeMethods.AppendMenu(
+                Win32.AppendMenu(
                     parent,
-                    NativeMethods.MF_SEPARATOR,
+                    Win32.MF_SEPARATOR,
                     (uint)UIntPtr.Zero,
                     string.Empty);
                 continue;
             }
 
             // Set the flag for the menu item based on whether it has children or not
-            var flags = NativeMethods.MF_STRING | (menuItemDefinition.IsEnabled ? 0u: NativeMethods.MF_GRAYED);
+            var flags = Win32.MF_STRING | (menuItemDefinition.IsEnabled ? 0u: Win32.MF_GRAYED);
 
             var idOrSub = (UIntPtr)menuItemDefinition.Id;
             if (menuItemDefinition.Children.Count !=0 )
             {
-                var menuHandle = NativeMethods.CreatePopupMenu();
+                var menuHandle = Win32.CreatePopupMenu();
                 AppendItems(menuHandle, menuItemDefinition.Children);
                 idOrSub = (UIntPtr)menuHandle.ToInt64();
-                flags = NativeMethods.MF_POPUP;
+                flags = Win32.MF_POPUP;
             }
 
 
-            NativeMethods.AppendMenu(parent, flags, (uint)idOrSub, menuItemDefinition.Text);
+            Win32.AppendMenu(parent, flags, (uint)idOrSub, menuItemDefinition.Text);
             // If there is an icon and no children, set the bitmap for the menu item
             if (!string.IsNullOrEmpty(menuItemDefinition.IconPath) && menuItemDefinition.Children.Count == 0)
             {
@@ -174,15 +174,15 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
                 var hBmp = CreateBitmapFromIcon(menuItemDefinition.IconPath, 16, 16);
                 _menuBitmaps.Add(hBmp); // Keep track of the bitmap to release it later
 
-                var itemInfo = new NativeMethods.MENUITEMINFO
+                var itemInfo = new Win32.MENUITEMINFO
                 {
-                    cbSize  = (uint)Marshal.SizeOf<NativeMethods.MENUITEMINFO>(),
-                    fMask   = NativeMethods.MIIM_BITMAP,
+                    cbSize  = (uint)Marshal.SizeOf<Win32.MENUITEMINFO>(),
+                    fMask   = Win32.MIIM_BITMAP,
                     hbmpItem = hBmp
                 };
 
                 // Set the menu item info for the icon. Use false for command and true for position
-                NativeMethods.SetMenuItemInfo(parent, (uint)menuItemDefinition.Id, false, ref itemInfo);
+                Win32.SetMenuItemInfo(parent, (uint)menuItemDefinition.Id, false, ref itemInfo);
             }
         }
     }
@@ -197,17 +197,17 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         _isInitialized = false;
 
         // Remove the icon from the system tray
-        NativeMethods.Shell_NotifyIcon(NativeMethods.NIM_DELETE, ref _nid);
+        Win32.Shell_NotifyIcon(Win32.NIM_DELETE, ref _nid);
 
         // Restore original window procedure
-        NativeMethods.SetWindowLongPtr(_hwnd, NativeMethods.GWL_WNDPROC, _prevWndProc);
+        Win32.SetWindowLongPtr(_hwnd, Win32.GWL_WNDPROC, _prevWndProc);
     }
 
     /// <summary>
     /// Processes Windows messages sent to the application window.
     /// </summary>
-    /// <remarks>This method handles specific messages such as <see cref="NativeMethods.WM_TRAYICON"/> and 
-    /// <see cref="NativeMethods.WM_COMMAND"/> to provide custom behavior for tray icon interactions and menu commands.
+    /// <remarks>This method handles specific messages such as <see cref="Win32.WM_TRAYICON"/> and 
+    /// <see cref="Win32.WM_COMMAND"/> to provide custom behavior for tray icon interactions and menu commands.
     /// All other messages are forwarded to the original window procedure.</remarks>
     /// <param name="hWnd">A handle to the window receiving the message.</param>
     /// <param name="msg">The message identifier indicating the type of message being sent.</param>
@@ -217,47 +217,47 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
     /// original window procedure is returned.</returns>
     private IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
-        if (msg == NativeMethods.WM_TRAYICON)
+        if (msg == Win32.WM_TRAYICON)
         {
             switch ((uint)lParam)
             {
-                case NativeMethods.WM_RBUTTONDOWN:
+                case Win32.WM_RBUTTONDOWN:
                     ShowContextMenu();
                     break;
-                case NativeMethods.WM_LBUTTONDBLCLK:
+                case Win32.WM_LBUTTONDBLCLK:
                     OnTrayIconDoubleClicked();
                     break;
             }
         }
 
         // Forward all other messages to the original window procedure
-        return NativeMethods.CallWindowProc(_prevWndProc, hWnd, msg, wParam, lParam);
+        return Win32.CallWindowProc(_prevWndProc, hWnd, msg, wParam, lParam);
     }
 
     private IntPtr CreateBitmapFromIcon(string iconPath, int width, int height)
     {
         // Load the icon from the specified path
-        var hIcon = NativeMethods.LoadImage(
+        var hIcon = Win32.LoadImage(
             IntPtr.Zero,
             iconPath,
-            NativeMethods.IMAGE_ICON,
+            Win32.IMAGE_ICON,
             width,
             height,
-            NativeMethods.LR_LOADFROMFILE);
+            Win32.LR_LOADFROMFILE);
 
         // Get the device context for the screen and create a compatible DC and bitmap
-        var screenDC = NativeMethods.GetDC(IntPtr.Zero);
-        var memDC = NativeMethods.CreateCompatibleDC(screenDC);
-        var hBitmap = NativeMethods.CreateCompatibleBitmap(screenDC, width, height);
-        var oldBmp = NativeMethods.SelectObject(memDC, hBitmap);
+        var screenDC = Win32.GetDC(IntPtr.Zero);
+        var memDC = Win32.CreateCompatibleDC(screenDC);
+        var hBitmap = Win32.CreateCompatibleBitmap(screenDC, width, height);
+        var oldBmp = Win32.SelectObject(memDC, hBitmap);
 
         // Draw the icon onto the bitmap
-        NativeMethods.DrawIconEx(memDC, 0, 0, hIcon, width, height, 0, IntPtr.Zero, NativeMethods.DI_NORMAL);
+        Win32.DrawIconEx(memDC, 0, 0, hIcon, width, height, 0, IntPtr.Zero, Win32.DI_NORMAL);
 
         // Clean up resources
-        NativeMethods.SelectObject(memDC, oldBmp);
-        NativeMethods.DeleteDC(memDC);
-        _ = NativeMethods.ReleaseDC(IntPtr.Zero, screenDC);
+        Win32.SelectObject(memDC, oldBmp);
+        Win32.DeleteDC(memDC);
+        _ = Win32.ReleaseDC(IntPtr.Zero, screenDC);
 
         return hBitmap;
     }

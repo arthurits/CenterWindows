@@ -18,7 +18,7 @@ public class WindowCenterService : IWindowCenterService
     /// <param name="hWnd">A handle to the window to be centered. This must be a valid window handle.</param>
     public void CenterWindow(IntPtr hWnd)
     {
-        if (!NativeMethods.GetWindowRect(hWnd, out var rect))
+        if (!Win32.GetWindowRect(hWnd, out var rect))
         {
             return;
         }
@@ -26,13 +26,13 @@ public class WindowCenterService : IWindowCenterService
         var width = rect.Right  - rect.Left;
         var height = rect.Bottom - rect.Top;
 
-        var screenW = NativeMethods.GetSystemMetrics(SM_CXSCREEN);
-        var screenH = NativeMethods.GetSystemMetrics(SM_CYSCREEN);
+        var screenW = Win32.GetSystemMetrics(SM_CXSCREEN);
+        var screenH = Win32.GetSystemMetrics(SM_CYSCREEN);
 
         var x = (screenW - width)  / 2;
         var y = (screenH - height) / 2;
 
-        NativeMethods.MoveWindow(hWnd, x, y, width, height, true);
+        Win32.MoveWindow(hWnd, x, y, width, height, true);
 
         // Enable layered style and apply alpha blending
         //NativeMethods.SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(WS_EX_LAYERED));
@@ -51,12 +51,12 @@ public class WindowCenterService : IWindowCenterService
     public void SetWindowTransparency(IntPtr hWnd, byte alpha)
     {
         // Enable layered style if not already set
-        var exStyle = NativeMethods.GetWindowLongPtr(hWnd, GWL_EXSTYLE).ToInt32();
+        var exStyle = Win32.GetWindowLongPtr(hWnd, GWL_EXSTYLE).ToInt32();
         if ((exStyle & WS_EX_LAYERED) == 0)
         {
-            NativeMethods.SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(exStyle | WS_EX_LAYERED));
+            Win32.SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(exStyle | WS_EX_LAYERED));
         }
         // Set the alpha value for the window
-        NativeMethods.SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
+        Win32.SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
     }
 }
