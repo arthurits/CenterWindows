@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 namespace CenterWindow.Interop;
-internal static partial class NativeMethods
+internal static partial class Win32
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct BITMAPINFO

@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace CenterWindow.Interop;
-internal static partial class NativeMethods
+internal static partial class Win32
 {
     [DllImport("psapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern int GetModuleBaseName(IntPtr hProcess, IntPtr hModule, StringBuilder lpFilename, int nSize);

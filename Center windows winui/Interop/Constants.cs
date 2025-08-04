@@ -1,6 +1,6 @@
 ﻿namespace CenterWindow.Interop;
 
-internal static partial class NativeMethods
+internal static partial class Win32
 {
     // Constants Win32 for hooks and cursors
     public const int WH_MOUSE_LL = 14;

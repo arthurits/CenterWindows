@@ -9,7 +9,7 @@ namespace CenterWindow.Services;
 
 public partial class MouseHookService : IMouseHookService, IDisposable
 {
-    private readonly NativeMethods.LowLevelMouseProc _proc;
+    private readonly Win32.LowLevelMouseProc _proc;
     private IntPtr _hookId = IntPtr.Zero;
     private IntPtr _originalCursor = IntPtr.Zero;
     private IntPtr _hCrossCopy = IntPtr.Zero;
@@ -67,7 +67,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             IntPtr hCross;
             if (_cursorPath == string.Empty)
             {
-                hCross = NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_CROSS);
+                hCross = Win32.LoadCursor(IntPtr.Zero, Win32.IDC_CROSS);
             }
             else
             {
@@ -76,8 +76,8 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             }
 
             // Copy the cursor to avoid destroying the shared resource
-            _hCrossCopy = NativeMethods.CopyIcon(hCross);
-            NativeMethods.SetSystemCursor(_hCrossCopy, NativeMethods.OCR_NORMAL);
+            _hCrossCopy = Win32.CopyIcon(hCross);
+            Win32.SetSystemCursor(_hCrossCopy, Win32.OCR_NORMAL);
         }
 
         // Set global mouse hook
@@ -94,11 +94,11 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         return result;
     }
 
-    private IntPtr SetHook(NativeMethods.LowLevelMouseProc proc)
+    private IntPtr SetHook(Win32.LowLevelMouseProc proc)
     {
         using var curProcess = System.Diagnostics.Process.GetCurrentProcess();
         using var curModule = curProcess.MainModule!;
-        return NativeMethods.SetWindowsHookEx(NativeMethods.WH_MOUSE_LL, proc, NativeMethods.GetModuleHandle(curModule.ModuleName), 0);
+        return Win32.SetWindowsHookEx(Win32.WH_MOUSE_LL, proc, Win32.GetModuleHandle(curModule.ModuleName), 0);
     }
 
     private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
@@ -112,7 +112,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
                 switch (msg)
                 {
-                    case NativeMethods.WM_MOUSEMOVE:
+                    case Win32.WM_MOUSEMOVE:
                         HandleMouseMove(lParam);
                         break;
                 }
@@ -125,7 +125,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             Cleanup();
         }
 
-        return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
+        return Win32.CallNextHookEx(_hookId, nCode, wParam, lParam);
     }
 
     /// <summary>
@@ -136,13 +136,13 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     private void HandleMouseMove(IntPtr lParam)
     {
         // Read the mouse position from lParam
-        var hookStruct = Marshal.PtrToStructure<NativeMethods.MSLLHOOKSTRUCT>(lParam)!;
+        var hookStruct = Marshal.PtrToStructure<Win32.MSLLHOOKSTRUCT>(lParam)!;
 
         // Retrieve the window under the cursor
-        var hWnd = NativeMethods.WindowFromPoint(hookStruct.pt);
-        var className = NativeMethods.GetClassName(hWnd);
-        var windowText = NativeMethods.GetWindowText(hWnd);
-        _ = NativeMethods.GetWindowRect(hWnd, out var rect);
+        var hWnd = Win32.WindowFromPoint(hookStruct.pt);
+        var className = Win32.GetClassName(hWnd);
+        var windowText = Win32.GetWindowText(hWnd);
+        _ = Win32.GetWindowRect(hWnd, out var rect);
 
         // Raise the MouseMoved event
         OnMouseMoved(new MouseMoveEventArgs(hWnd, className, windowText, rect.Left, rect.Top, rect.Width, rect.Height));
@@ -154,7 +154,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             return;
         }
 
-        if (!NativeMethods.UnhookWindowsHookEx(_hookId))
+        if (!Win32.UnhookWindowsHookEx(_hookId))
         {
             var err = Marshal.GetLastWin32Error();
             Debug.WriteLine($"Failed to unhook mouse: {err}");
@@ -170,12 +170,12 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         // Destroy the allocate cursors on the heap to free resources
         if (_originalCursor != IntPtr.Zero)
         {
-            NativeMethods.DestroyIcon(_originalCursor);
+            Win32.DestroyIcon(_originalCursor);
             _originalCursor = IntPtr.Zero;
         }
         if (_hCrossCopy != IntPtr.Zero)
         {
-            NativeMethods.DestroyIcon(_hCrossCopy);
+            Win32.DestroyIcon(_hCrossCopy);
             _hCrossCopy = IntPtr.Zero;
         }
 
@@ -186,8 +186,8 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
     private void RestoreSystemCursor(IntPtr hCursor)
     {
-        NativeMethods.SetSystemCursor(hCursor, NativeMethods.OCR_NORMAL);
-        NativeMethods.SystemParametersInfo(NativeMethods.SPI_SETCURSORS, 0, IntPtr.Zero, NativeMethods.SPIF_SENDCHANGE);
+        Win32.SetSystemCursor(hCursor, Win32.OCR_NORMAL);
+        Win32.SystemParametersInfo(Win32.SPI_SETCURSORS, 0, IntPtr.Zero, Win32.SPIF_SENDCHANGE);
     }
 
     public void Dispose()
@@ -224,12 +224,12 @@ public static class CursorLoader
     /// <exception cref="Win32Exception"></exception>
     public static IntPtr LoadArrowCursorFromFile(string path)
     {
-        var hCur = NativeMethods.LoadImage(
+        var hCur = Win32.LoadImage(
             IntPtr.Zero,
             path,
-            NativeMethods.IMAGE_CURSOR,
+            Win32.IMAGE_CURSOR,
             0, 0,
-            NativeMethods.LR_LOADFROMFILE);
+            Win32.LR_LOADFROMFILE);
 
         return hCur == IntPtr.Zero
             ? throw new Win32Exception(Marshal.GetLastWin32Error(),

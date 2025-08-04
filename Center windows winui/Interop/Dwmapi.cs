@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 namespace CenterWindow.Interop;
-internal static partial class NativeMethods
+internal static partial class Win32
 {
     [DllImport("dwmapi.dll", PreserveSig = true)]
     public static extern int DwmEnableBlurBehindWindow(

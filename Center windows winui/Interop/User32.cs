@@ -3,7 +3,7 @@ using System.Text;
 
 namespace CenterWindow.Interop;
 
-internal static partial class NativeMethods
+internal static partial class Win32
 {
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     public static extern bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);

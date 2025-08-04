@@ -21,7 +21,7 @@ public partial class Win2DIconLoader : IIconLoader, IDisposable
     /// </summary>
     /// <remarks>This method uses Win2D to create a bitmap from the specified file and converts it to an HICON.
     /// Ensure that the file path points to a valid image file supported by GDI+. The returned HICON must be destroyed
-    /// using <see cref="NativeMethods.DestroyIcon"/> or equivalent system calls to avoid resource leaks.</remarks>
+    /// using <see cref="Win32.DestroyIcon"/> or equivalent system calls to avoid resource leaks.</remarks>
     /// <param name="path">The file path of the icon to load. The path must point to a valid image file.</param>
     /// <param name="dim">The size of the icon to load, in pixels. Default is 16 pixels.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a handle to the loaded icon (HICON).
@@ -52,28 +52,28 @@ public partial class Win2DIconLoader : IIconLoader, IDisposable
         var pixels = rt.GetPixelBytes();
 
         // Create a DIBSection to hold the pixel data
-        IntPtr screenDC = NativeMethods.GetDC(IntPtr.Zero);
-        var header = new NativeMethods.BITMAPINFOHEADER
+        IntPtr screenDC = Win32.GetDC(IntPtr.Zero);
+        var header = new Win32.BITMAPINFOHEADER
         {
-            biSize          = (uint)Marshal.SizeOf<NativeMethods.BITMAPINFOHEADER>(),
+            biSize          = (uint)Marshal.SizeOf<Win32.BITMAPINFOHEADER>(),
             biWidth         = (int)size.Width,
             biHeight        = -(int)size.Height, // top-down
             biPlanes        = 1,
             biBitCount      = 32,
-            biCompression   = NativeMethods.BI_RGB,
+            biCompression   = Win32.BI_RGB,
             biSizeImage     = 0,
             biXPelsPerMeter = 0,
             biYPelsPerMeter = 0,
             biClrUsed       = 0,
             biClrImportant  = 0
         };
-        var bmi = new NativeMethods.BITMAPINFO { bmiHeader = header };
+        var bmi = new Win32.BITMAPINFO { bmiHeader = header };
 
         IntPtr ppvBits;
-        var hBitmap = NativeMethods.CreateDIBSection(
+        var hBitmap = Win32.CreateDIBSection(
             screenDC,
             ref bmi,
-            NativeMethods.DIB_RGB_COLORS,
+            Win32.DIB_RGB_COLORS,
             out ppvBits,
             IntPtr.Zero,
             0);
@@ -81,10 +81,10 @@ public partial class Win2DIconLoader : IIconLoader, IDisposable
         // Copy the pixel data to the native bitmap
         Marshal.Copy(pixels, 0, ppvBits, pixels.Length);
 
-        NativeMethods.ReleaseDC(IntPtr.Zero, screenDC);
+        Win32.ReleaseDC(IntPtr.Zero, screenDC);
 
         // Packs the pixel data into an ICONINFO structure and creates an HICON
-        var iconInfo = new NativeMethods.ICONINFO
+        var iconInfo = new Win32.ICONINFO
         {
             fIcon     = true,
             xHotspot  = 0,
@@ -92,10 +92,10 @@ public partial class Win2DIconLoader : IIconLoader, IDisposable
             hbmMask   = IntPtr.Zero,
             hbmColor  = hBitmap
         };
-        IntPtr hIcon = NativeMethods.CreateIconIndirect(ref iconInfo);
+        IntPtr hIcon = Win32.CreateIconIndirect(ref iconInfo);
 
         // Delete the intermediate HBITMAP object to free resources
-        NativeMethods.DeleteObject(hBitmap);
+        Win32.DeleteObject(hBitmap);
 
         return hIcon;
     }
