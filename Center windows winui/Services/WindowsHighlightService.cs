@@ -1,13 +1,17 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 
 namespace CenterWindow.Services;
-public class WindowHighlightService : IWindowHighlightService, IDisposable
+public partial class WindowHighlightService : IWindowHighlightService, IDisposable
 {
     private const string OverlayClassName = "HighlightOverlay";
     private IntPtr _overlayHwnd = IntPtr.Zero;
     private IntPtr _borderBrush = IntPtr.Zero;
+    private IntPtr _lastTargetHwnd = IntPtr.Zero;
+    private int _lastWidth;
+    private int _lastHeight;
     private bool _isDisposed;
 
     private readonly Win32.WndProc _wndProcDelegate;
@@ -25,59 +29,76 @@ public class WindowHighlightService : IWindowHighlightService, IDisposable
             return;
         }
 
-        int w = rect.Right  - rect.Left;
-        int h = rect.Bottom - rect.Top;
-        if (w <= 0 || h <= 0)
+        int width = rect.Right  - rect.Left;
+        int height = rect.Bottom - rect.Top;
+        if (width <= 0 || height <= 0)
         {
             return;
         }
 
+        // If the overlay is already showing for the same window and dimensions, skip
+        if (_overlayHwnd != IntPtr.Zero
+            && targetHwnd == _lastTargetHwnd
+            && width == _lastWidth
+            && height == _lastHeight)
+        {
+            return;
+        }
+
+        // Otherwise, update the last target and dimensions
+        _lastTargetHwnd = targetHwnd;
+        _lastWidth = width;
+        _lastHeight = height;
+
+        // Create the overlay window if it doesn't exist
         if (_overlayHwnd == IntPtr.Zero)
         {
             CreateOverlayWindow();
         }
 
-        // 1) Posicionar y mostrar
+        // Position the overlay window
         Win32.SetWindowPos(
             _overlayHwnd,
             Win32.HWND_TOPMOST,
             rect.Left,
             rect.Top,
-            w,
-            h,
+            width,
+            height,
             Win32.SWP_NOACTIVATE | Win32.SWP_SHOWWINDOW);
+        
+        Win32.ShowWindow(_overlayHwnd, Win32.SW_SHOWNA);
 
-        // 2) Crear y asignar nueva brocha (elimina la anterior si existe)
+        // Create a new border brush if needed
         if (_borderBrush != IntPtr.Zero)
         {
             Win32.DeleteObject(_borderBrush);
         }
         _borderBrush = Win32.CreateSolidBrush((int)borderColor);
 
-        // 3) Construir regiones
+        // Create rounded rectangle regions for the border
         IntPtr rgnOuter = Win32.CreateRoundRectRgn(
-            0, 0, w, h,
+            0, 0, width, height,
             cornerRadius * 2,
             cornerRadius * 2);
 
         int innerRadius = Math.Max(0, cornerRadius - thickness);
         IntPtr rgnInner = Win32.CreateRoundRectRgn(
             thickness, thickness,
-            w - thickness, h - thickness,
+            width - thickness, height - thickness,
             innerRadius * 2,
             innerRadius * 2);
 
         IntPtr rgnFrame = Win32.CreateRectRgn(0, 0, 0, 0);
         _ = Win32.CombineRgn(rgnFrame, rgnOuter, rgnInner, Win32.RGN_DIFF);
 
-        // El sistema toma control de rgnFrame; liberamos las otras
+        // The region used is rgnFrame, so we can delete the inner and outer regions
         Win32.DeleteObject(rgnOuter);
         Win32.DeleteObject(rgnInner);
 
-        // 4) Aplicar la región al overlay
+        // Apply the region to the overlay window
         _ = Win32.SetWindowRgn(_overlayHwnd, rgnFrame, true);
 
-        // 5) Forzar repintado
+        // Force a repaint of the overlay window
         Win32.InvalidateRect(_overlayHwnd, IntPtr.Zero, true);
     }
 
@@ -85,8 +106,9 @@ public class WindowHighlightService : IWindowHighlightService, IDisposable
     {
         if (_overlayHwnd != IntPtr.Zero)
         {
-            Win32.DestroyWindow(_overlayHwnd);
-            _overlayHwnd = IntPtr.Zero;
+            //Win32.DestroyWindow(_overlayHwnd);
+            //_overlayHwnd = IntPtr.Zero;
+            Win32.ShowWindow(_overlayHwnd, Win32.SW_HIDE);
         }
 
         if (_borderBrush != IntPtr.Zero)
@@ -94,6 +116,10 @@ public class WindowHighlightService : IWindowHighlightService, IDisposable
             Win32.DeleteObject(_borderBrush);
             _borderBrush = IntPtr.Zero;
         }
+
+        // Reset the last target and dimensions
+        _lastTargetHwnd = IntPtr.Zero;
+        _lastWidth = _lastHeight = 0;
     }
 
     public void Dispose()
@@ -104,7 +130,11 @@ public class WindowHighlightService : IWindowHighlightService, IDisposable
         }
 
         ClearHighlight();
+        
+        Win32.DestroyWindow(_overlayHwnd);
+        _overlayHwnd = IntPtr.Zero;
         _isDisposed = true;
+        
         GC.SuppressFinalize(this);
     }
 

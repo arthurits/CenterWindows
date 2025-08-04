@@ -74,7 +74,10 @@ internal static partial class Win32
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
-    
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr GetAncestor(IntPtr hwnd, int gaFlags);
+
     [DllImport("User32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
     /// <summary>

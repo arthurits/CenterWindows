@@ -70,6 +70,7 @@ internal static partial class Win32
     // CmdShow constants for ShowWindow function:
     public const int SW_HIDE = 0;
     public const int SW_SHOW = 5;
+    public const int SW_SHOWNA = 8;
 
     // Constants
     public const uint BI_RGB = 0u;
@@ -89,4 +90,6 @@ internal static partial class Win32
     public const uint SWP_SHOWWINDOW = 0x0040;
 
     public const int RGN_DIFF = 4;
+
+    public const int GA_ROOT = 2;
 }

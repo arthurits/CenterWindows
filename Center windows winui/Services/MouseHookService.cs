@@ -140,6 +140,13 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
         // Retrieve the window under the cursor
         var hWnd = Win32.WindowFromPoint(hookStruct.pt);
+        
+        if (_onlyParentWnd && hWnd != IntPtr.Zero)
+        {
+            // GA_ROOT = 2 → obtiene la ventana toplevel
+            hWnd = Win32.GetAncestor(hWnd, Win32.GA_ROOT);
+        }
+        
         var className = Win32.GetClassName(hWnd);
         var windowText = Win32.GetWindowText(hWnd);
         _ = Win32.GetWindowRect(hWnd, out var rect);

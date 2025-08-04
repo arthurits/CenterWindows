@@ -1,4 +1,5 @@
-﻿using CenterWindow.Activation;
+﻿using System.Runtime.InteropServices;
+using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
 using CenterWindow.Models;
@@ -177,17 +178,17 @@ public partial class App : Application
             settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
         }
 
-        //// Just in case we mess with the system cursors, reset them
-        //uint SPI_SETCURSORS = 0x0057;
-        //uint SPIF_SENDCHANGE = 0x02;
-        //SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
+        // Just in case we mess with the system cursors, reset them
+        uint SPI_SETCURSORS = 0x0057;
+        uint SPIF_SENDCHANGE = 0x02;
+        SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
 
-        //[DllImport("user32.dll", SetLastError = true)]
-        //static extern bool SystemParametersInfo(
-        //uint uiAction,
-        //uint uiParam,
-        //IntPtr pvParam,
-        //uint fWinIni);
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool SystemParametersInfo(
+        uint uiAction,
+        uint uiParam,
+        IntPtr pvParam,
+        uint fWinIni);
     }
 
     private async void OnClosing(AppWindow sender, AppWindowClosingEventArgs args)
