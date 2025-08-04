@@ -108,8 +108,7 @@ internal static partial class NativeMethods
 
     
 
-    [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-    public static extern bool Shell_NotifyIcon(uint dwMessage, [In] ref NOTIFYICONDATA lpData);
+    
 
     // P/Invoke: create menu, add items, track and destroy
     [DllImport("user32.dll", SetLastError = true)]
