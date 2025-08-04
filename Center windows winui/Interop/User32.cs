@@ -5,87 +5,80 @@ namespace CenterWindow.Interop;
 
 internal static partial class NativeMethods
 {
-    
-
-    
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern IntPtr SetWindowsHookEx(int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
     public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
+    // P/Invoke: create menu, add items, track and destroy
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr CreatePopupMenu();
+
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
-
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr WindowFromPoint(POINT Point);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr LoadCursor(IntPtr hInstance, IntPtr lpCursorName);
-    
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cx, int cy, uint fuLoad);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr SetCursor(IntPtr hCursor);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool SetSystemCursor(IntPtr hcur, uint id);
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr CopyIcon(IntPtr hIcon);
 
     [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr CreateIconIndirect(ref ICONINFO iconInfo);
+
+    [DllImport("user32.dll", SetLastError = true)]
     public static extern bool DestroyIcon(IntPtr hIcon);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+    public static extern bool DestroyMenu(IntPtr hMenu);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool IsWindowVisible(IntPtr hWnd);
+    public static extern bool DrawIconEx(
+        IntPtr hdc,
+        int xLeft,
+        int yTop,
+        IntPtr hIcon,
+        int cxWidth,
+        int cyWidth,
+        uint istepIfAniCur,
+        IntPtr hbrFlickerFreeDraw,
+        uint diFlags);
 
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+    
     [DllImport("User32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+    /// <summary>
+    /// Returns the name of a window's class Win32.GetClassName
+    /// </summary>
+    /// <param name="hWnd"></param>
+    /// <returns></returns>
+    public static string GetClassName(IntPtr hWnd)
+    {
+        StringBuilder sb = new(MAX_CAPACITY);
+        _ = GetClassName(hWnd, sb, sb.Capacity);
+        return sb.ToString();
+    }
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetCursorPos(out POINT lpPoint);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr GetDC(IntPtr hWnd);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern int GetSystemMetrics(int nIndex);
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool GetWindowInfo(IntPtr hwnd, ref WindowInfo info);
 
-    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern int GetWindowTextLength(IntPtr hWnd);
-
-    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-
-    [DllImport("user32.dll", SetLastError = true, EntryPoint = "SetWindowLongPtrW")]
-    private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
-    [DllImport("user32.dll", EntryPoint = "SetWindowLongW", SetLastError = true)]
-    private static extern int SetWindowLong32(IntPtr hWnd, int nIndex, int newProc);
-    public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr newProc)
-    {
-        if (IntPtr.Size == 8)
-            return SetWindowLongPtr64(hWnd, nIndex, newProc);
-        else
-            return new IntPtr(SetWindowLong32(hWnd, nIndex, newProc.ToInt32()));
-    }
-
-    [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW", SetLastError = true)]
-    private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
     [DllImport("user32.dll", EntryPoint = "GetWindowLongW", SetLastError = true)]
     private static extern int GetWindowLong32(IntPtr hWnd, int nIndex);
+    [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW", SetLastError = true)]
+    private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
     public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
     {
         return IntPtr.Size == 8 ? GetWindowLongPtr64(hWnd, nIndex) : new IntPtr(GetWindowLong32(hWnd, nIndex));
@@ -93,43 +86,23 @@ internal static partial class NativeMethods
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern int GetWindowModuleFileName(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-    [DllImport("User32.dll", SetLastError = true)]
-    public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int processId);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool SetLayeredWindowAttributes(IntPtr hWnd, uint crKey, byte bAlpha, uint dwFlags);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern int GetSystemMetrics(int nIndex);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool SystemParametersInfo( uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
-
-
-    // P/Invoke: create menu, add items, track and destroy
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr CreatePopupMenu();
-
-    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-    public static extern bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);
+    /// <summary>
+	/// Returns the name of the window's module
+	/// </summary>
+	/// <param name="hWnd"></param>
+	/// <returns></returns>
+	public static string GetWindowModuleFileName(IntPtr hWnd)
+    {
+        StringBuilder sb = new(MAX_CAPACITY);
+        _ = GetWindowModuleFileName(hWnd, sb, sb.Capacity);
+        return sb.ToString();
+    }
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern uint TrackPopupMenu(IntPtr hMenu, uint uFlags, int x, int y, int nReserved, IntPtr hWnd, IntPtr prcRect);
+    public static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool DestroyMenu(IntPtr hMenu);
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetCursorPos(out POINT lpPoint);
-
-    [DllImport("user32.dll")]
-    public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-    [DllImport("user32.dll")]
-    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
     /// <summary>
 	/// Returns the caption of a window Win32.GetWindowText
 	/// </summary>
@@ -149,147 +122,68 @@ internal static partial class NativeMethods
         return sb.ToString();
     }
 
-    /// <summary>
-	/// Returns the name of the window's module
-	/// </summary>
-	/// <param name="hWnd"></param>
-	/// <returns></returns>
-	public static string GetWindowModuleFileName(IntPtr hWnd)
-    {
-        StringBuilder sb = new(MAX_CAPACITY);
-        _ = GetWindowModuleFileName(hWnd, sb, sb.Capacity);
-        return sb.ToString();
-    }
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern int GetWindowTextLength(IntPtr hWnd);
 
-    /// <summary>
-    /// Returns the name of a window's class Win32.GetClassName
-    /// </summary>
-    /// <param name="hWnd"></param>
-    /// <returns></returns>
-    public static string GetClassName(IntPtr hWnd)
-    {
-        StringBuilder sb = new(MAX_CAPACITY);
-        _ = GetClassName(hWnd, sb, sb.Capacity);
-        return sb.ToString();
-    }
+    [DllImport("User32.dll", SetLastError = true)]
+    public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int processId);
 
-    public static string GetModuleBaseName(IntPtr hProcess)
-    {
-        StringBuilder sb = new(MAX_CAPACITY);
-        _ = GetModuleBaseName(hProcess, IntPtr.Zero, sb, sb.Capacity);
-        return sb.ToString();
-    }
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool IsWindowVisible(IntPtr hWnd);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr LoadCursor(IntPtr hInstance, IntPtr lpCursorName);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cx, int cy, uint fuLoad);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr SetCursor(IntPtr hCursor);
+
+    [DllImport("user32.dll")]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool SetLayeredWindowAttributes(IntPtr hWnd, uint crKey, byte bAlpha, uint dwFlags);
 
     // Associates an HBITMAP with a menu item
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     public static extern bool SetMenuItemInfo(IntPtr hMenu, uint uItem, bool fByPos, ref MENUITEMINFO lpmii);
 
-    // GDI / user32 functions to create bitmaps and draw icons
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr GetDC(IntPtr hWnd);
+    public static extern bool SetSystemCursor(IntPtr hcur, uint id);
 
-    
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern IntPtr SetWindowsHookEx(int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool DrawIconEx(
-        IntPtr hdc,
-        int xLeft,
-        int yTop,
-        IntPtr hIcon,
-        int cxWidth,
-        int cyWidth,
-        uint istepIfAniCur,
-        IntPtr hbrFlickerFreeDraw,
-        uint diFlags);
+    [DllImport("user32.dll", EntryPoint = "SetWindowLongW", SetLastError = true)]
+    private static extern int SetWindowLong32(IntPtr hWnd, int nIndex, int newProc);
+    [DllImport("user32.dll", SetLastError = true, EntryPoint = "SetWindowLongPtrW")]
+    private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+    public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr newProc)
+    {
+        return IntPtr.Size == 8 ? SetWindowLongPtr64(hWnd, nIndex, newProc) : new IntPtr(SetWindowLong32(hWnd, nIndex, newProc.ToInt32()));
+    }
 
-    
+    [DllImport("user32.dll")]
+    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
-
-    
-
-    
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct GdiplusStartupInput
-    {
-        public uint GdiplusVersion;
-        public IntPtr DebugEventCallback;
-        public bool SuppressBackgroundThread;
-        public bool SuppressExternalCodecs;
-    }
-
-    
-
-    public enum PROCESS_ACCESS_TYPES
-    {
-        PROCESS_TERMINATE = 0x00000001,
-        PROCESS_CREATE_THREAD = 0x00000002,
-        PROCESS_SET_SESSIONID = 0x00000004,
-        PROCESS_VM_OPERATION = 0x00000008,
-        PROCESS_VM_READ = 0x00000010,
-        PROCESS_VM_WRITE = 0x00000020,
-        PROCESS_DUP_HANDLE = 0x00000040,
-        PROCESS_CREATE_PROCESS = 0x00000080,
-        PROCESS_SET_QUOTA = 0x00000100,
-        PROCESS_SET_INFORMATION = 0x00000200,
-        PROCESS_QUERY_INFORMATION = 0x00000400,
-        STANDARD_RIGHTS_REQUIRED = 0x000F0000,
-        SYNCHRONIZE = 0x00100000,
-        PROCESS_ALL_ACCESS = PROCESS_TERMINATE | PROCESS_CREATE_THREAD | PROCESS_SET_SESSIONID | PROCESS_VM_OPERATION |
-            PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_DUP_HANDLE | PROCESS_CREATE_PROCESS | PROCESS_SET_QUOTA |
-            PROCESS_SET_INFORMATION | PROCESS_QUERY_INFORMATION | STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE
-    }
-
-
-    // gdi32.dll
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern IntPtr CreateDIBSection(
-        IntPtr hdc,
-        ref BITMAPINFO pbmi,
-        uint usage,
-        out IntPtr ppvBits,
-        IntPtr hSection,
-        uint offset);
+    public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr CreateIconIndirect(ref ICONINFO iconInfo);
+    public static extern uint TrackPopupMenu(IntPtr hMenu, uint uFlags, int x, int y, int nReserved, IntPtr hWnd, IntPtr prcRect);
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct BITMAPINFOHEADER
-    {
-        public uint biSize;
-        public int biWidth;
-        public int biHeight;
-        public ushort biPlanes;
-        public ushort biBitCount;
-        public uint biCompression;
-        public uint biSizeImage;
-        public int biXPelsPerMeter;
-        public int biYPelsPerMeter;
-        public uint biClrUsed;
-        public uint biClrImportant;
-    }
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct BITMAPINFO
-    {
-        public BITMAPINFOHEADER bmiHeader;
-        public uint bmiColors;  // espacio mínimo para el color table
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ICONINFO
-    {
-        public bool fIcon;
-        public uint xHotspot;
-        public uint yHotspot;
-        public IntPtr hbmMask;
-        public IntPtr hbmColor;
-    }
-
-    // Constants
-    public const uint BI_RGB = 0u;
-    public const uint DIB_RGB_COLORS = 0u;
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr WindowFromPoint(POINT Point);
 }
