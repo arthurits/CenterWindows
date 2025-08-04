@@ -136,7 +136,7 @@ internal static partial class Win32
     {
         public IntPtr hdc;
         public bool fErase;
-        public Rect rcPaint;
+        public RECT rcPaint;
         public bool fRestore;
         public bool fIncUpdate;
         private readonly byte reserved1;
@@ -156,7 +156,7 @@ internal static partial class Win32
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct Rect
+    public struct RECT
     {
         public int Left;
         public int Top;
@@ -195,8 +195,8 @@ internal static partial class Win32
     public struct WindowInfo
     {
         public int size;
-        public Rect window;
-        public Rect client;
+        public RECT window;
+        public RECT client;
         public int style;
         public int exStyle;
         public int windowStatus;
