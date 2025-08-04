@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
@@ -205,7 +204,7 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
         if (!ok)
         {
             var err = Marshal.GetLastWin32Error();
-            Debug.WriteLine($"SetLayeredWindowAttributes failed: {err}");
+            throw new Win32Exception(err, $"SetLayeredWindowAttributes failed: {err}");
         }
     }
     
@@ -226,7 +225,6 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
                 //_ = Win32.FrameRect(ps.hdc, ref ps.rcPaint, _borderBrush);
 
                 Win32.EndPaint(hwnd, ref ps);
-                Debug.WriteLine("Win32.WM_PAINT");
                 return IntPtr.Zero;
 
             case Win32.WM_ERASEBKGND:
