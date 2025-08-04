@@ -50,8 +50,14 @@ internal static partial class Win32
     [DllImport("gdi32.dll", SetLastError = true)]
     public static extern bool DeleteObject(IntPtr hObject);
 
+    //[DllImport("gdi32.dll")]
+    //public static extern int FillRect(IntPtr hDC, [In] ref RECT lprc, IntPtr hbr);
+
+    [DllImport("gdi32.dll", SetLastError = true)]
+    public static extern bool FillRgn(IntPtr hdc, IntPtr hrgn, IntPtr hbr);
+
     [DllImport("gdi32.dll")]
-    public static extern int FillRect(IntPtr hDC, [In] ref RECT lprc, IntPtr hbr);
+    public static extern IntPtr GetStockObject(int i);
 
     [DllImport("gdi32.dll", SetLastError = true)]
     public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);

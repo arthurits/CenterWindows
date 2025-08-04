@@ -83,7 +83,8 @@ internal static partial class Win32
     public const int WS_EX_TOOLWINDOW = 0x00000080;
     public const int WS_POPUP = unchecked((int)0x80000000);
     public const int ULW_ALPHA = 0x2;
-
+    
+    public const uint LWA_COLORKEY = 0x00000001;
     public const uint LWA_ALPHA = 0x00000002;
     public static readonly IntPtr HWND_TOPMOST = new(-1);
     public const uint SWP_NOACTIVATE = 0x0010;
@@ -92,4 +93,8 @@ internal static partial class Win32
     public const int RGN_DIFF = 4;
 
     public const int GA_ROOT = 2;
+
+    public const uint HTTRANSPARENT = 1;
+
+    public const int BLACK_BRUSH = 4;
 }
