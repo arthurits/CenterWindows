@@ -3,6 +3,28 @@
 namespace CenterWindow.Interop;
 internal static partial class NativeMethods
 {
+    [Flags]
+    internal enum DwmBlurBehindFlags : uint
+    {
+        ENABLE = 0x00000001,
+        BLURREGION = 0x00000002,
+        TRANSITIONONMAXIMIZED = 0x00000004
+    }
+
+    internal enum DWMWINDOWATTRIBUTE : uint
+    {
+        USE_IMMERSIVE_DARK_MODE = 20,
+        WINDOW_CORNER_PREFERENCE = 33
+    }
+
+    internal enum DWM_WINDOW_CORNER_PREFERENCE : uint
+    {
+        DEFAULT = 0,
+        DONOTROUND = 1,
+        ROUND = 2,
+        ROUNDSMALL = 3
+    }
+
     public enum PROCESS_ACCESS_TYPES
     {
         PROCESS_TERMINATE = 0x00000001,

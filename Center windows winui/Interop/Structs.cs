@@ -27,6 +27,17 @@ internal static partial class NativeMethods
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    internal struct DWM_BLURBEHIND
+    {
+        public DwmBlurBehindFlags dwFlags;
+        [MarshalAs(UnmanagedType.Bool)]
+        public bool fEnable;
+        public IntPtr hRgnBlur;
+        [MarshalAs(UnmanagedType.Bool)]
+        public bool fTransitionOnMaximized;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct GdiplusStartupInput
     {
         public uint GdiplusVersion;
@@ -43,6 +54,15 @@ internal static partial class NativeMethods
         public uint yHotspot;
         public IntPtr hbmMask;
         public IntPtr hbmColor;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct MARGINS
+    {
+        public int cxLeftWidth;
+        public int cxRightWidth;
+        public int cyTopHeight;
+        public int cyBottomHeight;
     }
 
     // Structure for menu-item information

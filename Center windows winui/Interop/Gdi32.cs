@@ -1,8 +1,7 @@
 ﻿using System.Runtime.InteropServices;
-using static CenterWindow.Interop.NativeMethods;
 
 namespace CenterWindow.Interop;
-internal static partial class NativeMethod
+internal static partial class NativeMethods
 {
     [DllImport("gdi32.dll", SetLastError = true)]
     public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);

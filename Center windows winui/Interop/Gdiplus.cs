@@ -1,8 +1,7 @@
 ﻿using System.Runtime.InteropServices;
-using static CenterWindow.Interop.NativeMethods;
 
 namespace CenterWindow.Interop;
-internal static partial class NativeMethod
+internal static partial class NativeMethods
 {
     [DllImport("gdiplus.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
     public static extern int GdipCreateBitmapFromFile(string filename, out IntPtr bitmap);
