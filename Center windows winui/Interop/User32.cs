@@ -106,9 +106,6 @@ internal static partial class NativeMethods
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool SystemParametersInfo( uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 
-    
-
-    
 
     // P/Invoke: create menu, add items, track and destroy
     [DllImport("user32.dll", SetLastError = true)]
@@ -191,14 +188,7 @@ internal static partial class NativeMethods
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr GetDC(IntPtr hWnd);
 
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
-
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
-
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+    
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool DrawIconEx(
