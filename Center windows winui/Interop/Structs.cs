@@ -132,6 +132,23 @@ internal static partial class Win32
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public struct PAINTSTRUCT
+    {
+        public IntPtr hdc;
+        public bool fErase;
+        public Rect rcPaint;
+        public bool fRestore;
+        public bool fIncUpdate;
+        private readonly byte reserved1;
+        private readonly byte reserved2;
+        private readonly byte reserved3;
+        private readonly byte reserved4;
+        private readonly byte reserved5;
+        private readonly byte reserved6;
+        private readonly byte reserved7;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct POINT
     {
         public int x;
@@ -154,6 +171,23 @@ internal static partial class Win32
     public struct SIZE
     {
         public int cx, cy;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct WNDCLASSEX
+    {
+        public int cbSize;
+        public int style;
+        public IntPtr lpfnWndProc;
+        public int cbClsExtra;
+        public int cbWndExtra;
+        public IntPtr hInstance;
+        public IntPtr hIcon;
+        public IntPtr hCursor;
+        public IntPtr hbrBackground;
+        public string lpszMenuName;
+        public string lpszClassName;
+        public IntPtr hIconSm;
     }
 
     public struct WindowInfo

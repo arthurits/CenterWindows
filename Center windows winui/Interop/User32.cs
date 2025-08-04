@@ -8,6 +8,9 @@ internal static partial class Win32
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     public static extern bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);
 
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool BeginPaint(IntPtr hWnd, out PAINTSTRUCT lpPaint);
+
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
     public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
@@ -39,10 +42,20 @@ internal static partial class Win32
         IntPtr lpParam);
 
     [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr DefWindowProc(
+                IntPtr hWnd,
+                uint uMsg,
+                IntPtr wParam,
+                IntPtr lParam);
+
+    [DllImport("user32.dll", SetLastError = true)]
     public static extern bool DestroyIcon(IntPtr hIcon);
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool DestroyMenu(IntPtr hMenu);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool DestroyWindow(IntPtr hWnd);
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool DrawIconEx(
@@ -55,6 +68,9 @@ internal static partial class Win32
         uint istepIfAniCur,
         IntPtr hbrFlickerFreeDraw,
         uint diFlags);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool EndPaint(IntPtr hWnd, [In] ref PAINTSTRUCT lpPaint);
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
@@ -142,6 +158,12 @@ internal static partial class Win32
     [DllImport("User32.dll", SetLastError = true)]
     public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int processId);
 
+    [DllImport("user32.dll")]
+    public static extern bool InvalidateRect(
+                IntPtr hWnd,
+                IntPtr lpRect,
+                bool bErase);
+
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool IsWindowVisible(IntPtr hWnd);
 
@@ -153,6 +175,9 @@ internal static partial class Win32
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern ushort RegisterClassEx([In] ref WNDCLASSEX lpwcx);
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
@@ -184,6 +209,22 @@ internal static partial class Win32
     {
         return IntPtr.Size == 8 ? SetWindowLongPtr64(hWnd, nIndex, newProc) : new IntPtr(SetWindowLong32(hWnd, nIndex, newProc.ToInt32()));
     }
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool SetWindowPos(
+                IntPtr hWnd,
+                IntPtr hWndInsertAfter,
+                int X,
+                int Y,
+                int cx,
+                int cy,
+                uint uFlags);
+
+    [DllImport("user32.dll", ExactSpelling = true)]
+    public static extern int SetWindowRgn(
+                IntPtr hWnd,
+                IntPtr hRgn,
+                bool bRedraw);
 
     [DllImport("user32.dll")]
     public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);

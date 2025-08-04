@@ -6,12 +6,12 @@ public interface IWindowHighlightService : IDisposable
     /// </summary>
     /// <param name="hWnd">Window handle of the window to be highlighted.</param>
     /// <param name="cornerRadius">Corner radius in pixels.</param>
-    /// <param name="borderColor">Border color.</param>
+    /// <param name="borderColor">Border color in 0xAARRGGBB format.</param>
     /// <param name="thickness">Border width in pixels.</param>
     void HighlightWindow(
         IntPtr hWnd,
         int cornerRadius = 0,
-        Color? borderColor = null,
+        uint borderColor = 0xFFFF0000,
         int thickness = 3);
 
     /// <summary>
