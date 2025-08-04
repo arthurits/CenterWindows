@@ -70,4 +70,11 @@ internal static partial class Win32
     // Constants
     public const uint BI_RGB = 0u;
     public const uint DIB_RGB_COLORS = 0u;
+
+    // Constants for window styles
+    public const int WS_EX_LAYERED = 0x80000;
+    public const int WS_EX_TRANSPARENT = 0x20;
+    public const int WS_EX_TOPMOST = 0x8;
+    public const int WS_POPUP = unchecked((int)0x80000000);
+    public const int ULW_ALPHA = 0x2;
 }
