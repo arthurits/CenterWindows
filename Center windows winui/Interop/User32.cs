@@ -254,6 +254,9 @@ internal static partial class Win32
         ref BLENDFUNCTION pblend,
         int dwFlags);
 
+    [DllImport("user32.dll")]
+    public static extern bool UpdateWindow(IntPtr hWnd);
+
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr WindowFromPoint(POINT Point);
 }

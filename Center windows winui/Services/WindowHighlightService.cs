@@ -100,6 +100,7 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
 
         // Force a repaint of the overlay window
         Win32.InvalidateRect(_overlayHwnd, IntPtr.Zero, true);
+        Win32.UpdateWindow(_overlayHwnd);
     }
 
     public void ClearHighlight()
