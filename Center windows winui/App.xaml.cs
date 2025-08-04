@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using CenterWindow.Activation;
+﻿using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
 using CenterWindow.Models;
@@ -13,9 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media;
-using Windows.ApplicationModel.Core;
-using Windows.UI.Core;
 
 namespace CenterWindow;
 
@@ -74,6 +69,9 @@ public partial class App : Application
 
             // Mouse Hook Service
             services.AddSingleton<IMouseHookService, MouseHookService>();
+
+            // Window Highlight Service
+            services.AddSingleton<IWindowHighlightService, WindowHighlightService>();
 
             // Tray Icon Service
             services.AddSingleton<GdiPlusIconLoader>();
@@ -179,7 +177,7 @@ public partial class App : Application
             settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
         }
 
-        // Just in case we mess with the system cursors, reset them
+        //// Just in case we mess with the system cursors, reset them
         //uint SPI_SETCURSORS = 0x0057;
         //uint SPIF_SENDCHANGE = 0x02;
         //SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
