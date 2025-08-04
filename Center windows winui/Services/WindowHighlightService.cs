@@ -194,18 +194,18 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
             throw new Win32Exception(err, $"CreateWindowEx failed (error {err}).");
         }
 
-        // Set the window to be layered for transparency
-        var ok = Win32.SetLayeredWindowAttributes(
-            _overlayHwnd,
-            0x000000,   // color key to be used for transparency
-            0,          // alpha is ignored with LWA_COLORKEY
-            Win32.LWA_COLORKEY);
+        //// Set the window to be layered for transparency
+        //var ok = Win32.SetLayeredWindowAttributes(
+        //    _overlayHwnd,
+        //    0x000000,   // color key to be used for transparency
+        //    0,          // alpha is ignored with LWA_COLORKEY
+        //    Win32.LWA_COLORKEY);
 
-        if (!ok)
-        {
-            var err = Marshal.GetLastWin32Error();
-            throw new Win32Exception(err, $"SetLayeredWindowAttributes failed: {err}");
-        }
+        //if (!ok)
+        //{
+        //    var err = Marshal.GetLastWin32Error();
+        //    throw new Win32Exception(err, $"SetLayeredWindowAttributes failed: {err}");
+        //}
     }
     
     private IntPtr OverlayWndProc( IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam)
