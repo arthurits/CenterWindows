@@ -155,7 +155,7 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
             lpfnWndProc   = Marshal.GetFunctionPointerForDelegate(_wndProcDelegate),
             cbClsExtra    = 0,
             cbWndExtra    = 0,
-            hInstance     = Win32.GetModuleHandle(null),
+            hInstance     = Win32.GetModuleHandle(Process.GetCurrentProcess().MainModule?.ModuleName ?? string.Empty),
             hIcon         = IntPtr.Zero,
             hCursor       = IntPtr.Zero,
             hbrBackground = IntPtr.Zero, // pintamos manualmente en WM_PAINT
@@ -179,7 +179,7 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
             0, 0, 0, 0,
             IntPtr.Zero,
             IntPtr.Zero,
-            Win32.GetModuleHandle(null),
+            Win32.GetModuleHandle(Process.GetCurrentProcess().MainModule?.ModuleName ?? string.Empty),
             IntPtr.Zero);
 
         // Hacer que la ventana sea click‐through
