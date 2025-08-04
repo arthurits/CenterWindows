@@ -11,10 +11,6 @@ internal static partial class Win32
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
     public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
-    // P/Invoke: create menu, add items, track and destroy
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr CreatePopupMenu();
-
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
@@ -23,6 +19,24 @@ internal static partial class Win32
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr CreateIconIndirect(ref ICONINFO iconInfo);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr CreatePopupMenu();
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr CreateWindowEx(
+        int dwExStyle,
+        string lpClassName,
+        string lpWindowName,
+        int dwStyle,
+        int x,
+        int y,
+        int nWidth,
+        int nHeight,
+        IntPtr hWndParent,
+        IntPtr hMenu,
+        IntPtr hInstance,
+        IntPtr lpParam);
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool DestroyIcon(IntPtr hIcon);
@@ -183,6 +197,18 @@ internal static partial class Win32
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool UpdateLayeredWindow(
+        IntPtr hwnd,
+        IntPtr hdcDest,
+        ref POINT pptDest,
+        ref SIZE psize,
+        IntPtr hdcSrc,
+        ref POINT pprSrc,
+        int crKey,
+        ref BLENDFUNCTION pblend,
+        int dwFlags);
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr WindowFromPoint(POINT Point);
