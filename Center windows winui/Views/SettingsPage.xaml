@@ -58,7 +58,7 @@
                 
                 <controls:SettingsCard x:Name="cardWinPos"
                        Header="{Binding StrWindowPositionHeader}"
-                       HeaderIcon="{ui:FontIcon Glyph=&#xF7ED;}">
+                       HeaderIcon="{ui:FontIcon Glyph=&#xE840;}">
                     <controls:SettingsCard.Description>
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding StrWindowPositionDescription}"/>
@@ -74,21 +74,21 @@
                 <controls:SettingsCard x:Name="cardPath"
                         Description="{Binding StrFilepathDescription}"
                         Header="{Binding StrFilepathHeader}"
-                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}">
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE838;}">
                     <ToggleSwitch IsOn="{Binding RememberFileDialogPath, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
 
                 <controls:SettingsCard x:Name="showTrayIcon"
                         Description="{Binding StrShowTrayIconDescription}"
                         Header="{Binding StrShowTrayIconHeader}"
-                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}">
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE91C;}">
                     <ToggleSwitch IsOn="{Binding ShowTrayIcon, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
 
                 <controls:SettingsCard x:Name="minimizeToTray"
                         Description="{Binding StrMinimizeToTrayDescription}"
                         Header="{Binding StrMinimizeToTrayHeader}"
-                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE944;}"
                         IsEnabled="{Binding IsMinimizeToTrayEnabled}">
                     <ToggleSwitch IsOn="{Binding MinimizeToTray, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
@@ -96,7 +96,7 @@
                 <controls:SettingsCard x:Name="launchAtStartup"
                         Description="{x:Bind ViewModel.StrLaunchAtStartupDescription}"
                         Header="{x:Bind ViewModel.StrLaunchAtStartupHeader}"
-                        HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE8FC;}"
                         IsEnabled="{x:Bind ViewModel.IsLaunchAtStartupEnabled}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.LaunchAtStartup, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
                 </controls:SettingsCard>
