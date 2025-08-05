@@ -130,7 +130,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 // If the new HWND is different from the last highlighted one, update the highlight
                 if (e.HWnd != _lastHighlightedHwnd)
                 {
-                    // Clear the previous highlight
+                    // Clear (hide) the previous highlight
                     _highlightService.ClearHighlight();
 
                     // If the new HWND is valid, highlight it
@@ -170,7 +170,8 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         }
         
         // Delete the highlight from the last selected window
-        _highlightService.ClearHighlight();
+        //_highlightService.ClearHighlight();
+        _highlightService.Dispose();
         _lastHighlightedHwnd = IntPtr.Zero;
     }
 
