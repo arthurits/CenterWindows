@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
@@ -59,15 +58,14 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
 
         // If the overlay is already showing for the same window and dimensions,
         // or the overlay is the same as the target window, skip it
-        if ((_overlayHwnd != IntPtr.Zero
+        if (_overlayHwnd != IntPtr.Zero
             && targetHwnd == _lastTargetHwnd
             && width == _lastWidth
             && height == _lastHeight)
-            || _overlayHwnd == targetHwnd)
         {
             return;
         }
-        Debug.WriteLine($"Highlighting window {targetHwnd} at {rect.Left}, {rect.Top} with size {width}x{height} - _overlayHwnd: {_overlayHwnd}");
+        //Debug.WriteLine($"Highlighting window {targetHwnd} at {rect.Left}, {rect.Top} with size {width}x{height} - _overlayHwnd: {_overlayHwnd}");
         // Otherwise, update the last target and dimensions
         _lastTargetHwnd = targetHwnd;
         _lastWidth = width;
@@ -168,7 +166,6 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
     /// considered disposed and reset so that <see cref="HighlightWindow"/> can be used again.</remarks>
     public void Dispose()
     {
-        Debug.WriteLine($"Disposing WindowHighlightService - _isDisposed: {_isDisposed}");
         if (_isDisposed)
         {
             return;
@@ -264,7 +261,7 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
             case Win32.WM_PAINT:
                 _ = Win32.BeginPaint(hwnd, out var ps);
                 _ = Win32.FillRect(ps.hdc, ref ps.rcPaint, _borderBrush);
-
+                
                 //// Black background, which will be transparent
                 //IntPtr hBlack = Win32.GetStockObject(Win32.BLACK_BRUSH);
                 //_ = Win32.FillRect(ps.hdc, ref ps.rcPaint, hBlack);
