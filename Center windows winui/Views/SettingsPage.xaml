@@ -123,7 +123,7 @@
                                 IsAlphaEnabled="False"
                                 IsAlphaSliderVisible="True"
                                 IsAlphaTextInputVisible="True"
-                                Color="{x:Bind ViewModel.BorderColor, Mode=TwoWay}" />
+                                Color="{x:Bind ViewModel.BorderColorUI, Mode=TwoWay}" />
                         </controls:SettingsCard>
                         <controls:SettingsCard x:Name="cardBorderThickness"
                             Header="{x:Bind ViewModel.StrBorderThicknessHeader}"
@@ -135,7 +135,7 @@
                             Header="{x:Bind ViewModel.StrBorderRadiusHeader}"
                             HeaderIcon="{ui:FontIcon Glyph=&#xE8B3;}"
                             Description="{x:Bind ViewModel.StrBorderRadiusDescription}">
-                            <Slider Minimum="0" Maximum="50" Value="{x:Bind ViewModel.BorderThickness, Mode=TwoWay}" />
+                            <Slider Minimum="0" Maximum="10" Value="{x:Bind ViewModel.BorderRadius, Mode=TwoWay}" />
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>

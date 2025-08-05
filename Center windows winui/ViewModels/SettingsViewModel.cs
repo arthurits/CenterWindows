@@ -62,7 +62,10 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     public partial bool ShowHighlight { get; set; } = true;
 
     [ObservableProperty]
-    public partial Color BorderColor { get; set; } = Colors.Red;
+    public partial string BorderColor { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial Windows.UI.Color BorderColorUI { get; set; } = Colors.Red;
 
     [ObservableProperty]
     public partial int BorderThickness { get; set; } = 0;
@@ -162,6 +165,10 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
             var vmProp = GetType().GetProperty(propName);
             var pocoProp = _appSettings.GetType().GetProperty(propName);
 
+            if (vmProp is null || pocoProp is null)
+            {
+                continue; // Skip if the property does not exist in either the ViewModel or the POCO
+            }
             vmProp!.SetValue(this, pocoProp!.GetValue(_appSettings));
         }
     }
@@ -255,6 +262,12 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
 
         if(_pocoSettings is null || e.PropertyName is null)
         {
+            return;
+        }
+        
+        if (e.PropertyName == nameof(BorderColorUI))
+        {   
+            BorderColor = BorderColorUI.ToString() ?? string.Empty;
             return;
         }
 
