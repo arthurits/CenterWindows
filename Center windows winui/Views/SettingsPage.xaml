@@ -105,8 +105,8 @@
                 <controls:SettingsExpander
                     x:Name="cardHighlighter"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE91B;}"
-                    Header="Border color"
-                    Description="Selecciona el color del borde"
+                    Header="{x:Bind ViewModel.StrShowHighlightHeader}"
+                    Description="{x:Bind ViewModel.StrShowHighlightDescription}"
                     IsEnabled="{x:Bind ViewModel.ShowHighlight, Mode=OneWay}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.ShowHighlight, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
                     <controls:SettingsExpander.Items>
@@ -142,10 +142,10 @@
 
                 <controls:SettingsCard
                     x:Name = "cardShowChild"
-                    Header="{x:Bind ViewModel.StrShowChildHeader}"
+                    Header="{x:Bind ViewModel.StrSelectChildHeader}"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE8B5;}"
-                    Description="{x:Bind ViewModel.StrShowChildDescription}" >
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.ShowChildWindows, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
+                    Description="{x:Bind ViewModel.StrSelectChildDescription}" >
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.SelectChildWindows, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
                 </controls:SettingsCard>
 
                 <!--Reset settings button-->

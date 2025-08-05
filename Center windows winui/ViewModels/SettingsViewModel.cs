@@ -70,7 +70,7 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     public partial int BorderRadius { get; set; } = 0;
 
     [ObservableProperty]
-    public partial bool ShowChildWindows { get; set; } = false;
+    public partial bool SelectChildWindows { get; set; } = false;
 
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
@@ -101,8 +101,8 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         LaunchAtStartup = _appSettings.LaunchAtStartup;
         ShowHighlight = _appSettings.ShowHighlight;
         BorderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(_appSettings.BorderColor);
-        BorderWidth = _appSettings.BorderWidth;
-        CornerRadius = _appSettings.CornerRadius;
+        BorderThickness = _appSettings.BorderThickness;
+        BorderRadius = _appSettings.BorderRadius;
         ShowChildWindows = _appSettings.SelectChildWindows;
 
         // Theme service
@@ -146,7 +146,7 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
         _syncActions[nameof(BorderThickness)] = () => _appSettings.BorderThickness = BorderThickness;
         _syncActions[nameof(BorderRadius)] = () => _appSettings.BorderRadius = BorderRadius;
-        _syncActions[nameof(ShowChildWindows)] = () => _appSettings.SelectChildWindows = ShowChildWindows;
+        _syncActions[nameof(SelectChildWindows)] = () => _appSettings.SelectChildWindows = SelectChildWindows;
     }
 
     public void Dispose()
