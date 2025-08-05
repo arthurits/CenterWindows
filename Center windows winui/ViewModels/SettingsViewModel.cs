@@ -7,10 +7,11 @@ using CenterWindow.Models;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.System.UserProfile;
+using Windows.UI;
 
 namespace CenterWindow.ViewModels;
 
@@ -54,6 +55,9 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     public partial bool LaunchAtStartup { get; set; }
     [ObservableProperty]
     public partial bool IsLaunchAtStartupEnabled { get; set; }
+
+    [ObservableProperty]
+    public partial Color BorderColor { get; set; } = Colors.Red;
 
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
