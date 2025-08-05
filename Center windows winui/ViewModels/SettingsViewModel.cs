@@ -18,8 +18,8 @@ namespace CenterWindow.ViewModels;
 
 public partial class SettingsViewModel : ObservableRecipient, IDisposable
 {
-    // Settings synchronization dictionary
-    private readonly Dictionary<string, Action> _syncActions = [];
+    //// Settings synchronization dictionary
+    //private readonly Dictionary<string, Action> _syncActions = [];
 
     // Services
     private readonly IThemeSelectorService _themeSelectorService;
@@ -28,6 +28,7 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     private readonly IMainWindowService _mainWindowService;
     private readonly ILocalSettingsService<AppSettings> _settingsService;
     private AppSettings _appSettings;
+    private readonly HashSet<string> _pocoSettings;
 
     public ObservableCollection<CultureOption> AvailableLanguages { get; set; } = [];
 
@@ -61,7 +62,10 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     public partial bool ShowHighlight { get; set; } = true;
 
     [ObservableProperty]
-    public partial Color BorderColor { get; set; } = Colors.Red;
+    public partial string BorderColor { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial Windows.UI.Color BorderColorUI { get; set; } = Colors.Red;
 
     [ObservableProperty]
     public partial int BorderThickness { get; set; } = 0;
@@ -93,17 +97,17 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _settingsService = settings;
         _appSettings = settings.GetValues;
 
-        // Get settings and update the observable properties
-        WindowPosition = _appSettings.WindowPosition;
-        RememberFileDialogPath = _appSettings.RememberFileDialogPath;
-        ShowTrayIcon = _appSettings.ShowTrayIcon;
-        MinimizeToTray = _appSettings.MinimizeToTray;
-        LaunchAtStartup = _appSettings.LaunchAtStartup;
-        ShowHighlight = _appSettings.ShowHighlight;
-        BorderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(_appSettings.BorderColor);
-        BorderThickness = _appSettings.BorderThickness;
-        BorderRadius = _appSettings.BorderRadius;
-        SelectChildWindows = _appSettings.SelectChildWindows;
+        //// Get settings and update the observable properties
+        //WindowPosition = _appSettings.WindowPosition;
+        //RememberFileDialogPath = _appSettings.RememberFileDialogPath;
+        //ShowTrayIcon = _appSettings.ShowTrayIcon;
+        //MinimizeToTray = _appSettings.MinimizeToTray;
+        //LaunchAtStartup = _appSettings.LaunchAtStartup;
+        //ShowHighlight = _appSettings.ShowHighlight;
+        //BorderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(_appSettings.BorderColor);
+        //BorderThickness = _appSettings.BorderThickness;
+        //BorderRadius = _appSettings.BorderRadius;
+        //SelectChildWindows = _appSettings.SelectChildWindows;
 
         // Theme service
         _themeSelectorService = themeSelectorService;
@@ -136,17 +140,37 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         SelectedLanguageIndex = cultureList.Count > 0 ? Math.Max(0, selectedCultureIndex) : -1;
         //SelectedLanguageIndex = selectedCultureIndex;
 
-        // Populate the settings dictionary for synchronization
-        _syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
-        _syncActions[nameof(RememberFileDialogPath)] = () => _appSettings.RememberFileDialogPath = RememberFileDialogPath;
-        _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
-        _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
-        _syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
-        _syncActions[nameof(ShowHighlight)] = () => _appSettings.ShowHighlight = ShowHighlight;
-        _syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
-        _syncActions[nameof(BorderThickness)] = () => _appSettings.BorderThickness = BorderThickness;
-        _syncActions[nameof(BorderRadius)] = () => _appSettings.BorderRadius = BorderRadius;
-        _syncActions[nameof(SelectChildWindows)] = () => _appSettings.SelectChildWindows = SelectChildWindows;
+        //// Populate the settings dictionary for synchronization
+        //_syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
+        //_syncActions[nameof(RememberFileDialogPath)] = () => _appSettings.RememberFileDialogPath = RememberFileDialogPath;
+        //_syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
+        //_syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
+        //_syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
+        //_syncActions[nameof(ShowHighlight)] = () => _appSettings.ShowHighlight = ShowHighlight;
+        //_syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
+        //_syncActions[nameof(BorderThickness)] = () => _appSettings.BorderThickness = BorderThickness;
+        //_syncActions[nameof(BorderRadius)] = () => _appSettings.BorderRadius = BorderRadius;
+        //_syncActions[nameof(SelectChildWindows)] = () => _appSettings.SelectChildWindows = SelectChildWindows;
+
+        // Retrieve the properties from the AppSettings POCO
+        _pocoSettings = typeof(AppSettings)
+            .GetProperties()
+            .Where(p => p.CanRead && p.CanWrite)
+            .Select(p => p.Name)
+            .ToHashSet();
+
+        // Initialize the ViewModel properties with the POCO values
+        foreach (var propName in _pocoSettings)
+        {
+            var vmProp = GetType().GetProperty(propName);
+            var pocoProp = _appSettings.GetType().GetProperty(propName);
+
+            if (vmProp is null || pocoProp is null)
+            {
+                continue; // Skip if the property does not exist in either the ViewModel or the POCO
+            }
+            vmProp!.SetValue(this, pocoProp!.GetValue(_appSettings));
+        }
     }
 
     public void Dispose()
@@ -224,17 +248,45 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         // Call the base function
         base.OnPropertyChanged(e);
 
-        // If the property name starts with "Str" then it's a localization variable and we are not concerned with them
-        if (!_syncActions.ContainsKey(e.PropertyName ?? string.Empty))
+        //// If the property name starts with "Str" then it's a localization variable and we are not concerned with them
+        //if (!_syncActions.ContainsKey(e.PropertyName ?? string.Empty))
+        //{
+        //    return;
+        //}
+
+        //// Update POCO: the AppSettings properties based on the ViewModel properties
+        //if (_syncActions.TryGetValue(e.PropertyName!, out var action))
+        //{
+        //    action();
+        //}
+
+        if(_pocoSettings is null || e.PropertyName is null)
+        {
+            return;
+        }
+        
+        if (e.PropertyName == nameof(BorderColorUI))
+        {   
+            BorderColor = BorderColorUI.ToString() ?? string.Empty;
+            return;
+        }
+
+        // We are only interested in properties that are part of the AppSettings POCO
+        if (!_pocoSettings.Contains(e.PropertyName!))
         {
             return;
         }
 
-        // Update POCO: the AppSettings properties based on the ViewModel properties
-        if (_syncActions.TryGetValue(e.PropertyName!, out var action))
-        {
-            action();
-        }
+        // Get the property value from the ViewModel
+        var vmProp = GetType().GetProperty(e.PropertyName!);
+        var newValue = vmProp?.GetValue(this);
+
+        // Copy the value to the AppSettings POCO
+        var pocoProp = _appSettings.GetType().GetProperty(e.PropertyName!);
+        pocoProp?.SetValue(_appSettings, newValue);
+
+        // Notify the settings service that a setting has changed
+        _settingsService.NotifySettingChanged(e.PropertyName!, newValue);
 
         // Set the reset button visibility
         if (IsResetVisible == false)

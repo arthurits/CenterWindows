@@ -54,6 +54,14 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
     public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
 
+    // Properties for the window selection and highlighter
+    private bool _showHighlight;
+    private string _borderColor;
+    private uint _colorRef;
+    private int _borderThickness;
+    private int _borderRadius;
+    private bool _selectChild;
+
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
         IWindowCenterService centerService,
@@ -63,6 +71,15 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     {
         // Services
         _appSettings = settings.GetValues;
+        settings.SettingChanged += OnPropertyChanged;
+
+        _showHighlight = _appSettings.ShowHighlight;
+        _borderColor = _appSettings.BorderColor ?? "#FFFF0000"; // Default to red if null
+        _colorRef = StringColorToColorRef(_borderColor);
+        _borderThickness = _appSettings.BorderThickness;
+        _borderRadius = _appSettings.BorderRadius;
+        _selectChild = _appSettings.SelectChildWindows;
+
         _centerService = centerService;
         _mouseHook = mouseHook;
         _mouseHook.MouseMoved += OnMouseMoved;
@@ -91,12 +108,42 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         OnLanguageChanged(null, EventArgs.Empty);
     }
 
+    private void OnPropertyChanged(object? sender, SettingChangedEventArgs e)
+    {
+        // Update the properties collection when a setting changes
+        switch (e.PropertyName)
+        {
+            case nameof(AppSettings.ShowHighlight):
+                _showHighlight = (bool)(e.NewValue ?? false);
+                break;
+            case nameof(AppSettings.BorderColor):
+                _borderColor = (string)(e.NewValue ?? "#FFFF0000"); // Default to red if null
+                _colorRef = StringColorToColorRef(_borderColor);
+                break;
+            case nameof(AppSettings.BorderThickness):
+                _borderThickness = (int)(e.NewValue ?? 3); // Default to 3 if null
+                break;
+            case nameof(AppSettings.BorderRadius):
+                _borderRadius = (int)(e.NewValue ?? 4); // Default to 4 if null
+                break;
+            case nameof(AppSettings.SelectChildWindows):
+                _selectChild = (bool)(e.NewValue ?? false);
+                break;
+        }
+    }
+
     public void Dispose()
     {
         _mouseHook.MouseMoved                   -= OnMouseMoved;
         _localizationService.LanguageChanged    -= OnLanguageChanged;
         _highlightService.ClearHighlight();
         _highlightService.Dispose();
+    }
+
+    private uint StringColorToColorRef(string color)
+    {
+        var c = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(color);
+        return (uint)(c.R | (c.G << 8) | (c.B << 16));
     }
 
     private void ToggleImage()
@@ -127,24 +174,26 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 //for (int i = 0; i < WindowPropertiesCollection.Count; i++)
                 //    WindowPropertiesCollection[i].Key = localizedKeys[i];
 
-                // If the new HWND is different from the last highlighted one, update the highlight
-                if (e.HWnd != _lastHighlightedHwnd)
-                {
-                    // Clear (hide) the previous highlight
-                    _highlightService.HideHighlight();
-
-                    // If the new HWND is valid, highlight it
-                    if (e.HWnd != IntPtr.Zero)
+                if (_showHighlight)
+                {// If the new HWND is different from the last highlighted one, update the highlight
+                    if (e.HWnd != _lastHighlightedHwnd)
                     {
-                        _highlightService.HighlightWindow(
-                            e.HWnd,
-                            cornerRadius: 8,
-                            borderColor: 0xFFFF0000,  // 0xAARRGGBB
-                            thickness: 4);
-                    }
+                        // Clear (hide) the previous highlight
+                        _highlightService.HideHighlight();
 
-                    // Store the last highlighted HWND
-                    _lastHighlightedHwnd = e.HWnd;
+                        // If the new HWND is valid, highlight it
+                        if (e.HWnd != IntPtr.Zero)
+                        {
+                            _highlightService.HighlightWindow(
+                                e.HWnd,
+                                cornerRadius: _borderRadius,
+                                borderColor: _colorRef,
+                                thickness: _borderThickness);
+                        }
+
+                        // Store the last highlighted HWND
+                        _lastHighlightedHwnd = e.HWnd;
+                    }
                 }
             });
     }
@@ -153,7 +202,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private void OnLeftButtonDown(PointerRoutedEventArgs args)
     {
         IsLeftButtonDown = true;
-        _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), true, true);
+        _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), !_selectChild, true);
     }
 
     [RelayCommand]

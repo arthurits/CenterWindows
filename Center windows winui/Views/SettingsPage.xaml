@@ -106,14 +106,14 @@
                     x:Name="cardHighlighter"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE91B;}"
                     Header="{x:Bind ViewModel.StrShowHighlightHeader}"
-                    Description="{x:Bind ViewModel.StrShowHighlightDescription}"
-                    IsEnabled="{x:Bind ViewModel.ShowHighlight, Mode=OneWay}">
+                    Description="{x:Bind ViewModel.StrShowHighlightDescription}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.ShowHighlight, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
                     <controls:SettingsExpander.Items>
                         <controls:SettingsCard x:Name="cardBorderColor"
                             Header="{x:Bind ViewModel.StrBorderColorHeader}"
                             HeaderIcon="{ui:FontIcon Glyph=&#xE790;}"
-                            Description="{x:Bind ViewModel.StrBorderColorDescription}">
+                            Description="{x:Bind ViewModel.StrBorderColorDescription}"
+                            IsEnabled="{x:Bind ViewModel.ShowHighlight, Mode=OneWay}">
                             <muxc:ColorPicker
                                 ColorSpectrumShape="Box"
                                 IsMoreButtonVisible="False"
@@ -123,19 +123,21 @@
                                 IsAlphaEnabled="False"
                                 IsAlphaSliderVisible="True"
                                 IsAlphaTextInputVisible="True"
-                                Color="{x:Bind ViewModel.BorderColor, Mode=TwoWay}" />
+                                Color="{x:Bind ViewModel.BorderColorUI, Mode=TwoWay}" />
                         </controls:SettingsCard>
                         <controls:SettingsCard x:Name="cardBorderThickness"
                             Header="{x:Bind ViewModel.StrBorderThicknessHeader}"
                             HeaderIcon="{ui:FontIcon Glyph=&#xE8B3;}"
-                            Description="{x:Bind ViewModel.StrBorderThicknessDescription}">
+                            Description="{x:Bind ViewModel.StrBorderThicknessDescription}"
+                            IsEnabled="{x:Bind ViewModel.ShowHighlight, Mode=OneWay}">
                             <Slider Minimum="0" Maximum="10" Value="{x:Bind ViewModel.BorderThickness, Mode=TwoWay}" />
                         </controls:SettingsCard>
                         <controls:SettingsCard x:Name="cardBorderRadius"
                             Header="{x:Bind ViewModel.StrBorderRadiusHeader}"
                             HeaderIcon="{ui:FontIcon Glyph=&#xE8B3;}"
-                            Description="{x:Bind ViewModel.StrBorderRadiusDescription}">
-                            <Slider Minimum="0" Maximum="50" Value="{x:Bind ViewModel.BorderThickness, Mode=TwoWay}" />
+                            Description="{x:Bind ViewModel.StrBorderRadiusDescription}"
+                            IsEnabled="{x:Bind ViewModel.ShowHighlight, Mode=OneWay}">
+                            <Slider Minimum="0" Maximum="10" Value="{x:Bind ViewModel.BorderRadius, Mode=TwoWay}" />
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
