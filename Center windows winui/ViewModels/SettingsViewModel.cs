@@ -7,6 +7,7 @@ using CenterWindow.Models;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -123,6 +124,9 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
         _syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
+        //_syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
+        //var test3 = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(test1);
+        _syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
     }
 
     public void Dispose()
