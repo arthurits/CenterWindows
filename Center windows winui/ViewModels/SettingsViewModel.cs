@@ -103,7 +103,7 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         BorderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(_appSettings.BorderColor);
         BorderThickness = _appSettings.BorderThickness;
         BorderRadius = _appSettings.BorderRadius;
-        ShowChildWindows = _appSettings.SelectChildWindows;
+        SelectChildWindows = _appSettings.SelectChildWindows;
 
         // Theme service
         _themeSelectorService = themeSelectorService;
