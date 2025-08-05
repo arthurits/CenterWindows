@@ -54,6 +54,13 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
     public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
 
+    // Properties for the window selection and highlighter
+    private bool _showHighlight;
+    private string _borderColor;
+    private int _borderThickness;
+    private int _borderRadius;
+    private bool _selectChild;
+
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
         IWindowCenterService centerService,
@@ -63,6 +70,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     {
         // Services
         _appSettings = settings.GetValues;
+        settings.SettingChanged += OnPropertyChanged;
         _centerService = centerService;
         _mouseHook = mouseHook;
         _mouseHook.MouseMoved += OnMouseMoved;
@@ -89,6 +97,20 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 
         // Load string resources into binding variables for the UI
         OnLanguageChanged(null, EventArgs.Empty);
+    }
+
+    private void OnPropertyChanged(object? sender, SettingChangedEventArgs e)
+    {
+        // Update the properties collection when a setting changes
+        switch (e.PropertyName)
+        {
+            case nameof(AppSettings.ShowHighlight):
+                _showHighlight = (bool)(e.NewValue ?? false);
+                break;
+            case nameof(AppSettings.SelectChildWindows):
+                _selectChild = (bool)(e.NewValue ?? false);
+                break;
+        }
     }
 
     public void Dispose()
