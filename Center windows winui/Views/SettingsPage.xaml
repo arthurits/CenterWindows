@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:CenterWindow.Helpers"
     xmlns:xaml="using:Microsoft.UI.Xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:sys="using:System"
@@ -101,6 +102,23 @@
                     <ToggleSwitch IsOn="{x:Bind ViewModel.LaunchAtStartup, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
                 </controls:SettingsCard>
 
+                <controls:SettingsCard
+                    Header="Border color"
+                    Description="Selecciona el color del borde">
+                    <controls:SettingsCard.Content>
+                        <muxc:ColorPicker
+                            ColorSpectrumShape="Box"
+                            IsMoreButtonVisible="False"
+                            IsColorSliderVisible="True"
+                            IsColorChannelTextInputVisible="True"
+                            IsHexInputVisible="True"
+                            IsAlphaEnabled="False"
+                            IsAlphaSliderVisible="True"
+                            IsAlphaTextInputVisible="True"
+                            Color="{x:Bind ViewModel.BorderColor, Mode=TwoWay}" />
+                    </controls:SettingsCard.Content>
+                </controls:SettingsCard>
+                
                 <!--Reset settings button-->
                 <Button x:Name="BtnReset"
                         Margin="{StaticResource SmallTopMargin}"
