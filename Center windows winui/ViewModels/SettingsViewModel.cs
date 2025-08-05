@@ -58,7 +58,19 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     public partial bool IsLaunchAtStartupEnabled { get; set; }
 
     [ObservableProperty]
+    public partial bool ShowHighlight { get; set; } = true;
+
+    [ObservableProperty]
     public partial Color BorderColor { get; set; } = Colors.Red;
+
+    [ObservableProperty]
+    public partial int BorderWidth { get; set; } = 0;
+
+    [ObservableProperty]
+    public partial int CornerRadius { get; set; } = 0;
+
+    [ObservableProperty]
+    public partial bool ShowChildWindows { get; set; } = false;
 
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
@@ -124,7 +136,7 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
         _syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
-        //_syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
+        _syncActions[nameof(ShowHighlight)] = () => _appSettings.ShowHighlight = ShowHighlight;
         //var test3 = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(test1);
         _syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
     }
