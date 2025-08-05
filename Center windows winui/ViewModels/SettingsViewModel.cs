@@ -143,8 +143,10 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
         _syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
         _syncActions[nameof(ShowHighlight)] = () => _appSettings.ShowHighlight = ShowHighlight;
-        //var test3 = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(test1);
         _syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
+        _syncActions[nameof(BorderWidth)] = () => _appSettings.BorderWidth = BorderWidth;
+        _syncActions[nameof(CornerRadius)] = () => _appSettings.CornerRadius = CornerRadius;
+        _syncActions[nameof(ShowChildWindows)] = () => _appSettings.SelectChildWindows = ShowChildWindows;
     }
 
     public void Dispose()
