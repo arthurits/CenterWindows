@@ -18,4 +18,6 @@ public interface IWindowHighlightService : IDisposable
     /// Remove the highlight from the currently highlighted window.
     /// </summary>
     void ClearHighlight();
+
+    void HideHighlight();
 }

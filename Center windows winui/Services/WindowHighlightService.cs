@@ -29,9 +29,22 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
         RegisterOverlayClass();
     }
 
+    /// <summary>
+    /// Highlights a specified window by overlaying a customizable border around it.
+    /// </summary>
+    /// <remarks>This method creates an overlay window to visually highlight the specified target window.  If
+    /// the target window's dimensions or handle have not changed since the last call, the method  skips re-creating the
+    /// overlay to optimize performance. The overlay is always displayed as a  topmost window and does not interfere
+    /// with the target window's functionality.  The method ensures that the overlay respects the specified corner
+    /// radius, border color, and  thickness. If the target window is invalid or has zero dimensions, the method exits
+    /// without  performing any action.</remarks>
+    /// <param name="targetHwnd">The handle of the window to highlight.</param>
+    /// <param name="cornerRadius">The radius of the corners of the border, in pixels. A value of 0 creates square corners.</param>
+    /// <param name="borderColor">The color of the border, specified as a 32-bit ARGB value. The default is opaque red (0xFFFF0000).</param>
+    /// <param name="thickness">The thickness of the border, in pixels. The default is 3.</param>
     public void HighlightWindow(IntPtr targetHwnd, int cornerRadius = 0, uint borderColor = 0xFFFF0000, int thickness = 3)
     {
-        if (!Win32.GetWindowRect(targetHwnd, out var rect))
+        if (targetHwnd == IntPtr.Zero || !Win32.GetWindowRect(targetHwnd, out var rect))
         {
             return;
         }
@@ -42,7 +55,9 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
         {
             return;
         }
-        // If the overlay is already showing for the same window and dimensions, skip
+
+        // If the overlay is already showing for the same window and dimensions,
+        // or the overlay is the same as the target window, skip it
         if (_overlayHwnd != IntPtr.Zero
             && targetHwnd == _lastTargetHwnd
             && width == _lastWidth
@@ -50,12 +65,13 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
         {
             return;
         }
-
+        //Debug.WriteLine($"Highlighting window {targetHwnd} at {rect.Left}, {rect.Top} with size {width}x{height} - _overlayHwnd: {_overlayHwnd}");
         // Otherwise, update the last target and dimensions
         _lastTargetHwnd = targetHwnd;
         _lastWidth = width;
         _lastHeight = height;
-        
+        _isDisposed = false;    // Since we have a valid _overlayHwnd, we signal te possibility to dispose it later
+
         // Create the overlay window if it doesn't exist
         if (_overlayHwnd == IntPtr.Zero)
         {
@@ -105,38 +121,67 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
         Win32.UpdateWindow(_overlayHwnd);
     }
 
+    /// <summary>
+    /// Hides the highlight overlay without clearing it.
+    /// </summary>
+    public void HideHighlight()
+    {
+        if (_overlayHwnd != IntPtr.Zero)
+        {
+            Win32.ShowWindow(_overlayHwnd, Win32.SW_HIDE);
+        }
+    }
+
+    /// <summary>
+    /// Release any active highlight overlay and resets the associated resources and state.
+    /// </summary>
+    /// <remarks>This method releases the highlight overlay window, as well as any allocated resources such as the
+    /// border brush. It also resets the last target and dimensions to their default values. After calling this method,
+    /// resources will need to be allocated by calling <see cref="HighlightWindow"/>.</remarks>
     public void ClearHighlight()
     {
         if (_overlayHwnd != IntPtr.Zero)
         {
             Win32.DestroyWindow(_overlayHwnd);
             _overlayHwnd = IntPtr.Zero;
-            //Win32.ShowWindow(_overlayHwnd, Win32.SW_HIDE);
         }
         if (_borderBrush != IntPtr.Zero)
         {
             Win32.DeleteObject(_borderBrush);
             _borderBrush = IntPtr.Zero;
         }
-        
+
         // Reset the last target and dimensions
         _lastTargetHwnd = IntPtr.Zero;
         _lastWidth = _lastHeight = 0;
     }
-    
+
+    /// <summary>
+    /// Releases all resources used by the <see cref="WindowHighlightService"/>.
+    /// Internally, it first calls <see cref="ClearHighlight"/>, which destroys the overlay window
+    /// and the border brush, and finally the instance is marked as disposed.
+    /// </summary>
+    /// <remarks>This method should be called when the <see cref="WindowHighlightService"/> is no longer
+    /// needed to ensure that all unmanaged resources are properly released. After calling this method, the instance is
+    /// considered disposed and reset so that <see cref="HighlightWindow"/> can be used again.</remarks>
     public void Dispose()
     {
         if (_isDisposed)
         {
             return;
         }
+
+        // Clear the highlight if it exists
         ClearHighlight();
-        Win32.DestroyWindow(_overlayHwnd);
-        _overlayHwnd = IntPtr.Zero;
-        _isDisposed = true;
+
+        // Since we are disposing, tell the garbage collector not to call
+        // the finalizer (destructor) of "this" object
         GC.SuppressFinalize(this);
+
+        // Signal that the service is disposed
+        _isDisposed = true;
     }
-    
+
     ~WindowHighlightService()
     {
         Dispose();
@@ -216,7 +261,7 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
             case Win32.WM_PAINT:
                 _ = Win32.BeginPaint(hwnd, out var ps);
                 _ = Win32.FillRect(ps.hdc, ref ps.rcPaint, _borderBrush);
-
+                
                 //// Black background, which will be transparent
                 //IntPtr hBlack = Win32.GetStockObject(Win32.BLACK_BRUSH);
                 //_ = Win32.FillRect(ps.hdc, ref ps.rcPaint, hBlack);
