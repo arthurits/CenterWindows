@@ -123,6 +123,24 @@
   <data name="StrAppSettings" xml:space="preserve">
     <value>App settings</value>
   </data>
+  <data name="StrBorderColorDescription" xml:space="preserve">
+    <value>Marquee border color</value>
+  </data>
+  <data name="StrBorderColorHeader" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="StrBorderRadiusDescription" xml:space="preserve">
+    <value>Marquee corner radius in pixels</value>
+  </data>
+  <data name="StrBorderRadiusHeader" xml:space="preserve">
+    <value>Radius</value>
+  </data>
+  <data name="StrBorderThicknessDescription" xml:space="preserve">
+    <value>Marquee border thickness in pixels</value>
+  </data>
+  <data name="StrBorderThicknessHeader" xml:space="preserve">
+    <value>Thickness</value>
+  </data>
   <data name="StrDeactivate" xml:space="preserve">
     <value>Deactivate</value>
   </data>
@@ -152,6 +170,18 @@
   </data>
   <data name="StrResetButton" xml:space="preserve">
     <value>Reset settings</value>
+  </data>
+  <data name="StrSelectChildDescription" xml:space="preserve">
+    <value>Allow child windows selection. It might create unexpected results</value>
+  </data>
+  <data name="StrSelectChildHeader" xml:space="preserve">
+    <value>Select child</value>
+  </data>
+  <data name="StrShowHighlightDescription" xml:space="preserve">
+    <value>Draws a rectangular marquee around the selected window</value>
+  </data>
+  <data name="StrShowHighlightHeader" xml:space="preserve">
+    <value>Highlight window</value>
   </data>
   <data name="StrShowTrayIconDescription" xml:space="preserve">
     <value>Display the app's icon in the Windows taskbar tray for quick access</value>

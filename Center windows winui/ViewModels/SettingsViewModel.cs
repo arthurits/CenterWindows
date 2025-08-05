@@ -7,10 +7,12 @@ using CenterWindow.Models;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
+using CommunityToolkit.WinUI.Helpers;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.System.UserProfile;
+using Windows.UI;
 
 namespace CenterWindow.ViewModels;
 
@@ -56,6 +58,21 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     public partial bool IsLaunchAtStartupEnabled { get; set; }
 
     [ObservableProperty]
+    public partial bool ShowHighlight { get; set; } = true;
+
+    [ObservableProperty]
+    public partial Color BorderColor { get; set; } = Colors.Red;
+
+    [ObservableProperty]
+    public partial int BorderThickness { get; set; } = 0;
+
+    [ObservableProperty]
+    public partial int BorderRadius { get; set; } = 0;
+
+    [ObservableProperty]
+    public partial bool SelectChildWindows { get; set; } = false;
+
+    [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
 
     public string WindowSizeDescription => string.Format(StrWindowSize, _mainWindowService.WindowWidth, _mainWindowService.WindowHeight);
@@ -81,6 +98,12 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         RememberFileDialogPath = _appSettings.RememberFileDialogPath;
         ShowTrayIcon = _appSettings.ShowTrayIcon;
         MinimizeToTray = _appSettings.MinimizeToTray;
+        LaunchAtStartup = _appSettings.LaunchAtStartup;
+        ShowHighlight = _appSettings.ShowHighlight;
+        BorderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(_appSettings.BorderColor);
+        BorderThickness = _appSettings.BorderThickness;
+        BorderRadius = _appSettings.BorderRadius;
+        SelectChildWindows = _appSettings.SelectChildWindows;
 
         // Theme service
         _themeSelectorService = themeSelectorService;
@@ -119,6 +142,11 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
         _syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
         _syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
+        _syncActions[nameof(ShowHighlight)] = () => _appSettings.ShowHighlight = ShowHighlight;
+        _syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
+        _syncActions[nameof(BorderThickness)] = () => _appSettings.BorderThickness = BorderThickness;
+        _syncActions[nameof(BorderRadius)] = () => _appSettings.BorderRadius = BorderRadius;
+        _syncActions[nameof(SelectChildWindows)] = () => _appSettings.SelectChildWindows = SelectChildWindows;
     }
 
     public void Dispose()

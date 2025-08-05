@@ -123,6 +123,24 @@
   <data name="StrAppSettings" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="StrBorderColorDescription" xml:space="preserve">
+    <value>Color del borde del rectángulo de resaltado</value>
+  </data>
+  <data name="StrBorderColorHeader" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="StrBorderRadiusDescription" xml:space="preserve">
+    <value>Radio de las esquinas del rectángulo de resaltado (píxeles)</value>
+  </data>
+  <data name="StrBorderRadiusHeader" xml:space="preserve">
+    <value>Radio</value>
+  </data>
+  <data name="StrBorderThicknessDescription" xml:space="preserve">
+    <value>Grosor del borde del rectángulo de resaltado (píxeles)</value>
+  </data>
+  <data name="StrBorderThicknessHeader" xml:space="preserve">
+    <value>Grosor</value>
+  </data>
   <data name="StrDeactivate" xml:space="preserve">
     <value>Desactivado</value>
   </data>
@@ -152,6 +170,18 @@
   </data>
   <data name="StrResetButton" xml:space="preserve">
     <value>Restablecer valores</value>
+  </data>
+  <data name="StrSelectChildDescription" xml:space="preserve">
+    <value>Permite la selección de ventanas hijas («child»). Pueden producirse resultados imprevistos</value>
+  </data>
+  <data name="StrSelectChildHeader" xml:space="preserve">
+    <value>Ventanas «child»</value>
+  </data>
+  <data name="StrShowHighlightDescription" xml:space="preserve">
+    <value>Dibuja un rectángulo alrededor de la ventana seleccionada</value>
+  </data>
+  <data name="StrShowHighlightHeader" xml:space="preserve">
+    <value>Resaltar ventana</value>
   </data>
   <data name="StrShowTrayIconDescription" xml:space="preserve">
     <value>Muestra el icono de la aplicación en la bandeja de sistema de Windows para un acceso rápido</value>

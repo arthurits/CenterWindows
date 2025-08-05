@@ -93,7 +93,7 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
         {
             Win32.DeleteObject(_borderBrush);
         }
-        _borderBrush = Win32.CreateSolidBrush((int)borderColor);
+        _borderBrush = Win32.CreateSolidBrush(borderColor);
 
         // Create rounded rectangle regions for the border
         IntPtr rgnOuter = Win32.CreateRoundRectRgn(

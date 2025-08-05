@@ -100,6 +100,36 @@ public partial class AppSettings
     public bool LaunchAtStartup { get; set; } = false;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the selected windows should be highlighted.
+    /// </summary>
+    [JsonPropertyName("Show window highlight")]
+    public bool ShowHighlight { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the color used to highlight the border, in ARGB format.
+    /// </summary>
+    [JsonPropertyName("Border highlight color")]
+    public string BorderColor { get; set; } = "#FFFF0000"; // Default red color for the border highlight
+
+    /// <summary>
+    /// Gets or sets the width of the highlight border, in pixels.
+    /// </summary>
+    [JsonPropertyName("Border width")]
+    public int BorderThickness{ get; set; } = 3;
+
+    /// <summary>
+    /// Gets or sets the corner radius of highlight border marquee, in pixels.
+    /// </summary>
+    [JsonPropertyName("Corner radius")]
+    public int BorderRadius { get; set; } = 4;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether child windows can be selected.
+    /// </summary>
+    /// [JsonPropertyName("Select child windows")]
+    public bool SelectChildWindows { get; set; } = false;
+
+    /// <summary>
     /// The application can only be minimized to the system tray if both <see cref="ShowTrayIcon"/> and <see cref="MinimizeToTray"/> are true.
     /// </summary>
     [JsonIgnore]

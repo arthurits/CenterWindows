@@ -42,6 +42,26 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial string StrLaunchAtStartupHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrLaunchAtStartupDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrShowHighlightHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrShowHighlightDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrBorderColorHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrBorderColorDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrBorderThicknessHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrBorderThicknessDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrBorderRadiusHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrBorderRadiusDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrSelectChildHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrSelectChildDescription { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial string StrResetButton { get; set; } = string.Empty;
@@ -100,6 +120,20 @@ public partial class SettingsViewModel : ObservableRecipient
         // Launch at startup
         StrLaunchAtStartupHeader = "StrLaunchAtStartupHeader".GetLocalized("Settings");
         StrLaunchAtStartupDescription = "StrLaunchAtStartupDescription".GetLocalized("Settings");
+
+        // Highlight settings card
+        StrShowHighlightHeader = "StrShowHighlightHeader".GetLocalized("Settings");
+        StrShowHighlightDescription = "StrShowHighlightDescription".GetLocalized("Settings");
+        StrBorderColorHeader = "StrBorderColorHeader".GetLocalized("Settings");
+        StrBorderColorDescription = "StrBorderColorDescription".GetLocalized("Settings");
+        StrBorderThicknessHeader = "StrBorderThicknessHeader".GetLocalized("Settings");
+        StrBorderThicknessDescription = "StrBorderThicknessDescription".GetLocalized("Settings");
+        StrBorderRadiusHeader = "StrBorderRadiusHeader".GetLocalized("Settings");
+        StrBorderRadiusDescription = "StrBorderRadiusDescription".GetLocalized("Settings");
+
+        // SelectChildWindows
+        StrSelectChildHeader = "StrSelectChildHeader".GetLocalized("Settings");
+        StrSelectChildDescription = "StrSelectChildDescription".GetLocalized("Settings");
 
         // Reset button
         StrResetButton = "StrResetButton".GetLocalized("Settings");
