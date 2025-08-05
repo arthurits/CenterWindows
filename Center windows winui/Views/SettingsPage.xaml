@@ -102,23 +102,52 @@
                     <ToggleSwitch IsOn="{x:Bind ViewModel.LaunchAtStartup, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard
+                <controls:SettingsExpander
+                    x:Name="cardHighlighter"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE91B;}"
                     Header="Border color"
-                    Description="Selecciona el color del borde">
-                    <controls:SettingsCard.Content>
-                        <muxc:ColorPicker
-                            ColorSpectrumShape="Box"
-                            IsMoreButtonVisible="False"
-                            IsColorSliderVisible="True"
-                            IsColorChannelTextInputVisible="True"
-                            IsHexInputVisible="True"
-                            IsAlphaEnabled="False"
-                            IsAlphaSliderVisible="True"
-                            IsAlphaTextInputVisible="True"
-                            Color="{x:Bind ViewModel.BorderColor, Mode=TwoWay}" />
-                    </controls:SettingsCard.Content>
+                    Description="Selecciona el color del borde"
+                    IsEnabled="{x:Bind ViewModel.ShowHighlight, Mode=OneWay}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.ShowHighlight, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard x:Name="cardBorderColor"
+                            Header="{x:Bind ViewModel.StrBorderColorHeader}"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE790;}"
+                            Description="{x:Bind ViewModel.StrBorderColorDescription}">
+                            <muxc:ColorPicker
+                                ColorSpectrumShape="Box"
+                                IsMoreButtonVisible="False"
+                                IsColorSliderVisible="True"
+                                IsColorChannelTextInputVisible="True"
+                                IsHexInputVisible="True"
+                                IsAlphaEnabled="False"
+                                IsAlphaSliderVisible="True"
+                                IsAlphaTextInputVisible="True"
+                                Color="{x:Bind ViewModel.BorderColor, Mode=TwoWay}" />
+                        </controls:SettingsCard>
+                        <controls:SettingsCard x:Name="cardBorderThickness"
+                            Header="{x:Bind ViewModel.StrBorderThicknessHeader}"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE8B3;}"
+                            Description="{x:Bind ViewModel.StrBorderThicknessDescription}">
+                            <Slider Minimum="0" Maximum="10" Value="{x:Bind ViewModel.BorderThickness, Mode=TwoWay}" />
+                        </controls:SettingsCard>
+                        <controls:SettingsCard x:Name="cardBorderRadius"
+                            Header="{x:Bind ViewModel.StrBorderRadiusHeader}"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE8B3;}"
+                            Description="{x:Bind ViewModel.StrBorderRadiusDescription}">
+                            <Slider Minimum="0" Maximum="50" Value="{x:Bind ViewModel.BorderThickness, Mode=TwoWay}" />
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+
+                <controls:SettingsCard
+                    x:Name = "cardShowChild"
+                    Header="{x:Bind ViewModel.StrShowChildHeader}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE8B5;}"
+                    Description="{x:Bind ViewModel.StrShowChildDescription}" >
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.ShowChildWindows, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
                 </controls:SettingsCard>
-                
+
                 <!--Reset settings button-->
                 <Button x:Name="BtnReset"
                         Margin="{StaticResource SmallTopMargin}"

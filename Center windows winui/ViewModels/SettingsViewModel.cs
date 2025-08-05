@@ -64,10 +64,10 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     public partial Color BorderColor { get; set; } = Colors.Red;
 
     [ObservableProperty]
-    public partial int BorderWidth { get; set; } = 0;
+    public partial int BorderThickness { get; set; } = 0;
 
     [ObservableProperty]
-    public partial int CornerRadius { get; set; } = 0;
+    public partial int BorderRadius { get; set; } = 0;
 
     [ObservableProperty]
     public partial bool ShowChildWindows { get; set; } = false;
@@ -144,8 +144,8 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
         _syncActions[nameof(ShowHighlight)] = () => _appSettings.ShowHighlight = ShowHighlight;
         _syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
-        _syncActions[nameof(BorderWidth)] = () => _appSettings.BorderWidth = BorderWidth;
-        _syncActions[nameof(CornerRadius)] = () => _appSettings.CornerRadius = CornerRadius;
+        _syncActions[nameof(BorderThickness)] = () => _appSettings.BorderThickness = BorderThickness;
+        _syncActions[nameof(BorderRadius)] = () => _appSettings.BorderRadius = BorderRadius;
         _syncActions[nameof(ShowChildWindows)] = () => _appSettings.SelectChildWindows = ShowChildWindows;
     }
 

@@ -106,7 +106,7 @@ public partial class AppSettings
     public bool ShowHighlight { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets the color used to highlight the border in ARGB format.
+    /// Gets or sets the color used to highlight the border, in ARGB format.
     /// </summary>
     [JsonPropertyName("Border highlight color")]
     public string BorderColor { get; set; } = "#FFFF0000"; // Default red color for the border highlight
@@ -115,13 +115,13 @@ public partial class AppSettings
     /// Gets or sets the width of the highlight border, in pixels.
     /// </summary>
     [JsonPropertyName("Border width")]
-    public int BorderWidth { get; set; } = 3;
+    public int BorderThickness{ get; set; } = 3;
 
     /// <summary>
-    /// Gets or sets the corner radius of highlight marquee, in pixels.
+    /// Gets or sets the corner radius of highlight border marquee, in pixels.
     /// </summary>
     [JsonPropertyName("Corner radius")]
-    public int CornerRadius { get; set; } = 4;
+    public int BorderRadius { get; set; } = 4;
 
     /// <summary>
     /// Gets or sets a value indicating whether child windows can be selected.
