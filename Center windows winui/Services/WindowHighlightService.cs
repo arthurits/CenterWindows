@@ -57,7 +57,8 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
             return;
         }
 
-        // If the overlay is already showing for the same window and dimensions, skip
+        // If the overlay is already showing for the same window and dimensions,
+        // or the overlay is the same as the target window, skip it
         if ((_overlayHwnd != IntPtr.Zero
             && targetHwnd == _lastTargetHwnd
             && width == _lastWidth
@@ -134,12 +135,11 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
     }
 
     /// <summary>
-    /// Clears (hides) any active highlight overlay and resets the associated resources and state.
-    /// Please use <see cref="Dispose"/> to release all resources (incluing the overlay) when done with this service.
+    /// Release any active highlight overlay and resets the associated resources and state.
     /// </summary>
-    /// <remarks>This method hides the highlight overlay window, releases any allocated resources such as the
-    /// border brush,  and resets the last target and dimensions to their default values. After calling this method, no
-    /// highlight  will be visible, and the state will be ready for a new highlight to be applied.</remarks>
+    /// <remarks>This method releases the highlight overlay window, as well as any allocated resources such as the
+    /// border brush. It also resets the last target and dimensions to their default values. After calling this method,
+    /// resources will need to be allocated by calling <see cref="HighlightWindow"/>.</remarks>
     public void ClearHighlight()
     {
         if (_overlayHwnd != IntPtr.Zero)
@@ -160,12 +160,12 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
 
     /// <summary>
     /// Releases all resources used by the <see cref="WindowHighlightService"/>.
-    /// Internally, it first calls <see cref="ClearHighlight"/>, destroyes the overlay window
-    /// and finallly releases the border brush, 
+    /// Internally, it first calls <see cref="ClearHighlight"/>, which destroys the overlay window
+    /// and the border brush, and finally the instance is marked as disposed.
     /// </summary>
     /// <remarks>This method should be called when the <see cref="WindowHighlightService"/> is no longer
     /// needed to ensure that all unmanaged resources are properly released. After calling this method, the instance is
-    /// considered disposed and reset so that <see cref="WindowHighlightService"/> can be used again.</remarks>
+    /// considered disposed and reset so that <see cref="HighlightWindow"/> can be used again.</remarks>
     public void Dispose()
     {
         Debug.WriteLine($"Disposing WindowHighlightService - _isDisposed: {_isDisposed}");
