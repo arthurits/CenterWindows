@@ -42,7 +42,7 @@ internal static partial class Win32
                 int nHeightEllipse);
 
     [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern IntPtr CreateSolidBrush(int crColor);
+    public static extern IntPtr CreateSolidBrush(uint crColor);
 
     [DllImport("gdi32.dll", SetLastError = true)]
     public static extern bool DeleteDC(IntPtr hdc);
