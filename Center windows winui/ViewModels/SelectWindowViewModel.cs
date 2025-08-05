@@ -131,7 +131,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 if (e.HWnd != _lastHighlightedHwnd)
                 {
                     // Clear (hide) the previous highlight
-                    _highlightService.ClearHighlight();
+                    _highlightService.HideHighlight();
 
                     // If the new HWND is valid, highlight it
                     if (e.HWnd != IntPtr.Zero)
