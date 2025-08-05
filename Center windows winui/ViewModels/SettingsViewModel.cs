@@ -98,6 +98,12 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         RememberFileDialogPath = _appSettings.RememberFileDialogPath;
         ShowTrayIcon = _appSettings.ShowTrayIcon;
         MinimizeToTray = _appSettings.MinimizeToTray;
+        LaunchAtStartup = _appSettings.LaunchAtStartup;
+        ShowHighlight = _appSettings.ShowHighlight;
+        BorderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(_appSettings.BorderColor);
+        BorderWidth = _appSettings.BorderWidth;
+        CornerRadius = _appSettings.CornerRadius;
+        ShowChildWindows = _appSettings.SelectChildWindows;
 
         // Theme service
         _themeSelectorService = themeSelectorService;
