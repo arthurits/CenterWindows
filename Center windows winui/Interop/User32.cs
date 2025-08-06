@@ -251,6 +251,9 @@ internal static partial class Win32
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern bool UnregisterClass(string lpClassName, IntPtr hInstance);
+
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool UpdateLayeredWindow(
         IntPtr hwnd,
