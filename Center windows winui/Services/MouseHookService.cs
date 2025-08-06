@@ -171,17 +171,15 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
     private void Cleanup()
     {
-        if (_hookId == IntPtr.Zero)
+        if (_hookId != IntPtr.Zero)
         {
-            return;
+            if (!Win32.UnhookWindowsHookEx(_hookId))
+            {
+                var err = Marshal.GetLastWin32Error();
+                Debug.WriteLine($"Failed to unhook mouse: {err}");
+            }
+            _hookId = IntPtr.Zero;
         }
-
-        if (!Win32.UnhookWindowsHookEx(_hookId))
-        {
-            var err = Marshal.GetLastWin32Error();
-            Debug.WriteLine($"Failed to unhook mouse: {err}");
-        }
-        _hookId = IntPtr.Zero;
 
         if (_changeCursor)
         {
