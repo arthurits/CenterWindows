@@ -61,6 +61,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private int _borderThickness;
     private int _borderRadius;
     private bool _selectChild;
+    private bool _changeCursor;
 
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
@@ -79,6 +80,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         _borderThickness = _appSettings.BorderThickness;
         _borderRadius = _appSettings.BorderRadius;
         _selectChild = _appSettings.SelectChildWindows;
+        _changeCursor = _appSettings.ChangeCursor;
 
         _centerService = centerService;
         _mouseHook = mouseHook;
@@ -128,6 +130,9 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 break;
             case nameof(AppSettings.SelectChildWindows):
                 _selectChild = (bool)(e.NewValue ?? false);
+                break;
+            case nameof(AppSettings.ChangeCursor):
+                _changeCursor = (bool)(e.NewValue ?? true);
                 break;
         }
     }
@@ -204,7 +209,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         IsLeftButtonDown = true;
         _mouseHook.CaptureMouse(
             cursorPath: Path.GetFullPath(_cursorPath),
-            changeCursor: true,
+            changeCursor: _changeCursor,
             onlyParentWnd: !_selectChild);
     }
 
