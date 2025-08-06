@@ -8,13 +8,14 @@ namespace CenterWindow.Services;
 public partial class WindowHighlightService : IWindowHighlightService, IDisposable
 {
     private const string OverlayClassName = "HighlightOverlay";
-    private readonly IntPtr _hInst = Win32.GetModuleHandle(null!);
+    private readonly IntPtr _hInst;
     private IntPtr _overlayHwnd = IntPtr.Zero;
     private IntPtr _borderBrush = IntPtr.Zero;
     private IntPtr _lastTargetHwnd = IntPtr.Zero;
     private int _lastWidth;
     private int _lastHeight;
     private bool _isDisposed;
+
     private readonly Win32.WndProc _wndProcDelegate;
     
     public WindowHighlightService()
@@ -122,8 +123,10 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
     }
 
     /// <summary>
-    /// Hides the highlight overlay without clearing it.
+    /// Hides the highlight overlay windows without clearing it.
     /// </summary>
+    /// <remarks>This should be called when the highlight is no
+    /// longer needed but you may want to show it again later.</remarks>
     public void HideHighlight()
     {
         if (_overlayHwnd != IntPtr.Zero)
@@ -159,11 +162,11 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
     /// <summary>
     /// Releases all resources used by the <see cref="WindowHighlightService"/>.
     /// Internally, it first calls <see cref="ClearHighlight"/>, which destroys the overlay window
-    /// and the border brush, and finally the instance is marked as disposed.
+    /// and the border brush, and afterwards the OverlayClass is unregistered and the instance is marked as disposed.
     /// </summary>
     /// <remarks>This method should be called when the <see cref="WindowHighlightService"/> is no longer
     /// needed to ensure that all unmanaged resources are properly released. After calling this method, the instance is
-    /// considered disposed and reset so that <see cref="HighlightWindow"/> can be used again.</remarks>
+    /// considered disposed and reset, so that <see cref="HighlightWindow"/> can be used again.</remarks>
     public void Dispose()
     {
         if (_isDisposed)
@@ -173,6 +176,15 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
 
         // Clear the highlight if it exists
         ClearHighlight();
+
+        // Unregister the overlay class
+        // Catch any errors that may occur during unregistration for debugging purposes
+        var result = Win32.UnregisterClass(OverlayClassName, _hInst);
+        if (!result)
+        {
+            var error = Marshal.GetLastWin32Error();
+            System.Diagnostics.Debug.WriteLine($"UnregisterClass failed: code {error}");
+        }
 
         // Since we are disposing, tell the garbage collector not to call
         // the finalizer (destructor) of "this" object
