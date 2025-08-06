@@ -141,6 +141,12 @@
   <data name="StrBorderThicknessHeader" xml:space="preserve">
     <value>Grosor</value>
   </data>
+  <data name="StrChangeCursorDescription" xml:space="preserve">
+    <value>Cambiar el cursor a un punto de mira para la selección de ventanas</value>
+  </data>
+  <data name="StrChangeCursorHeader" xml:space="preserve">
+    <value>Cursor de selección</value>
+  </data>
   <data name="StrDeactivate" xml:space="preserve">
     <value>Desactivado</value>
   </data>
