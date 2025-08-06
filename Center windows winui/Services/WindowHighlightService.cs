@@ -159,11 +159,11 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
     /// <summary>
     /// Releases all resources used by the <see cref="WindowHighlightService"/>.
     /// Internally, it first calls <see cref="ClearHighlight"/>, which destroys the overlay window
-    /// and the border brush, and finally the instance is marked as disposed.
+    /// and the border brush, and afterwards the OverlayClass is unregistered and the instance is marked as disposed.
     /// </summary>
     /// <remarks>This method should be called when the <see cref="WindowHighlightService"/> is no longer
     /// needed to ensure that all unmanaged resources are properly released. After calling this method, the instance is
-    /// considered disposed and reset so that <see cref="HighlightWindow"/> can be used again.</remarks>
+    /// considered disposed and reset, so that <see cref="HighlightWindow"/> can be used again.</remarks>
     public void Dispose()
     {
         if (_isDisposed)
@@ -173,6 +173,14 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
 
         // Clear the highlight if it exists
         ClearHighlight();
+
+        // Unregister the overlay class
+        var result = Win32.UnregisterClass(OverlayClassName, _hInst);
+        if (!result)
+        {
+            var error = Marshal.GetLastWin32Error();
+            System.Diagnostics.Debug.WriteLine($"UnregisterClass failed: code {error}");
+        }
 
         // Since we are disposing, tell the garbage collector not to call
         // the finalizer (destructor) of "this" object

@@ -219,8 +219,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         }
         
         // Delete the highlight from the last selected window
-        //_highlightService.ClearHighlight();
-        _highlightService.Dispose();
+        _highlightService.ClearHighlight();
         _lastHighlightedHwnd = IntPtr.Zero;
     }
 
