@@ -1,18 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Windows.System.UserProfile;
 
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
 using CenterWindow.Models;
-
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.Helpers;
-using Microsoft.UI;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Windows.System.UserProfile;
-using Windows.UI;
 
 namespace CenterWindow.ViewModels;
 
