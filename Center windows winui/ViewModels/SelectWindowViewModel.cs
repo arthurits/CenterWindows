@@ -202,7 +202,10 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private void OnLeftButtonDown(PointerRoutedEventArgs args)
     {
         IsLeftButtonDown = true;
-        _mouseHook.CaptureMouse(Path.GetFullPath(_cursorPath), !_selectChild, true);
+        _mouseHook.CaptureMouse(
+            cursorPath: Path.GetFullPath(_cursorPath),
+            changeCursor: true,
+            onlyParentWnd: !_selectChild);
     }
 
     [RelayCommand]
