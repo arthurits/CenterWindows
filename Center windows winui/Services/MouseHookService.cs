@@ -20,7 +20,9 @@ public partial class MouseHookService : IMouseHookService, IDisposable
     private string _cursorPath = string.Empty;
     private bool _changeCursor;
     private bool _onlyParentWnd;
-    private bool _isDisposed;
+    private enum State { Idle, Capturing, Disposed }
+    private State _state = State.Idle;
+    private int _unmanagedCleanupDone;  // 0 = pending cleanup, 1 = cleanup done
 
     public event EventHandler<MouseMoveEventArgs>? MouseMoved;
     protected virtual void OnMouseMoved(MouseMoveEventArgs e) => MouseMoved?.Invoke(this, e);
@@ -33,15 +35,36 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
     public bool CaptureMouse(string cursorPath, bool changeCursor = false, bool onlyParentWnd = false, CancellationToken cancellationToken = default)
     {
+        ThrowIfDisposed();
+        if (_state != State.Idle)
+        {
+            throw new InvalidOperationException("Hook is already active or the service has been disposed");
+        }
+
+        // Get the service parameters
         _cursorPath = cursorPath;
         _changeCursor = changeCursor;
         _onlyParentWnd = onlyParentWnd;
+
+        // Set the flag to 0 before starting the capture
+        Interlocked.Exchange(ref _unmanagedCleanupDone, 0);
+
+        _state = State.Capturing;
+        
         return CaptureWindowUnderCursorAsync(cancellationToken);
     }
 
     public void ReleaseMouse()
     {
-        Cleanup();
+        ThrowIfDisposed();
+        if (_state != State.Capturing)
+        {
+            return;
+        }
+
+        ReleaseUnmanaged();
+        _state = State.Idle;
+        _taskCS?.TrySetCanceled();
     }
 
     private bool CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default)
@@ -89,8 +112,15 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             throw new Win32Exception(Marshal.GetLastWin32Error(), "Error when installing mouse hook");
         }
 
-        // Cancellation: call Cleanup if the operation is canceled
-        _ctr = cancellationToken.Register(Cleanup);
+        // Cancellation in case the operation is canceled
+        _ctr = cancellationToken.Register(() =>
+        {
+            // Release resources and reset state
+            ReleaseUnmanaged();
+            _state = State.Idle;
+            // Notify the TaskCompletionSource
+            _taskCS?.TrySetCanceled();
+        });
 
         return result;
     }
@@ -123,7 +153,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         catch
         {
             // Handle any exceptions that might occur during the hook callback
-            Cleanup();
+            ReleaseUnmanaged();
         }
 
         return Win32.CallNextHookEx(_hookId, nCode, wParam, lParam);
@@ -163,39 +193,43 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         OnMouseMoved(new MouseMoveEventArgs(hWnd, className, windowText, rect.Left, rect.Top, rect.Width, rect.Height));
     }
 
-    private void Cleanup()
+    private void ReleaseUnmanaged()
     {
-        if (_hookId != IntPtr.Zero)
+        // Only the first call to this method will execute the cleanup
+        if (Interlocked.Exchange(ref _unmanagedCleanupDone, 1) == 0)
         {
-            if (!Win32.UnhookWindowsHookEx(_hookId))
+            if (_hookId != IntPtr.Zero)
             {
-                var err = Marshal.GetLastWin32Error();
-                Debug.WriteLine($"Failed to unhook mouse: {err}");
+                if (!Win32.UnhookWindowsHookEx(_hookId))
+                {
+                    var err = Marshal.GetLastWin32Error();
+                    Debug.WriteLine($"Failed to unhook mouse: {err}");
+                }
+                _hookId = IntPtr.Zero;
             }
-            _hookId = IntPtr.Zero;
-        }
 
-        if (_changeCursor)
-        {
-            // Restore the default arrow cursor
-            RestoreSystemCursor(_originalCursor);
-        }
+            if (_changeCursor)
+            {
+                // Restore the default arrow cursor
+                RestoreSystemCursor(_originalCursor);
+            }
 
-        // Destroy the allocate cursors on the heap to free resources
-        if (_originalCursor != IntPtr.Zero)
-        {
-            Win32.DestroyIcon(_originalCursor);
-            _originalCursor = IntPtr.Zero;
-        }
-        if (_hCrossCopy != IntPtr.Zero)
-        {
-            Win32.DestroyIcon(_hCrossCopy);
-            _hCrossCopy = IntPtr.Zero;
-        }
+            // Destroy the allocate cursors on the heap to free resources
+            if (_originalCursor != IntPtr.Zero)
+            {
+                Win32.DestroyIcon(_originalCursor);
+                _originalCursor = IntPtr.Zero;
+            }
+            if (_hCrossCopy != IntPtr.Zero)
+            {
+                Win32.DestroyIcon(_hCrossCopy);
+                _hCrossCopy = IntPtr.Zero;
+            }
 
-        // Free cancellation token
-        _ctr?.Dispose();
-        _ctr = null;
+            // Free cancellation token
+            _ctr?.Dispose();
+            _ctr = null;
+        }
     }
 
     private void RestoreSystemCursor(IntPtr hCursor)
@@ -204,45 +238,40 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         _ = Win32.SystemParametersInfo(Win32.SPI_SETCURSORS, 0, IntPtr.Zero, Win32.SPIF_SENDCHANGE);
     }
 
-    protected virtual void Dispose(bool disposing)
+    private void ReleaseManaged()
     {
-        if (_isDisposed)
+        // Cancel and set to null TaskCompletionSource
+        if (_taskCS != null && !_taskCS.Task.IsCompleted)
         {
-            return;
+            _taskCS.TrySetCanceled();
         }
+        _taskCS = null;
 
-        // Free managed resources here
-        // e.g. events, injected services, etc.
-        if (disposing)
-        {
-            // Cancel and set to null TaskCompletionSource
-            if (_taskCS != null && !_taskCS.Task.IsCompleted)
-            {
-                _taskCS.TrySetCanceled();
-            }
-            _taskCS = null;
+        // Free cancellation token registration
+        _ctr?.Dispose();
+        _ctr = default;
 
-            // Free cancellation token registration
-            _ctr?.Dispose();
-            _ctr = default;
-
-            // Unsubscribe all listeners from the MouseMoved event
-            MouseMoved = null;
-        }
-
-        // Free unmanaged resources here
-        Cleanup();
-
-        _isDisposed = true;
+        // Unsubscribe all listeners from the MouseMoved event
+        MouseMoved = null;
     }
 
     public void Dispose()
     {
-        Dispose(disposing: true);
+        if (_state == State.Disposed)
+        {
+            return;
+        }
+
+        ReleaseUnmanaged();
+        ReleaseManaged();
+
+        _state = State.Disposed;
         GC.SuppressFinalize(this);
     }
 
-    ~MouseHookService() => Dispose(disposing: false);
+    ~MouseHookService() => Dispose();
+
+    private void ThrowIfDisposed() => ObjectDisposedException.ThrowIf(_state == State.Disposed, nameof(MouseHookService));
 }
 
 public static class CursorLoader
