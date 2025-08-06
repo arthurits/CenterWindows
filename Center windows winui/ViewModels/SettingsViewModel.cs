@@ -18,9 +18,6 @@ namespace CenterWindow.ViewModels;
 
 public partial class SettingsViewModel : ObservableRecipient, IDisposable
 {
-    //// Settings synchronization dictionary
-    //private readonly Dictionary<string, Action> _syncActions = [];
-
     // Services
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly ILocalizationService _localizationService;
@@ -97,18 +94,6 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _settingsService = settings;
         _appSettings = settings.GetValues;
 
-        //// Get settings and update the observable properties
-        //WindowPosition = _appSettings.WindowPosition;
-        //RememberFileDialogPath = _appSettings.RememberFileDialogPath;
-        //ShowTrayIcon = _appSettings.ShowTrayIcon;
-        //MinimizeToTray = _appSettings.MinimizeToTray;
-        //LaunchAtStartup = _appSettings.LaunchAtStartup;
-        //ShowHighlight = _appSettings.ShowHighlight;
-        //BorderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(_appSettings.BorderColor);
-        //BorderThickness = _appSettings.BorderThickness;
-        //BorderRadius = _appSettings.BorderRadius;
-        //SelectChildWindows = _appSettings.SelectChildWindows;
-
         // Theme service
         _themeSelectorService = themeSelectorService;
         Theme = (int)Enum.Parse<ElementTheme>(_appSettings.ThemeName);
@@ -139,18 +124,6 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
 
         SelectedLanguageIndex = cultureList.Count > 0 ? Math.Max(0, selectedCultureIndex) : -1;
         //SelectedLanguageIndex = selectedCultureIndex;
-
-        //// Populate the settings dictionary for synchronization
-        //_syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
-        //_syncActions[nameof(RememberFileDialogPath)] = () => _appSettings.RememberFileDialogPath = RememberFileDialogPath;
-        //_syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
-        //_syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
-        //_syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
-        //_syncActions[nameof(ShowHighlight)] = () => _appSettings.ShowHighlight = ShowHighlight;
-        //_syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
-        //_syncActions[nameof(BorderThickness)] = () => _appSettings.BorderThickness = BorderThickness;
-        //_syncActions[nameof(BorderRadius)] = () => _appSettings.BorderRadius = BorderRadius;
-        //_syncActions[nameof(SelectChildWindows)] = () => _appSettings.SelectChildWindows = SelectChildWindows;
 
         // Retrieve the properties from the AppSettings POCO
         _pocoSettings = typeof(AppSettings)
