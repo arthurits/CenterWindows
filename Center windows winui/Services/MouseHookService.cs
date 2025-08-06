@@ -51,7 +51,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
         _state = State.Capturing;
         
-        return CaptureWindowUnderCursorAsync(cancellationToken);
+        return CaptureWindowUnderCursor(cancellationToken);
     }
 
     public void ReleaseMouse()
