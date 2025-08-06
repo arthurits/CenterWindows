@@ -124,9 +124,9 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
 
     /// <summary>
     /// Hides the highlight overlay windows without clearing it.
+    /// </summary>
     /// <remarks>This should be called when the highlight is no
     /// longer needed but you may want to show it again later.</remarks>
-    /// </summary>
     public void HideHighlight()
     {
         if (_overlayHwnd != IntPtr.Zero)
