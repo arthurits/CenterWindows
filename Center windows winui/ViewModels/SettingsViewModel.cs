@@ -219,25 +219,6 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         }
     }
 
-    private void AppSettings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(_appSettings.WindowLeft) || e.PropertyName == nameof(_appSettings.WindowTop))
-        {
-            OnPropertyChanged(nameof(WindowPositionDescription));
-        }
-        else if (e.PropertyName == nameof(_appSettings.WindowWidth) || e.PropertyName == nameof(_appSettings.WindowHeight))
-        {
-            OnPropertyChanged(nameof(WindowSizeDescription));
-        }
-        else
-        {
-            if (IsResetVisible == false)
-            {
-                IsResetVisible = true;
-            }
-        }
-    }
-
     /// <summary>
     /// Override OnPropertyChanged to handle custom behaviour
     /// </summary>
