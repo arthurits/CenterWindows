@@ -140,8 +140,15 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
         // Retrieve the window under the cursor
         var hWnd = Win32.WindowFromPoint(hookStruct.pt);
-        
-        if (_onlyParentWnd && hWnd != IntPtr.Zero)
+
+        // If no window is found, exit early
+        // Since everything is a window, we should not need to check for IntPtr.Zero
+        if (hWnd == IntPtr.Zero)
+        {
+            return;
+        }
+
+        if (_onlyParentWnd)
         {
             // GA_ROOT = 2 → obtiene la ventana toplevel
             hWnd = Win32.GetAncestor(hWnd, Win32.GA_ROOT);
