@@ -8,13 +8,14 @@ namespace CenterWindow.Services;
 public partial class WindowHighlightService : IWindowHighlightService, IDisposable
 {
     private const string OverlayClassName = "HighlightOverlay";
-    private readonly IntPtr _hInst = Win32.GetModuleHandle(null!);
+    private readonly IntPtr _hInst;
     private IntPtr _overlayHwnd = IntPtr.Zero;
     private IntPtr _borderBrush = IntPtr.Zero;
     private IntPtr _lastTargetHwnd = IntPtr.Zero;
     private int _lastWidth;
     private int _lastHeight;
     private bool _isDisposed;
+
     private readonly Win32.WndProc _wndProcDelegate;
     
     public WindowHighlightService()
