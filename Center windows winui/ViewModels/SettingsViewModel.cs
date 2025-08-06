@@ -1,26 +1,20 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Windows.System.UserProfile;
 
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
 using CenterWindow.Models;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.Helpers;
-using Microsoft.UI;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Windows.System.UserProfile;
-using Windows.UI;
-
 namespace CenterWindow.ViewModels;
 
 public partial class SettingsViewModel : ObservableRecipient, IDisposable
 {
-    //// Settings synchronization dictionary
-    //private readonly Dictionary<string, Action> _syncActions = [];
-
     // Services
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly ILocalizationService _localizationService;
@@ -97,18 +91,6 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         _settingsService = settings;
         _appSettings = settings.GetValues;
 
-        //// Get settings and update the observable properties
-        //WindowPosition = _appSettings.WindowPosition;
-        //RememberFileDialogPath = _appSettings.RememberFileDialogPath;
-        //ShowTrayIcon = _appSettings.ShowTrayIcon;
-        //MinimizeToTray = _appSettings.MinimizeToTray;
-        //LaunchAtStartup = _appSettings.LaunchAtStartup;
-        //ShowHighlight = _appSettings.ShowHighlight;
-        //BorderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(_appSettings.BorderColor);
-        //BorderThickness = _appSettings.BorderThickness;
-        //BorderRadius = _appSettings.BorderRadius;
-        //SelectChildWindows = _appSettings.SelectChildWindows;
-
         // Theme service
         _themeSelectorService = themeSelectorService;
         Theme = (int)Enum.Parse<ElementTheme>(_appSettings.ThemeName);
@@ -139,18 +121,6 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
 
         SelectedLanguageIndex = cultureList.Count > 0 ? Math.Max(0, selectedCultureIndex) : -1;
         //SelectedLanguageIndex = selectedCultureIndex;
-
-        //// Populate the settings dictionary for synchronization
-        //_syncActions[nameof(WindowPosition)] = () => _appSettings.WindowPosition = WindowPosition;
-        //_syncActions[nameof(RememberFileDialogPath)] = () => _appSettings.RememberFileDialogPath = RememberFileDialogPath;
-        //_syncActions[nameof(ShowTrayIcon)] = () => _appSettings.ShowTrayIcon = ShowTrayIcon;
-        //_syncActions[nameof(MinimizeToTray)] = () => _appSettings.MinimizeToTray = MinimizeToTray;
-        //_syncActions[nameof(LaunchAtStartup)] = () => _appSettings.LaunchAtStartup = LaunchAtStartup;
-        //_syncActions[nameof(ShowHighlight)] = () => _appSettings.ShowHighlight = ShowHighlight;
-        //_syncActions[nameof(BorderColor)] = () => _appSettings.BorderColor = BorderColor.ToString();
-        //_syncActions[nameof(BorderThickness)] = () => _appSettings.BorderThickness = BorderThickness;
-        //_syncActions[nameof(BorderRadius)] = () => _appSettings.BorderRadius = BorderRadius;
-        //_syncActions[nameof(SelectChildWindows)] = () => _appSettings.SelectChildWindows = SelectChildWindows;
 
         // Retrieve the properties from the AppSettings POCO
         _pocoSettings = typeof(AppSettings)
@@ -219,25 +189,6 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         }
     }
 
-    private void AppSettings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(_appSettings.WindowLeft) || e.PropertyName == nameof(_appSettings.WindowTop))
-        {
-            OnPropertyChanged(nameof(WindowPositionDescription));
-        }
-        else if (e.PropertyName == nameof(_appSettings.WindowWidth) || e.PropertyName == nameof(_appSettings.WindowHeight))
-        {
-            OnPropertyChanged(nameof(WindowSizeDescription));
-        }
-        else
-        {
-            if (IsResetVisible == false)
-            {
-                IsResetVisible = true;
-            }
-        }
-    }
-
     /// <summary>
     /// Override OnPropertyChanged to handle custom behaviour
     /// </summary>
@@ -248,23 +199,14 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         // Call the base function
         base.OnPropertyChanged(e);
 
-        //// If the property name starts with "Str" then it's a localization variable and we are not concerned with them
-        //if (!_syncActions.ContainsKey(e.PropertyName ?? string.Empty))
-        //{
-        //    return;
-        //}
-
-        //// Update POCO: the AppSettings properties based on the ViewModel properties
-        //if (_syncActions.TryGetValue(e.PropertyName!, out var action))
-        //{
-        //    action();
-        //}
-
-        if(_pocoSettings is null || e.PropertyName is null)
+        // If the AppSettings POCO is not initialized or the property name is null, do nothing
+        if (_pocoSettings is null || e.PropertyName is null)
         {
             return;
         }
-        
+
+        // The BorderColorUI property is a special case, as it is a Windows.UI.Color type
+        // and needs to be converted to a string for the AppSettings POCO
         if (e.PropertyName == nameof(BorderColorUI))
         {   
             BorderColor = BorderColorUI.ToString() ?? string.Empty;
