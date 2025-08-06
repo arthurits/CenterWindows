@@ -73,6 +73,9 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     [ObservableProperty]
     public partial bool IsResetVisible { get; set; } = false;
 
+    [ObservableProperty]
+    public partial bool ChangeCursor { get; set; } = true;
+
     public string WindowSizeDescription => string.Format(StrWindowSize, _mainWindowService.WindowWidth, _mainWindowService.WindowHeight);
 
     public string WindowPositionDescription => string.Format(StrWindowPosition, _mainWindowService.WindowTop, _mainWindowService.WindowLeft);

@@ -69,6 +69,10 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial string StrActivate { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrDeactivate { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrChangeCursorHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrChangeCursorDescription { get; set; } = string.Empty;
 
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
@@ -134,6 +138,10 @@ public partial class SettingsViewModel : ObservableRecipient
         // SelectChildWindows
         StrSelectChildHeader = "StrSelectChildHeader".GetLocalized("Settings");
         StrSelectChildDescription = "StrSelectChildDescription".GetLocalized("Settings");
+
+        // Change cursor
+        StrChangeCursorHeader = "StrChangeCursorHeader".GetLocalized("Settings");
+        StrChangeCursorDescription = "StrChangeCursorDescription".GetLocalized("Settings");
 
         // Reset button
         StrResetButton = "StrResetButton".GetLocalized("Settings");

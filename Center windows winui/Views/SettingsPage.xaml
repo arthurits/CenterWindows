@@ -150,6 +150,14 @@
                     <ToggleSwitch IsOn="{x:Bind ViewModel.SelectChildWindows, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
                 </controls:SettingsCard>
 
+                <controls:SettingsCard
+                    x:Name = "cardChangeCursor"
+                    Header="{x:Bind ViewModel.StrChangeCursorHeader}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE8B5;}"
+                    Description="{x:Bind ViewModel.StrChangeCursorDescription}" >
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.ChangeCursor, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
+                </controls:SettingsCard>
+
                 <!--Reset settings button-->
                 <Button x:Name="BtnReset"
                         Margin="{StaticResource SmallTopMargin}"
