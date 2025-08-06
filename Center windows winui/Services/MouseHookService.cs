@@ -79,8 +79,6 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             // Copy the cursor to avoid destroying the shared resource
             _hCrossCopy = Win32.CopyIcon(hCross);
             Win32.SetSystemCursor(_hCrossCopy, Win32.OCR_NORMAL);
-
-            _isDisposed = false;
         }
 
         // Set global mouse hook
@@ -93,10 +91,6 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
         // Cancellation: call Cleanup if the operation is canceled
         _ctr = cancellationToken.Register(Cleanup);
-
-        // If we got here, then we signall that there are resources to clean up
-        // so we signal that resources are ready to be disposed and cleaned up
-        _isDisposed = false;
 
         return result;
     }
