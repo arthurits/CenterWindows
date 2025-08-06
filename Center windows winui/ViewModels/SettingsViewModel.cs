@@ -199,23 +199,14 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
         // Call the base function
         base.OnPropertyChanged(e);
 
-        //// If the property name starts with "Str" then it's a localization variable and we are not concerned with them
-        //if (!_syncActions.ContainsKey(e.PropertyName ?? string.Empty))
-        //{
-        //    return;
-        //}
-
-        //// Update POCO: the AppSettings properties based on the ViewModel properties
-        //if (_syncActions.TryGetValue(e.PropertyName!, out var action))
-        //{
-        //    action();
-        //}
-
-        if(_pocoSettings is null || e.PropertyName is null)
+        // If the AppSettings POCO is not initialized or the property name is null, do nothing
+        if (_pocoSettings is null || e.PropertyName is null)
         {
             return;
         }
-        
+
+        // The BorderColorUI property is a special case, as it is a Windows.UI.Color type
+        // and needs to be converted to a string for the AppSettings POCO
         if (e.PropertyName == nameof(BorderColorUI))
         {   
             BorderColor = BorderColorUI.ToString() ?? string.Empty;
