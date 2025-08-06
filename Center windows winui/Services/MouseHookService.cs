@@ -67,7 +67,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         _taskCS?.TrySetCanceled();
     }
 
-    private bool CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default)
+    private bool CaptureWindowUnderCursor(CancellationToken cancellationToken = default)
     {
         bool result = true;
 
