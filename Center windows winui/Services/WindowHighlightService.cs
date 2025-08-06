@@ -177,6 +177,7 @@ public partial class WindowHighlightService : IWindowHighlightService, IDisposab
         ClearHighlight();
 
         // Unregister the overlay class
+        // Catch any errors that may occur during unregistration for debugging purposes
         var result = Win32.UnregisterClass(OverlayClassName, _hInst);
         if (!result)
         {
