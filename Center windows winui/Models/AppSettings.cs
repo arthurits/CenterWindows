@@ -130,6 +130,12 @@ public partial class AppSettings
     public bool SelectChildWindows { get; set; } = false;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the cursor should be changed during window selection.
+    /// </summary>
+    [JsonPropertyName("Change cursor")]
+    public bool ChangeCursor { get; set; } = true;
+
+    /// <summary>
     /// The application can only be minimized to the system tray if both <see cref="ShowTrayIcon"/> and <see cref="MinimizeToTray"/> are true.
     /// </summary>
     [JsonIgnore]
