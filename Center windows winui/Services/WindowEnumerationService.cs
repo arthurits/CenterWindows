@@ -18,7 +18,7 @@ internal class WindowEnumerationService : IWindowEnumerationService
     {
         _windows.Clear();
 
-        Win32.EnumWindows(_enumProc, IntPtr.Zero);
+        _ = Win32.EnumWindows(_enumProc, IntPtr.Zero);
 
         return _windows;
     }
@@ -50,7 +50,7 @@ internal class WindowEnumerationService : IWindowEnumerationService
 
             // Gets additional window info: we are interested in the border width
             Win32.WindowInfo winInfo = new();
-            Win32.GetWindowInfo(hWnd, ref winInfo);
+            _ = Win32.GetWindowInfo(hWnd, ref winInfo);
 
             //if (windowText != "Microsoft Edge" && windowText != "Program Manager")
             if (winInfo.xWindowBorders > 0 && winInfo.xWindowBorders > 0 && winInfo.window.Width > 0 && winInfo.window.Height > 0)
@@ -58,6 +58,7 @@ internal class WindowEnumerationService : IWindowEnumerationService
                 _windows.Add(new WindowModel (
                     hWnd,
                     WindowText,
+                    strWindowModule,
                     winInfo.window.Left + (int)winInfo.xWindowBorders,
                     winInfo.window.Top + (int)winInfo.yWindowBorders,
                     winInfo.window.Width - (int)(winInfo.xWindowBorders * 2),
