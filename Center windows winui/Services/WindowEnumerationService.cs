@@ -1,13 +1,13 @@
 ﻿using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 using CenterWindow.Models;
-using static CenterWindow.Interop.Win32;
 
 namespace CenterWindow.Services;
 internal class WindowEnumerationService : IWindowEnumerationService
 {
+
     private readonly List<WindowModel> _windows = [];
-    private readonly EnumWindowsProc _enumProc;
+    private readonly Win32.EnumWindowsProc _enumProc;
 
     public WindowEnumerationService()
     {
