@@ -52,13 +52,16 @@
     <value>Dimensiones</value>
   </data>
   <data name="StrWindowHandle" xml:space="preserve">
-    <value>Idenetificador</value>
+    <value>Identificador</value>
   </data>
   <data name="StrWindowLocation" xml:space="preserve">
     <value>Ubicación</value>
   </data>
   <data name="StrWindowModuleName" xml:space="preserve">
     <value>Clase</value>
+  </data>
+  <data name="StrWindowProperties" xml:space="preserve">
+    <value>Propiedades de la ventana</value>
   </data>
   <data name="StrWindowText" xml:space="preserve">
     <value>Texto</value>

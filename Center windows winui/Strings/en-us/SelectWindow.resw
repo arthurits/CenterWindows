@@ -60,6 +60,9 @@
   <data name="StrWindowModuleName" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="StrWindowProperties" xml:space="preserve">
+    <value>Window properties</value>
+  </data>
   <data name="StrWindowText" xml:space="preserve">
     <value>Text</value>
   </data>
