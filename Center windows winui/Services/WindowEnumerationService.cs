@@ -6,7 +6,6 @@ using CenterWindow.Models;
 namespace CenterWindow.Services;
 internal class WindowEnumerationService : IWindowEnumerationService
 {
-
     private readonly List<WindowModel> _windows = [];
     private readonly Win32.EnumWindowsProc _enumProc;
 
@@ -40,16 +39,12 @@ internal class WindowEnumerationService : IWindowEnumerationService
             // Retrieves the window's executable name
             _ = Win32.GetWindowThreadProcessId(hWnd, out var uHandle);
 
-            var proc = Process.GetProcessById((int)uHandle);
+            var process = Process.GetProcessById((int)uHandle);
 
+            //// Alternative way to get the module name using Win32 API
             //var handle = Win32.OpenProcess((uint)(Win32.PROCESS_ACCESS_TYPES.PROCESS_QUERY_INFORMATION | Win32.PROCESS_ACCESS_TYPES.PROCESS_VM_READ), false, (uint)uHandle);
             //var moduleName = Win32.GetModuleBaseName(handle);
-
             //windowModule = Win32.GetModuleFileNameEx(handle); //Gets the full path
-            /* Gets the same results but using the .NET framework
-            Process p = Process.GetProcessById((int)uHandle);
-            windowModule = p.MainModule.ModuleName.ToString();
-            */
 
             var className = Win32.GetClassName(hWnd);
 
@@ -63,7 +58,7 @@ internal class WindowEnumerationService : IWindowEnumerationService
                 _windows.Add(new WindowModel (
                     hWnd,
                     WindowText,
-                    proc?.MainModule?.ModuleName ?? string.Empty,
+                    process?.MainModule?.ModuleName ?? string.Empty,
                     className,
                     winInfo.window.Left + (int)winInfo.xWindowBorders,
                     winInfo.window.Top + (int)winInfo.yWindowBorders,
