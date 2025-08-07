@@ -184,13 +184,16 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             // GA_ROOT = 2 → obtiene la ventana toplevel
             hWnd = Win32.GetAncestor(hWnd, Win32.GA_ROOT);
         }
-        
-        var className = Win32.GetClassName(hWnd);
+
         var windowText = Win32.GetWindowText(hWnd);
+        var className = Win32.GetClassName(hWnd);
+        _ = Win32.GetWindowThreadProcessId(hWnd, out var uHandle);
+        var process = Process.GetProcessById((int)uHandle);
+        var moduleName = process.MainModule?.ModuleName ?? string.Empty;
         _ = Win32.GetWindowRect(hWnd, out var rect);
 
         // Raise the MouseMoved event
-        OnMouseMoved(new MouseMoveEventArgs(hWnd, className, windowText, rect.Left, rect.Top, rect.Width, rect.Height));
+        OnMouseMoved(new MouseMoveEventArgs(hWnd, windowText, moduleName, className, rect.Left, rect.Top, rect.Width, rect.Height));
     }
 
     private void ReleaseUnmanaged()

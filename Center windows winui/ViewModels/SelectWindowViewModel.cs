@@ -96,11 +96,12 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         // Windows.ApplicationModel.Package.Current.InstalledPath + "/Assets/Config/MyFile.txt";
 
         // Initialize the window properties collection
-        WindowPropertiesCollection.Add(new PropertyItem("Window text", string.Empty, string.Empty));
-        WindowPropertiesCollection.Add(new PropertyItem("Window handle", string.Empty, string.Empty));
-        WindowPropertiesCollection.Add(new PropertyItem("Window class name", string.Empty, string.Empty));
-        WindowPropertiesCollection.Add(new PropertyItem("Window module name", string.Empty, string.Empty));
-        WindowPropertiesCollection.Add(new PropertyItem("Window dimensions", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Text", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Handle", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Module name", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Class name", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Location", string.Empty, string.Empty));
+        WindowPropertiesCollection.Add(new PropertyItem("Dimensions", string.Empty, string.Empty));
         WindowPropertiesCollection.Last().IsLastItem = true;
 
         // Set the initial image
@@ -167,9 +168,10 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 _selectedWindowHandle = e.HWnd;
                 WindowPropertiesCollection[0].Value = e.WindowText;
                 WindowPropertiesCollection[1].Value = $"{e.HWnd} (0x{e.HWnd:X})";
-                WindowPropertiesCollection[2].Value = e.ClassName;
-                WindowPropertiesCollection[3].Value = $"Not yet implemented";
-                WindowPropertiesCollection[4].Value = $"{e.Width}x{e.Height} at {e.X}, {e.Y}";
+                WindowPropertiesCollection[2].Value = e.ModuleName;
+                WindowPropertiesCollection[3].Value = e.ClassName;
+                WindowPropertiesCollection[4].Value = $"{e.X}, {e.Y}";
+                WindowPropertiesCollection[5].Value = $"{e.Width}x{e.Height}";
 
                 // Force rebinding of the properties collection in the UI
                 //OnPropertyChanged(nameof(WindowPropertiesCollection));

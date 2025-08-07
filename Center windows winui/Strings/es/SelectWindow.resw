@@ -45,4 +45,25 @@
   <data name="StrTransparencyHeader" xml:space="preserve">
     <value>Transparencia</value>
   </data>
+  <data name="StrWindowClassName" xml:space="preserve">
+    <value>Proceso</value>
+  </data>
+  <data name="StrWindowDimensions" xml:space="preserve">
+    <value>Dimensiones</value>
+  </data>
+  <data name="StrWindowHandle" xml:space="preserve">
+    <value>Identificador</value>
+  </data>
+  <data name="StrWindowLocation" xml:space="preserve">
+    <value>Ubicación</value>
+  </data>
+  <data name="StrWindowModuleName" xml:space="preserve">
+    <value>Clase</value>
+  </data>
+  <data name="StrWindowProperties" xml:space="preserve">
+    <value>Propiedades de la ventana</value>
+  </data>
+  <data name="StrWindowText" xml:space="preserve">
+    <value>Texto</value>
+  </data>
 </root>

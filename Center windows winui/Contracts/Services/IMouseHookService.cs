@@ -26,13 +26,19 @@ public interface IMouseHookService
     //Task<IntPtr> CaptureWindowUnderCursorAsync(CancellationToken cancellationToken = default);
 }
 
-public class MouseMoveEventArgs(IntPtr hWnd, string className, string windowText, int x, int y, int width, int height) : EventArgs
+public class MouseMoveEventArgs(IntPtr hWnd, string windowText, string moduleName, string className, int x, int y, int width, int height) : EventArgs
 {
     public IntPtr HWnd { get; } = hWnd;
-    public string ClassName { get; } = className;
     public string WindowText { get; } = windowText;
+    public string ModuleName { get; } = moduleName;
+    public string ClassName { get; } = className;
+    
     public int X { get; } = x;
     public int Y { get; } = y;
     public int Width { get; } = width;
     public int Height { get; } = height;
+
+    // These properties will be used for binding in the UI
+    public string Handle => HWnd.ToString("X");
+    public string Rect => $"{X},{Y}  {Width}×{Height}";
 }

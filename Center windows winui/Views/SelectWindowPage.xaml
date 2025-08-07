@@ -35,7 +35,8 @@
                     <TextBlock
                         Text="{Binding Value}"
                         Style="{StaticResource DataValueTextStyle}"
-                        Grid.Column="2"/>
+                        Grid.Column="2"
+                        TextTrimming="CharacterEllipsis"/>
                 </Grid>
                 <Rectangle
                         Grid.Row="1"
@@ -133,6 +134,10 @@
                         Style="{StaticResource ContentStackPanel}"
                         Margin="0, 12, 0, 0"
                         Spacing="4">
+                        <TextBlock
+                            Text="{x:Bind ViewModel.StrWindowProperties, Mode=OneWay}"
+                            HorizontalAlignment="Center"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <Border Background="{StaticResource PanelAcrylicBrush}"
                             Padding="12"
                             CornerRadius="8">
