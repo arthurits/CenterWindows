@@ -14,7 +14,7 @@ internal class WindowEnumerationService : IWindowEnumerationService
         _enumProc = WindowEnumCallback;
     }
 
-    public IEnumerable<WindowModel> GetDesktopWindows()
+    public IReadOnlyList<WindowModel> GetDesktopWindows()
     {
         _windows.Clear();
 
