@@ -169,11 +169,11 @@
 
                             <!-- Column headers -->
                             <Grid ColumnDefinitions ="3*, 1*, 1*, 2*, 1*">
-                                <TextBlock Text="Title"             Grid.Column="0" FontWeight="SemiBold"/>
-                                <TextBlock Text="Handle"            Grid.Column="1" FontWeight="SemiBold"/>
-                                <TextBlock Text="Process"           Grid.Column="2" FontWeight="SemiBold"/>
-                                <TextBlock Text="Class"             Grid.Column="3" FontWeight="SemiBold"/>
-                                <TextBlock Text="Position × Dim"    Grid.Column="4" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding StrColumnHeaderTitle}"        Grid.Column="0" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding StrColumnHeaderHandle}"       Grid.Column="1" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding StrColumnHeaderProcess}"      Grid.Column="2" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding StrColumnHeaderClass}"        Grid.Column="3" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding StrColumnHeaderDimensions}"   Grid.Column="4" FontWeight="SemiBold"/>
                             </Grid>
 
                             <!-- Window list -->
