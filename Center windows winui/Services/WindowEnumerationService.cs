@@ -20,7 +20,7 @@ internal class WindowEnumerationService : IWindowEnumerationService
 
         _ = Win32.EnumWindows(_enumProc, IntPtr.Zero);
 
-        return _windows;
+        return (IReadOnlyList<WindowModel>)_windows;
     }
 
     // este método tiene la misma firma que EnumWindowsProc
