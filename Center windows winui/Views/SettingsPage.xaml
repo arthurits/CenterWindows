@@ -9,12 +9,17 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:conv="using:CenterWindow.Converters"
     xmlns:sys="using:System"
     xmlns:viewmodel="using:CenterWindow.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
 
+    <Page.Resources>
+        <conv:BoolToIconElementConverter x:Key="BoolToIconElementConverter"/>
+    </Page.Resources>
+    
     <Grid x:Name="Settings" ColumnDefinitions="*" RowDefinitions ="*" x:DefaultBindMode="OneWay">
         <ScrollView x:Name="ScrollSettingsPage" ContentOrientation="Vertical"
                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
