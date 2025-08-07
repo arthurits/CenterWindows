@@ -9,12 +9,17 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:conv="using:CenterWindow.Converters"
     xmlns:sys="using:System"
     xmlns:viewmodel="using:CenterWindow.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel, IsDesignTimeCreatable=False}"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
 
+    <Page.Resources>
+        <conv:BoolToIconElementConverter x:Key="BoolToIconElementConverter"/>
+    </Page.Resources>
+    
     <Grid x:Name="Settings" ColumnDefinitions="*" RowDefinitions ="*" x:DefaultBindMode="OneWay">
         <ScrollView x:Name="ScrollSettingsPage" ContentOrientation="Vertical"
                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
@@ -31,7 +36,7 @@
                 <controls:SettingsCard x:Name="cardTheme"
                                Description="{Binding StrThemeDescription}"
                                Header="{Binding StrThemeHeader}"
-                               HeaderIcon="{ui:FontIcon Glyph=&#xE790;}">
+                               HeaderIcon="{ui:FontIcon Glyph=&#xE793;}">
                     <!--<controls:SettingsCard.HeaderIcon>
                         <FontIcon Glyph="&#xE790;" Foreground="Red">
                         </FontIcon>
@@ -75,7 +80,8 @@
                 <controls:SettingsCard x:Name="cardPath"
                         Description="{Binding StrFilepathDescription}"
                         Header="{Binding StrFilepathHeader}"
-                        HeaderIcon="{ui:FontIcon Glyph=&#xE838;}">
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE838;}"
+                        IsEnabled="False">
                     <ToggleSwitch IsOn="{Binding RememberFileDialogPath, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
 
@@ -104,7 +110,7 @@
 
                 <controls:SettingsExpander
                     x:Name="cardHighlighter"
-                    HeaderIcon="{ui:FontIcon Glyph=&#xE91B;}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE7E6;}"
                     Header="{x:Bind ViewModel.StrShowHighlightHeader}"
                     Description="{x:Bind ViewModel.StrShowHighlightDescription}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.ShowHighlight, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
@@ -127,14 +133,14 @@
                         </controls:SettingsCard>
                         <controls:SettingsCard x:Name="cardBorderThickness"
                             Header="{x:Bind ViewModel.StrBorderThicknessHeader}"
-                            HeaderIcon="{ui:FontIcon Glyph=&#xE8B3;}"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xEDA8;}"
                             Description="{x:Bind ViewModel.StrBorderThicknessDescription}"
                             IsEnabled="{x:Bind ViewModel.ShowHighlight, Mode=OneWay}">
                             <Slider Minimum="0" Maximum="10" Value="{x:Bind ViewModel.BorderThickness, Mode=TwoWay}" />
                         </controls:SettingsCard>
                         <controls:SettingsCard x:Name="cardBorderRadius"
                             Header="{x:Bind ViewModel.StrBorderRadiusHeader}"
-                            HeaderIcon="{ui:FontIcon Glyph=&#xE8B3;}"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xEF20;}"
                             Description="{x:Bind ViewModel.StrBorderRadiusDescription}"
                             IsEnabled="{x:Bind ViewModel.ShowHighlight, Mode=OneWay}">
                             <Slider Minimum="0" Maximum="10" Value="{x:Bind ViewModel.BorderRadius, Mode=TwoWay}" />
@@ -145,7 +151,7 @@
                 <controls:SettingsCard
                     x:Name = "cardShowChild"
                     Header="{x:Bind ViewModel.StrSelectChildHeader}"
-                    HeaderIcon="{ui:FontIcon Glyph=&#xE8B5;}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE7C4;}"
                     Description="{x:Bind ViewModel.StrSelectChildDescription}" >
                     <ToggleSwitch IsOn="{x:Bind ViewModel.SelectChildWindows, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
                 </controls:SettingsCard>
@@ -153,7 +159,7 @@
                 <controls:SettingsCard
                     x:Name = "cardChangeCursor"
                     Header="{x:Bind ViewModel.StrChangeCursorHeader}"
-                    HeaderIcon="{ui:FontIcon Glyph=&#xE8B5;}"
+                    HeaderIcon="{x:Bind ViewModel.ChangeCursor, Converter={StaticResource BoolToIconElementConverter}}"
                     Description="{x:Bind ViewModel.StrChangeCursorDescription}" >
                     <ToggleSwitch IsOn="{x:Bind ViewModel.ChangeCursor, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
                 </controls:SettingsCard>
