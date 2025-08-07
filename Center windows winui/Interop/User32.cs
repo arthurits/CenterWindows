@@ -168,7 +168,7 @@ internal static partial class Win32
     public static extern int GetWindowTextLength(IntPtr hWnd);
 
     [DllImport("User32.dll", SetLastError = true)]
-    public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int processId);
+    public static extern int GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
     [DllImport("user32.dll")]
     public static extern bool InvalidateRect(
