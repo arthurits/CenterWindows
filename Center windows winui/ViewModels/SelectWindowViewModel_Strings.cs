@@ -12,6 +12,8 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     public partial string StrTransparencyHeader { get; set; } = string.Empty;
 
     [ObservableProperty]
+    public partial string StrWindowProperties { get; set; } = string.Empty;
+    [ObservableProperty]
     public partial string StrWindowText { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrWindowHandle { get; set; } = string.Empty;
@@ -33,6 +35,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         StrTransparencyHeader = "StrTransparencyHeader".GetLocalized("SelectWindow");
 
         // Window output properties headers
+        StrWindowProperties = "StrWindowProperties".GetLocalized("SelectWindow");
         StrWindowText = "StrWindowText".GetLocalized("SelectWindow");
         StrWindowHandle = "StrWindowHandle".GetLocalized("SelectWindow");
         StrWindowModuleName = "StrWindowModuleName".GetLocalized("SelectWindow");
