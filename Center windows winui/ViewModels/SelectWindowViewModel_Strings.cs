@@ -39,5 +39,13 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         StrWindowClassName = "StrWindowClassName".GetLocalized("SelectWindow");
         StrWindowLocation = "StrWindowLocation".GetLocalized("SelectWindow");
         StrWindowDimensions = "StrWindowDimensions".GetLocalized("SelectWindow");
+
+        // Update the Key field in the properties collection 
+        WindowPropertiesCollection[0].Key = StrWindowText;
+        WindowPropertiesCollection[1].Key = StrWindowHandle;
+        WindowPropertiesCollection[2].Key = StrWindowModuleName;
+        WindowPropertiesCollection[3].Key = StrWindowClassName;
+        WindowPropertiesCollection[4].Key = StrWindowLocation;
+        WindowPropertiesCollection[5].Key = StrWindowDimensions;
     }
 }
