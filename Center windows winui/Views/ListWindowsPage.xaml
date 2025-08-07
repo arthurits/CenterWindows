@@ -22,7 +22,8 @@
             <Grid Padding="4"
                 Background="Transparent"
                 Tapped="ItemGrid_Tapped"
-                RightTapped="ItemGrid_RightTapped">
+                RightTapped="ItemGrid_RightTapped"
+                ColumnDefinitions ="3*, 1*, 1*, 2*, 1*">
                 <Grid.ContextFlyout>
                     <MenuFlyout Closing="OptionsMenuFlyout_Closing">
                         <ToggleMenuFlyoutItem
@@ -58,14 +59,11 @@
                             CommandParameter="{Binding}" />
                     </MenuFlyout>
                 </Grid.ContextFlyout>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Title}"  Grid.Column="0" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Text="{Binding Handle}" Grid.Column="1" HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding Rect}"   Grid.Column="2"/>
+                <TextBlock Text="{Binding Title}"       Grid.Column="0" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Handle}"      Grid.Column="1" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding ModuleName}"  Grid.Column="2" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding ClassName}"   Grid.Column="3" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Rect}"        Grid.Column="4" TextTrimming="CharacterEllipsis"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -170,15 +168,12 @@
                             Style="{StaticResource ContentStackPanel}">
 
                             <!-- Column headers -->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Title"           Grid.Column="0" FontWeight="SemiBold"/>
-                                <TextBlock Text="Handle"          Grid.Column="1" FontWeight="SemiBold"/>
-                                <TextBlock Text="Position × Dim"  Grid.Column="2" FontWeight="SemiBold"/>
+                            <Grid ColumnDefinitions ="3*, 1*, 1*, 2*, 1*">
+                                <TextBlock Text="Title"             Grid.Column="0" FontWeight="SemiBold"/>
+                                <TextBlock Text="Handle"            Grid.Column="1" FontWeight="SemiBold"/>
+                                <TextBlock Text="Process"           Grid.Column="2" FontWeight="SemiBold"/>
+                                <TextBlock Text="Class"             Grid.Column="3" FontWeight="SemiBold"/>
+                                <TextBlock Text="Position × Dim"    Grid.Column="4" FontWeight="SemiBold"/>
                             </Grid>
 
                             <!-- Window list -->
