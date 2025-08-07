@@ -75,7 +75,8 @@
                 <controls:SettingsCard x:Name="cardPath"
                         Description="{Binding StrFilepathDescription}"
                         Header="{Binding StrFilepathHeader}"
-                        HeaderIcon="{ui:FontIcon Glyph=&#xE838;}">
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE838;}"
+                        IsEnabled="False">
                     <ToggleSwitch IsOn="{Binding RememberFileDialogPath, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}"/>
                 </controls:SettingsCard>
 
