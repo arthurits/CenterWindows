@@ -57,6 +57,21 @@
   <data name="StrCenterToolTip" xml:space="preserve">
     <value>Activate to center windows in screen</value>
   </data>
+  <data name="StrColumnHeaderClass" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="StrColumnHeaderDimensions" xml:space="preserve">
+    <value>Position and dimension</value>
+  </data>
+  <data name="StrColumnHeaderHandle" xml:space="preserve">
+    <value>Handle</value>
+  </data>
+  <data name="StrColumnHeaderProcess" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="StrColumnHeaderTitle" xml:space="preserve">
+    <value>Window title</value>
+  </data>
   <data name="StrDeselect" xml:space="preserve">
     <value>Unselect</value>
   </data>

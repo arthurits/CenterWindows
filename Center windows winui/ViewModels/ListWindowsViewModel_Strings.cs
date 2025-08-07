@@ -41,6 +41,21 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
     public partial string StrRefreshToolTip { get; set; } = string.Empty;
 
     [ObservableProperty]
+    public partial string StrColumnHeaderTitle { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string StrColumnHeaderHandle { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string StrColumnHeaderProcess { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string StrColumnHeaderClass { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string StrColumnHeaderDimensions { get; set; } = string.Empty;
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
     public partial string StrTransparencyHeader { get; set; } = string.Empty;
 
@@ -59,6 +74,13 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         StrDeselectToolTip = "StrDeselectToolTip".GetLocalized("ListWindows");
         StrRefresh = "StrRefresh".GetLocalized("ListWindows");
         StrRefreshToolTip = "StrRefreshToolTip".GetLocalized("ListWindows");
+
+        // Column headers
+        StrColumnHeaderTitle = "StrColumnHeaderTitle".GetLocalized("ListWindows");
+        StrColumnHeaderHandle = "StrColumnHeaderHandle".GetLocalized("ListWindows");
+        StrColumnHeaderProcess = "StrColumnHeaderProcess".GetLocalized("ListWindows");
+        StrColumnHeaderClass = "StrColumnHeaderClass".GetLocalized("ListWindows");
+        StrColumnHeaderDimensions = "StrColumnHeaderDimensions".GetLocalized("ListWindows");
 
         // Header for the transparency slider
         StrTransparencyHeader = "StrTransparencyHeader".GetLocalized("ListWindows");

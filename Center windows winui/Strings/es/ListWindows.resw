@@ -57,6 +57,21 @@
   <data name="StrCenterToolTip" xml:space="preserve">
     <value>Activar para centrar las ventas en la pantalla</value>
   </data>
+  <data name="StrColumnHeaderClass" xml:space="preserve">
+    <value>Clase</value>
+  </data>
+  <data name="StrColumnHeaderDimensions" xml:space="preserve">
+    <value>Ubicación y dimensiones</value>
+  </data>
+  <data name="StrColumnHeaderHandle" xml:space="preserve">
+    <value>Identificador</value>
+  </data>
+  <data name="StrColumnHeaderProcess" xml:space="preserve">
+    <value>Proceso</value>
+  </data>
+  <data name="StrColumnHeaderTitle" xml:space="preserve">
+    <value>Texto de la ventana</value>
+  </data>
   <data name="StrDeselect" xml:space="preserve">
     <value>Deseleccionar</value>
   </data>
