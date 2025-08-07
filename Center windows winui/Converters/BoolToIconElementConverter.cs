@@ -1,8 +1,9 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace CenterWindow.Converters;
-public class BoolToIconElementConverter : IValueConverter
+internal partial class BoolToIconElementConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
@@ -10,21 +11,20 @@ public class BoolToIconElementConverter : IValueConverter
 
         if (isOn)
         {
-            // Cuando está activado: un glifo
+            return new ImageIcon
+            {
+                Source = new SvgImageSource(new Uri("ms-appx:///Assets/Finder - 32x32.svg")),
+                Width = 20,
+                Height = 20
+            };
+            
+        }
+        else
+        {
             return new FontIcon
             {
                 Glyph = "\uE8B0",
                 FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
-                Width = 20,
-                Height = 20
-            };
-        }
-        else
-        {
-            // Cuando está desactivado: un SVG (BitmapIcon admite .svg en UWP 1809+)
-            return new BitmapIcon
-            {
-                UriSource = new Uri("/Assets/Finder - 32x32.svg"),
                 Width = 20,
                 Height = 20
             };

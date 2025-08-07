@@ -159,7 +159,7 @@
                 <controls:SettingsCard
                     x:Name = "cardChangeCursor"
                     Header="{x:Bind ViewModel.StrChangeCursorHeader}"
-                    HeaderIcon="{ui:FontIcon Glyph=&#xE8B0;}"
+                    HeaderIcon="{x:Bind ViewModel.ChangeCursor, Converter={StaticResource BoolToIconElementConverter}}"
                     Description="{x:Bind ViewModel.StrChangeCursorDescription}" >
                     <ToggleSwitch IsOn="{x:Bind ViewModel.ChangeCursor, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
                 </controls:SettingsCard>
