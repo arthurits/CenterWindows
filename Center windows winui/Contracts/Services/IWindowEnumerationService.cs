@@ -3,5 +3,5 @@
 namespace CenterWindow.Contracts.Services;
 public interface IWindowEnumerationService
 {
-    IEnumerable<WindowModel> GetDesktopWindows();
+    IReadOnlyList<WindowModel> GetDesktopWindows();
 }
