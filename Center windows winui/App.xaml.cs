@@ -197,6 +197,7 @@ public partial class App : Application
 
         if (await ConfirmAppCloseAsync())
         {
+            MainWindow.Close();
             args.Cancel = false; // Allow the app to close
         }
     }
