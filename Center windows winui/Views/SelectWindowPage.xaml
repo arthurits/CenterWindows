@@ -21,7 +21,7 @@
         <!-- ListView DataTemplate -->
         <DataTemplate x:Key="PropertyTemplate">
             <Grid RowDefinitions="Auto, Auto">
-                <Grid ColumnDefinitions="Auto, Auto, *" ColumnSpacing="12" Padding="4">
+                <Grid ColumnDefinitions="Auto, Auto, *" ColumnSpacing="12" Padding="6">
                     <Image
                         Source="{Binding IconPath}"
                         Width="20"
@@ -30,10 +30,12 @@
                         Visibility="{Binding IconPath, Converter={StaticResource NullToVisibilityConverter}}"/>
                     <TextBlock
                         Text="{Binding Key}"
+                        IsTextSelectionEnabled = "True"
                         Style="{StaticResource DataLabelTextStyle}"
                         Grid.Column="1"/>
                     <TextBlock
                         Text="{Binding Value}"
+                        IsTextSelectionEnabled="True"
                         Style="{StaticResource DataValueTextStyle}"
                         Grid.Column="2"
                         TextTrimming="CharacterEllipsis"/>
@@ -42,8 +44,9 @@
                         Grid.Row="1"
                         Grid.ColumnSpan="3"
                         Height="1"
-                        Fill="#FFE0E0E0"
-                        Visibility="{Binding IsLastItem, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                        Fill="{ThemeResource ListViewItemSeparatorBrush}"
+                        Visibility="{Binding IsLastItem, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                    Margin="0,6,0,6"/>
             </Grid>
         </DataTemplate>
 
@@ -138,15 +141,41 @@
                             Text="{x:Bind ViewModel.StrWindowProperties, Mode=OneWay}"
                             HorizontalAlignment="Center"
                             Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                        <Border Background="{StaticResource PanelAcrylicBrush}"
-                            Padding="12"
-                            CornerRadius="8">
-                            <ListView ItemsSource="{Binding WindowPropertiesCollection}"
-                                ItemTemplate="{StaticResource PropertyTemplate}"
-                                SelectionMode="None"
-                                IsItemClickEnabled="False"
-                                BorderThickness="0"/>
-                        </Border>
+                        <ListView ItemsSource="{Binding WindowPropertiesCollection}"
+                            ItemTemplate="{StaticResource PropertyTemplate}"
+                            SelectionMode="None"
+                            IsItemClickEnabled="False"
+                            BorderThickness="0">
+                            <!--<ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    --><!-- Márgenes para espaciado vertical 
+           6px arriba y 6px abajo centran la línea entre ítems --><!--
+                                    <Setter Property="Margin" Value="0,6,0,6"/>
+                                    <Setter Property="Padding" Value="4"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <Grid>
+                                                    <ContentPresenter/>
+                                                    --><!-- Línea como borde inferior --><!--
+                                                    <Border
+                                                        Background="Transparent"
+                                                        BorderBrush="{ThemeResource ListViewItemSeparatorBrush}"
+                                                        BorderThickness="0,0,0,1"
+                                                        VerticalAlignment="Bottom"
+                                                        IsHitTestVisible="False"
+                                                        Visibility="{Binding Content.IsLastItem,
+                                                            RelativeSource={RelativeSource Mode=TemplatedParent},
+                                                            Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>-->
+                        </ListView>
                     </StackPanel>
                     
                 </Grid>
