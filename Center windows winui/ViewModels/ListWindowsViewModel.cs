@@ -20,6 +20,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
     private readonly ILocalizationService _localizationService;
     private readonly ITrayIconService _trayIconService;
     private readonly IMainWindowService _mainWindowService;
+    private readonly ILocalSettingsService<AppSettings> _settingsService;
 
     // Properties
     [ObservableProperty]
@@ -33,7 +34,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
-    public partial int Transparency { get; set; } = 255;
+    public partial int Transparency { get; set; }  // Set in constructor. Default value -> 255
 
     public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
 
@@ -42,11 +43,11 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
     [NotifyPropertyChangedFor(nameof(IsApplyToSelectedEnabled))]
-    public partial bool IsAlphaChecked { get; set; } = false;
+    public partial bool IsAlphaChecked { get; set; }    // Set in constructor. Default value -> False
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsApplyToAllEnabled))]
     [NotifyPropertyChangedFor(nameof(IsApplyToSelectedEnabled))]
-    public partial bool IsCenterChecked { get; set; } = false;
+    public partial bool IsCenterChecked { get; set; }   // Set in constructor. Default value -> False
     public bool IsApplyToAllEnabled => IsAlphaChecked || IsCenterChecked;
     public bool IsApplyToSelectedEnabled => (IsAlphaChecked || IsCenterChecked) && SelectedWindows.Count > 0;
     public bool IsDeselectEnabled => SelectedWindows.Count > 0;
@@ -57,7 +58,8 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         IMouseHookService mouseHook,
         ILocalizationService localizationService,
         ITrayIconService trayIcon,
-        IMainWindowService mainWindowService)
+        IMainWindowService mainWindowService,
+        ILocalSettingsService<AppSettings> settingsService)
     {
         _enumerationService = enumerationService;
         _centerService = centerService;
@@ -69,10 +71,19 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         _trayIconService.TrayMenuOpening     += OnTrayMenuOpening;
         _trayIconService.TrayMenuIconDoubleClicked  += OnTrayMenuDoubleClicked;
         _mainWindowService = mainWindowService;
+        _settingsService = settingsService;
 
+        // Update the windows list with the current desktop windows
         RefreshWindows();
 
+        // Listen to changes in the selected windows collection, so that we can update the UI accordingly
+        // callind the calculated properties for the CommandBar buttons and Flyout menu items
         SelectedWindows.CollectionChanged += SelectedWindows_CollectionChanged;
+
+        // Set initial values from settings for the center window and alpha options, as well as the transparency slider
+        IsCenterChecked = _settingsService.GetValues.IsCenterChecked;
+        IsAlphaChecked = _settingsService.GetValues.IsAlphaChecked;
+        Transparency = _settingsService.GetValues.ListWindowsTransparency;
     }
 
     public void Dispose()
