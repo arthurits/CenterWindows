@@ -59,11 +59,11 @@
                             CommandParameter="{Binding}" />
                     </MenuFlyout>
                 </Grid.ContextFlyout>
-                <TextBlock Text="{Binding Title}"       Grid.Column="0" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Text="{Binding Handle}"      Grid.Column="1" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Text="{Binding ModuleName}"  Grid.Column="2" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Text="{Binding ClassName}"   Grid.Column="3" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Text="{Binding Rect}"        Grid.Column="4" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Title}"       Grid.Column="0" IsTextSelectionEnabled="True"   TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Handle}"      Grid.Column="1" IsTextSelectionEnabled="True"   TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding ModuleName}"  Grid.Column="2" IsTextSelectionEnabled="True"   TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding ClassName}"   Grid.Column="3" IsTextSelectionEnabled="True"   TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Rect}"        Grid.Column="4" IsTextSelectionEnabled="True"   TextTrimming="CharacterEllipsis"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -178,12 +178,12 @@
 
                             <!-- Window list -->
                             <ListView
-                            x:Name="WindowsListView"
-                            ItemsSource="{Binding WindowsList}"
-                            ItemTemplate="{StaticResource WindowItemTemplate}"
-                            IsItemClickEnabled="False"
-                            SelectionMode="Multiple"
-                            Margin="0,12,0,0">
+                                x:Name="WindowsListView"
+                                ItemsSource="{Binding WindowsList}"
+                                ItemTemplate="{StaticResource WindowItemTemplate}"
+                                IsItemClickEnabled="False"
+                                SelectionMode="Multiple"
+                                Margin="0,12,0,0">
                                 <interactivity:Interaction.Behaviors>
                                     <interactivity:EventTriggerBehavior EventName="SelectionChanged">
                                         <interactivity:InvokeCommandAction
