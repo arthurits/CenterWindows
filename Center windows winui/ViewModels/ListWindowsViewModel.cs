@@ -169,6 +169,20 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         OnPropertyChanged(nameof(IsDeselectEnabled));
     }
 
+    partial void OnIsCenterCheckedChanged(bool oldValue, bool newValue)
+    {
+        _settingsService.GetValues.IsCenterChecked = newValue;
+    }
+    partial void OnIsAlphaCheckedChanged(bool oldValue, bool newValue)
+    {
+        _settingsService.GetValues.IsAlphaChecked = newValue;
+    }
+    partial void OnTransparencyChanged(int oldValue, int newValue)
+    {
+        _settingsService.GetValues.ListWindowsTransparency = newValue;
+    }
+
+    #region TrayMenu
     private void OnTrayMenuOpening(object? sender, TrayMenuOpeningEventArgs e)
     {
         var id = (int)TrayMenuItemId.Exit;
@@ -235,4 +249,6 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
     {
         _mainWindowService.Show();
     }
+
+    #endregion TrayMenu
 }

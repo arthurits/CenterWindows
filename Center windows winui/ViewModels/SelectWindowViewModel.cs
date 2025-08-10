@@ -260,7 +260,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     /// <summary>
     /// Stores the transparency value in the application settings when it changes.
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="value">Transparency value in the range [0-255]</param>
     partial void OnTransparencyChanged(int value)
     {
         _appSettings.SelectWindowTransparency = value;
