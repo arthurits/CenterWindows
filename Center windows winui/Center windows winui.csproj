@@ -33,7 +33,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Styles\FontSizeStyles.xaml" />
     <None Remove="Styles\PageStyles.xaml" />
   </ItemGroup>
 
@@ -55,9 +54,6 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Page Update="Styles\FontSizeStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="Styles\PageStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
