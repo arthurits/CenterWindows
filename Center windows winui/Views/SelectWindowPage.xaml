@@ -30,10 +30,12 @@
                         Visibility="{Binding IconPath, Converter={StaticResource NullToVisibilityConverter}}"/>
                     <TextBlock
                         Text="{Binding Key}"
+                        IsTextSelectionEnabled = "True"
                         Style="{StaticResource DataLabelTextStyle}"
                         Grid.Column="1"/>
                     <TextBlock
                         Text="{Binding Value}"
+                        IsTextSelectionEnabled="True"
                         Style="{StaticResource DataValueTextStyle}"
                         Grid.Column="2"
                         TextTrimming="CharacterEllipsis"/>
@@ -42,7 +44,7 @@
                         Grid.Row="1"
                         Grid.ColumnSpan="3"
                         Height="1"
-                        Fill="#FFE0E0E0"
+                        Fill="{ThemeResource ListViewItemSeparatorBrush}"
                         Visibility="{Binding IsLastItem, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
             </Grid>
         </DataTemplate>
