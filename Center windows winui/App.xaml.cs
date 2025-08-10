@@ -125,7 +125,7 @@ public partial class App : Application
     {
         base.OnLaunched(args);
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        //await App.GetService<IActivationService>().ActivateAsync(args);
 
         // Handle closing event
         MainWindow.AppWindow.Closing += OnClosing;
@@ -148,6 +148,10 @@ public partial class App : Application
             WindowPosition.CenterWindow(MainWindow);
         }
 
+        // Now that the settings are loaded, we call the activation service
+        // so that the defaul page and view model can access the settings and apply them
+        await App.GetService<IActivationService>().ActivateAsync(args);
+        
         // Apply theme stored in settings
         var themeService = App.GetService<IThemeSelectorService>();
         if (themeService is not null)
@@ -178,17 +182,17 @@ public partial class App : Application
             settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
         }
 
-        // Just in case we mess with the system cursors, reset them
-        uint SPI_SETCURSORS = 0x0057;
-        uint SPIF_SENDCHANGE = 0x02;
-        SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
+        //// Just in case we mess with the system cursors, reset them
+        //uint SPI_SETCURSORS = 0x0057;
+        //uint SPIF_SENDCHANGE = 0x02;
+        //SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool SystemParametersInfo(
-        uint uiAction,
-        uint uiParam,
-        IntPtr pvParam,
-        uint fWinIni);
+        //[DllImport("user32.dll", SetLastError = true)]
+        //static extern bool SystemParametersInfo(
+        //uint uiAction,
+        //uint uiParam,
+        //IntPtr pvParam,
+        //uint fWinIni);
     }
 
     private async void OnClosing(AppWindow sender, AppWindowClosingEventArgs args)
@@ -197,6 +201,7 @@ public partial class App : Application
 
         if (await ConfirmAppCloseAsync())
         {
+            MainWindow.Close();
             args.Cancel = false; // Allow the app to close
         }
     }
