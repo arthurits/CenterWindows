@@ -146,7 +146,7 @@ public partial class AppSettings
     /// Gets or sets the transparency level for the slider control in ListWindows page view.
     /// </summary>
     [JsonPropertyName("List windows transparency")]
-    public byte ListWindowsTransparency { get; set; } = 255;
+    public int ListWindowsTransparency { get; set; } = 255;
     /// <summary>
     /// Gets or sets whether the center option is checked in the ListWindows page view.
     /// This property is used to determine if the center option should be enabled or disabled both in the CommandBar button and the Flyout menu.
@@ -163,7 +163,7 @@ public partial class AppSettings
     /// Gets or sets the transparency level for the slider control in SelectWindow page view.
     /// </summary>
     [JsonPropertyName("Select window transparency")]
-    public byte SelectWindowTransparency { get; set; } = 255;
+    public int SelectWindowTransparency { get; set; } = 255;
 
     [JsonIgnore]
     public string? AppPath { get; set; } = Path.GetDirectoryName(Environment.ProcessPath);
