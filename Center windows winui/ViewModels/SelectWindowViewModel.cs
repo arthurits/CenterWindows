@@ -49,7 +49,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
-    public partial int Transparency { get; set; } = 255;
+    public partial int Transparency { get; set; }       // Set in constructor. Default value -> 255
 
     private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
     public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
@@ -109,6 +109,9 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 
         // Load string resources into binding variables for the UI
         OnLanguageChanged(null, EventArgs.Empty);
+
+        // Set initial value from settings for the transparency slider
+        Transparency = _appSettings.SelectWindowTransparency;
     }
 
     private void OnPropertyChanged(object? sender, SettingChangedEventArgs e)
@@ -252,5 +255,14 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         {
             return new BitmapImage(new Uri(uri));
         }
+    }
+
+    /// <summary>
+    /// Stores the transparency value in the application settings when it changes.
+    /// </summary>
+    /// <param name="value">Transparency value in the range [0-255]</param>
+    partial void OnTransparencyChanged(int value)
+    {
+        _appSettings.SelectWindowTransparency = value;
     }
 }
