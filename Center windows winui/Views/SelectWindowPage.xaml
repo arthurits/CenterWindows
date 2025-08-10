@@ -138,15 +138,11 @@
                             Text="{x:Bind ViewModel.StrWindowProperties, Mode=OneWay}"
                             HorizontalAlignment="Center"
                             Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                        <Border Background="{StaticResource PanelAcrylicBrush}"
-                            Padding="12"
-                            CornerRadius="8">
-                            <ListView ItemsSource="{Binding WindowPropertiesCollection}"
-                                ItemTemplate="{StaticResource PropertyTemplate}"
-                                SelectionMode="None"
-                                IsItemClickEnabled="False"
-                                BorderThickness="0"/>
-                        </Border>
+                        <ListView ItemsSource="{Binding WindowPropertiesCollection}"
+                            ItemTemplate="{StaticResource PropertyTemplate}"
+                            SelectionMode="None"
+                            IsItemClickEnabled="False"
+                            BorderThickness="0"/>
                     </StackPanel>
                     
                 </Grid>
