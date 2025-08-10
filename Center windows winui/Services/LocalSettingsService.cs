@@ -223,6 +223,11 @@ public class LocalSettingsService : ILocalSettingsService<AppSettings>
 
             if (!Directory.Exists(directory))
             {
+                if (File.Exists(directory))
+                {
+                    File.Move(directory, directory + ".bak");
+                    // or File.Delete(directory);
+                }
                 Directory.CreateDirectory(directory ?? string.Empty);
             }
 
