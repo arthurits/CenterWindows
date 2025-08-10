@@ -49,7 +49,7 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(StrTransparencyText))]
-    public partial int Transparency { get; set; } = 255;
+    public partial int Transparency { get; set; }       // Set in constructor. Default value -> 255
 
     private byte Alpha => (byte)Math.Clamp(Transparency, 0, 255);
     public string StrTransparencyText => $"{StrTransparencyHeader}: {Alpha}";
@@ -109,6 +109,9 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 
         // Load string resources into binding variables for the UI
         OnLanguageChanged(null, EventArgs.Empty);
+
+        // Set initial value from settings for the transparency slider
+        Transparency = _appSettings.SelectWindowTransparency;
     }
 
     private void OnPropertyChanged(object? sender, SettingChangedEventArgs e)
