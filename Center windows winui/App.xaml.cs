@@ -125,7 +125,7 @@ public partial class App : Application
     {
         base.OnLaunched(args);
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        //await App.GetService<IActivationService>().ActivateAsync(args);
 
         // Handle closing event
         MainWindow.AppWindow.Closing += OnClosing;
@@ -148,6 +148,10 @@ public partial class App : Application
             WindowPosition.CenterWindow(MainWindow);
         }
 
+        // Now that the settings are loaded, we call the activation service
+        // so that the defaul page and view model can access the settings and apply them
+        await App.GetService<IActivationService>().ActivateAsync(args);
+        
         // Apply theme stored in settings
         var themeService = App.GetService<IThemeSelectorService>();
         if (themeService is not null)
