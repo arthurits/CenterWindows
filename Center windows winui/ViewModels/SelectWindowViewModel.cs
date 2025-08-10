@@ -256,4 +256,13 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
             return new BitmapImage(new Uri(uri));
         }
     }
+
+    /// <summary>
+    /// Stores the transparency value in the application settings when it changes.
+    /// </summary>
+    /// <param name="value"></param>
+    partial void OnTransparencyChanged(int value)
+    {
+        _appSettings.SelectWindowTransparency = value;
+    }
 }
