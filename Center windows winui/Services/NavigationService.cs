@@ -87,6 +87,12 @@ public class NavigationService : INavigationService
 
         if (_frame != null && (_frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(_lastParameterUsed))))
         {
+            // If the page implements IPageWithCleanup, call Cleanup on the old page to release resources and avoid memory leaks
+            if (_frame.Content is IPageWithCleanup oldPage)
+            {
+                oldPage.Cleanup();
+            }
+
             _frame.Tag = clearNavigation;
             var vmBeforeNavigation = _frame.GetPageViewModel();
             var navigated = _frame.Navigate(pageType, parameter);
