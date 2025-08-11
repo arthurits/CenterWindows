@@ -28,7 +28,7 @@
                     HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
                     VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
 
-            <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
+            <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}" Spacing="6">
                 
                 <!--App settings-->
                 <TextBlock Text="{Binding StrAppSettings}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0, 12, 0, 0"/>
@@ -108,6 +108,9 @@
                     <ToggleSwitch IsOn="{x:Bind ViewModel.LaunchAtStartup, Mode=TwoWay}" OnContent="{x:Bind ViewModel.StrActivate}" OffContent="{x:Bind ViewModel.StrDeactivate}"/>
                 </controls:SettingsCard>
 
+                <!-- Window selection -->
+                <TextBlock Text="{Binding StrWindowSelection}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0, 12, 0, 0"/>
+                
                 <controls:SettingsExpander
                     x:Name="cardHighlighter"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE7E6;}"

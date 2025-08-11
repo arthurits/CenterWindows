@@ -42,6 +42,9 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial string StrLaunchAtStartupHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrLaunchAtStartupDescription { get; set; } = string.Empty;
+    
+    [ObservableProperty]
+    public partial string StrWindowSelection { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrShowHighlightHeader { get; set; } = string.Empty;
     [ObservableProperty]
@@ -124,6 +127,9 @@ public partial class SettingsViewModel : ObservableRecipient
         // Launch at startup
         StrLaunchAtStartupHeader = "StrLaunchAtStartupHeader".GetLocalized("Settings");
         StrLaunchAtStartupDescription = "StrLaunchAtStartupDescription".GetLocalized("Settings");
+
+        // Window selection section
+        StrWindowSelection = "StrWindowSelection".GetLocalized("Settings");
 
         // Highlight settings card
         StrShowHighlightHeader = "StrShowHighlightHeader".GetLocalized("Settings");

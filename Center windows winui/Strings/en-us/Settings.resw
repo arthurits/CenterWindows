@@ -213,6 +213,9 @@
   <data name="StrWindowPositionHeader" xml:space="preserve">
     <value>Remember window position</value>
   </data>
+  <data name="StrWindowSelection" xml:space="preserve">
+    <value>Window selection</value>
+  </data>
   <data name="StrWindowSize" xml:space="preserve">
     <value>App window size: {0} px width and {1} px height</value>
   </data>
