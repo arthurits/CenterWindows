@@ -82,14 +82,13 @@
 
             <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
 
-                <Grid ColumnDefinitions="*" RowDefinitions ="*, *">
+                <Grid ColumnDefinitions="*" RowDefinitions ="*, *" RowSpacing="16">
 
                     <StackPanel
                         x:Name="WindowList"
                         Grid.Row="0"
                         Orientation="Vertical"
-                        Margin="0, 12, 0, 0"
-                        Spacing="4">
+                        Spacing="6">
 
                         <Border CornerRadius="{x:Bind PanelWindowList.CornerRadius}"
                             VerticalAlignment="Top"
@@ -192,7 +191,7 @@
                                 ItemTemplate="{StaticResource WindowItemTemplate}"
                                 IsItemClickEnabled="False"
                                 SelectionMode="Multiple"
-                                Margin="0,12,0,0">
+                                Margin="0,0,0,0">
                                 <interactivity:Interaction.Behaviors>
                                     <interactivity:EventTriggerBehavior EventName="SelectionChanged">
                                         <interactivity:InvokeCommandAction
@@ -209,13 +208,12 @@
                     <StackPanel
                         x:Name="PanelTransparency"
                         Grid.Row="1"
-                        Style="{StaticResource ContentStackPanel}"
-                        Margin="0,12,0,0">
+                        Style="{StaticResource ContentStackPanel}">
                         <TextBlock
                             Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
                             HorizontalAlignment="Center"
-                            Margin="0,0,0,8"/>
+                            Margin="0,0,0,10"/> <!-- ContentStackPanel has Spacing = 6, so we add 10 to get the recommended 16 -->
                         <Grid
                             x:Name="TransparencySlider"
                             ColumnDefinitions = "Auto, 200, Auto"
