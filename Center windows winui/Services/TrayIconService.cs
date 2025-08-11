@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using CenterWindow.Contracts.Services;
+using CenterWindow.Helpers;
 using CenterWindow.Interop;
 using CenterWindow.Models;
 using WinRT.Interop;
@@ -172,6 +173,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
             {
                 // Assume the icon size is 16x16 pixels,otherwise adjust as needed
                 var hBmp = CreateBitmapFromIcon(menuItemDefinition.IconPath, 16, 16);
+                //var hBmp = CreateBitmapFromImage(menuItemDefinition.IconPath, 16, 16);
                 _menuBitmaps.Add(hBmp); // Keep track of the bitmap to release it later
 
                 var itemInfo = new Win32.MENUITEMINFO
@@ -232,6 +234,19 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
         // Forward all other messages to the original window procedure
         return Win32.CallWindowProc(_prevWndProc, hWnd, msg, wParam, lParam);
+    }
+
+    private IntPtr CreateBitmapFromImage(string path, int width, int height)
+    {
+        var ext = Path.GetExtension(path).ToLowerInvariant();
+        if (ext == ".ico")
+        {
+            return CreateBitmapFromIcon(path, width, height);
+        }
+        else
+        {
+            return WinUiImageHelper.CreateBitmapFromFile(path, width, height);
+        }
     }
 
     private IntPtr CreateBitmapFromIcon(string iconPath, int width, int height)
