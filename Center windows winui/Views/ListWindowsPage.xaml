@@ -213,7 +213,7 @@
                             Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
                             Style="{ThemeResource SubtitleTextBlockStyle}"
                             HorizontalAlignment="Center"
-                            Margin="0,0,0,10"/> <!-- ContentStackPanel has Spacing = 6, so we add 10 to get the recommended 16 -->
+                            Margin="0, 0, 0, 10"/> <!-- ContentStackPanel has Spacing = 6, so we add 10 to get the recommended 16 -->
                         <Grid
                             x:Name="TransparencySlider"
                             ColumnDefinitions = "Auto, 200, Auto"

@@ -69,12 +69,13 @@
 
             <StackPanel Orientation="Vertical" Style="{StaticResource BaseStackPanel}">
 
-                <Grid ColumnDefinitions="*" RowDefinitions ="*, *, *">
+                <Grid ColumnDefinitions="*" RowDefinitions ="*, *, *" RowSpacing="16">
 
                     <StackPanel x:Name="PanelSelect"
                                 Grid.Row="0"
                                 Orientation="Vertical"
-                                Style="{StaticResource ContentStackPanel}">
+                                Style="{StaticResource ContentStackPanel}"
+                                Spacing="16"> <!-- We use the recommended 16 px space -->
                         <TextBlock
                             Text="{x:Bind ViewModel.StrDragCrossHair, Mode=OneWay}"
                             TextAlignment="Center"
@@ -86,7 +87,7 @@
                             BorderThickness="0"
                             Padding="0"
                             HorizontalAlignment="Center"
-                            Margin="0, 6, 0, 6">
+                            Margin="0, 0, 0, 16">   <!-- We use the recommended 16 px space -->
                             <!-- Change image according to CurrentImage -->
                             <Image
                                 Source="{Binding CurrentImage}"
@@ -101,11 +102,11 @@
                         x:Name="PanelTransparency"
                         Grid.Row="1"
                         Style="{StaticResource ContentStackPanel}"
-                        Margin="0,12,0,0">
+                        Spacing="16">
                         <TextBlock
                             Text="{x:Bind ViewModel.StrTransparencyText, Mode=OneWay}"
                             HorizontalAlignment="Center"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                            Style="{ThemeResource SubtitleTextBlockStyle}" />
                         <Grid
                             x:Name="TransparencySlider"
                             ColumnDefinitions = "Auto, 200, Auto"
@@ -135,8 +136,7 @@
                         Grid.Row="2"
                         Orientation="Vertical"
                         Style="{StaticResource ContentStackPanel}"
-                        Margin="0, 12, 0, 0"
-                        Spacing="4">
+                        Spacing="16">
                         <TextBlock
                             Text="{x:Bind ViewModel.StrWindowProperties, Mode=OneWay}"
                             HorizontalAlignment="Center"
