@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CenterWindow.Contracts.Services;
+using CenterWindow.Interop;
 using CenterWindow.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -176,14 +177,6 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 WindowPropertiesCollection[4].Value = $"{e.X}, {e.Y}";
                 WindowPropertiesCollection[5].Value = $"{e.Width}x{e.Height}";
 
-                // Force rebinding of the properties collection in the UI
-                //OnPropertyChanged(nameof(WindowPropertiesCollection));
-
-                // OnLanguageChanged()
-                //var localizedKeys = localizationService.GetLocalizedKeys();
-                //for (int i = 0; i < WindowPropertiesCollection.Count; i++)
-                //    WindowPropertiesCollection[i].Key = localizedKeys[i];
-
                 if (_showHighlight)
                 {// If the new HWND is different from the last highlighted one, update the highlight
                     if (e.HWnd != _lastHighlightedHwnd)
@@ -264,5 +257,14 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     partial void OnTransparencyChanged(int value)
     {
         _appSettings.SelectWindowTransparency = value;
+    }
+
+    [RelayCommand]
+    public void RestoreCursor()
+    {
+        // Just in case we mess with the system cursors, reset them
+        uint SPI_SETCURSORS = 0x0057;
+        uint SPIF_SENDCHANGE = 0x02;
+        Win32.SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
     }
 }

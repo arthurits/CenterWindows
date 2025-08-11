@@ -26,6 +26,11 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     [ObservableProperty]
     public partial string StrWindowDimensions { get; set; } = string.Empty;
 
+    [ObservableProperty]
+    public partial string StrRestoreCursorTextBlock { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrRestoreCursorButton { get; set; } = string.Empty;
+
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
         // Header for the crosshair drag mode
@@ -42,6 +47,10 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         StrWindowClassName = "StrWindowClassName".GetLocalized("SelectWindow");
         StrWindowLocation = "StrWindowLocation".GetLocalized("SelectWindow");
         StrWindowDimensions = "StrWindowDimensions".GetLocalized("SelectWindow");
+
+        // Restore cursor panel text
+        StrRestoreCursorTextBlock = "StrRestoreCursorTextBlock".GetLocalized("SelectWindow");
+        StrRestoreCursorButton = "StrRestoreCursorButton".GetLocalized("SelectWindow");
 
         // Update the Key field in the properties collection 
         WindowPropertiesCollection[0].Key = StrWindowText;

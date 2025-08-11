@@ -42,6 +42,12 @@
   <data name="StrDragCrossHair" xml:space="preserve">
     <value>Arrastra el punto de mira para seleccionar cualquier ventana</value>
   </data>
+  <data name="StrRestoreCursorTextBlock" xml:space="preserve">
+    <value>Haz clic en este botón para restaurar la imagen del cursor en caso de que se haya producido alguna incidencia</value>
+  </data>
+  <data name="StrRestoreCursorButton" xml:space="preserve">
+    <value>Restaurar cursor</value>
+  </data>
   <data name="StrTransparencyHeader" xml:space="preserve">
     <value>Transparencia</value>
   </data>
