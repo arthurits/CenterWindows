@@ -225,7 +225,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         {
             Id   = (int)TrayMenuItemId.Exit,
             Text = "StrTrayMenuExitApp".GetLocalized("Shell"),
-            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tray icon - Exit - 16x16.png")
+            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tray icon - Exit.ico")
         });
     }
 
