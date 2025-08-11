@@ -17,13 +17,17 @@
     <Page.Resources>
         <conv:NullToBoolConverter x:Key="NullToBool"/>
 
+        <x:Double x:Key="AppBarButtonIconThemeFontSize">24</x:Double>
+        <x:Double x:Key="AppBarToggleButtonIconThemeFontSize">24</x:Double>
+
         <!-- Template with each UI row formatting -->
         <DataTemplate x:Key="WindowItemTemplate" x:DataType="models:WindowModel">
             <Grid Padding="4"
                 Background="Transparent"
                 Tapped="ItemGrid_Tapped"
                 RightTapped="ItemGrid_RightTapped"
-                ColumnDefinitions ="3*, 1*, 1*, 2*, 1*">
+                ColumnDefinitions ="3*, 1*, 1*, 2*, 1*"
+                  ColumnSpacing="10">
                 <Grid.ContextFlyout>
                     <MenuFlyout Closing="OptionsMenuFlyout_Closing">
                         <ToggleMenuFlyoutItem
@@ -96,7 +100,8 @@
                                 <SolidColorBrush Color="MistyRose"
                                              Opacity=".4" />
                             </Border.Background>
-                            <CommandBar DefaultLabelPosition="Right"
+                            <CommandBar x:Name="CmdBar"
+                                        DefaultLabelPosition="Right"
                                         OverflowButtonVisibility="Collapsed"
                                         x:DefaultBindMode="OneWay">
                                 <CommandBar.PrimaryCommands>
@@ -105,7 +110,8 @@
                                               Label="{Binding StrCenter}"
                                               LabelPosition="Default"
                                               IsChecked="{Binding IsCenterChecked, Mode=TwoWay}"
-                                              Foreground="MidnightBlue">
+                                              Foreground="MidnightBlue"
+                                              Loaded="AppBarButtonAndToggle_Loaded">
                                         <AppBarToggleButton.Icon>
                                             <ImageIcon Source="/Assets/Finder - 32x32.svg" Width="48" Height="48"/>
                                         </AppBarToggleButton.Icon>
@@ -115,9 +121,10 @@
                                               Label="{Binding StrTransparency}"
                                               LabelPosition="Default"
                                               IsChecked="{Binding IsAlphaChecked, Mode=TwoWay}"
-                                              Foreground="MidnightBlue">
+                                              Foreground="MidnightBlue"
+                                              Loaded="AppBarButtonAndToggle_Loaded">
                                         <AppBarToggleButton.Icon>
-                                            <ImageIcon Source="/Assets/Transparency - 32x32.svg"/>
+                                            <ImageIcon Source="/Assets/Transparency - 24x24.svg"/>
                                         </AppBarToggleButton.Icon>
                                     </AppBarToggleButton>
                                     <AppBarSeparator />
@@ -127,7 +134,8 @@
                                               LabelPosition="Default"
                                               IsEnabled="{Binding IsApplyToSelectedEnabled}"
                                               Command="{Binding ApplyToSelectedWindowsCommand}"
-                                              Foreground="MidnightBlue">
+                                              Foreground="MidnightBlue"
+                                              Loaded="AppBarButtonAndToggle_Loaded">
                                         <AppBarButton.Icon>
                                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE73A;"/>
                                         </AppBarButton.Icon>
@@ -139,7 +147,8 @@
                                               LabelPosition="Default"
                                               IsEnabled="{Binding IsApplyToAllEnabled}"
                                               Command="{Binding ApplyToAllWindowsCommand}"
-                                              Foreground="MidnightBlue" />
+                                              Foreground="MidnightBlue"
+                                              Loaded="AppBarButtonAndToggle_Loaded"/>
                                     <AppBarSeparator />
                                     <AppBarButton x:Name="CmdBarDeselect"
                                             ToolTipService.ToolTip="{Binding StrDeselectToolTip}"
@@ -149,16 +158,16 @@
                                             IsEnabled="{Binding IsDeselectEnabled}"
                                             Command="{Binding DeselectWindowCommand}"
                                             Click="DeselectWindows_Click"
-                                            Foreground="MidnightBlue">
-                                    </AppBarButton>
+                                            Foreground="MidnightBlue"
+                                            Loaded="AppBarButtonAndToggle_Loaded"/>
                                     <AppBarButton x:Name="CmdBarRefresh"
                                             ToolTipService.ToolTip="{Binding StrRefreshToolTip}"
                                             Icon="Sync"
                                             Label="{Binding StrRefresh}"
                                             LabelPosition="Default"
                                             Command="{Binding RefreshWindowsCommand}"
-                                            Foreground="MidnightBlue">
-                                    </AppBarButton>
+                                            Foreground="MidnightBlue"
+                                            Loaded="AppBarButtonAndToggle_Loaded"/>
                                 </CommandBar.PrimaryCommands>
                             </CommandBar>
                         </Border>
