@@ -52,12 +52,15 @@ public sealed partial class ListWindowsPage : Page
                 if (root.FindName("TextLabel") is TextBlock lbl)
                 {
                     lbl.VerticalAlignment = VerticalAlignment.Center;
+                    lbl.Margin = new Thickness(lbl.Margin.Left, lbl.Margin.Top, lbl.Margin.Right, lbl.Margin.Top);
                 }
 
                 // Set the height and width of the Viewbox named "ContentViewbox" to 24
                 if (root.FindName("ContentViewbox") is Viewbox vbx)
                 {
                     vbx.Height = vbx.Width = 24;
+                    vbx.VerticalAlignment = VerticalAlignment.Center;
+                    vbx.Margin = new Thickness(vbx.Margin.Left, vbx.Margin.Top, vbx.Margin.Right, vbx.Margin.Top);
                 }
             }
         }
