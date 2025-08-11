@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CenterWindow.Contracts.Services;
+using CenterWindow.Interop;
 using CenterWindow.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -264,5 +265,14 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     partial void OnTransparencyChanged(int value)
     {
         _appSettings.SelectWindowTransparency = value;
+    }
+
+    [RelayCommand]
+    public void RestoreCursor()
+    {
+        // Just in case we mess with the system cursors, reset them
+        uint SPI_SETCURSORS = 0x0057;
+        uint SPIF_SENDCHANGE = 0x02;
+        Win32.SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
     }
 }

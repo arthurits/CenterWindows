@@ -18,39 +18,41 @@
                                Color="DarkGray"/>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea"
+    <Grid RowDefinitions="*, Auto">
+        
+        <Grid x:Name="ContentArea"
 		  ColumnDefinitions="*,450,*"
           RowDefinitions="84,Auto,*">
 
-        <Border x:Name="ShadowTarget" />
+            <Border x:Name="ShadowTarget" />
 
-        <Border CornerRadius="24"
+            <Border CornerRadius="24"
 				Grid.Row="1"
 				Grid.Column="1"
 				Background="#fffff9"
                 BorderBrush="#BF0404"
                 BorderThickness="2"
                 ui:Effects.Shadow="{StaticResource CommonShadow}">
-            <StackPanel
+                <StackPanel
                 Orientation="Vertical"
                 HorizontalAlignment="Center"
                 Margin="0, 100 , 0, 0"
                 Spacing="6">
-                <TextBlock Text="{Binding ProductName}" FontSize="18" FontWeight="Normal" />
-                <TextBlock Text="{Binding VersionDescription}" FontSize="18" FontWeight="Normal" />
-                <TextBlock Text="{Binding Copyright}" FontSize="18" FontWeight="Normal" />
-                <TextBlock Text="{Binding CompanyName}" FontSize="18" FontWeight="Normal" />
-                <TextBlock Margin="{StaticResource XSmallTopMargin}"/>
-                <!--<TextBlock
+                    <TextBlock Text="{Binding ProductName}" FontSize="18" FontWeight="Normal" />
+                    <TextBlock Text="{Binding VersionDescription}" FontSize="18" FontWeight="Normal" />
+                    <TextBlock Text="{Binding Copyright}" FontSize="18" FontWeight="Normal" />
+                    <TextBlock Text="{Binding CompanyName}" FontSize="18" FontWeight="Normal" />
+                    <TextBlock Margin="{StaticResource XSmallTopMargin}"/>
+                    <!--<TextBlock
 					x:Uid="Settings_AboutDescription"
 					Margin="{StaticResource XSmallTopMargin}"
 					Style="{ThemeResource BodyTextBlockStyle}" />
                 <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />-->
-            </StackPanel>
-        </Border>
+                </StackPanel>
+            </Border>
 
-        <!-- Profile Circle Image -->
-        <Ellipse
+            <!-- Profile Circle Image -->
+            <Ellipse
 					Grid.Row="1"
 					Grid.Column="1"
 					Width="168"
@@ -60,25 +62,27 @@
 					Fill="White"
 					Margin="0,-84,0,0"
 					VerticalAlignment="Top"/>
-        <Ellipse
+            <Ellipse
 					Grid.Row="1"
 					Grid.Column="1"
 					Width="168"
 					Height="168"
 					Margin="0,-84,0,0"
 					VerticalAlignment="Top">
-            <Ellipse.Fill>
-                <ImageBrush ImageSource="/Assets/AppIcon.ico">
-                    <ImageBrush.RelativeTransform>
-                        <ScaleTransform
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="/Assets/AppIcon.ico">
+                        <ImageBrush.RelativeTransform>
+                            <ScaleTransform
                           ScaleX="0.8"
                           ScaleY="0.8"
                           CenterX="0.5"
                           CenterY="0.5"/>
-                    </ImageBrush.RelativeTransform>
-                </ImageBrush>
-            </Ellipse.Fill>
-        </Ellipse>
+                        </ImageBrush.RelativeTransform>
+                    </ImageBrush>
+                </Ellipse.Fill>
+            </Ellipse>
 
+        </Grid>
+        
     </Grid>
 </Page>
