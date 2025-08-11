@@ -177,14 +177,6 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 WindowPropertiesCollection[4].Value = $"{e.X}, {e.Y}";
                 WindowPropertiesCollection[5].Value = $"{e.Width}x{e.Height}";
 
-                // Force rebinding of the properties collection in the UI
-                //OnPropertyChanged(nameof(WindowPropertiesCollection));
-
-                // OnLanguageChanged()
-                //var localizedKeys = localizationService.GetLocalizedKeys();
-                //for (int i = 0; i < WindowPropertiesCollection.Count; i++)
-                //    WindowPropertiesCollection[i].Key = localizedKeys[i];
-
                 if (_showHighlight)
                 {// If the new HWND is different from the last highlighted one, update the highlight
                     if (e.HWnd != _lastHighlightedHwnd)
