@@ -124,7 +124,7 @@
                                               Foreground="MidnightBlue"
                                               Loaded="AppBarButtonAndToggle_Loaded">
                                         <AppBarToggleButton.Icon>
-                                            <ImageIcon Source="/Assets/Transparency - 32x32.svg"/>
+                                            <ImageIcon Source="/Assets/Transparency - 24x24.svg"/>
                                         </AppBarToggleButton.Icon>
                                     </AppBarToggleButton>
                                     <AppBarSeparator />
