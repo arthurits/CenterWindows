@@ -200,6 +200,12 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
         _isInitialized = false;
 
+        // Clean up the bitmaps used in the menu items
+        foreach (var oldBmp in _menuBitmaps)
+        {
+            Win32.DeleteObject(oldBmp);
+        }
+
         // Remove the icon from the system tray
         Win32.Shell_NotifyIcon(Win32.NIM_DELETE, ref _nid);
 
@@ -323,7 +329,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
         // Draw the icon onto the bitmap with alpha
         var oldBmp = SelectObject(memDC, hBmp);
-        DrawIconEx(memDC, 0, 0, hIcon, width, height, 0, IntPtr.Zero, 0x0003); // DI_NORMAL|DI_COMPAT
+        DrawIconEx(memDC, 0, 0, hIcon, width, height, 0, IntPtr.Zero, Win32.DI_NORMAL); // DI_NORMAL|DI_COMPAT
         SelectObject(memDC, oldBmp);
 
         // Clean up resources
