@@ -62,77 +62,39 @@ public partial class GdiPlusIconLoader : IIconLoader, IDisposable
     }
 
     /// <summary>
-    /// Asynchronously loads an icon from the specified file path and returns a handle to the icon (HICON).
+    /// Loads an HICON from the specified file path, scaling it to the desired size, and returns a handle to the icon (HICON).
     /// </summary>
     /// <remarks>This method uses GDI+ to create a bitmap from the specified file and converts it to an HICON.
     /// Ensure that the file path points to a valid image file supported by GDI+. The returned HICON must be destroyed
     /// using <see cref="Win32.DestroyIcon"/> or equivalent system calls to avoid resource leaks.</remarks>
     /// <param name="path">The file path of the icon to load. The path must point to a valid image file.</param>
     /// <param name="size">The size of the icon to load, in pixels. Default is 16 pixels.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains a handle to the loaded icon (HICON).
-    /// The caller is responsible for releasing the HICON using appropriate system calls when it is no longer needed.</returns>
+    /// <returns>A handle to the loaded icon (HICON). The caller is responsible for releasing the HICON
+    /// using appropriate system calls (<see cref="Win32.DestroyIcon"/>) when it is no longer needed.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the operation to create the HBITMAP fails.</exception>
     public IntPtr LoadIcon(string path, uint size = 16)
     {
         // Check if the object has been disposed
         ObjectDisposedException.ThrowIf(_disposed, nameof(GdiPlusIconLoader));
 
-        // Load the GDI+ bitmap from the file path
-        var status = Win32.GdipCreateBitmapFromFile(path, out var srcGdiBmp);
-        if (status != Win32.GpStatus.Ok || srcGdiBmp == IntPtr.Zero)
+        // Create a Gdi+ bitmap from the file path and scale it to the specified size
+        var scaledGdiBmp = CreateScaledBitmap(path, (int)size, (int)size);
+
+        try
         {
-            return IntPtr.Zero;
-        }
-
-        // Create an empty destination Gdi+ bitmap (ARGB format)
-        status = Win32.GdipCreateBitmapFromScan0(
-            (int)size, (int)size,
-            (int)(size * 4),
-            Win32.PixelFormat.Format32bppPARGB,
-            IntPtr.Zero,
-            out var dstGdiBmp);
-        
-        if (status != Win32.GpStatus.Ok || dstGdiBmp == 0)
-        {
-            ThrowAndCleanup("GdipCreateBitmapFromScan0", (int)status, srcGdiBmp);
-        }
-
-        // Create a graphics object from the destination bitmap
-        status = Win32.GdipCreateFromImage(dstGdiBmp, out var graphics);
-        if (status != Win32.GpStatus.Ok || graphics == 0)
-        {
-            ThrowAndCleanup("GdipCreateFromImage", (int)status, srcGdiBmp, dstGdiBmp);
-        }
-
-        // Modify the graphics object to use high-quality interpolation
-        Win32.GdipSetInterpolationMode(graphics, Win32.InterpolationMode.HighQualityBicubic);
-
-        // Draw the source bitmap onto the graphics object
-        status = Win32.GdipDrawImageRectI(graphics, srcGdiBmp, 0, 0, (int)size, (int)size);
-        Win32.GdipDeleteGraphics(graphics);
-        if (status != Win32.GpStatus.Ok)
-        {
-            ThrowAndCleanup("GdipDrawImageRectI", (int)status, srcGdiBmp, dstGdiBmp);
-        }
-
-        // // Convert the GDI+ bitmap to an HICON
-        status = Win32.GdipCreateHICONFromBitmap(dstGdiBmp, out var hIcon);
-        _ = Win32.GdipDisposeImage(srcGdiBmp);
-        _ = Win32.GdipDisposeImage(dstGdiBmp);
-        if (status != Win32.GpStatus.Ok)
-        {
-            return IntPtr.Zero;
-        }
-
-        return hIcon;
-
-        static void ThrowAndCleanup(string call, int code, params IntPtr[] images)
-        {
-            foreach (var img in images)
+            // Convert the GDI+ bitmap to HBITMAP
+            var status = Win32.GdipCreateHICONFromBitmap(scaledGdiBmp, out var hIcon);
+            if (status != Win32.GpStatus.Ok)
             {
-                _ = Win32.GdipDisposeImage(img);
+                throw new InvalidOperationException($"GdipCreateHICONFromBitmap failed with code ({status})");
             }
 
-            throw new IOException($"{call} function failed with code ({code})");
+            return hIcon;
+        }
+        finally
+        {
+            // Free the GDI+ bitmap
+            Win32.GdipDisposeImage(scaledGdiBmp);
         }
     }
 
@@ -165,76 +127,43 @@ public partial class GdiPlusIconLoader : IIconLoader, IDisposable
 
     public Task<IntPtr> LoadIconAsync(string path, uint size = 16) => Task.Run(() => LoadIcon(path, size));
 
-    public Task<IntPtr> LoadIconAsync(string path) => Task.Run(() => LoadIcon(path));   
+    public Task<IntPtr> LoadIconAsync(string path) => Task.Run(() => LoadIcon(path));
 
+    /// <summary>
+    /// Loads an HBITMAP handle from the specified image file, scaling it to the desired size.
+    /// </summary>
+    /// <remarks>This method uses GDI+ to load and scale the image, and then converts it to an HBITMAP handle.
+    /// Ensure that the provided file path is valid and accessible. The method performs cleanup of intermediate
+    /// resources but does not manage the lifetime of the returned HBITMAP handle, which should be disposed
+    /// by the caller using <see cref="Win32.DeleteObject"/>.</remarks>
+    /// <param name="path">The file path of the image to load. The path must point to a valid image file.</param>
+    /// <param name="size">The desired width and height, in pixels, to which the image will be scaled. The default value is 16.</param>
+    /// <returns>A handle to the HBITMAP representing the scaled image. The caller is responsible for releasing the handle using
+    /// appropriate native methods such as <see cref="Win32.DeleteObject"/> to avoid resource leaks.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the operation to create the HBITMAP fails.</exception>
     public IntPtr LoadHBitmap(string path, uint size = 16)
     {
         // Check if the object has been disposed
         ObjectDisposedException.ThrowIf(_disposed, nameof(GdiPlusIconLoader));
 
-        // Load the GDI+ bitmap from the file path
-        Win32.GpStatus status = Win32.GdipCreateBitmapFromFile(path, out var srcGdiBmp);
-        if (status != Win32.GpStatus.Ok || srcGdiBmp == 0)
+        // Create a Gdi+ bitmap from the file path and scale it to the specified size
+        var scaledGdiBmp = CreateScaledBitmap(path, (int)size, (int)size);
+
+        try
         {
-            throw new IOException($"GdipCreateBitmapFromFile failed ({status})");
-        }
-
-        // Create an empty destination Gdi+ bitmap (ARGB format)
-        status = Win32.GdipCreateBitmapFromScan0(
-            (int)size, (int)size,
-            (int)(size * 4),                    // stride = width * bytesByPixel
-            Win32.PixelFormat.Format32bppPARGB,       // formato premult alfa
-            IntPtr.Zero,                        // so that GDI+ reserves the buffer memory
-            out var dstGdiBmp
-        );
-        if (status != Win32.GpStatus.Ok || dstGdiBmp == 0)
-        {
-            _ = Win32.GdipDisposeImage(srcGdiBmp);
-            throw new IOException($"GdipCreateBitmapFromScan0 failed ({status})");
-        }
-
-        // Create a graphics object from the destination bitmap
-        status = Win32.GdipCreateFromImage(dstGdiBmp, out var graphics);
-        if (status != Win32.GpStatus.Ok)
-        {
-            throw CreateAndCleanup("GdipCreateFromImage", (int)status, srcGdiBmp, dstGdiBmp);
-        }
-
-        // Modify the graphics object to use high-quality interpolation
-        Win32.GdipSetInterpolationMode(graphics, Win32.InterpolationMode.HighQualityBicubic);
-
-        // Draw the source bitmap onto the graphics object
-        status = Win32.GdipDrawImageRectI(
-            graphics, srcGdiBmp,
-            0, 0,                 // origin coordinates
-            (int)size, (int)size  // destination rectangle size
-        );
-        Win32.GdipDeleteGraphics(graphics);
-        if (status != Win32.GpStatus.Ok)
-        {
-            throw CreateAndCleanup("GdipDrawImageRectI", (int)status, srcGdiBmp, dstGdiBmp);
-        }
-
-        // Convert the GDI+ bitmap to an HBITMAP
-        status = Win32.GdipCreateHBITMAPFromBitmap(dstGdiBmp, out var hBmp, 0);
-        _ = Win32.GdipDisposeImage(srcGdiBmp);
-        _ = Win32.GdipDisposeImage(dstGdiBmp);
-        if (status != Win32.GpStatus.Ok || hBmp == 0)
-        {
-            throw new IOException($"GdipCreateHBITMAPFromBitmap failed ({status})");
-        }
-
-        // Return the HBITMAP. The caller is responsible for destroying the HBITMAP when done
-        return hBmp;
-
-        static IOException CreateAndCleanup(string call, int code, params IntPtr[] images)
-        {
-            foreach (var img in images)
+            // Convert the GDI+ bitmap to HBITMAP
+            var status = Win32.GdipCreateHBITMAPFromBitmap(scaledGdiBmp, out var hBitmap, 0);
+            if (status != Win32.GpStatus.Ok)
             {
-                _ = Win32.GdipDisposeImage(img);
+                throw new InvalidOperationException($"GdipCreateHBITMAPFromBitmap failed with code ({status})");
             }
 
-            throw new IOException($"{call} function failed with code ({code})");
+            return hBitmap;
+        }
+        finally
+        {
+            // Free the GDI+ bitmap
+            Win32.GdipDisposeImage(scaledGdiBmp);
         }
     }
 
@@ -265,6 +194,75 @@ public partial class GdiPlusIconLoader : IIconLoader, IDisposable
     public Task<IntPtr> LoadHBitmapAsync(string path, uint size = 16) => Task.Run(() => LoadHBitmap(path, size));
 
     public Task<IntPtr> LoadHBitmapAsync(string path) => Task.Run(() => LoadHBitmap(path));
+
+    /// <summary>
+    /// Creates a scaled bitmap from the specified image file, resizing it to the given dimensions.
+    /// </summary>
+    /// <remarks>This method uses GDI+ to load the source image, create a new bitmap with the specified
+    /// dimensions, and draw the scaled image onto the new bitmap using high-quality bicubic interpolation. The returned
+    /// bitmap is in 32bpp ARGB format and must be disposed by the caller.</remarks>
+    /// <param name="path">The file path of the source image. The file must exist and be a valid image format supported by GDI+.</param>
+    /// <param name="targetWidth">The desired width of the scaled bitmap, in pixels. Must be greater than 0.</param>
+    /// <param name="targetHeight">The desired height of the scaled bitmap, in pixels. Must be greater than 0.</param>
+    /// <returns>A handle to the scaled bitmap as an <see cref="IntPtr"/>. The caller is responsible for disposing of the bitmap
+    /// using appropriate GDI+ cleanup methods.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the source image cannot be loaded, the destination bitmap cannot be created, or an error occurs during
+    /// scaling.</exception>
+    private IntPtr CreateScaledBitmap(string path, int targetWidth, int targetHeight)
+    {
+        // Load the GDI+ bitmap from the file path
+        var status = Win32.GdipCreateBitmapFromFile(path, out var srcGdiBmp);
+        if (status != Win32.GpStatus.Ok || srcGdiBmp == 0)
+            throw new InvalidOperationException($"GdipCreateBitmapFromFile failed with code ({status})");
+
+        try
+        {
+            // Create an empty destination Gdi+ bitmap (ARGB format)
+            status = Win32.GdipCreateBitmapFromScan0(
+                targetWidth,
+                targetHeight,
+                targetWidth * 4,                    // stride = width * bytesByPixel
+                Win32.PixelFormat.Format32bppARGB,  // 32 bppp ARGB format
+                IntPtr.Zero,                        // so that GDI+ reserves the buffer memory
+                out var dstGdiBmp);
+            if (status != Win32.GpStatus.Ok)
+                throw new InvalidOperationException($"GdipCreateBitmapFromScan0 failed with code ({status})");
+
+            try
+            {
+                // Create a graphics object from the destination bitmap
+                status = Win32.GdipCreateFromImage(dstGdiBmp, out var graphics);
+                if (status != Win32.GpStatus.Ok)
+                    throw new InvalidOperationException($"GdipCreateFromImage failed with code ({status})");
+
+                try
+                {
+                    // Modify the graphics object to use high-quality interpolation
+                    Win32.GdipSetInterpolationMode(graphics, Win32.InterpolationMode.HighQualityBicubic);
+
+                    // Draw the source bitmap onto the graphics object
+                    Win32.GdipDrawImageRectI(graphics, srcGdiBmp, 0, 0, targetWidth, targetHeight);
+                }
+                finally
+                {
+                    Win32.GdipDeleteGraphics(graphics);
+                }
+            }
+            catch
+            {
+                // If there was an error while drawing into destination, clean up the destination bitmap
+                Win32.GdipDisposeImage(dstGdiBmp);
+                throw;
+            }
+
+            return dstGdiBmp;
+        }
+        finally
+        {
+            // Always clean up the source bitmap
+            Win32.GdipDisposeImage(srcGdiBmp);
+        }
+    }
 
     /// <summary>
     /// Shuts down the current instance, releasing any associated resources.
