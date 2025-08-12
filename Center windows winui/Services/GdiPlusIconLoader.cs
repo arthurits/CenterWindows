@@ -213,7 +213,9 @@ public partial class GdiPlusIconLoader : IIconLoader, IDisposable
         // Load the GDI+ bitmap from the file path
         var status = Win32.GdipCreateBitmapFromFile(path, out var srcGdiBmp);
         if (status != Win32.GpStatus.Ok || srcGdiBmp == 0)
+        {
             throw new InvalidOperationException($"GdipCreateBitmapFromFile failed with code ({status})");
+        }
 
         try
         {
@@ -226,14 +228,18 @@ public partial class GdiPlusIconLoader : IIconLoader, IDisposable
                 IntPtr.Zero,                        // so that GDI+ reserves the buffer memory
                 out var dstGdiBmp);
             if (status != Win32.GpStatus.Ok)
+            {
                 throw new InvalidOperationException($"GdipCreateBitmapFromScan0 failed with code ({status})");
+            }
 
             try
             {
                 // Create a graphics object from the destination bitmap
-                status = Win32.GdipCreateFromImage(dstGdiBmp, out var graphics);
+                status = Win32.GdipGetImageGraphicsContext(dstGdiBmp, out var graphics);
                 if (status != Win32.GpStatus.Ok)
+                {
                     throw new InvalidOperationException($"GdipCreateFromImage failed with code ({status})");
+                }
 
                 try
                 {

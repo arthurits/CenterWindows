@@ -16,7 +16,7 @@ internal static partial class Win32
         out IntPtr bitmap
     );
 
-    [DllImport("gdiplus.dll", ExactSpelling = true)]
+    [DllImport("gdiplus.dll", EntryPoint = "GdipCreateFromImage", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
     public static extern GpStatus GdipCreateFromImage(IntPtr image, out IntPtr graphics);
 
     [DllImport("gdiplus.dll")]
@@ -30,7 +30,7 @@ internal static partial class Win32
 
     [DllImport("gdiplus.dll", ExactSpelling = true)]
     public static extern GpStatus GdipCreateHICONFromBitmap(IntPtr bitmap, out IntPtr hicon);
-
+    
     [DllImport("gdiplus.dll", ExactSpelling = true)]
     public static extern GpStatus GdipDisposeImage(IntPtr image);
 
@@ -43,6 +43,9 @@ internal static partial class Win32
         int width,
         int height
     );
+
+    [DllImport("gdiplus.dll")]
+    public static extern GpStatus GdipGetImageGraphicsContext(IntPtr image, out IntPtr graphics);
 
     [DllImport("gdiplus.dll")]
     public static extern GpStatus GdipSetInterpolationMode(IntPtr graphics, InterpolationMode mode);
