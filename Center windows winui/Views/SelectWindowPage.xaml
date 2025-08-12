@@ -58,7 +58,7 @@
                   FallbackColor="#FFFAF3E0"/>
     </Page.Resources>
     
-    <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*">
+    <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*, Auto">
 
         <ScrollView x:Name="ScrollViewPage" ContentOrientation="Vertical"
             HorizontalContentAlignment="Stretch"  VerticalContentAlignment="Stretch"
@@ -148,8 +148,10 @@
                             BorderThickness="0">
                             <!--<ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
-                                    --><!-- Márgenes para espaciado vertical 
-           6px arriba y 6px abajo centran la línea entre ítems --><!--
+                                    -->
+                            <!-- Márgenes para espaciado vertical 
+           6px arriba y 6px abajo centran la línea entre ítems -->
+                            <!--
                                     <Setter Property="Margin" Value="0,6,0,6"/>
                                     <Setter Property="Padding" Value="4"/>
                                     <Setter Property="BorderThickness" Value="0"/>
@@ -159,7 +161,9 @@
                                             <ControlTemplate TargetType="ListViewItem">
                                                 <Grid>
                                                     <ContentPresenter/>
-                                                    --><!-- Línea como borde inferior --><!--
+                                                    -->
+                            <!-- Línea como borde inferior -->
+                            <!--
                                                     <Border
                                                         Background="Transparent"
                                                         BorderBrush="{ThemeResource ListViewItemSeparatorBrush}"
@@ -177,30 +181,29 @@
                             </ListView.ItemContainerStyle>-->
                         </ListView>
                     </StackPanel>
-                    
-                    <!-- Restore cursor -->
-                    <StackPanel
-                        x:Name="RestoreCursorPanel"
-                        Grid.Row="3"
-                        Style="{StaticResource ContentStackPanel}"
-                        HorizontalAlignment="Right"
-                        Width="300"
-                        Margin="0, 0, 0, 16"
-                        Spacing="16">
-                        <TextBlock
-                            Text="{x:Bind ViewModel.StrRestoreCursorTextBlock, Mode=OneWay}"
-                            TextAlignment="Center"
-                            Style="{ThemeResource BodyTextBlockStyle}"
-                            Margin="0, 16, 0, 0"/>
-                        <Button
-                            Content="{x:Bind ViewModel.StrRestoreCursorButton, Mode=OneWay}"
-                            Command="{x:Bind ViewModel.RestoreCursorCommand}"
-                            HorizontalAlignment="Center"
-                            Margin="0, 0, 0, 16"/>
-                    </StackPanel>
 
                 </Grid>
             </StackPanel>
         </ScrollView>
+        <!-- Restore cursor -->
+        <StackPanel
+            x:Name="RestoreCursorPanel"
+            Grid.Row="1"
+            Style="{StaticResource ContentStackPanel}"
+            HorizontalAlignment="Right"
+            Width="300"
+            Margin="0, 16, 0, 16"
+            Spacing="16">
+            <TextBlock
+                Text="{x:Bind ViewModel.StrRestoreCursorTextBlock, Mode=OneWay}"
+                TextAlignment="Center"
+                Style="{ThemeResource BodyTextBlockStyle}"
+                Margin="0, 16, 0, 0"/>
+            <Button
+                Content="{x:Bind ViewModel.StrRestoreCursorButton, Mode=OneWay}"
+                Command="{x:Bind ViewModel.RestoreCursorCommand}"
+                HorizontalAlignment="Center"
+                Margin="0, 0, 0, 16"/>
+        </StackPanel>
     </Grid>
 </Page>
