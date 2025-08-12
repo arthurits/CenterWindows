@@ -4,6 +4,7 @@ using CenterWindow.Helpers;
 using CenterWindow.Interop;
 using CenterWindow.Models;
 using WinRT.Interop;
+using static CenterWindow.Interop.Win32;
 
 namespace CenterWindow.Services;
 internal partial class TrayIconService : ITrayIconService, IDisposable
@@ -172,7 +173,8 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
             if (!string.IsNullOrEmpty(menuItemDefinition.IconPath) && menuItemDefinition.Children.Count == 0)
             {
                 // Assume the icon size is 16x16 pixels,otherwise adjust as needed
-                var hBmp = CreateBitmapFromIcon(menuItemDefinition.IconPath, 16, 16);
+                //var hBmp = CreateBitmapFromIcon(menuItemDefinition.IconPath, 16, 16);
+                var hBmp = CreateBitmapWithAlphaFromIcon(menuItemDefinition.IconPath, 16, 16);
                 //var hBmp = CreateBitmapFromImage(menuItemDefinition.IconPath, 16, 16);
                 _menuBitmaps.Add(hBmp); // Keep track of the bitmap to release it later
 
@@ -273,7 +275,63 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         Win32.SelectObject(memDC, oldBmp);
         Win32.DeleteDC(memDC);
         _ = Win32.ReleaseDC(IntPtr.Zero, screenDC);
+        DestroyIcon(hIcon);
 
         return hBitmap;
+    }
+
+    /// <summary>
+    /// Creates a 32-bit bitmap with alpha transparency from an icon file.
+    /// </summary>
+    /// <remarks>This method loads an icon from the specified file path and draws it onto a 32-bit top-down
+    /// bitmap with alpha transparency. The resulting bitmap can be used in GDI operations or other graphics
+    /// contexts.</remarks>
+    /// <param name="iconPath">The file path of the icon to load. The file must exist and be a valid icon file.</param>
+    /// <param name="width">The width, in pixels, of the resulting bitmap. Must be greater than 0.</param>
+    /// <param name="height">The height, in pixels, of the resulting bitmap. Must be greater than 0.</param>
+    /// <returns>A handle to the created bitmap (HBITMAP). The caller is responsible for releasing the bitmap using <see
+    /// cref="DeleteObject(IntPtr)"/> when it is no longer needed.</returns>
+    public static IntPtr CreateBitmapWithAlphaFromIcon(string iconPath, int width, int height)
+    {
+        // Prepare the 32bpp top-down bitmap info
+        var hdr = new BITMAPINFOHEADER
+        {
+            biSize        = (uint)Marshal.SizeOf<BITMAPINFOHEADER>(),
+            biWidth       = width,
+            biHeight      = -height, // negativo = top-down
+            biPlanes      = 1,
+            biBitCount    = 32,
+            biCompression = BI_RGB,
+            biSizeImage   = (uint)(width * height * 4)
+        };
+        var info = new BITMAPINFO { bmiHeader = hdr };
+
+        // Create DCs and DIB section
+        var screenDC = GetDC(IntPtr.Zero);
+        var memDC = CreateCompatibleDC(screenDC);
+        IntPtr ppvBits;
+        var hBmp = CreateDIBSection(memDC, ref info, DIB_RGB_COLORS, out ppvBits, IntPtr.Zero, 0);
+
+        // Load the icon from the specified path
+        var hIcon = LoadImage(
+            IntPtr.Zero,
+            iconPath,
+            IMAGE_ICON,
+            width,
+            height,
+            LR_LOADFROMFILE);
+
+        // Draw the icon onto the bitmap with alpha
+        var oldBmp = SelectObject(memDC, hBmp);
+        DrawIconEx(memDC, 0, 0, hIcon, width, height, 0, IntPtr.Zero, 0x0003); // DI_NORMAL|DI_COMPAT
+        SelectObject(memDC, oldBmp);
+
+        // Clean up resources
+        DeleteDC(memDC);
+        _ = ReleaseDC(IntPtr.Zero, screenDC);
+        DestroyIcon(hIcon);
+
+        // hBmp should be destroyed by the caller when no longer needed
+        return hBmp;
     }
 }
