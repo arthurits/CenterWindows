@@ -52,7 +52,7 @@
     <value>Transparency</value>
   </data>
   <data name="StrWindowClassName" xml:space="preserve">
-    <value>Process</value>
+    <value>Class</value>
   </data>
   <data name="StrWindowDimensions" xml:space="preserve">
     <value>Dimension</value>
@@ -64,7 +64,7 @@
     <value>Position</value>
   </data>
   <data name="StrWindowModuleName" xml:space="preserve">
-    <value>Class</value>
+    <value>Process</value>
   </data>
   <data name="StrWindowProperties" xml:space="preserve">
     <value>Window properties</value>
