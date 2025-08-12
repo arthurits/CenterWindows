@@ -75,17 +75,17 @@ internal static partial class Win32
     [Flags]
     public enum PixelFormat : int
     {
-        DontCare = 0,
-        Format1bppIndexed = 0x000301,
-        Format4bppIndexed = 0x000304,
+        DontCare = 0,                   // Flat out “I don't care”
+        Format1bppIndexed = 0x000301,   // 1 bit per pixel, indexed palette
+        Format4bppIndexed = 0x000304,   // 4 bpp
         Format8bppIndexed = 0x000308,
         Format16bppGrayScale = 0x0010100,
         Format16bppRGB555 = 0x000502,
         Format16bppRGB565 = 0x000606,
         Format24bppRGB = 0x000018,
-        Format32bppRGB = 0x000209,
-        Format32bppARGB = 0x00220A,
-        Format32bppPARGB = 0x00320B,
+        Format32bppRGB = 0x000209,      // without alpha channel, not premultiplied
+        Format32bppARGB = 0x26200A,     // with alfa, not premultiplied
+        Format32bppPARGB = 0x32200B,    // with alfa premultiplied
         Format48bppRGB = 0x1001100,
         Format64bppARGB = 0x2001A0,
         Format64bppPARGB = 0x3001B0
