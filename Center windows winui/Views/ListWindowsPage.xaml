@@ -112,7 +112,7 @@
                                               Foreground="MidnightBlue"
                                               Loaded="AppBarButtonAndToggle_Loaded">
                                         <AppBarToggleButton.Icon>
-                                            <ImageIcon Source="/Assets/Finder - 32x32.svg" Width="48" Height="48"/>
+                                            <ImageIcon Source="/Assets/Finder - 24x24.svg"/>
                                         </AppBarToggleButton.Icon>
                                     </AppBarToggleButton>
                                     <AppBarToggleButton x:Name="CmdBarTransparency"

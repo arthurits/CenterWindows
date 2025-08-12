@@ -44,4 +44,62 @@ internal static partial class Win32
             PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_DUP_HANDLE | PROCESS_CREATE_PROCESS | PROCESS_SET_QUOTA |
             PROCESS_SET_INFORMATION | PROCESS_QUERY_INFORMATION | STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE
     }
+
+    // Enums for GDI+ Status and Pixel Formats
+    public enum GpStatus
+    {
+        Ok = 0,
+        GenericError = 1,
+        InvalidParameter = 2,
+        OutOfMemory = 3,
+        ObjectBusy = 4,
+        InsufficientBuffer = 5,
+        NotImplemented = 6,
+        Win32Error = 7,
+        WrongState = 8,
+        Aborted = 9,
+        FileNotFound = 10,
+        ValueOverflow = 11,
+        AccessDenied = 12,
+        UnknownImageFormat = 13,
+        FontFamilyNotFound = 14,
+        FontStyleNotFound = 15,
+        NotTrueTypeFont = 16,
+        UnsupportedGdiplusVersion = 17,
+        GdiplusNotInitialized = 18,
+        PropertyNotFound = 19,
+        PropertyNotSupported = 20,
+        ProfileNotFound = 21
+    }
+
+    [Flags]
+    public enum PixelFormat : int
+    {
+        DontCare = 0,
+        Format1bppIndexed = 0x000301,
+        Format4bppIndexed = 0x000304,
+        Format8bppIndexed = 0x000308,
+        Format16bppGrayScale = 0x0010100,
+        Format16bppRGB555 = 0x000502,
+        Format16bppRGB565 = 0x000606,
+        Format24bppRGB = 0x000018,
+        Format32bppRGB = 0x000209,
+        Format32bppARGB = 0x00220A,
+        Format32bppPARGB = 0x00320B,
+        Format48bppRGB = 0x1001100,
+        Format64bppARGB = 0x2001A0,
+        Format64bppPARGB = 0x3001B0
+    }
+
+    public enum InterpolationMode : int
+    {
+        Invalid = -1,
+        Default = 0,
+        LowQuality = 1,
+        HighQuality = 2,
+        Bilinear = 3,
+        NearestNeighbor = 4,
+        HighQualityBilinear = 5,
+        HighQualityBicubic = 6
+    }
 }

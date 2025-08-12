@@ -32,6 +32,8 @@ public partial class MainWindowService : ObservableObject, IMainWindowService, I
     [ObservableProperty]
     public partial string TitleUnion { get; set; } = "-";
 
+    public WindowState WindowState { get; private set; }
+
     public MainWindowService(WindowEx window)
     {
         // Get window objects
@@ -42,6 +44,8 @@ public partial class MainWindowService : ObservableObject, IMainWindowService, I
         WindowTop    = window.AppWindow.Position.Y;
         WindowWidth  = window.AppWindow.Size.Width;
         WindowHeight = window.AppWindow.Size.Height;
+
+        WindowState = window.WindowState;
 
         // Subscribe to window position and size change events
         window.SizeChanged          += OnSizeChanged;
@@ -74,6 +78,8 @@ public partial class MainWindowService : ObservableObject, IMainWindowService, I
 
     private void OnWindowStateChanged(object? sender, WindowState e)
     {
+        WindowState = e;
+
         if (e == WindowState.Minimized)
         {
             if (_settingsService.GetValues.CanMinimizeToTray)
