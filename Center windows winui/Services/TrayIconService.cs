@@ -131,7 +131,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
             IntPtr.Zero);
 
         // If a command was selected, invoke the event handler
-        if (cmd != 0)
+        if (cmd >= 0)
         {
             OnMenuItemClicked((int)cmd);
         }
