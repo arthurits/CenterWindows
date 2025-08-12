@@ -192,7 +192,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         {
             Id   = (int)TrayMenuItemId.Open,
             Text = "StrTrayMenuShowApp".GetLocalized("Shell"),
-            IsEnabled = false,
+            IsEnabled = true,
             IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico")
         });
 
