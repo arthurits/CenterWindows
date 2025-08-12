@@ -30,6 +30,8 @@ public interface IMainWindowService : INotifyPropertyChanged, IDisposable
     int WindowWidth { get;}
     int WindowHeight { get; }
 
+    WindowState WindowState { get; }
+
     /// <summary>
     /// Computes the window text based on the main title, file name, and union string.
     /// </summary>

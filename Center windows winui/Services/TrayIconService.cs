@@ -120,7 +120,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
 
         // Set the menu at the cursor position
         Win32.GetCursorPos(out var pt);
-        Win32.SetForegroundWindow(_hwnd);
+        //Win32.SetForegroundWindow(_hwnd);
 
         // Retrieve the command selected by the user: the TPM_RETURNCMD returns the command ID and doesn't post it to the WndProc method.
         var cmd = Win32.TrackPopupMenu(
