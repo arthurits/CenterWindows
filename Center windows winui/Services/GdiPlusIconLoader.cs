@@ -211,7 +211,7 @@ public partial class GdiPlusIconLoader : IIconLoader, IDisposable
     private IntPtr CreateScaledBitmap(string path, int targetWidth, int targetHeight)
     {
         // Load the GDI+ bitmap from the file path
-        var status = Win32.GdipCreateBitmapFromFile(path, out var srcGdiBmp);
+        var status = Win32.GdipCreateBitmapFromFile(Path.Combine(AppContext.BaseDirectory, path), out var srcGdiBmp);
         if (status != Win32.GpStatus.Ok || srcGdiBmp == 0)
         {
             throw new InvalidOperationException($"GdipCreateBitmapFromFile failed with code ({status})");

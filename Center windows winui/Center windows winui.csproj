@@ -14,8 +14,7 @@
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
 
-	  <WindowsPackageType>None</WindowsPackageType>
-	  <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+	  
 	  
 	  <Authors>Arthurits</Authors>
 	  <Copyright>© 2025</Copyright>
@@ -49,6 +48,30 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="WinUIEx" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Assets\AppIcon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Shell - About.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Shell - List windows - 24x24.ai">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Shell - Select window - 24x24.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Shell - Settings windows.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Tray icon - 16x16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Tray icon - Exit.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
