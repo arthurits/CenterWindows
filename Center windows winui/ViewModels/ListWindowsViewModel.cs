@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
@@ -7,7 +6,6 @@ using CenterWindow.Models;
 using CenterWindow.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml;
 
 namespace CenterWindow.ViewModels;
 
@@ -192,7 +190,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         {
             Id   = (int)TrayMenuItemId.Open,
             Text = "StrTrayMenuShowApp".GetLocalized("Shell"),
-            IsEnabled = _mainWindowService.WindowState == WindowState.Minimized ? true : false,
+            IsEnabled = _mainWindowService.WindowState == WindowState.Minimized,
             IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico")
         });
 

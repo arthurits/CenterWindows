@@ -57,14 +57,14 @@
                                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.ListWindowsViewModel"
                                     ToolTipService.ToolTip="{Binding StrListWindowsToolTip}">
                     <NavigationViewItem.Icon>
-                        <ImageIcon Source="/Assets/Shell - List windows - 24x24.svg"/>
+                        <ImageIcon Source="ms-appx:///Assets/Shell - List windows - 24x24.svg"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="{Binding StrSelectWindowItem}"
                                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SelectWindowViewModel"
                                     ToolTipService.ToolTip="{Binding StrSelectWindowToolTip}">
                     <NavigationViewItem.Icon>
-                        <ImageIcon Source="/Assets/Shell - Select window - 24x24.svg"/>
+                        <ImageIcon Source="ms-appx:///Assets/Shell - Select window - 24x24.svg"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
@@ -75,7 +75,7 @@
                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SettingsViewModel"
                     ToolTipService.ToolTip="{Binding StrSettingsToolTip}">
                     <NavigationViewItem.Icon>
-                        <ImageIcon Source="/Assets/Shell - Settings windows.svg"/>
+                        <ImageIcon Source="ms-appx:///Assets/Shell - Settings windows.svg"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -83,7 +83,7 @@
                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.AboutViewModel"
                     ToolTipService.ToolTip="{Binding StrAboutToolTip}">
                     <NavigationViewItem.Icon>
-                        <BitmapIcon UriSource="/Assets/Shell - About.ico" ShowAsMonochrome="False" />
+                        <BitmapIcon UriSource="ms-appx:///Assets/Shell - About.ico" ShowAsMonochrome="False" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>

@@ -39,14 +39,14 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         _hwnd = WindowNative.GetWindowHandle(mainWindow);
 
         // Load the icon from the Assets folder
-        //var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico");
+        var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Tray icon - 16x16.png");
         //_hIcon = NativeMethods.LoadImage(
         //    IntPtr.Zero, iconPath,
         //    NativeMethods.IMAGE_ICON, 0, 0,
         //    NativeMethods.LR_LOADFROMFILE);
         _hIcon = _iconFactory
                      .GetLoader(IconLoaderType.GdiPlus)
-                     .LoadIconAsync("Assets\\Tray icon - 16x16.png", 16)
+                     .LoadIconAsync(iconPath, 16)
                      .GetAwaiter()
                      .GetResult();
 
@@ -97,7 +97,7 @@ internal partial class TrayIconService : ITrayIconService, IDisposable
         // Make sure the bitmaps list is empty before creating a new menu
         foreach (var oldBmp in _menuBitmaps)
         {
-            Win32.DeleteObject(oldBmp);
+            _ = Win32.DeleteObject(oldBmp);
         }
         _menuBitmaps.Clear();
 

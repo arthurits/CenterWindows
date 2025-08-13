@@ -70,7 +70,7 @@
 					Margin="0,-84,0,0"
 					VerticalAlignment="Top">
                 <Ellipse.Fill>
-                    <ImageBrush ImageSource="/Assets/AppIcon.ico">
+                    <ImageBrush ImageSource="ms-appx:///Assets/AppIcon.ico">
                         <ImageBrush.RelativeTransform>
                             <ScaleTransform
                           ScaleX="0.8"
