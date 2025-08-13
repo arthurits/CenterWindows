@@ -14,8 +14,7 @@
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
 
-	  <WindowsPackageType>None</WindowsPackageType>
-	  <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+	  
 	  
 	  <Authors>Arthurits</Authors>
 	  <Copyright>© 2025</Copyright>
@@ -30,8 +29,27 @@
     <LangVersion>preview</LangVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <AssemblyName>CenterWindows</AssemblyName>
+    <PackageCertificateThumbprint>08C29758475C80F781F190FEA5967196BB968075</PackageCertificateThumbprint>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
+	
+	<!-- ======= DEBUG CONFIGURATION ======= -->
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<WindowsPackageType>None</WindowsPackageType>
+		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+	</PropertyGroup>
 
+	<!-- ======= RELEASE CONFIGURATION ======= -->
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<!-- Bundle MSIX for Store -->
+		<WindowsPackageType>MSIX</WindowsPackageType>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+
+		<!-- Add .ico file into the exe host -->
+		<Win32Icon>Assets\AppIcon.ico</Win32Icon>
+	</PropertyGroup>
+		
   <ItemGroup>
     <None Remove="Styles\PageStyles.xaml" />
   </ItemGroup>

@@ -11,15 +11,15 @@
   IgnorableNamespaces="uap rescap genTemplate">
 
   <Identity
-    Name="6a25cf6d-408c-4c3a-8388-84513a01bb43"
-    Publisher="CN=Arthurit"
-    Version="1.0.0.0" />
+    Name="ArthuritsLtd.Centerwindows"
+    Publisher="CN=40D1817B-8F09-42D7-B9CD-E30271D4C7E9"
+    Version="3.0.0.0" />
     
   <mp:PhoneIdentity PhoneProductId="6a25cf6d-408c-4c3a-8388-84513a01bb43" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
   <Properties>
-    <DisplayName>Center windows winui</DisplayName>
-    <PublisherDisplayName>Arthurit</PublisherDisplayName>
+    <DisplayName>Center windows</DisplayName>
+    <PublisherDisplayName>Arthurits Ltd</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -37,13 +37,15 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="ms-resource:AppDisplayName"
-        Description="ms-resource:AppDescription"
+        DisplayName="Center windows"
+        Description="Center windows in desktop"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/></uap:InitialRotationPreference>
       </uap:VisualElements>
       <Extensions>
           <desktop:Extension Category="windows.toastNotificationActivation">

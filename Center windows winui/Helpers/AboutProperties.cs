@@ -83,18 +83,16 @@ public static class AboutProperties
 
     public static string GetProductName()
     {
-        string result = string.Empty;
-
+        string result;
         if (RuntimeHelper.IsMSIX)
         {
-            result = Package.Current.Id.Name;
+            //result = Package.Current.Id.Name;
+            result = Package.Current.DisplayName;
         }
         else
         {
-            object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-            if (attributes.Length > 0)
-                result = ((AssemblyProductAttribute)attributes[0]).Product;
-
+            var attr = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>();
+            result = attr?.Product ?? string.Empty;
         }
 
         return result;
