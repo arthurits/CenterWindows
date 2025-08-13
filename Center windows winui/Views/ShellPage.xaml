@@ -18,7 +18,7 @@
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
               IsHitTestVisible="True"
               VerticalAlignment="Top">
-            <Image Source="/Assets/AppIcon.ico"
+            <Image Source="ms-appx:///Assets/AppIcon.ico"
                    HorizontalAlignment="Left"
                    Width="24"
                    Height="24" />
