@@ -18,7 +18,7 @@ public partial class AppSettings
     [JsonPropertyName("Select window clicked image path")]
     public string SelectWindowClickedImagePath { get; set; } = "ms-appx:///Assets/Select window - 48x44 - Finder gone.svg";
     [JsonPropertyName("Select window cursor path")]
-    public string SelectWindowCursorPath { get; set; } = "Assets/Finder - 32x32.cur";
+    public string SelectWindowCursorPath { get; set; } = "ms-appx:///Assets/Finder - 32x32.cur";
 
 
     /// <summary>

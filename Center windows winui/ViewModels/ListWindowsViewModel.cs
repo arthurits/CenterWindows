@@ -202,7 +202,7 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
         {
             Id   = id++,
             Text = "StrTrayMenuWindowList".GetLocalized("Shell"),
-            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Settings_windows.svg")
+            IconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Shell - Settings windows.svg")
         };
         foreach (var window in WindowsList)
         {
