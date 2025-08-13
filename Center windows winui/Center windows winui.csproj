@@ -14,7 +14,8 @@
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
 
-	  
+	  <WindowsPackageType>None</WindowsPackageType>
+	  <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 	  
 	  <Authors>Arthurits</Authors>
 	  <Copyright>© 2025</Copyright>
