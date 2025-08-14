@@ -12,7 +12,7 @@
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
-    <EnableMsixTooling>true</EnableMsixTooling>
+	  <!-- <EnableMsixTooling>true</EnableMsixTooling> -->
 
 	  <Win32Icon>Assets\AppIcon.ico</Win32Icon>
 	  
@@ -28,9 +28,9 @@
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <AssemblyName>CenterWindows</AssemblyName>
-    <PackageCertificateThumbprint>08C29758475C80F781F190FEA5967196BB968075</PackageCertificateThumbprint>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <!-- <AssemblyName>CenterWindows</AssemblyName> -->
+	<!-- <PackageCertificateThumbprint>08C29758475C80F781F190FEA5967196BB968075</PackageCertificateThumbprint> -->
+	<!-- <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled> -->
   </PropertyGroup>
 
 	<!-- ======= DEBUG CONFIGURATION ======= -->
@@ -48,7 +48,7 @@
 
 		<!-- Add .ico file into the exe host -->
 		<Win32Icon>Assets\AppIcon.ico</Win32Icon>
-	</PropertyGroup>
+	</PropertyGroup>	
 		
   <ItemGroup>
     <None Remove="Styles\PageStyles.xaml" />
