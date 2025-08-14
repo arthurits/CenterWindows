@@ -20,8 +20,8 @@
 	  <Copyright>© 2025</Copyright>
 	  <Company>Arthurits Ltd.</Company>
 	  <Version>3.0.0</Version>
-    <UseAppHost>true</UseAppHost>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	  <!-- <UseAppHost>true</UseAppHost> -->
+	  <!-- <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
     
   </PropertyGroup>
 
