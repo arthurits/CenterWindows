@@ -14,7 +14,7 @@
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
 
-	  
+	  <Win32Icon>Assets\AppIcon.ico</Win32Icon>
 	  
 	  <Authors>Arthurits</Authors>
 	  <Copyright>© 2025</Copyright>
@@ -32,7 +32,7 @@
     <PackageCertificateThumbprint>08C29758475C80F781F190FEA5967196BB968075</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
-	
+
 	<!-- ======= DEBUG CONFIGURATION ======= -->
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<WindowsPackageType>None</WindowsPackageType>
