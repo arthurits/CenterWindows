@@ -92,6 +92,7 @@
 	</ItemGroup>	
 		
   <ItemGroup>
+    <None Remove="Styles\AppBarToggleButton.xaml" />
     <None Remove="Styles\PageStyles.xaml" />
   </ItemGroup>
 
@@ -152,6 +153,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Styles\AppBarToggleButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Styles\PageStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

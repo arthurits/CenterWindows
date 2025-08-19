@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
                 <ResourceDictionary Source="/Styles/StackPanel.xaml" />
                 <ResourceDictionary Source="/Styles/PageStyles.xaml" />
+                <ResourceDictionary Source="/Styles/AppBarToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
