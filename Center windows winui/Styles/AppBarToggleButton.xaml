@@ -6,49 +6,49 @@
         
         <ResourceDictionary x:Key="Default">
             <!-- Brushes para Light theme -->
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedBackgroundThemeBrush"
                              Color="#FF42A5F5"/>
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverBackgroundThemeBrush"
                              Color="#FF90CAF9" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedBackgroundThemeBrush"
                              Color="#FF1E88E5" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledBackgroundThemeBrush"
                              Color="#FF90A4AE" />
         </ResourceDictionary>
         
         <ResourceDictionary x:Key="Light">
             <!-- Brushes para Light theme -->
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedBackgroundThemeBrush"
                              Color="#FF42A5F5"/>
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverBackgroundThemeBrush"
                              Color="#FF90CAF9" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedBackgroundThemeBrush"
                              Color="#FF1E88E5" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledBackgroundThemeBrush"
                              Color="#FF90A4AE" />
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
             <!-- Brushes para Dark theme -->
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedBackgroundThemeBrush"
                              Color="#FF448AFF" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverBackgroundThemeBrush"
                              Color="#FF82B1FF" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedBackgroundThemeBrush"
                              Color="#FF2979FF" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledBackgroundThemeBrush"
                              Color="#FF546E7A" />
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="HighContrast">
             <!-- Brushes para Dark theme -->
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedBackgroundThemeBrush"
                              Color="#FF448AFF" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverBackgroundThemeBrush"
                              Color="#FF82B1FF" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedBackgroundThemeBrush"
                              Color="#FF2979FF" />
-            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush"
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledBackgroundThemeBrush"
                              Color="#FF546E7A" />
         </ResourceDictionary>
 
