@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        
+        <ResourceDictionary x:Key="Default">
+            <!-- Brushes para Light theme -->
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush"
+                             Color="#FF42A5F5"/>
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverForegroundThemeBrush"
+                             Color="#FF90CAF9" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush"
+                             Color="#FF1E88E5" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush"
+                             Color="#FF90A4AE" />
+        </ResourceDictionary>
+        
+        <ResourceDictionary x:Key="Light">
+            <!-- Brushes para Light theme -->
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush"
+                             Color="#FF42A5F5"/>
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverForegroundThemeBrush"
+                             Color="#FF90CAF9" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush"
+                             Color="#FF1E88E5" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush"
+                             Color="#FF90A4AE" />
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Dark">
+            <!-- Brushes para Dark theme -->
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush"
+                             Color="#FF448AFF" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverForegroundThemeBrush"
+                             Color="#FF82B1FF" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush"
+                             Color="#FF2979FF" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush"
+                             Color="#FF546E7A" />
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="HighContrast">
+            <!-- Brushes para Dark theme -->
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedForegroundThemeBrush"
+                             Color="#FF448AFF" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPointerOverForegroundThemeBrush"
+                             Color="#FF82B1FF" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedPressedForegroundThemeBrush"
+                             Color="#FF2979FF" />
+            <SolidColorBrush x:Key="AppBarToggleButtonCheckedDisabledForegroundThemeBrush"
+                             Color="#FF546E7A" />
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>
