@@ -12,7 +12,6 @@
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
-	  <!-- <EnableMsixTooling>true</EnableMsixTooling> -->
 
 	  <Win32Icon>Assets\AppIcon.ico</Win32Icon>
 	  
@@ -20,8 +19,6 @@
 	  <Copyright>© 2025</Copyright>
 	  <Company>Arthurits Ltd.</Company>
 	  <Version>3.0.0</Version>
-	  <!-- <UseAppHost>true</UseAppHost> -->
-	  <!-- <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
     
   </PropertyGroup>
 
@@ -33,10 +30,17 @@
 	<!-- <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled> -->
   </PropertyGroup>
 
+<!-- ======= DELETE DEBUG AND RELEASE WHEN COMPILING THE MSIXBUNDLE USING THE PACKAGING PROJECT ======= -->
+	
 	<!-- ======= DEBUG CONFIGURATION ======= -->
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<EnableMsixTooling>true</EnableMsixTooling>
 		<WindowsPackageType>None</WindowsPackageType>
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+	
+	    <UseAppHost>true</UseAppHost>
+		<Win32Icon>Assets\AppIcon.ico</Win32Icon>
+        <!-- <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
 	</PropertyGroup>
 
 	<!-- ======= RELEASE CONFIGURATION ======= -->
@@ -48,7 +52,44 @@
 
 		<!-- Add .ico file into the exe host -->
 		<Win32Icon>Assets\AppIcon.ico</Win32Icon>
-	</PropertyGroup>	
+	</PropertyGroup>
+	<ItemGroup>
+	  <Content Remove="Assets\App tile.png" />
+	  <Content Remove="Assets\App tile.svg" />
+	  <Content Remove="Assets\Finder - 24x24.ai" />
+	  <Content Remove="Assets\Finder - 32x32.ai" />
+	  <Content Remove="Assets\Finder - 32x32.png" />
+	  <Content Remove="Assets\Finder - 32x32.svg" />
+	  <Content Remove="Assets\Finder.cur" />
+	  <Content Remove="Assets\FinderGone.bmp" />
+	  <Content Remove="Assets\FinderHome.bmp" />
+	  <Content Remove="Assets\Icon grid template - 24x24.ai" />
+	  <Content Remove="Assets\LockScreenLogo.scale-200.png" />
+	  <Content Remove="Assets\logo%4024.png" />
+	  <Content Remove="Assets\Screenshot - About - En.png" />
+	  <Content Remove="Assets\Screenshot - About - Es.png" />
+	  <Content Remove="Assets\Screenshot - Select window - En.png" />
+	  <Content Remove="Assets\Screenshot - Select window - Es.png" />
+	  <Content Remove="Assets\Screenshot - Settings - En.png" />
+	  <Content Remove="Assets\Screenshot - Settings - Es.png" />
+	  <Content Remove="Assets\Screenshot - Window list - En.png" />
+	  <Content Remove="Assets\Screenshot - Window list - Es.png" />
+	  <Content Remove="Assets\Select window - 24x24 - Finder gone.svg" />
+	  <Content Remove="Assets\Select window - 24x24 - Finder home.svg" />
+	  <Content Remove="Assets\Select window - 24x24.ai" />
+	  <Content Remove="Assets\Select window - 48x44.ai" />
+	  <Content Remove="Assets\Shell - List windows - 24x24.ai" />
+	  <Content Remove="Assets\Shell - Select window - 24x24.ai" />
+	  <Content Remove="Assets\Transparency - 32x32.ai" />
+	  <Content Remove="Assets\Transparency - 32x32.svg" />
+	  <Content Remove="Assets\Tray icon - 24x24.ai" />
+	  <Content Remove="Assets\Tray icon - 24x24.png" />
+	  <Content Remove="Assets\Tray icon - 24x24.svg" />
+	  <Content Remove="Assets\Tray icon - 32x32.png" />
+	  <Content Remove="Assets\Tray icon - 48x48.png" />
+	  <Content Remove="Assets\Tray icon - Exit - 16x16.ai" />
+	  <Content Remove="Assets\Tray icon - Exit - 16x16.svg" />
+	</ItemGroup>	
 		
   <ItemGroup>
     <None Remove="Styles\PageStyles.xaml" />
