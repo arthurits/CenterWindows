@@ -81,6 +81,7 @@
 	  <Content Remove="Assets\Shell - List windows - 24x24.ai" />
 	  <Content Remove="Assets\Shell - Select window - 24x24.ai" />
 	  <Content Remove="Assets\Transparency - 32x32.ai" />
+	  <Content Remove="Assets\Transparency - 32x32.svg" />
 	  <Content Remove="Assets\Tray icon - 24x24.ai" />
 	  <Content Remove="Assets\Tray icon - 24x24.png" />
 	  <Content Remove="Assets\Tray icon - 24x24.svg" />
