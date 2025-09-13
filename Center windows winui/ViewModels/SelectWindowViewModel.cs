@@ -8,6 +8,8 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.ApplicationModel;
+using Windows.Storage;
 
 namespace CenterWindow.ViewModels;
 
@@ -205,10 +207,50 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private void OnLeftButtonDown(PointerRoutedEventArgs args)
     {
         IsLeftButtonDown = true;
+        var actualPath = ResolveAppxPath(_cursorPath);
         _mouseHook.CaptureMouse(
-            cursorPath: Path.GetFullPath(_cursorPath),
-            changeCursor: _changeCursor,
-            onlyParentWnd: !_selectChild);
+            cursorPath:     actualPath,
+            changeCursor:   _changeCursor,
+            onlyParentWnd:  !_selectChild);
+    }
+
+    private string ResolveAppxPath(string uriOrPath)
+    {
+        const string msAppxPrefix = "ms-appx:///";
+
+        if (string.IsNullOrWhiteSpace(uriOrPath))
+        {
+            throw new ArgumentException("File path cannot be null or empty", nameof(uriOrPath));
+        }
+
+        // Case 1: it's not an URI Apps, so it can be either an absolute or relative path
+        if (!uriOrPath.StartsWith(msAppxPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return Path.IsPathRooted(uriOrPath)
+                ? uriOrPath
+                : Path.GetFullPath(uriOrPath);
+        }
+
+        // Case 2: URI Appx → we extract the relative path whithin Assets or subfolders
+        // File format: "xxxx/yyyy.cur"
+        var relative = uriOrPath
+            .Substring(msAppxPrefix.Length)
+            .Replace('/', Path.DirectorySeparatorChar);
+
+        // This should return "C:\Program Files\WindowsApps\<YourPackage>\xxxx\yyyy.cur"
+        //var test = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().IsPackaged;
+        string basePath;
+        try
+        {
+            basePath = Package.Current.InstalledLocation.Path;
+        }
+        catch
+        {
+            // Modo unpackaged (debug), usamos carpeta de ejecución
+            basePath = AppContext.BaseDirectory;
+        }
+
+        return Path.Combine(basePath, relative);
     }
 
     [RelayCommand]
