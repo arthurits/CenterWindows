@@ -31,16 +31,16 @@
   </PropertyGroup>
 
 <!-- ======= DELETE DEBUG AND RELEASE WHEN COMPILING THE MSIXBUNDLE USING THE PACKAGING PROJECT ======= -->
-	
+
 	<!-- ======= DEBUG CONFIGURATION ======= -->
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<WindowsPackageType>None</WindowsPackageType>
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
-	
-	    <UseAppHost>true</UseAppHost>
+
+		<UseAppHost>true</UseAppHost>
 		<Win32Icon>Assets\AppIcon.ico</Win32Icon>
-        <!-- <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
+		<!-- <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
 	</PropertyGroup>
 
 	<!-- ======= RELEASE CONFIGURATION ======= -->
@@ -53,6 +53,8 @@
 		<!-- Add .ico file into the exe host -->
 		<Win32Icon>Assets\AppIcon.ico</Win32Icon>
 	</PropertyGroup>
+
+<!-- ======= Assests not exported ======= -->
 	<ItemGroup>
 	  <Content Remove="Assets\App tile.png" />
 	  <Content Remove="Assets\App tile.svg" />
@@ -173,7 +175,7 @@
 
 		<ItemGroup>
 			<!-- Create a list of the languages your need to keep.-->
-			<KeepingLanguages Include="en-US;es-ES" />
+			<KeepingLanguages Include="en-US;es-ES;es" />
 
 			<!-- Create a list of keeping files. -->
 			<KeepingFiles Include="@(KeepingLanguages->'$(OutDir)%(Identity)\*.mui')" />

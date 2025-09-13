@@ -9,7 +9,7 @@
   <Identity
     Name="ArthuritsLtd.Centerwindows"
     Publisher="CN=40D1817B-8F09-42D7-B9CD-E30271D4C7E9"
-    Version="3.0.0.0" />
+    Version="3.0.1.0" />
 
   <Properties>
     <DisplayName>Center windows</DisplayName>
