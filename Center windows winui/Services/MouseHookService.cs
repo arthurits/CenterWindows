@@ -107,7 +107,14 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             if (hCross != IntPtr.Zero)
             {
                 _hCrossCopy = Win32.CopyIcon(hCross);
-                Win32.SetSystemCursor(_hCrossCopy, Win32.OCR_NORMAL);
+                if (_hCrossCopy != IntPtr.Zero)
+                {
+                    Win32.SetSystemCursor(_hCrossCopy, Win32.OCR_NORMAL);
+                }
+                else
+                {
+                    Debug.WriteLine("[Error] Win32.CopyIcon returned IntPtr.Zero and the cursor was not changed");
+                }
             }
             else
             {
