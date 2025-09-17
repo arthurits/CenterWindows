@@ -50,8 +50,32 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         Interlocked.Exchange(ref _unmanagedCleanupDone, 0);
 
         _state = State.Capturing;
-        
-        return CaptureWindowUnderCursor(cancellationToken);
+
+        // Set a try/catch block to handle any errors and manage the resources
+        var succeeded = false;
+        try
+        {
+            succeeded = CaptureWindowUnderCursor(cancellationToken);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Debug.WriteLine($"[Warning] Mouse capture was not started: {ex.Message}");
+        }
+        catch (Win32Exception ex)
+        {
+            Debug.WriteLine($"[Error Win32] Error when creating the mouse hook or changing the image: {ex.Message}");
+        }
+        finally
+        {
+            // In case something happened, release resources and set the state to idle
+            if (!succeeded)
+            {
+                ReleaseUnmanaged();
+                _state = State.Idle;
+            }
+        }
+
+        return succeeded;
     }
 
     public void ReleaseMouse()
