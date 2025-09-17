@@ -103,6 +103,7 @@ public partial class MouseHookService : IMouseHookService, IDisposable
 
             // If we get a valid cursor (hCross != 0), then we apply it.
             // If not, we skip this part and continue setting the mouse hook.
+            // We need to copy the cursor to avoid destroying the shared resource.
             if (hCross != IntPtr.Zero)
             {
                 _hCrossCopy = Win32.CopyIcon(hCross);
@@ -112,28 +113,6 @@ public partial class MouseHookService : IMouseHookService, IDisposable
             {
                 Debug.WriteLine("[Warning] Cursor change was skipped because hCross == IntPtr.Zero");
             }
-
-            //// Get the original cursor to restore later
-            ////_originalCursor = NativeMethods.CopyIcon(NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW));
-            //var path = CursorLoader.GetArrowCursorPath();
-            //_originalCursor = CursorLoader.LoadArrowCursorFromFile(path);
-
-            //// Switch cursor to crosshair
-            ////using var curProcess = System.Diagnostics.Process.GetCurrentProcess();
-            //IntPtr hCross;
-            //if (_cursorPath == string.Empty)
-            //{
-            //    hCross = Win32.LoadCursor(IntPtr.Zero, Win32.IDC_CROSS);
-            //}
-            //else
-            //{
-            //    // Load the cursor from the specified path
-            //    hCross = CursorLoader.LoadArrowCursorFromFile(_cursorPath);
-            //}
-
-            //// Copy the cursor to avoid destroying the shared resource
-            //_hCrossCopy = Win32.CopyIcon(hCross);
-            //Win32.SetSystemCursor(_hCrossCopy, Win32.OCR_NORMAL);
         }
 
         // Set global mouse hook
