@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using CenterWindow.Activation;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
@@ -107,18 +108,31 @@ public partial class App : Application
         Build();
 
         UnhandledException += App_UnhandledException;
+        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
     }
 
-    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    private void App_UnhandledException(object? sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
         // TODO: Log and handle exceptions as appropriate.
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
 
-        //// Muestra el detalle de la excepción
-        //System.Diagnostics.Debug.WriteLine($"ERROR UI: {e.Exception}");
+        // Show error details
+        System.Diagnostics.Debug.WriteLine($"UI thread error: {e.Exception}");
 
-        //// Impide que vuelva a romper en el XAML-generated hook
-        //e.Handled = true;
+        // Mark the exception as handled so that the process does not finish
+        e.Handled = true;
+    }
+    private void CurrentDomain_UnhandledException(object? s, System.UnhandledExceptionEventArgs e)
+    {
+        Debug.WriteLine($"Non-UI thread error: {(e.ExceptionObject as Exception)?.Message}");
+        // There is no e.Handled; so the process will finish after any logging action
+    }
+
+    private void TaskScheduler_UnobservedTaskException(object? s, UnobservedTaskExceptionEventArgs e)
+    {
+        Debug.WriteLine($"Task unobserved: {e.Exception.Message}");
+        e.SetObserved();
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

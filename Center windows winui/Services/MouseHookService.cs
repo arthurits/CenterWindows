@@ -50,8 +50,32 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         Interlocked.Exchange(ref _unmanagedCleanupDone, 0);
 
         _state = State.Capturing;
-        
-        return CaptureWindowUnderCursor(cancellationToken);
+
+        // Set a try/catch block to handle any errors and manage the resources
+        var succeeded = false;
+        try
+        {
+            succeeded = CaptureWindowUnderCursor(cancellationToken);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Debug.WriteLine($"[Warning] Mouse capture was not started: {ex.Message}");
+        }
+        catch (Win32Exception ex)
+        {
+            Debug.WriteLine($"[Error Win32] Error when creating the mouse hook or changing the image: {ex.Message}");
+        }
+        finally
+        {
+            // In case something happened, release resources and set the state to idle
+            if (!succeeded)
+            {
+                ReleaseUnmanaged();
+                _state = State.Idle;
+            }
+        }
+
+        return succeeded;
     }
 
     public void ReleaseMouse()
@@ -83,25 +107,43 @@ public partial class MouseHookService : IMouseHookService, IDisposable
         {
             // Get the original cursor to restore later
             //_originalCursor = NativeMethods.CopyIcon(NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW));
-            var path = CursorLoader.GetArrowCursorPath();
-            _originalCursor = CursorLoader.LoadArrowCursorFromFile(path);
+            var arrowPath = CursorLoader.GetArrowCursorPath();
+            if (!CursorLoader.TryLoadCursorFromFile(arrowPath, out _originalCursor))
+            {
+                Debug.WriteLine($"[Warning] Could not load the base cursor from: '{arrowPath}'");
+            }
 
             // Switch cursor to crosshair
             //using var curProcess = System.Diagnostics.Process.GetCurrentProcess();
-            IntPtr hCross;
-            if (_cursorPath == string.Empty)
+            var hCross = IntPtr.Zero;
+            if (string.IsNullOrEmpty(_cursorPath))
             {
                 hCross = Win32.LoadCursor(IntPtr.Zero, Win32.IDC_CROSS);
             }
-            else
+            else if (!CursorLoader.TryLoadCursorFromFile(_cursorPath, out hCross))
             {
-                // Load the cursor from the specified path
-                hCross = CursorLoader.LoadArrowCursorFromFile(_cursorPath);
+                Debug.WriteLine($"[Warning] Could not load the custrom cursor from: '{_cursorPath}'");
             }
 
-            // Copy the cursor to avoid destroying the shared resource
-            _hCrossCopy = Win32.CopyIcon(hCross);
-            Win32.SetSystemCursor(_hCrossCopy, Win32.OCR_NORMAL);
+            // If we get a valid cursor (hCross != 0), then we apply it.
+            // If not, we skip this part and continue setting the mouse hook.
+            // We need to copy the cursor to avoid destroying the shared resource.
+            if (hCross != IntPtr.Zero)
+            {
+                _hCrossCopy = Win32.CopyIcon(hCross);
+                if (_hCrossCopy != IntPtr.Zero)
+                {
+                    Win32.SetSystemCursor(_hCrossCopy, Win32.OCR_NORMAL);
+                }
+                else
+                {
+                    Debug.WriteLine("[Error] Win32.CopyIcon returned IntPtr.Zero and the cursor was not changed");
+                }
+            }
+            else
+            {
+                Debug.WriteLine("[Warning] Cursor change was skipped because hCross == IntPtr.Zero");
+            }
         }
 
         // Set global mouse hook
@@ -298,20 +340,24 @@ public static class CursorLoader
     /// Loads a cursor from a file path.
     /// </summary>
     /// <param name="path">File path of the cursor</param>
-    /// <returns>Pointer to the heap memory allocating the cursor</returns>
-    /// <exception cref="Win32Exception"></exception>
-    public static IntPtr LoadArrowCursorFromFile(string path)
+    /// <param name="hCursor">Loaded cursor as a pointer to the heap memory allocating the cursor</param>
+    /// <returns><see langword="true"> if the cursor was successfully loaded, <see langword="false"> otherwise</returns>
+    public static bool TryLoadCursorFromFile(string path, out IntPtr hCursor)
     {
-        var hCur = Win32.LoadImage(
+        hCursor = IntPtr.Zero;
+
+        if (!File.Exists(path))
+        {
+            return false;
+        }
+
+        hCursor = Win32.LoadImage(
             IntPtr.Zero,
             path,
             Win32.IMAGE_CURSOR,
             0, 0,
             Win32.LR_LOADFROMFILE);
 
-        return hCur == IntPtr.Zero
-            ? throw new Win32Exception(Marshal.GetLastWin32Error(),
-                $"The cursor couldn't be loaded from '{path}'")
-            : hCur;
+        return hCursor != IntPtr.Zero;
     }
 }
