@@ -298,20 +298,24 @@ public static class CursorLoader
     /// Loads a cursor from a file path.
     /// </summary>
     /// <param name="path">File path of the cursor</param>
-    /// <returns>Pointer to the heap memory allocating the cursor</returns>
-    /// <exception cref="Win32Exception"></exception>
-    public static IntPtr LoadArrowCursorFromFile(string path)
+    /// <param name="hCursor">Loaded cursor as a pointer to the heap memory allocating the cursor</param>
+    /// <returns><see langword="true"> if the cursor was successfully loaded, <see langword="false"> otherwise</returns>
+    public static bool TryLoadCursorFromFile(string path, out IntPtr hCursor)
     {
-        var hCur = Win32.LoadImage(
+        hCursor = IntPtr.Zero;
+
+        if (!File.Exists(path))
+        {
+            return false;
+        }
+
+        hCursor = Win32.LoadImage(
             IntPtr.Zero,
             path,
             Win32.IMAGE_CURSOR,
             0, 0,
             Win32.LR_LOADFROMFILE);
 
-        return hCur == IntPtr.Zero
-            ? throw new Win32Exception(Marshal.GetLastWin32Error(),
-                $"The cursor couldn't be loaded from '{path}'")
-            : hCur;
+        return hCursor != IntPtr.Zero;
     }
 }
