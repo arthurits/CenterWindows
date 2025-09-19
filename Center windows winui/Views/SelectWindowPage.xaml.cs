@@ -7,6 +7,8 @@ namespace CenterWindow.Views;
 
 public sealed partial class SelectWindowPage : Page
 {
+    private const double _canvasOverlayMarginFromEdge = 24;
+
     public SelectWindowViewModel ViewModel {get;}
 
     public SelectWindowPage()
@@ -26,6 +28,22 @@ public sealed partial class SelectWindowPage : Page
           UIElement.PointerReleasedEvent,
           new PointerEventHandler(OnSelectWindow_PointerReleased),
           handledEventsToo: true);
+
+        // Set initial position of canvas RestoreCursorCanvas
+        CanvasOverlay.Loaded += CanvasOverlay_Loaded;
+    }
+
+    private void CanvasOverlay_Loaded(object sender, RoutedEventArgs e)
+    {
+        var left = ActualWidth - RestoreCursorPanel.ActualWidth - _canvasOverlayMarginFromEdge;
+        var top = ActualHeight - RestoreCursorPanel.ActualHeight - _canvasOverlayMarginFromEdge;
+
+        // Avoid negative values
+        ViewModel.PanelLeft = left >= _canvasOverlayMarginFromEdge ? left : _canvasOverlayMarginFromEdge;
+        ViewModel.PanelTop = top >= _canvasOverlayMarginFromEdge ? top : _canvasOverlayMarginFromEdge;
+
+        // We want this to be a one-time operation: the initial positioning of the canvas overlay
+        CanvasOverlay.Loaded -= CanvasOverlay_Loaded;
     }
 
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)

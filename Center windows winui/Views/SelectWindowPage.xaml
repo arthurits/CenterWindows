@@ -187,14 +187,15 @@
         </ScrollView>
         
         <!-- Restore cursor -->
-        <Canvas  
+        <Canvas
+            x:Name="CanvasOverlay"
             Grid.Row="0"  
             Grid.RowSpan="2">
             <StackPanel
                 x:Name="RestoreCursorPanel"
-                Style="{StaticResource ContentStackPanel}"
-                Width="400"
                 Background="{StaticResource PanelAcrylicBrush}"
+                Style="{StaticResource ContentStackPanel}"
+                Width="300"
                 Canvas.ZIndex="100"  
                 Canvas.Left="{x:Bind ViewModel.PanelLeft, Mode=TwoWay}"  
                 Canvas.Top="{x:Bind ViewModel.PanelTop, Mode=TwoWay}"  
