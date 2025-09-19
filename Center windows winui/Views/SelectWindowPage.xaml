@@ -189,7 +189,7 @@
         
         <!-- Restore cursor -->
         <Canvas
-            x:Name="CanvasOverlay"
+            x:Name="OverlayCanvas"
             Grid.Row="0"  
             Grid.RowSpan="2">
             <StackPanel

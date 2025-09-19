@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using Windows.Foundation;
 
 namespace CenterWindow.Views;
 
@@ -30,10 +31,10 @@ public sealed partial class SelectWindowPage : Page
           handledEventsToo: true);
 
         // Set initial position of canvas RestoreCursorCanvas
-        CanvasOverlay.Loaded += CanvasOverlay_Loaded;
+        OverlayCanvas.Loaded += OverlayCanvas_Loaded;
     }
 
-    private void CanvasOverlay_Loaded(object sender, RoutedEventArgs e)
+    private void OverlayCanvas_Loaded(object sender, RoutedEventArgs e)
     {
         var left = ActualWidth - RestoreCursorPanel.ActualWidth - _canvasOverlayMarginFromEdge;
         var top = ActualHeight - RestoreCursorPanel.ActualHeight - _canvasOverlayMarginFromEdge;
@@ -43,7 +44,7 @@ public sealed partial class SelectWindowPage : Page
         ViewModel.PanelTop = top >= _canvasOverlayMarginFromEdge ? top : _canvasOverlayMarginFromEdge;
 
         // We want this to be a one-time operation: the initial positioning of the canvas overlay
-        CanvasOverlay.Loaded -= CanvasOverlay_Loaded;
+        OverlayCanvas.Loaded -= OverlayCanvas_Loaded;
     }
 
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -54,9 +55,27 @@ public sealed partial class SelectWindowPage : Page
 
     private void RestoreCursor_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
-        // Ajusta la posición en el ViewModel
-        ViewModel.PanelLeft += e.Delta.Translation.X;
-        ViewModel.PanelTop += e.Delta.Translation.Y;
+        // Offset Canvas → Page
+        var canvasToPage = OverlayCanvas.TransformToVisual(PageRoot);
+        Point canvasOffset = canvasToPage.TransformPoint(new Point(0, 0));
+
+        // Horizontal (Canvas)
+        double newLeft = ViewModel.PanelLeft + e.Delta.Translation.X;
+        double minLeft = 0;
+        double maxLeft = OverlayCanvas.ActualWidth
+                       - RestoreCursorPanel.ActualWidth
+                       - minLeft;
+        ViewModel.PanelLeft = Math.Clamp(newLeft, minLeft, maxLeft);
+
+        // Vertical (Page)
+        double newTop = ViewModel.PanelTop + e.Delta.Translation.Y;
+        double minTopPage = _canvasOverlayMarginFromEdge;
+        double maxTopPage = PageRoot.ActualHeight
+                           - RestoreCursorPanel.ActualHeight
+                           - minTopPage;
+        double minTopCanvas = minTopPage - canvasOffset.Y - 100;
+        double maxTopCanvas = maxTopPage - canvasOffset.Y;
+        ViewModel.PanelTop = Math.Clamp(newTop, minTopCanvas, maxTopCanvas);
     }
 
     private void OnSelectWindow_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
