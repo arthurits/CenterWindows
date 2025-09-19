@@ -194,8 +194,8 @@
             Grid.RowSpan="2">
             <StackPanel
                 x:Name="RestoreCursorPanel"
-                Background="{StaticResource PanelAcrylicBrush}"
                 Style="{StaticResource ContentStackPanel}"
+                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                 Width="300"
                 Canvas.ZIndex="100"  
                 Canvas.Left="{x:Bind ViewModel.PanelLeft, Mode=TwoWay}"  
