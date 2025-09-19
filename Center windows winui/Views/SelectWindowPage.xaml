@@ -17,7 +17,8 @@
         <!-- Converters -->
         <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
-        
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
         <!-- ListView DataTemplate -->
         <DataTemplate x:Key="PropertyTemplate">
             <Grid RowDefinitions="Auto, Auto">
@@ -58,7 +59,7 @@
                   FallbackColor="#FFFAF3E0"/>
     </Page.Resources>
     
-    <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*, Auto">
+    <Grid x:Name="ContentArea" ColumnDefinitions="*" RowDefinitions ="*">
 
         <ScrollView x:Name="ScrollViewPage" ContentOrientation="Vertical"
             HorizontalContentAlignment="Stretch"  VerticalContentAlignment="Stretch"
@@ -185,25 +186,34 @@
                 </Grid>
             </StackPanel>
         </ScrollView>
+        
         <!-- Restore cursor -->
-        <StackPanel
-            x:Name="RestoreCursorPanel"
-            Grid.Row="1"
-            Style="{StaticResource ContentStackPanel}"
-            HorizontalAlignment="Right"
-            Width="300"
-            Margin="0, 16, 0, 16"
-            Spacing="16">
-            <TextBlock
-                Text="{x:Bind ViewModel.StrRestoreCursorTextBlock, Mode=OneWay}"
-                TextAlignment="Center"
-                Style="{ThemeResource BodyTextBlockStyle}"
-                Margin="0, 16, 0, 0"/>
-            <Button
-                Content="{x:Bind ViewModel.StrRestoreCursorButton, Mode=OneWay}"
-                Command="{x:Bind ViewModel.RestoreCursorCommand}"
-                HorizontalAlignment="Center"
-                Margin="0, 0, 0, 16"/>
-        </StackPanel>
+        <Canvas
+            x:Name="OverlayCanvas"
+            Grid.Row="0"  
+            Grid.RowSpan="2">
+            <StackPanel
+                x:Name="RestoreCursorPanel"
+                Style="{StaticResource ContentStackPanel}"
+                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                Width="300"
+                Canvas.ZIndex="100"  
+                Canvas.Left="{x:Bind ViewModel.PanelLeft, Mode=TwoWay}"  
+                Canvas.Top="{x:Bind ViewModel.PanelTop, Mode=TwoWay}"  
+                ManipulationMode="TranslateX,TranslateY"  
+                ManipulationDelta="RestoreCursor_ManipulationDelta"
+                Visibility="{x:Bind ViewModel.IsRestoreCursorVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock
+                    Text="{x:Bind ViewModel.StrRestoreCursorTextBlock, Mode=OneWay}"
+                    TextAlignment="Center"
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Margin="0, 16, 0, 0"/>
+                <Button
+                    Content="{x:Bind ViewModel.StrRestoreCursorButton, Mode=OneWay}"
+                    Command="{x:Bind ViewModel.RestoreCursorCommand}"
+                    HorizontalAlignment="Center"
+                    Margin="0, 0, 0, 16"/>
+            </StackPanel>
+        </Canvas>
     </Grid>
 </Page>
