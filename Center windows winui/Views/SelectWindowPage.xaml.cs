@@ -34,6 +34,13 @@ public sealed partial class SelectWindowPage : Page
         ScrollViewPage.Width = ActualWidth;
     }
 
+    private void RestoreCursor_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+    {
+        // Ajusta la posición en el ViewModel
+        ViewModel.PanelLeft += e.Delta.Translation.X;
+        ViewModel.PanelTop += e.Delta.Translation.Y;
+    }
+
     private void OnSelectWindow_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
         // Filter out non-left button clicks
