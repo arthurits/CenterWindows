@@ -17,7 +17,8 @@
         <!-- Converters -->
         <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
-        
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
         <!-- ListView DataTemplate -->
         <DataTemplate x:Key="PropertyTemplate">
             <Grid RowDefinitions="Auto, Auto">
@@ -200,7 +201,8 @@
                 Canvas.Left="{x:Bind ViewModel.PanelLeft, Mode=TwoWay}"  
                 Canvas.Top="{x:Bind ViewModel.PanelTop, Mode=TwoWay}"  
                 ManipulationMode="TranslateX,TranslateY"  
-                ManipulationDelta="RestoreCursor_ManipulationDelta">
+                ManipulationDelta="RestoreCursor_ManipulationDelta"
+                Visibility="{x:Bind ViewModel.IsRestoreCursorVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBlock
                     Text="{x:Bind ViewModel.StrRestoreCursorTextBlock, Mode=OneWay}"
                     TextAlignment="Center"

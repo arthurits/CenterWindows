@@ -66,13 +66,16 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     private bool _selectChild;
     private bool _changeCursor;
 
-    // Properties for panel position
+    // Properties for panel position ------------------------------------------------------------------------------------
 
     [ObservableProperty]
     public partial double PanelLeft { get; set; } = 16;
 
     [ObservableProperty]
     public partial double PanelTop { get; set; } = 400;
+
+    [ObservableProperty]
+    public partial bool IsRestoreCursorVisible { get; set; } = true;
 
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
