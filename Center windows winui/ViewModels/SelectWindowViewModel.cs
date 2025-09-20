@@ -69,13 +69,15 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     // Properties for panel position ------------------------------------------------------------------------------------
 
     [ObservableProperty]
-    public partial double PanelLeft { get; set; } = 16;
+    public partial double PanelLeft { get; set; } = -1.0;
 
     [ObservableProperty]
-    public partial double PanelTop { get; set; } = 400;
+    public partial double PanelTop { get; set; } = -1.0;
 
     [ObservableProperty]
     public partial bool IsRestoreCursorVisible { get; set; } = true;
+
+    public bool RememberRestoreCursor { get; set; } = true;
 
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
@@ -126,6 +128,12 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 
         // Set initial value from settings for the transparency slider
         Transparency = _appSettings.SelectWindowTransparency;
+
+        // Set initial value from settings for the panel position
+        IsRestoreCursorVisible = _appSettings.RestoreCursor;
+        RememberRestoreCursor = _appSettings.RememberRestoreCursor;
+        PanelLeft = _appSettings.RestoreCursorLeft;
+        PanelTop = _appSettings.RestoreCursorTop;
     }
 
     private void OnPropertyChanged(object? sender, SettingChangedEventArgs e)
@@ -151,6 +159,12 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 break;
             case nameof(AppSettings.ChangeCursor):
                 _changeCursor = (bool)(e.NewValue ?? true);
+                break;
+            case nameof(AppSettings.RestoreCursor):
+                IsRestoreCursorVisible = (bool)(e.NewValue ?? true);
+                break;
+            case nameof(AppSettings.RememberRestoreCursor):
+                RememberRestoreCursor = (bool)(e.NewValue ?? true);
                 break;
         }
     }
@@ -319,5 +333,15 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         uint SPI_SETCURSORS = 0x0057;
         uint SPIF_SENDCHANGE = 0x02;
         Win32.SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
+    }
+
+    partial void OnPanelLeftChanged(double oldValue, double newValue)
+    {
+        _appSettings.RestoreCursorLeft = newValue;
+    }
+
+    partial void OnPanelTopChanged(double oldValue, double newValue)
+    {
+        _appSettings.RestoreCursorTop = newValue;
     }
 }

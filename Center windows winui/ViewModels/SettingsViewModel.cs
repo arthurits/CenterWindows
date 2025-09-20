@@ -76,6 +76,15 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     [ObservableProperty]
     public partial bool ChangeCursor { get; set; } = true;
 
+    [ObservableProperty]
+    public partial bool RestoreCursor { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool RememberRestoreCursor { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool IsRememberRestoreCursorEnabled { get; set; } = true;
+
     public string WindowSizeDescription => string.Format(StrWindowSize, _mainWindowService.WindowWidth, _mainWindowService.WindowHeight);
 
     public string WindowPositionDescription => string.Format(StrWindowPosition, _mainWindowService.WindowTop, _mainWindowService.WindowLeft);
@@ -266,6 +275,11 @@ public partial class SettingsViewModel : ObservableRecipient, IDisposable
     partial void OnMinimizeToTrayChanged(bool value)
     {
         IsLaunchAtStartupEnabled = value;
+    }
+
+    partial void OnRestoreCursorChanged(bool oldValue, bool newValue)
+    {
+        IsRememberRestoreCursorEnabled = newValue;
     }
 
     [RelayCommand]

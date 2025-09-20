@@ -36,8 +36,21 @@ public sealed partial class SelectWindowPage : Page
 
     private void OverlayCanvas_Loaded(object sender, RoutedEventArgs e)
     {
-        var left = ActualWidth - RestoreCursorPanel.ActualWidth - _canvasOverlayMarginFromEdge;
-        var top = ActualHeight - RestoreCursorPanel.ActualHeight - _canvasOverlayMarginFromEdge;
+        // Check if there are valid coordinates in the ViewModel, which are defined in the settings
+        var left = 0.0;
+        var top = 0.0;
+        if (ViewModel.RememberRestoreCursor && ViewModel.PanelLeft >= 0 && ViewModel.PanelTop >= 0)
+        {
+            left = ViewModel.PanelLeft;
+            top = ViewModel.PanelTop;
+        }
+        else
+        {
+            // Default position: bottom right corner of the canvas, with a margin from the edge
+            left = ActualWidth - RestoreCursorPanel.ActualWidth - _canvasOverlayMarginFromEdge;
+            top = ActualHeight - RestoreCursorPanel.ActualHeight - _canvasOverlayMarginFromEdge;
+        }
+            
 
         // Avoid negative values
         ViewModel.PanelLeft = left >= _canvasOverlayMarginFromEdge ? left : _canvasOverlayMarginFromEdge;
@@ -51,16 +64,53 @@ public sealed partial class SelectWindowPage : Page
     {
         ScrollViewPage.Height = ActualHeight;
         ScrollViewPage.Width = ActualWidth;
+
+        // Ensure the panel remains within the visible bounds of the canvas when the window is resized
+        ComputePanelPosition(0, 0);
     }
 
     private void RestoreCursor_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+    {
+        ComputePanelPosition(e.Delta.Translation.X, e.Delta.Translation.Y);
+        //// Offset Canvas → Page
+        //var canvasToPage = OverlayCanvas.TransformToVisual(PageRoot);
+        //Point canvasOffset = canvasToPage.TransformPoint(new Point(0, 0));
+
+        //// Horizontal (Canvas)
+        //double newLeft = ViewModel.PanelLeft + e.Delta.Translation.X;
+        //double minLeft = 0;
+        //double maxLeft = OverlayCanvas.ActualWidth
+        //               - RestoreCursorPanel.ActualWidth
+        //               - minLeft;
+        //ViewModel.PanelLeft = Math.Clamp(newLeft, minLeft, maxLeft);
+
+        //// Vertical (Page)
+        //double newTop = ViewModel.PanelTop + e.Delta.Translation.Y;
+        //double minTopPage = _canvasOverlayMarginFromEdge;
+        //double maxTopPage = PageRoot.ActualHeight
+        //                   - RestoreCursorPanel.ActualHeight
+        //                   - minTopPage;
+        //double minTopCanvas = minTopPage - canvasOffset.Y - 100;
+        //double maxTopCanvas = maxTopPage - canvasOffset.Y;
+        //ViewModel.PanelTop = Math.Clamp(newTop, minTopCanvas, maxTopCanvas);
+    }
+
+    /// <summary>
+    /// Adjusts the position of the panel based on the specified horizontal and vertical deltas.
+    /// </summary>
+    /// <remarks>This method ensures that the panel's position remains within the allowable bounds of the
+    /// canvas and the page. The horizontal position is constrained to the width of the canvas, while the vertical
+    /// position is constrained to the height of the page, taking into account margins and offsets.</remarks>
+    /// <param name="deltaX">The horizontal offset to apply to the panel's current position, in device-independent pixels.</param>
+    /// <param name="deltaY">The vertical offset to apply to the panel's current position, in device-independent pixels.</param>
+    private void ComputePanelPosition(double deltaX, double deltaY)
     {
         // Offset Canvas → Page
         var canvasToPage = OverlayCanvas.TransformToVisual(PageRoot);
         Point canvasOffset = canvasToPage.TransformPoint(new Point(0, 0));
 
         // Horizontal (Canvas)
-        double newLeft = ViewModel.PanelLeft + e.Delta.Translation.X;
+        double newLeft = ViewModel.PanelLeft + deltaX;
         double minLeft = 0;
         double maxLeft = OverlayCanvas.ActualWidth
                        - RestoreCursorPanel.ActualWidth
@@ -68,7 +118,7 @@ public sealed partial class SelectWindowPage : Page
         ViewModel.PanelLeft = Math.Clamp(newLeft, minLeft, maxLeft);
 
         // Vertical (Page)
-        double newTop = ViewModel.PanelTop + e.Delta.Translation.Y;
+        double newTop = ViewModel.PanelTop + deltaY;
         double minTopPage = _canvasOverlayMarginFromEdge;
         double maxTopPage = PageRoot.ActualHeight
                            - RestoreCursorPanel.ActualHeight

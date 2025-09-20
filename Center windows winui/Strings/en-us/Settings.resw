@@ -174,8 +174,20 @@
   <data name="StrMinimizeToTrayHeader" xml:space="preserve">
     <value>Minimize to tray</value>
   </data>
+  <data name="StrRememberRestoreCursorDescription" xml:space="preserve">
+    <value>Activate this option to remember restore cursor panel position in "Select windows" page</value>
+  </data>
+  <data name="StrRememberRestoreCursorHeader" xml:space="preserve">
+    <value>Remember restore cursor position</value>
+  </data>
   <data name="StrResetButton" xml:space="preserve">
     <value>Reset settings</value>
+  </data>
+  <data name="StrResetCursorDescription" xml:space="preserve">
+    <value>Show option to show the panel allowing to restore cursor to its original image</value>
+  </data>
+  <data name="StrResetCursorHeader" xml:space="preserve">
+    <value>Restore cursor panel</value>
   </data>
   <data name="StrSelectChildDescription" xml:space="preserve">
     <value>Allow child windows selection. It might create unexpected results</value>

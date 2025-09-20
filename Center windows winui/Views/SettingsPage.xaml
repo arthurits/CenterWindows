@@ -167,6 +167,23 @@
                     <ToggleSwitch IsOn="{x:Bind ViewModel.ChangeCursor, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
                 </controls:SettingsCard>
 
+                <controls:SettingsCard
+                    x:Name = "cardRestoreCursor"
+                    Header="{x:Bind ViewModel.StrRestoreCursorHeader}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE7A7;}"
+                    Description="{x:Bind ViewModel.StrRestoreCursorDescription}" >
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.RestoreCursor, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
+                </controls:SettingsCard>
+
+                <controls:SettingsCard
+                    x:Name = "cardRememberRestoreCursor"
+                    Header="{x:Bind ViewModel.StrRememberRestoreCursorHeader}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE840;}"
+                    Description="{x:Bind ViewModel.StrRememberRestoreCursorDescription}"
+                    IsEnabled="{x:Bind ViewModel.IsRememberRestoreCursorEnabled}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.RememberRestoreCursor, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
+                </controls:SettingsCard>
+                
                 <!--Reset settings button-->
                 <Button x:Name="BtnReset"
                         Margin="{StaticResource SmallTopMargin}"
