@@ -174,14 +174,20 @@
   <data name="StrMinimizeToTrayHeader" xml:space="preserve">
     <value>Minimizar en bandeja</value>
   </data>
+  <data name="StrRememberRestoreCursorDescription" xml:space="preserve">
+    <value>Activa esta opción para recordar la posición del panel de restaurar el cursor en la página de «Selección»</value>
+  </data>
+  <data name="StrRememberRestoreCursorHeader" xml:space="preserve">
+    <value>Recordar posición de restaurar cursor</value>
+  </data>
   <data name="StrResetButton" xml:space="preserve">
     <value>Restablecer valores</value>
   </data>
   <data name="StrResetCursorDescription" xml:space="preserve">
-    <value>Mostrar opción para restaurar la imagen del cursor</value>
+    <value>Mostrar opción para mostrar el panel que permite restaurar la imagen del cursor</value>
   </data>
   <data name="StrResetCursorHeader" xml:space="preserve">
-    <value>Restaurar cursor</value>
+    <value>Panel de restaurar cursor</value>
   </data>
   <data name="StrSelectChildDescription" xml:space="preserve">
     <value>Permite la selección de ventanas hijas («child»). Pueden producirse resultados imprevistos</value>
