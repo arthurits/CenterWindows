@@ -80,6 +80,11 @@ public partial class SettingsViewModel : ObservableRecipient
     public partial string StrChangeCursorHeader { get; set; } = string.Empty;
     [ObservableProperty]
     public partial string StrChangeCursorDescription { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrRememberRestoreCursorHeader { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string StrRememberRestoreCursorDescription { get; set; } = string.Empty;
+
 
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
@@ -156,6 +161,10 @@ public partial class SettingsViewModel : ObservableRecipient
         // Reset cursor
         StrRestoreCursorHeader = "StrResetCursorHeader".GetLocalized("Settings");
         StrRestoreCursorDescription = "StrResetCursorDescription".GetLocalized("Settings");
+
+        // Remember restore cursor
+        StrRememberRestoreCursorHeader = "StrRememberRestoreCursorHeader".GetLocalized("Settings");
+        StrRememberRestoreCursorDescription = "StrRememberRestoreCursorDescription".GetLocalized("Settings");
 
         // Reset button
         StrResetButton = "StrResetButton".GetLocalized("Settings");
