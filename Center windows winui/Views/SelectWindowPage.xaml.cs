@@ -39,7 +39,7 @@ public sealed partial class SelectWindowPage : Page
         // Check if there are valid coordinates in the ViewModel, which are defined in the settings
         var left = 0.0;
         var top = 0.0;
-        if (ViewModel.PanelLeft >= 0 && ViewModel.PanelTop >= 0)
+        if (ViewModel.RememberRestoreCursor && ViewModel.PanelLeft >= 0 && ViewModel.PanelTop >= 0)
         {
             left = ViewModel.PanelLeft;
             top = ViewModel.PanelTop;

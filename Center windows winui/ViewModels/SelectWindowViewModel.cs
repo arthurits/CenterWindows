@@ -77,6 +77,8 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     [ObservableProperty]
     public partial bool IsRestoreCursorVisible { get; set; } = true;
 
+    public bool RememberRestoreCursor { get; set; } = true;
+
     public SelectWindowViewModel(
         ILocalSettingsService<AppSettings> settings,
         IWindowCenterService centerService,
@@ -128,6 +130,8 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         Transparency = _appSettings.SelectWindowTransparency;
 
         // Set initial value from settings for the panel position
+        IsRestoreCursorVisible = _appSettings.RestoreCursor;
+        RememberRestoreCursor = _appSettings.RememberRestoreCursor;
         PanelLeft = _appSettings.RestoreCursorLeft;
         PanelTop = _appSettings.RestoreCursorTop;
     }
@@ -158,6 +162,9 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
                 break;
             case nameof(AppSettings.RestoreCursor):
                 IsRestoreCursorVisible = (bool)(e.NewValue ?? true);
+                break;
+            case nameof(AppSettings.RememberRestoreCursor):
+                RememberRestoreCursor = (bool)(e.NewValue ?? true);
                 break;
         }
     }
