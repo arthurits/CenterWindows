@@ -177,6 +177,12 @@
   <data name="StrResetButton" xml:space="preserve">
     <value>Reset settings</value>
   </data>
+  <data name="StrResetCursorDescription" xml:space="preserve">
+    <value>Show option to restore cursor to its original image</value>
+  </data>
+  <data name="StrResetCursorHeader" xml:space="preserve">
+    <value>Restore cursor</value>
+  </data>
   <data name="StrSelectChildDescription" xml:space="preserve">
     <value>Allow child windows selection. It might create unexpected results</value>
   </data>

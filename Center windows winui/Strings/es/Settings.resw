@@ -177,6 +177,12 @@
   <data name="StrResetButton" xml:space="preserve">
     <value>Restablecer valores</value>
   </data>
+  <data name="StrResetCursorDescription" xml:space="preserve">
+    <value>Mostrar opción para restaurar la imagen del cursor</value>
+  </data>
+  <data name="StrResetCursorHeader" xml:space="preserve">
+    <value>Restaurar cursor</value>
+  </data>
   <data name="StrSelectChildDescription" xml:space="preserve">
     <value>Permite la selección de ventanas hijas («child»). Pueden producirse resultados imprevistos</value>
   </data>
