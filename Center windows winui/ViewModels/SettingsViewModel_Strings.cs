@@ -66,9 +66,9 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     public partial string StrSelectChildDescription { get; set; } = string.Empty;
     [ObservableProperty]
-    public partial string StrResetCursorHeader { get; set; } = string.Empty;
+    public partial string StrRestoreCursorHeader { get; set; } = string.Empty;
     [ObservableProperty]
-    public partial string StrResetCursorDescription { get; set; } = string.Empty;
+    public partial string StrRestoreCursorDescription { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial string StrResetButton { get; set; } = string.Empty;
@@ -154,8 +154,8 @@ public partial class SettingsViewModel : ObservableRecipient
         StrChangeCursorDescription = "StrChangeCursorDescription".GetLocalized("Settings");
 
         // Reset cursor
-        StrResetCursorHeader = "StrResetCursorHeader".GetLocalized("Settings");
-        StrResetCursorDescription = "StrResetCursorDescription".GetLocalized("Settings");
+        StrRestoreCursorHeader = "StrResetCursorHeader".GetLocalized("Settings");
+        StrRestoreCursorDescription = "StrResetCursorDescription".GetLocalized("Settings");
 
         // Reset button
         StrResetButton = "StrResetButton".GetLocalized("Settings");
