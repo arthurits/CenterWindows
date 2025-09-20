@@ -181,7 +181,7 @@
                     HeaderIcon="{ui:FontIcon Glyph=&#xE840;}"
                     Description="{x:Bind ViewModel.StrRememberRestoreCursorDescription}"
                     IsEnabled="{x:Bind ViewModel.IsRememberRestoreCursorEnabled}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.RestoreCursor, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.RememberRestoreCursor, Mode=TwoWay}" OnContent="{Binding StrActivate}" OffContent="{Binding StrDeactivate}" />
                 </controls:SettingsCard>
                 
                 <!--Reset settings button-->
