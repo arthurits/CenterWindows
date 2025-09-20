@@ -143,6 +143,24 @@ public partial class AppSettings
     public bool CanMinimizeToTray => ShowTrayIcon && MinimizeToTray;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the StackPanel for the cursor restoration should be shown in the SelectWindow page view.
+    /// </summary>
+    [JsonPropertyName("Restore cursor")]
+    public bool RestoreCursor { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the horizontal position, in pixels, of the StackPanel location showing the restore cursor option in the SelectWindow page view.
+    /// </summary>
+    [JsonPropertyName("Restore cursor left")]
+    public double RestoreCursorLeft { get; set; } = 0;
+
+    /// <summary>
+    /// Gets or sets the vertical position, in pixels, of the StackPanel location showing the restore cursor option in the SelectWindow page view.
+    /// </summary>
+    [JsonPropertyName("Restore cursor top")]
+    public double RestoreCursorTop { get; set; } = 0;
+
+    /// <summary>
     /// Gets or sets the transparency level for the slider control in ListWindows page view.
     /// </summary>
     [JsonPropertyName("List windows transparency")]
