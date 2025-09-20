@@ -161,6 +161,12 @@ public partial class AppSettings
     public double RestoreCursorTop { get; set; } = -1;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the panel position should be remembered and restored.
+    /// </summary>
+    [JsonPropertyName("Remember restore-cursor panel position")]
+    public bool RememberRestoreCursor { get; set; } = true;
+
+    /// <summary>
     /// Gets or sets the transparency level for the slider control in ListWindows page view.
     /// </summary>
     [JsonPropertyName("List windows transparency")]
