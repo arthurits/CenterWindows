@@ -61,7 +61,6 @@
 	  <Content Remove="Assets\Finder - 24x24.ai" />
 	  <Content Remove="Assets\Finder - 32x32.ai" />
 	  <Content Remove="Assets\Finder - 32x32.png" />
-	  <Content Remove="Assets\Finder - 32x32.svg" />
 	  <Content Remove="Assets\Finder.cur" />
 	  <Content Remove="Assets\FinderGone.bmp" />
 	  <Content Remove="Assets\FinderHome.bmp" />
@@ -123,6 +122,9 @@
     <Content Update="Assets\Finder - 32x32.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+	  <Content Update="Assets\Finder - 32x32.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\Select window - 48x44 - Finder gone.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -155,6 +157,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Update="Assets\Finder - 32x32.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Page Update="Styles\AppBarToggleButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
