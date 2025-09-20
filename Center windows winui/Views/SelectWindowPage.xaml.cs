@@ -36,8 +36,21 @@ public sealed partial class SelectWindowPage : Page
 
     private void OverlayCanvas_Loaded(object sender, RoutedEventArgs e)
     {
-        var left = ActualWidth - RestoreCursorPanel.ActualWidth - _canvasOverlayMarginFromEdge;
-        var top = ActualHeight - RestoreCursorPanel.ActualHeight - _canvasOverlayMarginFromEdge;
+        // Check if there are valid coordinates in the ViewModel, which are defined in the settings
+        var left = 0.0;
+        var top = 0.0;
+        if (ViewModel.PanelLeft >= 0 && ViewModel.PanelTop >= 0)
+        {
+            left = ViewModel.PanelLeft;
+            top = ViewModel.PanelTop;
+        }
+        else
+        {
+            // Default position: bottom right corner of the canvas, with a margin from the edge
+            left = ActualWidth - RestoreCursorPanel.ActualWidth - _canvasOverlayMarginFromEdge;
+            top = ActualHeight - RestoreCursorPanel.ActualHeight - _canvasOverlayMarginFromEdge;
+        }
+            
 
         // Avoid negative values
         ViewModel.PanelLeft = left >= _canvasOverlayMarginFromEdge ? left : _canvasOverlayMarginFromEdge;

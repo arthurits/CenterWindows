@@ -69,10 +69,10 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
     // Properties for panel position ------------------------------------------------------------------------------------
 
     [ObservableProperty]
-    public partial double PanelLeft { get; set; } = 16;
+    public partial double PanelLeft { get; set; } = -1.0;
 
     [ObservableProperty]
-    public partial double PanelTop { get; set; } = 400;
+    public partial double PanelTop { get; set; } = -1.0;
 
     [ObservableProperty]
     public partial bool IsRestoreCursorVisible { get; set; } = true;
@@ -126,6 +126,10 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
 
         // Set initial value from settings for the transparency slider
         Transparency = _appSettings.SelectWindowTransparency;
+
+        // Set initial value from settings for the panel position
+        PanelLeft = _appSettings.RestoreCursorLeft;
+        PanelTop = _appSettings.RestoreCursorTop;
     }
 
     private void OnPropertyChanged(object? sender, SettingChangedEventArgs e)

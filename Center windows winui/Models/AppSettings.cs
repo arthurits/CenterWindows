@@ -152,13 +152,13 @@ public partial class AppSettings
     /// Gets or sets the horizontal position, in pixels, of the StackPanel location showing the restore cursor option in the SelectWindow page view.
     /// </summary>
     [JsonPropertyName("Restore cursor left")]
-    public double RestoreCursorLeft { get; set; } = 0;
+    public double RestoreCursorLeft { get; set; } = -1;
 
     /// <summary>
     /// Gets or sets the vertical position, in pixels, of the StackPanel location showing the restore cursor option in the SelectWindow page view.
     /// </summary>
     [JsonPropertyName("Restore cursor top")]
-    public double RestoreCursorTop { get; set; } = 0;
+    public double RestoreCursorTop { get; set; } = -1;
 
     /// <summary>
     /// Gets or sets the transparency level for the slider control in ListWindows page view.
