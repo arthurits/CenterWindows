@@ -152,6 +152,9 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
             case nameof(AppSettings.ChangeCursor):
                 _changeCursor = (bool)(e.NewValue ?? true);
                 break;
+            case nameof(AppSettings.RestoreCursor):
+                IsRestoreCursorVisible = (bool)(e.NewValue ?? true);
+                break;
         }
     }
 
@@ -319,5 +322,15 @@ public partial class SelectWindowViewModel : ObservableRecipient, IDisposable
         uint SPI_SETCURSORS = 0x0057;
         uint SPIF_SENDCHANGE = 0x02;
         Win32.SystemParametersInfo(SPI_SETCURSORS, 0, IntPtr.Zero, SPIF_SENDCHANGE);
+    }
+
+    partial void OnPanelLeftChanged(double oldValue, double newValue)
+    {
+        _appSettings.RestoreCursorLeft = newValue;
+    }
+
+    partial void OnPanelTopChanged(double oldValue, double newValue)
+    {
+        _appSettings.RestoreCursorTop = newValue;
     }
 }
