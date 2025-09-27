@@ -13,7 +13,7 @@
   <Identity
     Name="ArthuritsLtd.Centerwindows"
     Publisher="CN=40D1817B-8F09-42D7-B9CD-E30271D4C7E9"
-    Version="3.0.1.0" />
+    Version="3.2.0.0" />
     
   <mp:PhoneIdentity PhoneProductId="6a25cf6d-408c-4c3a-8388-84513a01bb43" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
