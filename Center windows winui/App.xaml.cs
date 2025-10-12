@@ -187,14 +187,22 @@ public partial class App : Application
             _trayIconService.Initialize();
         }
 
-        // If the app is set to launch at startup, hide the main window and initialize the tray icon
-        var mainWindowService = App.GetService<IMainWindowService>();
-        if (settings.GetValues.LaunchAtStartup)
+        //// If the app is set to launch at startup, hide the main window and initialize the tray icon
+        //var mainWindowService = App.GetService<IMainWindowService>();
+        //if (settings.GetValues.LaunchAtStartup)
+        //{
+        //    //mainWindowService.Hide();
+        //    MainWindow.WindowState = WindowState.Minimized;
+        //    _trayIconService.Initialize();  // This should be already initializated, but we ensure the tray icon is set up
+        //    settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
+        //}
+
+        // If the app was launched at startup, minimize the main window
+        var startupService = App.GetService<IStartupService>();
+        if (startupService.IsAutoStart)
         {
-            //mainWindowService.Hide();
             MainWindow.WindowState = WindowState.Minimized;
             _trayIconService.Initialize();  // This should be already initializated, but we ensure the tray icon is set up
-            settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
         }
     }
 
