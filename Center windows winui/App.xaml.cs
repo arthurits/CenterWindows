@@ -45,6 +45,8 @@ public partial class App : Application
     {
         InitializeComponent();
 
+        //MainWindow.Hide();
+
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).
@@ -165,7 +167,8 @@ public partial class App : Application
         // Now that the settings are loaded, we call the activation service
         // so that the defaul page and view model can access the settings and apply them
         await App.GetService<IActivationService>().ActivateAsync(args);
-        
+        //var activation = GetService<IActivationService>();
+
         // Apply theme stored in settings
         var themeService = App.GetService<IThemeSelectorService>();
         if (themeService is not null)
@@ -204,6 +207,14 @@ public partial class App : Application
             MainWindow.WindowState = WindowState.Minimized;
             _trayIconService.Initialize();  // This should be already initializated, but we ensure the tray icon is set up
         }
+        else
+        {
+            //await activation.ActivateAsync(args);
+            //MainWindow.Activate();
+        }
+
+        // Further refinements
+        // https://copilot.microsoft.com/shares/5dEcJPaEr8k348HyijK28
     }
 
     private async void OnClosing(AppWindow sender, AppWindowClosingEventArgs args)
