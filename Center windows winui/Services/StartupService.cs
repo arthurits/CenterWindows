@@ -22,7 +22,7 @@ public class StartupService : IStartupService
 
         //using var key = Registry.CurrentUser.OpenSubKey(RegistryKeyPath, writable: true);
 
-        if (string.IsNullOrWhiteSpace(ExecutablePath))
+        if (!string.IsNullOrWhiteSpace(ExecutablePath))
         {
             if (enabled)
             {
