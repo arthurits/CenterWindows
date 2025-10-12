@@ -1,5 +1,6 @@
 ﻿using CenterWindow.Contracts.Services;
 using Microsoft.Win32;
+using Windows.ApplicationModel.Activation;
 
 namespace CenterWindow.Services;
 public class StartupService : IStartupService
@@ -9,6 +10,11 @@ public class StartupService : IStartupService
     private const string StartupArgument = "--startup";
 
     private static string ExecutablePath => Environment.ProcessPath ?? string.Empty;
+
+    /// <summary>
+    /// Gets a value indicating whether the process was launched with the --startup argument.
+    /// </summary>
+    public bool IsAutoStart => CheckStartUpArgument();
 
     /// <summary>
     /// Set the registry key to enable or disable the application launching at system startup.
@@ -53,5 +59,45 @@ public class StartupService : IStartupService
         // Verify that the value matches the expected format with the --startup argument
         var expected = $"\"{ExecutablePath}\" {StartupArgument}";
         return string.Equals(value, expected, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool CheckStartUpArgument()
+    {
+        // Unpackaged mode : check if the application was started with the --startup argument
+        var cmdArgs = Environment.GetCommandLineArgs();
+        var fromCmd = cmdArgs.Any(a => a.Equals(StartupArgument, StringComparison.OrdinalIgnoreCase));
+
+        // Packaged mode : check if the application was started via AppLifecycle with the --startup argument
+        var fromAppLifecycle = false;
+        try
+        {
+            var instance = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent();
+            if (instance.IsCurrent)
+            {
+                // GetActivatedEventArgs returns AppActivationArguments
+                var activationArgs = instance.GetActivatedEventArgs()
+                                             as Microsoft.Windows.AppLifecycle.AppActivationArguments;
+                if (activationArgs is not null)
+                {
+                    // Data can be equal to string, string[] or null
+                    var argsString = activationArgs.Data switch
+                    {
+                        string s => s,
+                        string[] arr => string.Join(" ", arr),
+                        _ => string.Empty
+                    };
+
+                    fromAppLifecycle = argsString
+                        .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                        .Any(a => a.Equals(StartupArgument, StringComparison.OrdinalIgnoreCase));
+                }
+            }
+        }
+        catch
+        {
+            // The AppLifecycle API may not be available (e.g. on Windows 10)
+        }
+
+        return fromCmd || fromAppLifecycle;
     }
 }

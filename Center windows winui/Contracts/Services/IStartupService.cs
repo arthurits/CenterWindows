@@ -12,4 +12,9 @@ public interface IStartupService
     /// </summary>
     /// <returns><see langword="True"/> if the registry key exists, <see langword="false"/> otherwise</returns>
     bool IsStartupEnabled();
+
+    /// <summary>
+    /// Gets a value indicating whether the process was launched with the --startup argument.
+    /// </summary>
+    bool IsAutoStart { get; }
 }
