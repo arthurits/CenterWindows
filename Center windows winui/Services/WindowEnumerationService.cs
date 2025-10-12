@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using CenterWindow.Contracts.Services;
 using CenterWindow.Interop;
 using CenterWindow.Models;
@@ -39,7 +40,32 @@ internal class WindowEnumerationService : IWindowEnumerationService
             // Retrieves the window's executable name
             _ = Win32.GetWindowThreadProcessId(hWnd, out var uHandle);
 
-            var process = Process.GetProcessById((int)uHandle);
+            Process process;
+            try
+            {
+                process = Process.GetProcessById((int)uHandle);
+            }
+            catch
+            {
+                // The process could have exited since we got the PID or the PID is invalid
+                return true;
+            }
+
+            string moduleName;
+            try
+            {
+                moduleName = process?.MainModule?.ModuleName ?? string.Empty;
+            }
+            catch (Win32Exception)
+            {
+                // Access is denied
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                // Process has exited
+                return true;
+            }
 
             //// Alternative way to get the module name using Win32 API
             //var handle = Win32.OpenProcess((uint)(Win32.PROCESS_ACCESS_TYPES.PROCESS_QUERY_INFORMATION | Win32.PROCESS_ACCESS_TYPES.PROCESS_VM_READ), false, (uint)uHandle);
@@ -58,7 +84,7 @@ internal class WindowEnumerationService : IWindowEnumerationService
                 _windows.Add(new WindowModel (
                     hWnd,
                     WindowText,
-                    process?.MainModule?.ModuleName ?? string.Empty,
+                    moduleName,
                     className,
                     winInfo.window.Left + (int)winInfo.xWindowBorders,
                     winInfo.window.Top + (int)winInfo.yWindowBorders,

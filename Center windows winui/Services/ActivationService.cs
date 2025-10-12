@@ -9,16 +9,22 @@ namespace CenterWindow.Services;
 
 public class ActivationService : IActivationService
 {
-    private readonly ActivationHandler<LaunchActivatedEventArgs> _defaultHandler;
-    private readonly IEnumerable<IActivationHandler> _activationHandlers;
+    private readonly ActivationHandler<LaunchActivatedEventArgs>    _defaultHandler;
+    private readonly IEnumerable<IActivationHandler>_activationHandlers;
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly IStartupService _startupService;
     private UIElement? _shell = null;
 
-    public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, IThemeSelectorService themeSelectorService)
+    public ActivationService(
+        ActivationHandler<LaunchActivatedEventArgs> defaultHandler,
+        IEnumerable<IActivationHandler> activationHandlers,
+        IThemeSelectorService themeSelectorService,
+        IStartupService startupService)
     {
-        _defaultHandler = defaultHandler;
-        _activationHandlers = activationHandlers;
-        _themeSelectorService = themeSelectorService;
+        _defaultHandler         = defaultHandler;
+        _activationHandlers     = activationHandlers;
+        _themeSelectorService   = themeSelectorService;
+        _startupService         = startupService;
     }
 
     public async Task ActivateAsync(object activationArgs)
@@ -37,7 +43,10 @@ public class ActivationService : IActivationService
         await HandleActivationAsync(activationArgs);
 
         // Activate the MainWindow.
-        App.MainWindow.Activate();
+        if (!_startupService.IsAutoStart)
+        {
+            App.MainWindow.Activate();
+        }
 
         // Execute tasks after activation.
         await StartupAsync();
