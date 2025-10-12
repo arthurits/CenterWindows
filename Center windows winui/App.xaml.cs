@@ -191,7 +191,8 @@ public partial class App : Application
         var mainWindowService = App.GetService<IMainWindowService>();
         if (settings.GetValues.LaunchAtStartup)
         {
-            mainWindowService.Hide();
+            //mainWindowService.Hide();
+            MainWindow.WindowState = WindowState.Minimized;
             _trayIconService.Initialize();  // This should be already initializated, but we ensure the tray icon is set up
             settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
         }
