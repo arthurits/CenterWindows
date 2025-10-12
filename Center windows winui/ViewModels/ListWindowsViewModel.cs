@@ -235,6 +235,10 @@ public partial class ListWindowsViewModel : ObservableRecipient, IDisposable
                 _mainWindowService.Show();
                 break;
             case (int)TrayMenuItemId.Exit:
+                if(_mainWindowService.WindowState == WindowState.Minimized)
+                {
+                    _mainWindowService.Show();
+                }
                 if (await App.ConfirmAppCloseAsync())
                 {
                     //App.Current.Exit();
