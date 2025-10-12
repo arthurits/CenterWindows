@@ -45,69 +45,67 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        //MainWindow.Hide();
+        Host = Microsoft.Extensions.Hosting.Host
+            .CreateDefaultBuilder()
+            .UseContentRoot(AppContext.BaseDirectory)
+            .ConfigureServices((context, services) =>
+            {
+                // Default Activation Handler
+                services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-        Host = Microsoft.Extensions.Hosting.Host.
-        CreateDefaultBuilder().
-        UseContentRoot(AppContext.BaseDirectory).
-        ConfigureServices((context, services) =>
-        {
-            // Default Activation Handler
-            services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
+                // Other Activation Handlers
 
-            // Other Activation Handlers
+                // Services
+                services.AddTransient<INavigationViewService, NavigationViewService>();
+                services.AddSingleton<IActivationService, ActivationService>();
+                services.AddSingleton<IPageService, PageService>();
+                services.AddSingleton<INavigationService, NavigationService>();
+                services.AddSingleton<ILocalizationService, LocalizationService>();
+                services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+                services.AddSingleton<ILocalSettingsService<AppSettings>, LocalSettingsService>();
+                services.AddSingleton<IFileService, FileService>();
 
-            // Services
-            services.AddTransient<INavigationViewService, NavigationViewService>();
-            services.AddSingleton<IActivationService, ActivationService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<ILocalizationService, LocalizationService>();
-            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
-            services.AddSingleton<ILocalSettingsService<AppSettings>, LocalSettingsService>();
-            services.AddSingleton<IFileService, FileService>();
+                // CenterWindow services
+                services.AddSingleton<IWindowCenterService, WindowCenterService>();
+                services.AddSingleton<IWindowEnumerationService, WindowEnumerationService>();
 
-            // CenterWindow services
-            services.AddSingleton<IWindowCenterService, WindowCenterService>();
-            services.AddSingleton<IWindowEnumerationService, WindowEnumerationService>();
+                // Mouse Hook Service
+                services.AddSingleton<IMouseHookService, MouseHookService>();
 
-            // Mouse Hook Service
-            services.AddSingleton<IMouseHookService, MouseHookService>();
+                // Window Highlight Service
+                services.AddSingleton<IWindowHighlightService, WindowHighlightService>();
 
-            // Window Highlight Service
-            services.AddSingleton<IWindowHighlightService, WindowHighlightService>();
+                // Tray Icon Service
+                services.AddSingleton<GdiPlusIconLoader>();
+                services.AddSingleton<Win2DIconLoader>();
+                services.AddSingleton<IconLoaderFactory>();
+                services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow, sp.GetRequiredService<IconLoaderFactory>()));
 
-            // Tray Icon Service
-            services.AddSingleton<GdiPlusIconLoader>();
-            services.AddSingleton<Win2DIconLoader>();
-            services.AddSingleton<IconLoaderFactory>();
-            services.AddSingleton<ITrayIconService, TrayIconService>(sp => new TrayIconService(MainWindow, sp.GetRequiredService<IconLoaderFactory>()));
+                // Register the MainWindow service. We use the factory method instantiation of MainWindow but
+                // leave the option to use the inline if needed in the future.
+                services.AddSingleton<WindowEx>(sp => MainWindow);
+                services.AddSingleton<IMainWindowService, MainWindowService>();
+                //services.AddSingleton<IMainWindowService>(sp => new MainWindowService(MainWindow));
 
-            // Register the MainWindow service. We use the factory method instantiation of MainWindow but
-            // leave the option to use the inline if needed in the future.
-            services.AddSingleton<WindowEx>(sp => MainWindow);
-            services.AddSingleton<IMainWindowService, MainWindowService>();
-            //services.AddSingleton<IMainWindowService>(sp => new MainWindowService(MainWindow));
+                // Startup service
+                services.AddSingleton<IStartupService, StartupService>();
 
-            // Startup service
-            services.AddSingleton<IStartupService, StartupService>();
+                // Views and ViewModels
+                services.AddSingleton<SelectWindowViewModel>();
+                services.AddTransient<SelectWindowPage>();
+                services.AddSingleton<AboutViewModel>();
+                services.AddTransient<AboutPage>();
+                services.AddSingleton<SettingsViewModel>();
+                services.AddTransient<SettingsPage>();
+                services.AddSingleton<ListWindowsViewModel>();
+                services.AddTransient<ListWindowsPage>();
+                services.AddTransient<ShellPage>();
+                services.AddSingleton<ShellViewModel>();
 
-            // Views and ViewModels
-            services.AddSingleton<SelectWindowViewModel>();
-            services.AddTransient<SelectWindowPage>();
-            services.AddSingleton<AboutViewModel>();
-            services.AddTransient<AboutPage>();
-            services.AddSingleton<SettingsViewModel>();
-            services.AddTransient<SettingsPage>();
-            services.AddSingleton<ListWindowsViewModel>();
-            services.AddTransient<ListWindowsPage>();
-            services.AddTransient<ShellPage>();
-            services.AddSingleton<ShellViewModel>();
-
-            // Configuration
-            services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
-        }).
-        Build();
+                // Configuration
+                services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+            }).
+            Build();
 
         UnhandledException += App_UnhandledException;
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -143,9 +141,9 @@ public partial class App : Application
 
         //await App.GetService<IActivationService>().ActivateAsync(args);
 
-        // Handle closing event
-        MainWindow.AppWindow.Closing += OnClosing;
-        MainWindow.Closed += OnClosed;
+        //// Handle closing event
+        //MainWindow.AppWindow.Closing += OnClosing;
+        //MainWindow.Closed += OnClosed;
 
         // Read settings and set initial window position
         // https://github.com/arthurits/OpenXML-editor/blob/master/OpenXML%20WinUI/App.xaml.cs
@@ -200,21 +198,28 @@ public partial class App : Application
         //    settings.GetValues.LaunchAtStartup = true; // Ensure the setting is true
         //}
 
-        // If the app was launched at startup, minimize the main window
-        var startupService = App.GetService<IStartupService>();
-        if (startupService.IsAutoStart)
-        {
-            MainWindow.WindowState = WindowState.Minimized;
-            _trayIconService.Initialize();  // This should be already initializated, but we ensure the tray icon is set up
-        }
-        else
-        {
-            //await activation.ActivateAsync(args);
-            //MainWindow.Activate();
-        }
+        //// If the app was launched at startup, minimize the main window
+        //var startupService = App.GetService<IStartupService>();
+        //if (startupService.IsAutoStart)
+        //{
+        //    MainWindow.WindowState = WindowState.Minimized;
+        //    _trayIconService.Initialize();  // This should be already initializated, but we ensure the tray icon is set up
+        //}
+        //else
+        //{
+        //    //await activation.ActivateAsync(args);
+        //    //MainWindow.Activate();
+        //}
 
         // Further refinements
         // https://copilot.microsoft.com/shares/5dEcJPaEr8k348HyijK28
+
+        // Call activation service. Depending on the StartupService.IsAutoStart this may show or hide the main window
+        await App.GetService<IActivationService>().ActivateAsync(args);
+
+        // Once the window has been activated, we can handle the closing events
+        MainWindow.AppWindow.Closing += OnClosing;
+        MainWindow.Closed += OnClosed;
     }
 
     private async void OnClosing(AppWindow sender, AppWindowClosingEventArgs args)
