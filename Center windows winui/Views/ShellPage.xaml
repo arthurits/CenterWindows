@@ -114,5 +114,11 @@
                 <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
+        <WebView2
+            x:Name="BannerWebView"
+            Grid.Row="2"
+            Height="90"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom"/>
     </Grid>
 </Page>
