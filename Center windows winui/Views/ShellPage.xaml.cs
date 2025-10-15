@@ -37,6 +37,9 @@ public sealed partial class ShellPage : Page
 
         // Set page data context
         DataContext = ViewModel;
+
+        // Initialize WebView2
+        _ = BannerWebView.EnsureCoreWebView2Async();
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -45,6 +48,20 @@ public sealed partial class ShellPage : Page
 
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
+
+        //
+        // Opción A: cargar tu página remota
+        BannerWebView.Source = new Uri("https://arthurits.github.io");
+
+        // Opción B: incrustar HTML directamente (sin depender de URL)
+        // var html = @"
+        //   <!DOCTYPE html><html><head>
+        //     <script async src=""https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5476573924613537"" crossorigin=""anonymous""></script>
+        //   </head><body style=""margin:0;"">
+        //     <ins class=""adsbygoogle"" style=""display:block"" data-ad-client=""ca-pub-5476573924613537"" data-ad-slot=""5839652674"" data-ad-format=""auto"" data-full-width-responsive=""true""></ins>
+        //     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        //   </body></html>";
+        // BannerWebView.NavigateToString(html);
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
