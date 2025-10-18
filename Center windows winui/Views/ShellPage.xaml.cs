@@ -51,7 +51,7 @@ public sealed partial class ShellPage : Page
 
         //
         // Opción A: cargar tu página remota
-        BannerWebView.Source = new Uri("https://arthurits.github.io");
+        BannerWebView.Source = new Uri("https://arthurits.github.io/banner.html");
 
         // Opción B: incrustar HTML directamente (sin depender de URL)
         // var html = @"
