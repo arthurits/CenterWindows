@@ -1,6 +1,7 @@
 ﻿using CenterWindow.Contracts.Services;
 using CenterWindow.Helpers;
 using CenterWindow.Models;
+using Microsoft.UI.Xaml;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 
@@ -20,6 +21,9 @@ public sealed partial class MainWindow : WindowEx
         Content = null;
         //Title = "AppDisplayName".GetLocalized();
 
+        // Enable custom title bar handling at window level
+        ExtendsContentIntoTitleBar = true;
+
         // Theme change code picked from https://github.com/microsoft/WinUI-Gallery/pull/1239
         dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
         settings = new UISettings();
@@ -34,5 +38,23 @@ public sealed partial class MainWindow : WindowEx
     {
         // This calls comes off-thread, hence we will need to dispatch it to current app's thread
         dispatcherQueue.TryEnqueue(TitleBarHelper.ApplySystemThemeToCaptionButtons);
+    }
+
+    // New: allow pages to register the UIElement that will act as the title bar
+    public void RegisterTitleBar(UIElement? titleBarElement)
+    {
+        // keep a single global reference for other helpers
+        App.AppTitlebar = titleBarElement;
+
+        if (titleBarElement != null)
+        {
+            // Tell the window which element is the draggable title bar
+            SetTitleBar(titleBarElement);
+        }
+        else
+        {
+            // Remove custom title bar if null
+            SetTitleBar(null);
+        }
     }
 }
