@@ -75,4 +75,9 @@ public sealed partial class MainWindow : WindowEx
         // Actualizar los colores de los botones según el tema actual
         TitleBarHelper.UpdateTitleBar(this.Content is FrameworkElement fe ? fe.ActualTheme : ElementTheme.Default);
     }
+
+    private void Dispose()
+    {
+        settings.ColorValuesChanged -= Settings_ColorValuesChanged;
+    }
 }
