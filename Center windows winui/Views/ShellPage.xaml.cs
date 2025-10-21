@@ -67,7 +67,11 @@ public sealed partial class ShellPage : Page
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
-        App.AppTitlebar = AppTitleBarText as UIElement;
+        // Asegurar que la referencia global apunta al Grid completo (no sólo al TextBlock)
+        App.AppTitlebar = AppTitleBar as UIElement;
+
+        // Forzar actualización de colores de botones de la caption bar según el tema actual
+        TitleBarHelper.UpdateTitleBar(this.RequestedTheme);
     }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
