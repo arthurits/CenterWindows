@@ -16,6 +16,8 @@ public sealed partial class MainWindow : WindowEx
     public MainWindow()
     {
         InitializeComponent();
+        
+        this.Activated += MainWindow_Activated;
 
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/AppIcon.ico"));
         Content = null;
@@ -56,5 +58,21 @@ public sealed partial class MainWindow : WindowEx
             // Remove custom title bar if null
             SetTitleBar(null);
         }
+    }
+
+    private void MainWindow_Activated(object? sender, WindowActivatedEventArgs args)
+    {
+        // Asegurar que App.AppTitlebar apunta a la referencia registrada (si la hay)
+        if (App.AppTitlebar == null)
+        {
+            // Intenta obtener la referencia tipada si ya se registró
+            // Nada se hace si no hay titlebar registrado
+            return;
+        }
+
+        // Forzar que App.AppTitlebar sea la referencia visual que registramos (no el TextBlock)
+        // No hacemos cast directo; asumimos que RegisterTitleBar ya dejó la referencia correcta
+        // Actualizar los colores de los botones según el tema actual
+        TitleBarHelper.UpdateTitleBar(this.Content is FrameworkElement fe ? fe.ActualTheme : ElementTheme.Default);
     }
 }

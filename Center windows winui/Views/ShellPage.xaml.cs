@@ -33,7 +33,7 @@ public sealed partial class ShellPage : Page
         //App.MainWindow.ExtendsContentIntoTitleBar = true;
         //App.MainWindow.SetTitleBar(AppTitleBar);
         ((MainWindow)App.MainWindow).RegisterTitleBar(AppTitleBar);
-        App.MainWindow.Activated += MainWindow_Activated;
+        //App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
 
         // Set page data context
@@ -65,14 +65,14 @@ public sealed partial class ShellPage : Page
         // BannerWebView.NavigateToString(html);
     }
 
-    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
-    {
-        // Asegurar que la referencia global apunta al Grid completo (no sólo al TextBlock)
-        App.AppTitlebar = AppTitleBar as UIElement;
+    //private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+    //{
+    //    // Asegurar que la referencia global apunta al Grid completo (no sólo al TextBlock)
+    //    App.AppTitlebar = AppTitleBar as UIElement;
 
-        // Forzar actualización de colores de botones de la caption bar según el tema actual
-        TitleBarHelper.UpdateTitleBar(this.RequestedTheme);
-    }
+    //    // Forzar actualización de colores de botones de la caption bar según el tema actual
+    //    TitleBarHelper.UpdateTitleBar(this.RequestedTheme);
+    //}
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
