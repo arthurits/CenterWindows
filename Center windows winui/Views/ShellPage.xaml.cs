@@ -34,7 +34,8 @@ public sealed partial class ShellPage : Page
         //App.MainWindow.SetTitleBar(AppTitleBar);
         ((MainWindow)App.MainWindow).RegisterTitleBar(AppTitleBar);
         //App.MainWindow.Activated += MainWindow_Activated;
-        AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+        //AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+        AppTitleBar.Title = "AppDisplayName".GetLocalized();
 
         // Set page data context
         DataContext = ViewModel;
@@ -106,5 +107,18 @@ public sealed partial class ShellPage : Page
         var result = navigationService.GoBack();
 
         args.Handled = result;
+    }
+
+    private void TitleBar_BackRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
+    {
+        //if (RootFrame.CanGoBack)
+        //{
+        //    RootFrame.GoBack();
+        //}
+    }
+
+    private void TitleBar_PaneToggleRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
+    {
+        NavigationViewControl.IsPaneOpen = !NavigationViewControl.IsPaneOpen;
     }
 }
