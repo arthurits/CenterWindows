@@ -46,7 +46,7 @@ public sealed partial class MainWindow : WindowEx
         // keep a single global reference for other helpers
         App.AppTitlebar = titleBarElement;
 
-        if (titleBarElement != null)
+        if (titleBarElement is not null)
         {
             // Tell the window which element is the draggable title bar
             SetTitleBar(titleBarElement);
