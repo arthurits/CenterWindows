@@ -103,10 +103,46 @@ internal class TitleBarHelper
 
     public static void ApplySystemThemeToCaptionButtons()
     {
-        var frame = App.AppTitlebar as FrameworkElement;
-        if (frame is not null)
+        //var frame = App.AppTitlebar as FrameworkElement;
+        //if (frame is not null)
+        //{
+        //    UpdateTitleBar(frame.ActualTheme);
+        //}
+
+        ElementTheme appRequestedTheme = ElementTheme.Default;
+
+        try
         {
-            UpdateTitleBar(frame.ActualTheme);
+            if (App.MainWindow != null && App.MainWindow.Content is FrameworkElement fe)
+            {
+                appRequestedTheme = fe.ActualTheme;
+            }
         }
+        catch
+        {
+            appRequestedTheme = ElementTheme.Default;
+        }
+
+        if (appRequestedTheme != ElementTheme.Default)
+        {
+            UpdateTitleBar(appRequestedTheme);
+            return;
+        }
+
+        try
+        {
+            var uiSettings = new Windows.UI.ViewManagement.UISettings();
+            var background = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background);
+            var inferred = background == Windows.UI.Color.FromArgb(0,255,255,255) ? ElementTheme.Light : ElementTheme.Dark;
+            UpdateTitleBar(inferred);
+            return;
+        }
+        catch
+        {
+            // fall through to fallback
+        }
+
+        var requested = Application.Current.RequestedTheme == ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark;
+        UpdateTitleBar(requested);
     }
 }
