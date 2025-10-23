@@ -111,19 +111,13 @@ public sealed partial class ShellPage : Page
 
     private void TitleBar_BackRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
     {
-        if (ViewModel.NavigationService.CanGoBack)
+        if (ViewModel?.GoBackCommand is not null && ViewModel.GoBackCommand.CanExecute(null))
         {
-            ViewModel.NavigationService.GoBack();
+            ViewModel.GoBackCommand.Execute(null);
         }
     }
 
-    private void TitleBar_PaneToggleRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
-    {
-        NavigationViewControl.IsPaneOpen = !NavigationViewControl.IsPaneOpen;
-    }
+    private void TitleBar_PaneToggleRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args) => NavigationViewControl.IsPaneOpen = !NavigationViewControl.IsPaneOpen;
 
-    private void Page_Unloaded(object sender, RoutedEventArgs e)
-    {
-        ViewModel?.NavigationViewService.UnregisterEvents();
-    }
+    private void Page_Unloaded(object sender, RoutedEventArgs e) => ViewModel?.NavigationViewService.UnregisterEvents();
 }

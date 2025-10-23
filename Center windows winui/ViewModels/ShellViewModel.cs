@@ -2,8 +2,9 @@
 using CenterWindow.Helpers;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.Devices.Bluetooth.Background;
 
 namespace CenterWindow.ViewModels;
 
@@ -20,6 +21,8 @@ public partial class ShellViewModel : ObservableRecipient, IDisposable
     private readonly ILocalizationService _localizationService;
     private readonly IMainWindowService _mainWindowService;
     public IMainWindowService MainWindowService => _mainWindowService;
+
+    public IRelayCommand GoBackCommand { get;}
 
     [ObservableProperty]
     public partial string StrAppDisplayName_Base { get; private set; } = string.Empty;
@@ -53,6 +56,8 @@ public partial class ShellViewModel : ObservableRecipient, IDisposable
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
+
+        GoBackCommand = new RelayCommand(() => NavigationService.GoBack(), () => NavigationService.CanGoBack);
 
         // Subscribe to localization service events
         _localizationService = localizationService;
@@ -101,6 +106,9 @@ public partial class ShellViewModel : ObservableRecipient, IDisposable
         {
             NavigationViewService.SyncSelectedItem(NavigationService.Frame.CurrentSourcePageType);
         }
+
+        // Notify that the CanExecute state of the GoBackCommand may have changed
+        GoBackCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnStrAppDisplayName_FileChanged(string oldValue, string newValue)
@@ -112,4 +120,6 @@ public partial class ShellViewModel : ObservableRecipient, IDisposable
     {
         _mainWindowService.TitleMain = newValue;
     }
+
+    public bool TryGoBack() => NavigationService.GoBack();
 }
