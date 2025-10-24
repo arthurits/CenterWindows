@@ -19,7 +19,7 @@
             Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
             IsHitTestVisible="True"
             VerticalAlignment="Top"
-            IsBackButtonVisible="True"
+            IsBackButtonVisible="{x:Bind ViewModel.IsBackButtonVisible, Mode=OneWay}"
             IsBackButtonEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             BackRequested="TitleBar_BackRequested"
             IsPaneToggleButtonVisible="True"
