@@ -13,6 +13,8 @@ public partial class ShellViewModel : ObservableRecipient, IDisposable
     [ObservableProperty]
     public partial bool IsBackEnabled { get; set; }
     [ObservableProperty]
+    public partial bool IsBackButtonVisible { get; set; }
+    [ObservableProperty]
     public partial object? Selected { get; set; }
 
     // Services
@@ -94,6 +96,7 @@ public partial class ShellViewModel : ObservableRecipient, IDisposable
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = NavigationService.CanGoBack;
+        IsBackButtonVisible = NavigationService.CanGoBack;
 
         var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
         if (selectedItem is not null)
