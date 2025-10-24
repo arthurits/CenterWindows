@@ -32,7 +32,7 @@ public sealed partial class ShellPage : Page
         // https://docs.microsoft.com/windows/apps/develop/title-bar?tabs=winui3#full-customization
         //App.MainWindow.ExtendsContentIntoTitleBar = true;
         //App.MainWindow.SetTitleBar(AppTitleBar);
-        ((MainWindow)App.MainWindow).RegisterTitleBar(AppTitleBar);
+        //((MainWindow)App.MainWindow).RegisterTitleBar(AppTitleBar);
         //App.MainWindow.Activated += MainWindow_Activated;
         //AppTitleBarText.Text = "AppDisplayName".GetLocalized();
         AppTitleBar.Title = "AppDisplayName".GetLocalized();
@@ -64,6 +64,12 @@ public sealed partial class ShellPage : Page
         //     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         //   </body></html>";
         // BannerWebView.NavigateToString(html);
+
+        if (AppTitleBar != null && App.MainWindow is MainWindow mw)
+        {
+            mw.RegisterTitleBar(AppTitleBar);
+            TitleBarHelper.UpdateTitleBar(this.RequestedTheme);
+        }
     }
 
     //private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
