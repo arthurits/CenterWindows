@@ -12,28 +12,27 @@
     Loaded="OnLoaded"
     mc:Ignorable="d">
 
-    <Grid RowDefinitions="*, Auto">
-        <Grid x:Name="AppTitleBar"
-              Canvas.ZIndex="1"
-              Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
-              IsHitTestVisible="True"
-              VerticalAlignment="Top">
-            <Image Source="ms-appx:///Assets/AppIcon.ico"
-                   HorizontalAlignment="Left"
-                   Width="24"
-                   Height="24" />
-            <TextBlock x:Name="AppTitleBarText"
-                       Text="{Binding MainWindowService.Title, Mode=TwoWay}"
-                       VerticalAlignment="Center"
-                       TextWrapping="NoWrap"
-                       Style="{StaticResource CaptionTextBlockStyle}"
-                       Margin="32,0,0,0"
-                       FontSize="14"/>
-        </Grid>
+    <Grid RowDefinitions="Auto, *, Auto">
+        <TitleBar
+            x:Name="AppTitleBar"
+            Title="{Binding MainWindowService.Title, Mode=TwoWay}"
+            Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
+            IsHitTestVisible="True"
+            VerticalAlignment="Top"
+            IsBackButtonVisible="True"
+            IsBackButtonEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+            BackRequested="TitleBar_BackRequested"
+            IsPaneToggleButtonVisible="True"
+            PaneToggleRequested="TitleBar_PaneToggleRequested">
+            <TitleBar.IconSource>
+                <ImageIconSource ImageSource="ms-appx:///Assets/AppIcon.ico" />
+            </TitleBar.IconSource>
+        </TitleBar>
         <NavigationView
             x:Name="NavigationViewControl"
-            Canvas.ZIndex="0"
-            IsBackButtonVisible="Visible"
+            Grid.Row="1"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleButtonVisible="False"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
             IsSettingsVisible="False"
@@ -116,7 +115,7 @@
         </NavigationView>
         <WebView2
             x:Name="BannerWebView"
-            Grid.Row="1"
+            Grid.Row="2"
             Height="90"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Bottom"/>

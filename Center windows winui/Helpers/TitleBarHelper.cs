@@ -18,6 +18,8 @@ internal class TitleBarHelper
     private const int WAACTIVE = 0x01;
     private const int WMACTIVATE = 0x0006;
 
+    private static bool _isUpdating = false;
+
     [DllImport("user32.dll")]
     private static extern IntPtr GetActiveWindow();
 
@@ -26,71 +28,121 @@ internal class TitleBarHelper
 
     public static void UpdateTitleBar(ElementTheme theme)
     {
-        if (App.MainWindow.ExtendsContentIntoTitleBar)
+        if (_isUpdating) // <-- evita reentrada
         {
-            if (theme == ElementTheme.Default)
-            {
-                var uiSettings = new UISettings();
-                var background = uiSettings.GetColorValue(UIColorType.Background);
+            return;
+        }
 
-                theme = background == Colors.White ? ElementTheme.Light : ElementTheme.Dark;
+        try
+        {
+            _isUpdating = true;
+
+            if (App.MainWindow.ExtendsContentIntoTitleBar)
+            {
+                if (theme == ElementTheme.Default)
+                {
+                    var uiSettings = new UISettings();
+                    var background = uiSettings.GetColorValue(UIColorType.Background);
+
+                    theme = background == Colors.White ? ElementTheme.Light : ElementTheme.Dark;
+                }
+
+                if (theme == ElementTheme.Default)
+                {
+                    theme = Application.Current.RequestedTheme == ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark;
+                }
+
+                App.MainWindow.AppWindow.TitleBar.ButtonForegroundColor = theme switch
+                {
+                    ElementTheme.Dark => Colors.White,
+                    ElementTheme.Light => Colors.Black,
+                    _ => Colors.Transparent
+                };
+
+                App.MainWindow.AppWindow.TitleBar.ButtonHoverForegroundColor = theme switch
+                {
+                    ElementTheme.Dark => Colors.White,
+                    ElementTheme.Light => Colors.Black,
+                    _ => Colors.Transparent
+                };
+
+                App.MainWindow.AppWindow.TitleBar.ButtonHoverBackgroundColor = theme switch
+                {
+                    ElementTheme.Dark => Color.FromArgb(0x33, 0xFF, 0xFF, 0xFF),
+                    ElementTheme.Light => Color.FromArgb(0x33, 0x00, 0x00, 0x00),
+                    _ => Colors.Transparent
+                };
+
+                App.MainWindow.AppWindow.TitleBar.ButtonPressedBackgroundColor = theme switch
+                {
+                    ElementTheme.Dark => Color.FromArgb(0x66, 0xFF, 0xFF, 0xFF),
+                    ElementTheme.Light => Color.FromArgb(0x66, 0x00, 0x00, 0x00),
+                    _ => Colors.Transparent
+                };
+
+                App.MainWindow.AppWindow.TitleBar.BackgroundColor = Colors.Transparent;
+
+                var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+                if (hwnd == GetActiveWindow())
+                {
+                    SendMessage(hwnd, WMACTIVATE, WAINACTIVE, IntPtr.Zero);
+                    SendMessage(hwnd, WMACTIVATE, WAACTIVE, IntPtr.Zero);
+                }
+                else
+                {
+                    SendMessage(hwnd, WMACTIVATE, WAACTIVE, IntPtr.Zero);
+                    SendMessage(hwnd, WMACTIVATE, WAINACTIVE, IntPtr.Zero);
+                }
             }
-
-            if (theme == ElementTheme.Default)
-            {
-                theme = Application.Current.RequestedTheme == ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark;
-            }
-
-            App.MainWindow.AppWindow.TitleBar.ButtonForegroundColor = theme switch
-            {
-                ElementTheme.Dark => Colors.White,
-                ElementTheme.Light => Colors.Black,
-                _ => Colors.Transparent
-            };
-
-            App.MainWindow.AppWindow.TitleBar.ButtonHoverForegroundColor = theme switch
-            {
-                ElementTheme.Dark => Colors.White,
-                ElementTheme.Light => Colors.Black,
-                _ => Colors.Transparent
-            };
-
-            App.MainWindow.AppWindow.TitleBar.ButtonHoverBackgroundColor = theme switch
-            {
-                ElementTheme.Dark => Color.FromArgb(0x33, 0xFF, 0xFF, 0xFF),
-                ElementTheme.Light => Color.FromArgb(0x33, 0x00, 0x00, 0x00),
-                _ => Colors.Transparent
-            };
-
-            App.MainWindow.AppWindow.TitleBar.ButtonPressedBackgroundColor = theme switch
-            {
-                ElementTheme.Dark => Color.FromArgb(0x66, 0xFF, 0xFF, 0xFF),
-                ElementTheme.Light => Color.FromArgb(0x66, 0x00, 0x00, 0x00),
-                _ => Colors.Transparent
-            };
-
-            App.MainWindow.AppWindow.TitleBar.BackgroundColor = Colors.Transparent;
-
-            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
-            if (hwnd == GetActiveWindow())
-            {
-                SendMessage(hwnd, WMACTIVATE, WAINACTIVE, IntPtr.Zero);
-                SendMessage(hwnd, WMACTIVATE, WAACTIVE, IntPtr.Zero);
-            }
-            else
-            {
-                SendMessage(hwnd, WMACTIVATE, WAACTIVE, IntPtr.Zero);
-                SendMessage(hwnd, WMACTIVATE, WAINACTIVE, IntPtr.Zero);
-            }
+        }
+        finally
+        {
+            _isUpdating = false;
         }
     }
 
     public static void ApplySystemThemeToCaptionButtons()
     {
-        var frame = App.AppTitlebar as FrameworkElement;
-        if (frame != null)
+        //var frame = App.AppTitlebar as FrameworkElement;
+        //if (frame is not null)
+        //{
+        //    UpdateTitleBar(frame.ActualTheme);
+        //}
+
+        ElementTheme appRequestedTheme = ElementTheme.Default;
+
+        try
         {
-            UpdateTitleBar(frame.ActualTheme);
+            if (App.MainWindow != null && App.MainWindow.Content is FrameworkElement fe)
+            {
+                appRequestedTheme = fe.ActualTheme;
+            }
         }
+        catch
+        {
+            appRequestedTheme = ElementTheme.Default;
+        }
+
+        if (appRequestedTheme != ElementTheme.Default)
+        {
+            UpdateTitleBar(appRequestedTheme);
+            return;
+        }
+
+        try
+        {
+            var uiSettings = new Windows.UI.ViewManagement.UISettings();
+            var background = uiSettings.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background);
+            var inferred = background == Windows.UI.Color.FromArgb(0,255,255,255) ? ElementTheme.Light : ElementTheme.Dark;
+            UpdateTitleBar(inferred);
+            return;
+        }
+        catch
+        {
+            // fall through to fallback
+        }
+
+        var requested = Application.Current.RequestedTheme == ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark;
+        UpdateTitleBar(requested);
     }
 }

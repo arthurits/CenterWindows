@@ -30,10 +30,12 @@ public sealed partial class ShellPage : Page
         // TODO: Set the title bar icon by updating /Assets/WindowIcon.ico.
         // A custom title bar is required for full window theme and Mica support.
         // https://docs.microsoft.com/windows/apps/develop/title-bar?tabs=winui3#full-customization
-        App.MainWindow.ExtendsContentIntoTitleBar = true;
-        App.MainWindow.SetTitleBar(AppTitleBar);
-        App.MainWindow.Activated += MainWindow_Activated;
-        AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+        //App.MainWindow.ExtendsContentIntoTitleBar = true;
+        //App.MainWindow.SetTitleBar(AppTitleBar);
+        //((MainWindow)App.MainWindow).RegisterTitleBar(AppTitleBar);
+        //App.MainWindow.Activated += MainWindow_Activated;
+        //AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+        AppTitleBar.Title = "AppDisplayName".GetLocalized();
 
         // Set page data context
         DataContext = ViewModel;
@@ -44,7 +46,7 @@ public sealed partial class ShellPage : Page
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        TitleBarHelper.UpdateTitleBar(RequestedTheme);
+        //TitleBarHelper.UpdateTitleBar(RequestedTheme);
 
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
@@ -62,22 +64,32 @@ public sealed partial class ShellPage : Page
         //     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         //   </body></html>";
         // BannerWebView.NavigateToString(html);
+
+        if (AppTitleBar != null && App.MainWindow is MainWindow mw)
+        {
+            mw.RegisterTitleBar(AppTitleBar);
+            TitleBarHelper.UpdateTitleBar(this.RequestedTheme);
+        }
     }
 
-    private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
-    {
-        App.AppTitlebar = AppTitleBarText as UIElement;
-    }
+    //private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+    //{
+    //    // Asegurar que la referencia global apunta al Grid completo (no sólo al TextBlock)
+    //    App.AppTitlebar = AppTitleBar as UIElement;
+
+    //    // Forzar actualización de colores de botones de la caption bar según el tema actual
+    //    TitleBarHelper.UpdateTitleBar(this.RequestedTheme);
+    //}
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
-        AppTitleBar.Margin = new Thickness()
-        {
-            Left = sender.CompactPaneLength * (sender.DisplayMode == NavigationViewDisplayMode.Minimal ? 2 : 1),
-            Top = AppTitleBar.Margin.Top,
-            Right = AppTitleBar.Margin.Right,
-            Bottom = AppTitleBar.Margin.Bottom
-        };
+        //AppTitleBar.Margin = new Thickness()
+        //{
+        //    Left = sender.CompactPaneLength * (sender.DisplayMode == NavigationViewDisplayMode.Minimal ? 2 : 1),
+        //    Top = AppTitleBar.Margin.Top,
+        //    Right = AppTitleBar.Margin.Right,
+        //    Bottom = AppTitleBar.Margin.Bottom
+        //};
     }
 
     private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
@@ -102,4 +114,16 @@ public sealed partial class ShellPage : Page
 
         args.Handled = result;
     }
+
+    private void TitleBar_BackRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
+    {
+        if (ViewModel?.GoBackCommand is not null && ViewModel.GoBackCommand.CanExecute(null))
+        {
+            ViewModel.GoBackCommand.Execute(null);
+        }
+    }
+
+    private void TitleBar_PaneToggleRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args) => NavigationViewControl.IsPaneOpen = !NavigationViewControl.IsPaneOpen;
+
+    private void Page_Unloaded(object sender, RoutedEventArgs e) => ViewModel?.NavigationViewService.UnregisterEvents();
 }
