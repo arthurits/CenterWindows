@@ -113,6 +113,13 @@
                 <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
+        <Border
+            Grid.Row="1"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Stretch"
+            Height="{ThemeResource NavigationViewItemSeparatorHeight}"
+            BorderThickness="{ThemeResource NavigationViewItemBorderThickness}"
+            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" />
         <WebView2
             x:Name="BannerWebView"
             Grid.Row="2"
