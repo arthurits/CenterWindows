@@ -68,7 +68,7 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItemSeparator x:Name="NavSeparatorRef"/>
+                <NavigationViewItemSeparator/>
                 <NavigationViewItem
                     Content="{Binding StrSettingsItem}"
                     helpers:NavigationHelper.NavigateTo="CenterWindow.ViewModels.SettingsViewModel"
