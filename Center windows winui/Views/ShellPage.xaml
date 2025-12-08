@@ -119,12 +119,14 @@
             HorizontalAlignment="Stretch"
             Height="{ThemeResource NavigationViewItemSeparatorHeight}"
             BorderThickness="{ThemeResource NavigationViewItemBorderThickness}"
-            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" />
+            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+            Visibility="Collapsed"/>
         <WebView2
             x:Name="BannerWebView"
             Grid.Row="2"
             Height="90"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Bottom"/>
+            VerticalAlignment="Bottom"
+            Visibility="Collapsed"/>
     </Grid>
 </Page>
