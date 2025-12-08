@@ -109,7 +109,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="WinUIEx" Version="2.6.0" />
+    <PackageReference Include="WinUIEx" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>
